@@ -1,0 +1,208 @@
+<div class="w-full relative">
+    <button class="absolute top-0 right-0 h-[42px] w-[42px]" (click)="form_close()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </button>
+    <div class="bg-[#196898] py-[10px] px-[15px]">
+        <div class="text-white text-sm leading-[22px] break-words font-medium">
+            <div>Thêm doanh nghiệp, cá nhân mới</div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 p-6">
+        <div class="flex flex-col relative my-2">
+            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh đại diện</label>
+            <div class="flex flex-row">
+                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
+                    (click)="showDialog('daidien')" style="width: 100px; height: 100px;">
+                    <img src="./assets/images/img_add.png" alt="">
+                </button>
+                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                    style="width: 100px; height: 100px;">
+                    <img src="{{src_daidien}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col relative my-2">
+            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh bìa</label>
+            <div class="flex flex-row">
+                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
+                    (click)="showDialog('bia')" style="width: 100px; height: 100px;">
+                    <img src="./assets/images/img_add.png" alt="">
+                </button>
+                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                    style="width: 100px; height: 100px;">
+                    <img src="{{src_bia}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col relative my-2 col-span-2">
+            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Thư viện ảnh</label>
+            <div class="flex flex-row">
+                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
+                    (click)="showDialog('bia')" style="width: 100px; height: 100px;">
+                    <img src="./assets/images/img_add.png" alt="">
+                </button>
+                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                    style="width: 100px; height: 100px;">
+                    <img src="{{src_bia}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col relative my-2 col-span-2">
+            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Video</label>
+            <div class="flex flex-row">
+                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
+                    (click)="showDialog('video')" style="width: 100px; height: 100px;">
+                    <img src="./assets/images/img_add.png" alt="">
+                </button>
+                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                    style="width: 100px; height: 100px;">
+                    <img src="{{src_video}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Tên doanh
+                nghiệp</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                placeholder="Nhập tên điểm check in, cửa hàng, toà nhà, tài xế...">
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Mã số thuế</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Mã số thuế">
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Điện thoại liên
+                hệ</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                placeholder="Số điện thoại doanh nghiệp">
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Quốc gia</label>
+            <div class="relative">
+                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
+                    style="user-select: none;">
+                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+                        style="font-weight: 400; font-size: 13px;"></i>
+                </span>
+                <input #input_quocgia class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="--Quốc gia--" aria-label="State" [matAutocomplete]="quocgiaAutocomplete">
+                <mat-autocomplete #quocgiaAutocomplete="matAutocomplete">
+                    <mat-option *ngFor="let it of array_quocgia" [value]="it.value">
+                        <span>{{it.value}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Tỉnh/thành
+                phố</label>
+            <div class="relative">
+                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
+                    style="user-select: none;">
+                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+                        style="font-weight: 400; font-size: 13px;"></i>
+                </span>
+
+                <input #input_tinh_none class="w-full text-ellipsis relative py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="tinhAutocomplete"
+                    (keyup)="auto_tinh_change(input_tinh_none)">
+                <mat-autocomplete #tinhAutocomplete="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="select_it($event)">
+                    <mat-option *ngFor="let it of arr_tinh" [value]="it">
+                        <span>{{it.ten}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+                <input #hd_tinh type="hidden" [value]="_tinh_val">
+            </div>
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Quận, huyện</label>
+            <div class="relative">
+                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
+                    style="user-select: none;">
+                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+                        style="font-weight: 400; font-size: 13px;"></i>
+                </span>
+                <input #input_huyen class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="huyenAutocomplete"
+                    (keyup)="auto_huyen_chang(input_huyen)">
+                <mat-autocomplete #huyenAutocomplete="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="select_it_xa($event)">
+                    <mat-option *ngFor="let it of array_huyen" [value]="it">
+                        <span>{{it.ten}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Xã, phường</label>
+            <div class="relative">
+                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
+                    style="user-select: none;">
+                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+                        style="font-weight: 400; font-size: 13px;"></i>
+                </span>
+                <input #input_xa class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="--Xã, phường--" aria-label="State" [matAutocomplete]="xaAutocomplete"
+                    (keyup)="auto_xa_chang(input_xa)">
+                <mat-autocomplete #xaAutocomplete="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="select_it_xa($event)">
+                    <mat-option *ngFor="let it of array_xa" [value]="it">
+                        <span>{{it.ten}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </div>
+        <div class="col-span-2">
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nhóm ngành</label>
+            <div class="relative">
+                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
+                    style="user-select: none;">
+                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+                        style="font-weight: 400; font-size: 13px;"></i>
+                </span>
+                <input #input_huyen class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="--Chọn nhóm ngành--" aria-label="State" [matAutocomplete]="nhomnganhAutocomplete">
+                <mat-autocomplete #nhomnganhAutocomplete="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let it of arr_nhomnganh" [value]="it">
+                        <span>{{it.ten}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Email</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                placeholder="Nhập email tại đây">
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Website</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                placeholder="Website doanh nghiệp">
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="button"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Cập
+            nhật</button>
+        <button routerLink="/portal/products" type="button"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Quay
+            lại</button>
+    </div>
+</div>

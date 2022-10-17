@@ -1,0 +1,16 @@
+<div class="relative">
+    <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable" style="user-select: none;">
+        <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+            [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+            style="font-weight: 400; font-size: 13px;"></i>
+    </span>
+    <input #ipauto class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+        (keyup)="auto_change(ipauto.value)" placeholder="Chọn tiêu đề" aria-label="State"
+        [matAutocomplete]="khacAutocomplete">
+    <mat-autocomplete #khacAutocomplete="matAutocomplete" (opened)="autocompleteScroll()" (closed)="close_auto(ipauto.value)">
+        <mat-option *ngFor="let it of arr_data" [value]="it">
+            <span>{{it}}</span>
+        </mat-option>
+    </mat-autocomplete>
+</div>

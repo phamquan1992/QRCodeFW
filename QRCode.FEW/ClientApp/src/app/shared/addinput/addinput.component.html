@@ -1,0 +1,33 @@
+<span class="block text-sm font-bold">Thêm thông tin khác</span>
+<div class="border border-solid border-[#bdbdbd] p-2 w-full relative">
+    <div *ngIf="type_input=='text'" class="w-full">
+        <div class="grid grid-cols-2 gap-2 w-full">
+            <div>
+                <label for="" class=" relative text-sm align-middle leading-[38px] mr-1 block">Tiêu đề: </label>
+                <app-thongtinkhac (select_value)="get_thongtinkhac($event)" [dataSource]="arr_thongtinkhac"
+                    [input_value]="tieude_val_close">
+                </app-thongtinkhac>
+            </div>
+            <div>
+                <label for="" class=" relative text-sm align-middle leading-[38px] mx-2 mr-1">Giá trị:</label><br>
+                <input #giatri type="text" class="w-full text-ellipsis relative  py-1 px-[11px] leading-[1.5] 
+                focus:border focus:border-solid focus:border-[#196898]
+                    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" (click)="add_input(giatri)"
+                class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mt-[3px] mr-2">Thêm
+                mới</button>
+        </div>
+        <i (click)="exit_form()" class="absolute right-1 top-1 text-red-600 cursor-pointer"><svg viewBox="64 64 896 896"
+                fill="currentColor" width="1em" height="1em" data-icon="close-circle" aria-hidden="true">
+                <path
+                    d="M685.4 354.8c0-4.4-3.6-8-8-8l-66 .3L512 465.6l-99.3-118.4-66.1-.3c-4.4 0-8 3.5-8 8 0 1.9.7 3.7 1.9 5.2l130.1 155L340.5 670a8.32 8.32 0 00-1.9 5.2c0 4.4 3.6 8 8 8l66.1-.3L512 564.4l99.3 118.4 66 .3c4.4 0 8-3.5 8-8 0-1.9-.7-3.7-1.9-5.2L553.5 515l130.1-155c1.2-1.4 1.8-3.3 1.8-5.2z">
+                </path>
+                <path
+                    d="M512 65C264.6 65 64 265.6 64 513s200.6 448 448 448 448-200.6 448-448S759.4 65 512 65zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
+                </path>
+            </svg></i>
+    </div>
+</div>

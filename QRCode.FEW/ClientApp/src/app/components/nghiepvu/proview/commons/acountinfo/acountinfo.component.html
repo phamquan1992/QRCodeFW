@@ -1,0 +1,57 @@
+<ul class="float-right box-user-parent flex h-[45px] pr-3 relative">
+    <img src="./assets/images/ic-qrcode.png" style="margin-right: 5px;cursor: pointer;"
+        class="w-[21px] h-[21px] leading-[45px] mt-[12px]" routerLink="/qrcode-free">
+    <span style="color: white;cursor: pointer;" routerLink="/qrcode-free">QR
+        Code Free</span>
+    <div class="border-l border-solid border-white m-3" nztype="vertical">
+    </div>
+    <li class="selected-user cursor-pointer" (click)="show_info=!show_info">
+        <span class="selected-user-style">
+            <img class="avatar-user w-8 h-8 mt-[7px] mr-2" onerror="this.src='/assets/images/default-avatar.png'"
+                src="./assets/images/default-avatar.png">
+        </span>
+    </li>
+    <li class="selected-user cursor-pointer" style="text-align: left" (click)="show_info=!show_info"><span
+            class="selected-user-style">
+            <span class="text-white text-sm font-bold">CÔNG TY TNHH THƯƠNG MẠI XNK OVVA</span>
+            <i class="fa fa-angle-up text-white transition-all duration-700 delay-150" aria-hidden="true"
+                [ngClass]="{'rotate-0 pr-2 pl-2':show_info,'rotate-180 pr-2':!show_info}"
+                style="font-weight: 400; font-size: 12px;"></i>
+        </span>
+    </li>
+    <div class="box-user right-[17px] absolute transition-all duration-700 delay-150"
+        [ngClass]="{'invisible top-[80px]':!show_info,'visible top-[48px]':show_info}">
+        <div class="popup shadow-lg z-[9999] min-w-[230px]">
+            <div class="arrow shadow"></div>
+            <div class="content bg-white inline-block min-w-[50px] w-full text-left ">
+                <div class="homee h-[50px] border border-solid">
+                    <i nz-icon="" nztheme="outline" nztype="home" class="anticon anticon-home px-[15px]">
+                        <svg class="inline-block text-[20px]" viewBox="64 64 896 896" fill="currentColor" width="1em"
+                            height="1em" data-icon="home" aria-hidden="true">
+                            <path
+                                d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 00-44.4 0L77.5 505a63.9 63.9 0 00-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0018.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
+                            </path>
+                        </svg></i>
+                    <a class="management-busi text-[13px]" routerlink="/portal/info" href="/portal/info">Thông tin
+                        doanh nghiệp</a>
+                </div>
+                <div class="logoutt h-[50px] border-x border-b border-solid"><i nz-icon="" nztheme="outline"
+                        nztype="logout" class="anticon anticon-logout px-[15px]">
+                        <svg class="inline-block text-[20px]" viewBox="64 64 896 896" fill="currentColor" width="1em"
+                            height="1em" data-icon="logout" aria-hidden="true">
+                            <path
+                                d="M868 732h-70.3c-4.8 0-9.3 2.1-12.3 5.8-7 8.5-14.5 16.7-22.4 24.5a353.84 353.84 0 01-112.7 75.9A352.8 352.8 0 01512.4 866c-47.9 0-94.3-9.4-137.9-27.8a353.84 353.84 0 01-112.7-75.9 353.28 353.28 0 01-76-112.5C167.3 606.2 158 559.9 158 512s9.4-94.2 27.8-137.8c17.8-42.1 43.4-80 76-112.5s70.5-58.1 112.7-75.9c43.6-18.4 90-27.8 137.9-27.8 47.9 0 94.3 9.3 137.9 27.8 42.2 17.8 80.1 43.4 112.7 75.9 7.9 7.9 15.3 16.1 22.4 24.5 3 3.7 7.6 5.8 12.3 5.8H868c6.3 0 10.2-7 6.7-12.3C798 160.5 663.8 81.6 511.3 82 271.7 82.6 79.6 277.1 82 516.4 84.4 751.9 276.2 942 512.4 942c152.1 0 285.7-78.8 362.3-197.7 3.4-5.3-.4-12.3-6.7-12.3zm88.9-226.3L815 393.7c-5.3-4.2-13-.4-13 6.3v76H488c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h314v76c0 6.7 7.8 10.5 13 6.3l141.9-112a8 8 0 000-12.6z">
+                            </path>
+                        </svg></i>
+                    <a class="logout text-[13px] cursor-pointer" (click)="dang_xuat()">Đăng xuất</a>
+                </div>
+                <div class="user-type h-[50px] border-x border-b border-solid text-right pr-[20px]">
+                    <span class="label text-xs mr-[7px] inline-block">Loại tài khoản</span>
+                    <div class="us-tag ng-tns-c5-16 ng-trigger ng-trigger-fadeMotion ant-tag ant-tag-has-color ng-star-inserted text-white inline-block leading-[1] text-sm p-1"
+                        style="background-color: rgb(232, 147, 71);">VIP</div>
+                </div>
+            </div>
+            <div class="arrow"></div>
+        </div>
+    </div>
+</ul>

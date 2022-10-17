@@ -1,0 +1,10 @@
+<div class="w-full h-full relative">
+    <div class="bg-[#196898] py-[10px] px-[15px]">
+        <div class="text-white text-sm leading-[22px] break-words font-medium">
+            <div>Tải ảnh lên</div>
+        </div>
+    </div>
+    <app-uploadinput (onUploadFinished)="load_src_file($event)"></app-uploadinput>
+    <button class="absolute top-0 right-0 h-[43px] w-[43px] text-white"><i class="fa fa-times" aria-hidden="true"
+            (click)="bt_click('')"></i></button>
+</div>

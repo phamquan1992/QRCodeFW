@@ -1,0 +1,35 @@
+<div class="w-full">
+    <label for="" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Câu hỏi
+        {{cauhoi_in.visible_index}}</label>
+    <input type="text" value="{{cauhoi_in.noidung}}" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
+    <div [ngSwitch]="cauhoi_in.type">
+        <div *ngSwitchCase="'luachon'">
+            <div *ngFor="let it of cauhoi_in.element; let i = index">
+                <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nhập câu trả
+                    lời</label>
+                <div class="relative">
+                    <input type="text" class="w-[calc(100%_-_16px)] mr-[16px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                        bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" value="{{it}}"
+                        placeholder="Câu trả lời">
+                    <div [ngClass]="{'hidden':i==0,'block':i!=0}">
+                        <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
+                            aria-hidden="true" (click)="delete_cautl(it)"></i>
+                    </div>
+                </div>
+            </div>
+            <button (click)="them_cautl()"
+                class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Thêm
+                câu trả lời</button>
+        </div>
+        <div *ngSwitchCase="'xoxuong'">
+            <label for="" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nhập câu trả lời</label>
+            <input type="text" *ngFor="let it of cauhoi_in.element" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                placeholder="Câu trả lời">
+            <button
+                class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Thêm
+                câu trả lời</button>
+        </div>
+    </div>
+</div>

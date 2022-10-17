@@ -1,0 +1,7 @@
+<div class="form-group">
+    <label for="file" class="border border-solid border-[#d9d9d9] text-[#a09898] bg-white h-8 px-4 w-40 text-center text-sm block m-2
+    hover:border-[#40a9ff] hover:text-[#40a9ff] cursor-pointer ">
+        <span class="w-full align-middle leading-[29px] text-[13px]"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Bấm để tải ảnh lên</span>
+    </label>
+    <input type="file" class="hidden" id="file" (change)="handleFileInput($event.target)">
+</div>

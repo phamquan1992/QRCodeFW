@@ -1,0 +1,30 @@
+<div class="h-full flex-row box-border flex flex-auto bg-[#f0f2f5] min-h-0">
+    <app-sidenav [drawer_status]="showNav" (ten_form)="showtenform($event)"></app-sidenav>
+    <div [ngClass]="{'ml-[80px]':!showNav,'ml-[240px]':showNav,'w-[calc(100%_-_240px)]':showNav,'w-[calc(100%_-_80px)]':!showNav}"
+        class="transition-all duration-200 h-screen w-full">
+        <div [ngClass]="{'ml-[80px]':!showNav,'ml-[240px]':showNav,'w-[calc(100%_-_240px)]':showNav,'w-[calc(100%_-_80px)]':!showNav}"
+            class="bg-gradient-to-r from-[#0c3d8e] to-[#2594a1] fixed left-0 z-[3] h-[45px] leading-[45px] w-full transition-all duration-200">
+            <i class="anticon trigger anticon-menu-fold text-[24px] cursor-pointer relative top-[10px] left-[10px] text-white float-left"
+                (click)="drawer_menu()">
+                <svg viewBox="64 64 896 896" fill="currentColor" width="1.5em" height="1.5em" data-icon="menu-fold"
+                    aria-hidden="true">
+                    <path *ngIf="showNav"
+                        d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 000 13.8z">
+                    </path>
+                    <path *ngIf="!showNav"
+                        d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 000-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0014.4 7z">
+                    </path>
+                </svg></i>
+            <app-acountinfo></app-acountinfo>
+        </div>
+        <div class="mt-[45px] bg-white">
+            <div class="layoutQ px-[1px] py-[15px]">
+                <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]"
+                    *ngIf="ten_form_visible!=''">{{ten_form_visible}}
+                </h3>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>

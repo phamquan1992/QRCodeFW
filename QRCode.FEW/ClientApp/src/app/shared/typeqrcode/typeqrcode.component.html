@@ -1,0 +1,213 @@
+<div *ngIf="!profesional">
+    <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none p-6">
+        <!---->
+        <ul class="flex list-qrcode-shape">
+            <li *ngFor="let it of option_defalut" (click)="select_img(it.name)"
+                [ngClass]="{'border-[#53b6ef]':img_select===it.name,'border-gray-300':img_select!=it.name}"
+                class="p-3 border border-gray-300 duration-300 rounded-lg cursor-pointer mr-8"><img
+                    src="{{it.link_img}}" alt="">
+            </li>
+        </ul>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none p-6">
+        <h4 class="flex justify-between items-center mb-5 cursor-pointer"><span class="text-lg">Màu sắc</span> <i
+                tabindex="-1" class="t-icon cursor-pointer anticon" style="color: inherit; font-size: 18px;"><svg
+                    t="1634890581589" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    p-id="5770" width="1em" height="1em" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"
+                    aria-hidden="true" focusable="false" class="icon">
+                    <defs>
+                        <style type="text/css"></style>
+                    </defs>
+                    <path
+                        d="M834.544 622.688L546.56 334.672l-0.016 0.016A47.84 47.84 0 0 0 512 320h-0.224a47.84 47.84 0 0 0-34.544 14.688l-0.016-0.016-288 288 0.128 0.128a48 48 0 1 0 71.056 64.464l251.488-251.488L766.672 690.56l0.016-0.016a48 48 0 0 0 67.856-67.856z"
+                        p-id="5771" fill=""></path>
+                </svg></i></h4>
+        <div class="flex justify-start items-center mb-5"><label class="label block w-28">Màu nền</label>
+            <div class="flex items-center p-1 border border-gray-300 rounded-md w-32">
+                <input type="color"
+                    class="color-input border-none bg-transparent rounded-full cursor-pointer mr-3 box-content w-8 h-8"
+                    [(ngModel)]="background_color" (change)="change_maunen()"> <span
+                    class="text-gray-400">{{background_color}}</span>
+            </div>
+        </div>
+        <div class="flex justify-start items-center mb-5"><label class="label block w-28">Màu mã code</label>
+            <div class="flex items-center p-1 border border-gray-300 rounded-md w-32">
+                <input type="color"
+                    class="color-input border-none bg-transparent rounded-full cursor-pointer mr-3 box-content  w-8 h-8"
+                    [(ngModel)]="dotcolor" (change)="change_maunen()"> <span class="text-gray-400">{{dotcolor}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none p-6">
+        <!---->
+        <div data-content-name="logoImage">
+            <p class="text-gray-600 text-sm">Chọn ảnh hoặc upload</p>
+            <div class="upload-block">
+                <div>
+                    <span class="upload-ref mb-2 ant-upload-picture-card-wrapper inline-block w-full clear-both">
+                        <div class="ant-upload ant-upload-select ant-upload-select-picture-card
+                        h-fit m-0 w-full bg-transparent border border-solid border-[#d9d9d9]
+                        table float-left align-top items-center cursor-pointer rounded-[4px]
+                        "><span role="button" tabindex="0" (click)="openfile()"
+                                class="ant-upload flex justify-between py-[10px] px-[16px] items-center w-full h-full text-center align-middle"><input
+                                    #file type="file" accept="" style="display: none;" (change)="getFiles($event)"><span
+                                    class="text-gray-400">Tập tin của
+                                    bạn</span> <button type="button" class="ant-btn ant-btn-primary text-white bg-[#00b289] border-[#00b289] relative inline-block font-normal
+                                    whitespace-nowrap text-center cursor-pointer h-8 px-[15px] rounded-[4px]"><span>Tải
+                                        lên</span>
+                                </button>
+                            </span>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="profesional">
+    <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none collapse p-2 md:p-6 ease-in-out transition-all duration-300 h-auto"
+        [ngClass]="{'overflow-hidden':!thietke_draw,'h-[70px]':!thietke_draw}">
+        <h4 #thietke class="flex justify-between items-center mb-5 cursor-pointer" (click)="drawer_card('thietke')">
+            <span class="text-lg">Thiết kế QR Code</span>
+            <i tabindex="-1" class="t-icon cursor-pointer anticon" style="color: inherit; font-size: 18px;">
+                <svg t="1634890581589" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    p-id="5770" width="1em" height="1em" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"
+                    aria-hidden="true" focusable="false" class="icon">
+                    <defs>
+                        <style type="text/css"></style>
+                    </defs>
+                    <path *ngIf="thietke_draw"
+                        d="M834.544 622.688L546.56 334.672l-0.016 0.016A47.84 47.84 0 0 0 512 320h-0.224a47.84 47.84 0 0 0-34.544 14.688l-0.016-0.016-288 288 0.128 0.128a48 48 0 1 0 71.056 64.464l251.488-251.488L766.672 690.56l0.016-0.016a48 48 0 0 0 67.856-67.856z"
+                        fill="" p-id="5771"></path>
+                    <path *ngIf="!thietke_draw"
+                        d="M810.952754 403.266233l-271.782432 271.782432a38.43493 38.43493 0 0 1-54.356487 0l-271.783423-271.782432a38.43592 38.43592 0 0 1 54.356487-54.356487l244.605179 244.604189L756.596268 348.909746a38.43592 38.43592 0 0 1 54.356486 54.356487z"
+                        p-id="4956"></path>
+                </svg>
+            </i>
+        </h4>
+        <div class="mb-2 text-black">Hình dạng</div>
+        <div class="mb-5 ant-radio-group ant-radio-group-outline ant-radio-group-default">
+            <label class="ant-radio-wrapper inline-block box-border relative"><span class="ant-radio ant-radio-checked">
+                    <input type="radio" class="ant-radio-input" name="hinh" (change)="onHinhChange('circle')" checked>
+                    <span class="ant-radio-inner"></span></span><span class="px-2">
+                    Hình tròn hiện đại
+                </span>
+            </label>
+            <label class="ant-radio-wrapper inline-block box-border relative"><span class="ant-radio">
+                    <input type="radio" class="ant-radio-input" name="hinh" (change)="onHinhChange('square')">
+                    <span class="ant-radio-inner"></span></span><span class="px-2">
+                    Hình vuông truyền thống
+                </span>
+            </label>
+        </div>
+        <div class="mb-2 text-black">Thiết kế QR Code</div>
+        <div class="mb-5 ant-radio-group ant-radio-group-outline ant-radio-group-default">
+            <label class="ant-radio-wrapper ant-radio-wrapper-checked">
+                <span class="ant-radio ant-radio-checked">
+                    <input type="radio" class="ant-radio-input" value="exist" name="mau" (change)="onMauChange('exist')"
+                        checked>
+                    <span class="ant-radio-inner">
+                    </span>
+                </span>
+                <span class="px-2">
+                    Mẫu có sẵn </span>
+            </label>
+            <label class="ant-radio-wrapper"><span class="ant-radio">
+                    <input type="radio" class="ant-radio-input" value="self" name="mau" (change)="onMauChange('self')">
+                    <span class="ant-radio-inner"></span></span>
+                <span class="px-2">
+                    Tự thiết kế
+                </span></label>
+        </div>
+        <div class="list-qrcode-configs-wrap">
+            <div *ngIf="_mau_chon==='exist'">
+                <div [ngClass]="{block:shape==='circle',hidden:shape!='circle'}" class="overflow-x-auto">
+                    <ul class="list-qrcode-configs flex justify-start items-center mb-5 w-max">
+                        <li class="mr-2 relative cursor-pointer" *ngFor="let it of options_circle">
+                            <img class="w-[70px] h-[70px] max-w-full block align-middle" src="{{it.link_img}}" alt=""
+                                (click)="select_img(it.name)">
+                            <div *ngIf="img_select===it.name" class="overlay absolute flex justify-center items-center circle
+                            bg-[#00000066] top-0 left-0 w-full h-full rounded-full">
+                                <img class="w-[16px] h-[16px]"
+                                    src="https://marketing.icheck.vn/qrcode-free/_nuxt/55cde1db477eb950a4efef4d3728c97b.svg"
+                                    alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div [ngClass]="{block:shape==='square',hidden:shape!='square'}" class="overflow-x-auto">
+                    <ul class="list-qrcode-configs flex justify-start items-center mb-5 w-max">
+                        <li class="mr-2 relative cursor-pointer" *ngFor="let it of options_square">
+                            <img class="w-[70px] h-[70px] block align-middle" src="{{it.link_img}}"
+                                (click)="select_img(it.name)" alt="">
+                            <div *ngIf="img_select===it.name" class="overlay absolute flex justify-center items-center square
+                                bg-[#00000066] top-0 left-0 w-full h-full"><img src="./assets/images/select_mau.svg"
+                                    alt="">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div *ngIf="_mau_chon==='self'">
+                <ul class="flex list-qrcode-shape">
+                    <li *ngFor="let it of option_defalut" class="p-3 border duration-300 rounded-lg cursor-pointer mr-8"
+                        (click)="select_img(it.name)"
+                        [ngClass]="{'border-[#53b6ef]':img_select===it.name,'border-gray-300':img_select!=it.name}">
+                        <img src="{{it.link_img}}" alt="">
+                    </li>
+                </ul>
+                <div class="flex justify-start items-center my-5">
+                    <label class="label block w-28">Màu nền</label>
+                    <div class="flex items-center p-1 border border-gray-300 rounded-md w-32">
+                        <input type="color"
+                            class="color-input border-none bg-transparent rounded-full cursor-pointer mr-3 box-content w-8"
+                            [(ngModel)]="background_color" (change)="change_maunen()">
+                        <span class="text-gray-400">{{background_color}}</span>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center mb-5">
+                    <label class="label block w-28">Màu mã code</label>
+                    <div class="flex items-center p-1 border border-gray-300 rounded-md w-32">
+                        <input type="color"
+                            class="color-input border-none bg-transparent rounded-full cursor-pointer mr-3 box-content  w-8"
+                            [(ngModel)]="dotcolor" (change)="change_maucode()">
+                        <span class="text-gray-400">{{dotcolor}}</span>
+                    </div>
+                </div>
+            </div>
+            <!---->
+        </div>
+        <div class="mb-2 text-black">Ảnh logo</div>
+        <div class="upload-block">
+            <div><span class="upload-ref mb-2 ant-upload-picture-card-wrapper inline-block w-full clear-both">
+                    <div class="ant-upload ant-upload-select ant-upload-select-picture-card
+                    h-fit m-0 w-full bg-transparent border border-solid border-[#d9d9d9]
+                        table float-left align-top items-center cursor-pointer rounded-[4px]"><span role="button"
+                            tabindex="0" (click)="openfilepro()"
+                            class="ant-upload flex justify-between py-[10px] px-[16px] items-center w-full h-full text-center align-middle"><input
+                                #filepro type="file" accept="" style="display: none;" (change)="getFiles($event)"><span
+                                class="text-gray-400">Tập tin của
+                                bạn</span> <button type="button" class="ant-btn ant-btn-primary text-white bg-[#00b289] border-[#00b289] relative inline-block font-normal
+                                whitespace-nowrap text-center cursor-pointer h-8 px-[15px] rounded-[4px]"><span>Tải
+                                    lên</span></button></span></div>
+                </span>
+                <!---->
+            </div>
+        </div>
+        <ul class="list-qrcode-logo flex justify-start items-center mb-5">
+            <li *ngFor="let it of option_icon"
+                class="flex justify-center items-center mr-2 relative cursor-pointer w-[40px] h-[40px] border border-solid border-[#d6d6e0] rounded-md py-[6px]">
+                <img src="{{it.link_img}}" alt=""  (click)="action_select_ic(it.name)">
+                <img data-v-7be58c2e="" data-v-030d3430="" (click)="action_remove_ic(it.name)"
+                    src="https://marketing.icheck.vn/qrcode-free/_nuxt/43e92f6b6379334b8cbaad7e19f0d4b7.svg" alt=""
+                    class="logo-close-icon cursor-pointer w-[14px] h-[14px] -top-[6px] -right-[6px] absolute"
+                    [ngClass]="{'block':chon_icon==it.name,'hidden':chon_icon!=it.name}">
+                <!---->
+            </li>
+        </ul>
+        <!---->
+    </div>
+</div>
