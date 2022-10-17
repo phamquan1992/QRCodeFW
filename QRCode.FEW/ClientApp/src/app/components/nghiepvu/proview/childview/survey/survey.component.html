@@ -6,7 +6,6 @@
                 câu hỏi</button>
             <div *ngFor="let it of arr_cauhoi" class="relative mt-2">
                 <app-cauhoi [cauhoi_in]="it"></app-cauhoi>
-                <!-- <i class="fa fa-times-circle text-[#be2d2d] absolute top-[15px] right-3" aria-hidden="true" (click)="xoa_cauhoi(it)"></i> -->
                 <img class="absolute top-[15px] right-3 cursor-pointer" alt="" src="./assets/images/ic-remove.png" (click)="xoa_cauhoi(it)">
             </div>
         </div>
