@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: Lato, sans-serif;
+    font-size: 16px;
+}
+
+body {
+    color: #000000a6;
+    background-color: #ebf0f5 !important;
+    font-variant: tabular-nums;
+    font-feature-settings: "tnum";
+}
+
+#__layout,
+#__nuxt {
+    min-height: 100vh;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+audio,
+canvas,
+embed,
+iframe,
+img,
+object,
+svg,
+video {
+    display: block;
+}
+
+img {
+    border-style: solid;
+}
+
+.header-mobile-nav[data-v-7b4125dc]::-webkit-scrollbar {
+    display: none;
+}
