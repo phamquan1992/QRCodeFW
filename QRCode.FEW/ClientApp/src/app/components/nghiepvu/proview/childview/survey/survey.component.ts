@@ -14,40 +14,40 @@ export class SurveyComponent implements OnInit {
     this.arr_cauhoi = [
       {
         noidung: 'Câu hỏi 1',
-        dapan: '',
-        element: ['A', 'B', 'C', 'D'],
+        dapan: { key: '', value: '' },
+        element: [{ key: 'dapan1', value: 'A' }, { key: 'dapan2', value: 'B' },],
         name: '',
         type: 'luachon',
         visible_index: 1
       },
       {
         noidung: 'Câu hỏi 2',
-        dapan: '',
-        element: ['Hiển thị'],
+        dapan: { key: '', value: '' },
+        element: [{ key: 'dapan1', value: 'dapan1' }],
         name: '',
         type: 'text',
         visible_index: 2
       },
       {
         noidung: 'Câu hỏi 3',
-        dapan: '',
-        element: ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'],
+        dapan: { key: '', value: '' },
+        element: [{ key: 'dapan1', value: 'dapan1' }],
         name: '',
         type: 'textarea',
         visible_index: 3
-      }, 
+      },
       {
         noidung: 'Câu hỏi 4',
-        dapan: '',
-        element: ['Hiển thị'],
+        dapan: { key: '', value: '' },
+        element: [{ key: 'dapan1', value: 'A' }, { key: 'dapan2', value: 'B' }],
         name: '',
         type: 'dropdown',
         visible_index: 4
       },
       {
         noidung: 'Câu hỏi 5',
-        dapan: '',
-        element: ['','','',''],
+        dapan: { key: '', value: '' },
+        element: [{ key: 'dapan1', value: 'A' }, { key: 'dapan2', value: 'B' },],
         name: '',
         type: 'images',
         visible_index: 5
@@ -61,8 +61,8 @@ export class SurveyComponent implements OnInit {
     let max_val = this.arr_cauhoi.length == 0 ? 1 : Math.max(...this.arr_cauhoi.map(t => t.visible_index)) + 1;
     let tmpIit = {
       noidung: '',
-      dapan: '',
-      element: [''],
+      dapan: { key: '', value: '' },
+      element: [{ key: 'dapan' + max_val, value: '' }],
       name: '',
       type: 'text',
       visible_index: max_val

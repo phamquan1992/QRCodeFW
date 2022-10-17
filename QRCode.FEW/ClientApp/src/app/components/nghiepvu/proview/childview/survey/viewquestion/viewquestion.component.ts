@@ -16,7 +16,7 @@ export class ViewquestionComponent implements OnInit {
     noidung: 'Test',
     type: 'textarea',
     element: [],
-    dapan: ''
+    dapan: { key: '', value: '' }
   };
   ngOnInit(): void {
   }

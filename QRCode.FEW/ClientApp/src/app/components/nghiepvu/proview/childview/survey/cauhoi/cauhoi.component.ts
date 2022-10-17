@@ -16,18 +16,26 @@ export class CauhoiComponent implements OnInit {
     noidung: '',
     type: '',
     element: [],
-    dapan: ''
+    dapan: { key: '', value: '' }
   };
+  iscols = false;
   @Input() form!: FormGroup;
   ngOnInit(): void {
     console.log(JSON.stringify(this.cauhoi_in));
   }
   them_cautl() {
     let length_arr = this.cauhoi_in.element.length;
-    this.cauhoi_in.element.push(length_arr.toString());
+    let tmp = {
+      key: 'dapan' + length_arr,
+      value: ''
+    };
+    this.cauhoi_in.element.push(tmp);
   }
   delete_cautl(i: string) {
-    let id_del= this.cauhoi_in.element.findIndex(t=>t==i);
+    let id_del = this.cauhoi_in.element.findIndex(t => t.key == i);
     this.cauhoi_in.element.splice(id_del, 1);
+  }
+  showHidediv() {
+    this.iscols = !this.iscols;
   }
 }
