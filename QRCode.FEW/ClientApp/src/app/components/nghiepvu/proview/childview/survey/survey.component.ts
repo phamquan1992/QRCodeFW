@@ -12,62 +12,25 @@ export class SurveyComponent implements OnInit {
   DataForm: FormGroup = new FormGroup({});
   constructor() {
     this.arr_cauhoi = [
-      {
-        noidung: 'Câu hỏi 1',
-        dapan: { key: '', value: '' },
-        element: [{ key: 'dapan1', value: 'A' }, { key: 'dapan2', value: 'B' },],
-        name: '',
-        type: 'luachon',
-        visible_index: 1
-      },
-      {
-        noidung: 'Câu hỏi 2',
-        dapan: { key: '', value: '' },
-        element: [{ key: 'dapan1', value: 'dapan1' }],
-        name: '',
-        type: 'text',
-        visible_index: 2
-      },
-      {
-        noidung: 'Câu hỏi 3',
-        dapan: { key: '', value: '' },
-        element: [{ key: 'dapan1', value: 'dapan1' }],
-        name: '',
-        type: 'textarea',
-        visible_index: 3
-      },
-      {
-        noidung: 'Câu hỏi 4',
-        dapan: { key: '', value: '' },
-        element: [{ key: 'dapan1', value: 'A' }, { key: 'dapan2', value: 'B' }],
-        name: '',
-        type: 'dropdown',
-        visible_index: 4
-      },
-      {
-        noidung: 'Câu hỏi 5',
-        dapan: { key: '', value: '' },
-        element: [{ key: 'dapan1', value: 'A' }, { key: 'dapan2', value: 'B' },],
-        name: '',
-        type: 'images',
-        visible_index: 5
-      },
+
     ];
   }
 
   ngOnInit(): void {
   }
-  them_cauhoi() {
+  show_menu = false;
+  them_cauhoi(type_ip: string) {
     let max_val = this.arr_cauhoi.length == 0 ? 1 : Math.max(...this.arr_cauhoi.map(t => t.visible_index)) + 1;
     let tmpIit = {
       noidung: '',
       dapan: { key: '', value: '' },
       element: [{ key: 'dapan' + max_val, value: '' }],
       name: '',
-      type: 'text',
+      type: type_ip,
       visible_index: max_val
     };
     this.arr_cauhoi.push(tmpIit);
+    this.show_menu = false;
   }
   xoa_cauhoi(ch: cauhoi) {
 
@@ -90,4 +53,25 @@ export class SurveyComponent implements OnInit {
     if (index_del > -1)
       this.arr_cauhoi.splice(index_del, 1);
   }
+  move_index(vt: number, act: string) {
+    let cur_id = this.arr_cauhoi.findIndex(t => t.visible_index == vt);
+    if (act == 'up') {
+      if (vt != 1) {
+        this.arr_cauhoi[cur_id].visible_index = vt - 1;
+        let cur_pre = this.arr_cauhoi.findIndex(t => t.visible_index == vt - 1);
+        this.arr_cauhoi[cur_pre].visible_index = vt;
+      }
+    }
+    if (act == 'down') {
+      if (vt != this.arr_cauhoi.length) {
+        let id_tem = vt + 1
+        let cur_next = this.arr_cauhoi.findIndex(t => t.visible_index == id_tem);   
+        this.arr_cauhoi[cur_id].visible_index = id_tem;             
+        this.arr_cauhoi[cur_next].visible_index = vt;
+      }
+    }
+    this.arr_cauhoi = this.arr_cauhoi.sort((a, b) => (a.visible_index > b.visible_index) ? 1 : -1);
+    
+  }
+
 }

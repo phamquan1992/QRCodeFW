@@ -22,6 +22,7 @@ export class CauhoiComponent implements OnInit {
   @Input() form!: FormGroup;
   ngOnInit(): void {
     console.log(JSON.stringify(this.cauhoi_in));
+    this.iscols=true;
   }
   them_cautl() {
     let length_arr = this.cauhoi_in.element.length;
