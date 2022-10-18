@@ -1,0 +1,56 @@
+<div class="layoutQ px-[1px] py-[15px]">
+    <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
+        Khảo sát
+    </h3>
+</div>
+<div class="border-t border-solid border-[#e8e8e8]">
+    <ul class="leading-[46px] whitespace-nowrap border-b border-solid border-[#e8e8e8] shadow-none
+    box-border bg-white outline-0">
+        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">Danh sách khảo
+            sát
+        </li>
+    </ul>
+</div>
+
+<section class="bg-[#8080801c] px-[15px]">
+    <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+        placeholder="Tên khảo sát...">
+    <div class="inline-block relative">
+        <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+            placeholder="---Nhóm khảo sát---">
+        <i class="fa fa-angle-down absolute right-3 top-3" aria-hidden="true"></i>
+    </div>
+    <div class="inline-block relative">
+        <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+            placeholder="---Trạng thái---">
+        <i class="fa fa-angle-down absolute right-3 top-3" aria-hidden="true"></i>
+    </div>
+    <div (click)="picker.open()" class="w-[222px] text-ellipsis relative inline-block leading-[1.5] 
+    bg-white border border-solid border-[#d9d9d9] text-[13px] mr-1">
+        <mat-date-range-input [rangePicker]="picker" style="display:inline-block;width:220px;text-align: center;opacity: 1;">
+            <input matStartDate placeholder="Từ ngày" style="width: 100%; font-size: 13px; top: 4px;" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" />
+        </mat-date-range-input>
+        <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
+    </div>
+    <button
+        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
+        kiếm</button>
+    <button>
+        <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
+            style="display: inline-block; width: 25px;margin-left: 12px;">
+    </button>
+</section>
+<div class="p-4">
+    <section>
+        <button (click)="add_action()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Thêm
+            mới</button>
+        <button
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Tạo
+            nhóm</button>
+    </section>
+</div>

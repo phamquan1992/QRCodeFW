@@ -7,19 +7,26 @@ import { CauhoiComponent } from './cauhoi/cauhoi.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ViewquestionComponent } from './viewquestion/viewquestion.component';
 import { ShowquestionComponent } from './showquestion/showquestion.component';
-
+import { AddsurveyComponent } from './addsurvey/addsurvey.component';
+import { SurveylistComponent } from './surveylist/surveylist.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
     SurveyComponent,
     CauhoiComponent,
     ViewquestionComponent,
-    ShowquestionComponent
+    ShowquestionComponent,
+    AddsurveyComponent,
+    SurveylistComponent,
   ],
   imports: [
     CommonModule,
     SurveyRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class SurveyModule { }

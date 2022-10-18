@@ -1,6 +1,12 @@
-<div class="header w-full h-[62px] flex items-center justify-center px-5">
+<div class="header w-full h-[26px] flex items-center justify-center px-5">
     <span class="text-[#057dda] font-semibold text-[18px] leading-[22px]">Khảo sát</span>
 </div>
-<div class="page overflow-auto ">
+<div class="page overflow-auto min-h-[450px]">
     <app-viewquestion *ngFor="let it of array_cauhoi" [cauhoi_in]="it"></app-viewquestion>
+    <div class="text-center mb-5">
+        <button class="mt-3 leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px]
+        bg-white text-[#124b9f] text-[13px] mr-[5px] my-[5px] border border-solid border-[#124b9f] rounded-[4px]"> Bỏ qua</button>
+        <button class="mt-3 leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px]
+        bg-[#124b9f] text-white text-[13px] mr-[5px] my-[5px] rounded-[4px]">Gửi câu trả lời</button>
+    </div>
 </div>
