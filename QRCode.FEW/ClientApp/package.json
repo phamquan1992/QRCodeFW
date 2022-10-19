@@ -23,6 +23,7 @@
     "@angular/router": "~13.1.0",
     "@kolkov/angular-editor": "^3.0.0-beta.0",
     "fontawesome-4.7": "^4.7.0",
+    "moment": "^2.29.4",
     "ngx-qrcode-styling": "^1.1.7",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
