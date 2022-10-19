@@ -1,0 +1,7 @@
+::ng-deep .angular-editor-textarea ol {
+    list-style: auto;
+}
+::ng-deep *{
+    font-family: auto;
+    font-size: auto;
+}

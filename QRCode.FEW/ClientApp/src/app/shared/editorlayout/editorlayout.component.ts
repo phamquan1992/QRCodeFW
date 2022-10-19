@@ -14,6 +14,7 @@ export class EditorlayoutComponent implements OnInit {
   @Input() lb_text = '';
   @Input() values!: Inputcustom;
   @Output() out_delete = new EventEmitter<string>();
+  out_html='';
   constructor() { }
 
   ngOnInit(): void {
@@ -22,31 +23,35 @@ export class EditorlayoutComponent implements OnInit {
   delete_input(gt: string) {
     this.out_delete.emit(gt);
   }
-  setval_out(gt:any){
+  setval_out(gt: any) {
     this.form.controls[this.values.name].setValue(gt);
+  }
+  show_html(){
+    console.log(this.form.controls[this.values.name]);
   }
   editorConfig: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: '300px',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
-      customClasses: [
+    spellcheck: true,
+    height: '300px',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    outline:false,
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
+    customClasses: [
       {
         name: 'quote',
         class: 'quote',
@@ -64,13 +69,13 @@ export class EditorlayoutComponent implements OnInit {
     uploadUrl: 'v1/image',
     // upload: (file: File) => { ... }
     // uploadWithCredentials: false,
-    sanitize: true,
+    sanitize: false,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
       ['link',
-      'unlink',
-      'insertImage',
-      'insertVideo',],
+        'unlink',
+        'insertImage',
+        'insertVideo',],
     ]
-};
+  };
 }
