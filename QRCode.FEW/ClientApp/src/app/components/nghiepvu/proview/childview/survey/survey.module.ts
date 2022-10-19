@@ -13,6 +13,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -38,7 +41,10 @@ export const MY_DATE_FORMAT = {
     SurveyRoutingModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatTooltipModule
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },

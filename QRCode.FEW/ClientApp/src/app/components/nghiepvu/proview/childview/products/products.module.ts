@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AddproductComponent } from './addproduct/addproduct.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
-    AngularEditorModule
+    AngularEditorModule,
+    MatTooltipModule
   ]
 })
 export class ProductsModule { }

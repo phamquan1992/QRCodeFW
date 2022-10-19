@@ -1,13 +1,3 @@
-::ng-deep .mat-date-range-input-start-wrapper {
-    width: calc(50% - 4px);
-}
-::ng-deep .mat-date-range-input-container{
-    padding-top: 1px;
-    padding-bottom: 4px;
-}
-::ng-deep .mat-date-range-input-container span{
-    opacity: 1 !important;
-}
 tr.mat-header-row {
     height: 20px;   
 }

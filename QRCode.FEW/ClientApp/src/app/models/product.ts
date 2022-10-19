@@ -18,4 +18,5 @@ export interface product {
     des_preserve: string;
     lastcreated_date: string;
     lastcreated_by: number;
+    status:boolean;
 }

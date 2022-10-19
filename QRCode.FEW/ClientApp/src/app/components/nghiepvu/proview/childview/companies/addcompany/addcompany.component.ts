@@ -15,14 +15,11 @@ export interface item_dropdown_cp {
 })
 export class AddcompanyComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<AddcompanyComponent>, private dialog: MatDialog, private companySrc: CompaniesService) { }
+  constructor(private dialog: MatDialog, private companySrc: CompaniesService) { }
 
   ngOnInit(): void {
     this.array_quocgia = this.companySrc.array_quocgia;
     this.arr_tinh = this.companySrc.arr_tinh;
-  }
-  form_close() {
-    this.dialogRef.close();
   }
   src_daidien = '';
   src_bia = '';

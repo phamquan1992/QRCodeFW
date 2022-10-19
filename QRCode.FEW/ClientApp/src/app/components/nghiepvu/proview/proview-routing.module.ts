@@ -9,8 +9,8 @@ const routes: Routes = [
     path: '', component: ProviewComponent, children: [
       { path: 'products', loadChildren: () => import('./childview/products/products.module').then(m => m.ProductsModule) },
       { path: 'survey', loadChildren: () => import('./childview/survey/survey.module').then(m => m.SurveyModule) },
+      { path: 'companies', loadChildren: () => import('./childview/companies/companies.module').then(m => m.CompaniesModule) },
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'companies', component: CompaniesComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
