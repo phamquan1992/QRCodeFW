@@ -40,9 +40,9 @@ export class EditorlayoutComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter text here...',
+    placeholder: 'Nhập văn bản tại đây...',
     defaultParagraphSeparator: '',
-    defaultFontName: '',
+    defaultFontName: 'Times New Roman',
     defaultFontSize: '',
     outline:false,
     fonts: [
@@ -75,7 +75,7 @@ export class EditorlayoutComponent implements OnInit {
       ['link',
         'unlink',
         'insertImage',
-        'insertVideo',],
+        'insertVideo','customClasses'],
     ]
   };
 }

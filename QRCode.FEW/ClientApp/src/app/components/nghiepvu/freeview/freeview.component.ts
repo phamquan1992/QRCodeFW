@@ -1,6 +1,6 @@
 import { Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginComponent } from '../../share/login/login.component';
 import { SigninComponent } from '../../share/signin/signin.component';
 
@@ -14,7 +14,7 @@ export class FreeviewComponent implements OnInit {
   status = '';
   is_login = false;
   public innerWidth: any;
-  constructor(private dialog: MatDialog, private route: ActivatedRoute) {
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
 
   }
   ngOnInit(): void {
@@ -34,6 +34,13 @@ export class FreeviewComponent implements OnInit {
     //this.is_login = false;
     if (this.is_login === false)
       this.showDialog('login');
+  }
+  tao_db() {
+    if (this.is_login === false)
+      this.dang_nhap();
+    else {
+      this.router.navigate(['/portal']);
+    }
   }
   log_out() {
     this.is_login = false;

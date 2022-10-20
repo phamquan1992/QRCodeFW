@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ThongtinkhacComponent } from './thongtinkhac/thongtinkhac.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { EditorlayoutComponent } from './editorlayout/editorlayout.component';
+import { ImportfileComponent } from './importfile/importfile.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { EditorlayoutComponent } from './editorlayout/editorlayout.component';
     UploadinputComponent,
     DialogUploadComponent,
     ThongtinkhacComponent,
-    EditorlayoutComponent
+    EditorlayoutComponent,
+    ImportfileComponent
   ],
   imports: [
     CommonModule, ReactiveFormsModule, FormsModule,
@@ -35,6 +37,6 @@ import { EditorlayoutComponent } from './editorlayout/editorlayout.component';
     AddinputComponent,
     QrcodeComponent,
     TypeqrcodeComponent,
-    AutocompleinputComponent, UploadinputComponent, DialogUploadComponent, ThongtinkhacComponent, EditorlayoutComponent]
+    AutocompleinputComponent, UploadinputComponent, DialogUploadComponent, ThongtinkhacComponent, EditorlayoutComponent,ImportfileComponent]
 })
 export class SharedModule { }

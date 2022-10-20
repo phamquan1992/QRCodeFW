@@ -124,7 +124,7 @@
         </div>
         <div class="list-qrcode-configs-wrap">
             <div *ngIf="_mau_chon==='exist'">
-                <div [ngClass]="{block:shape==='circle',hidden:shape!='circle'}" class="overflow-x-auto">
+                <div [ngClass]="{block:shape==='circle',hidden:shape!='circle'}" class="view_mobile overflow-x-auto">
                     <ul class="list-qrcode-configs flex justify-start items-center mb-5 w-max">
                         <li class="mr-2 relative cursor-pointer" *ngFor="let it of options_circle">
                             <img class="w-[70px] h-[70px] max-w-full block align-middle" src="{{it.link_img}}" alt=""
@@ -138,7 +138,7 @@
                         </li>
                     </ul>
                 </div>
-                <div [ngClass]="{block:shape==='square',hidden:shape!='square'}" class="overflow-x-auto">
+                <div [ngClass]="{block:shape==='square',hidden:shape!='square'}" class="view_mobile overflow-x-auto">
                     <ul class="list-qrcode-configs flex justify-start items-center mb-5 w-max">
                         <li class="mr-2 relative cursor-pointer" *ngFor="let it of options_square">
                             <img class="w-[70px] h-[70px] block align-middle" src="{{it.link_img}}"
