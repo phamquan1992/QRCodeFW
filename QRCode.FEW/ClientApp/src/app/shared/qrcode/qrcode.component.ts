@@ -52,7 +52,7 @@ export class QrcodeComponent implements OnInit, OnChanges {
         "errorCorrectionLevel": "H"
       },
     };
-    console.log(JSON.stringify(this.config));
+    // console.log(JSON.stringify(this.config));
   }
   qrcode!: NgxQrcodeStylingComponent;
   public config: Options = {
@@ -87,7 +87,8 @@ export class QrcodeComponent implements OnInit, OnChanges {
     });
   }
   convert_data(data: string) {
-    return (window as any).unescape(encodeURIComponent(data));;
+    let gt= (window as any).unescape(encodeURIComponent(data));
+    return gt;
   }
   update_qr() {
     if (this.qrcode != undefined) {

@@ -11,6 +11,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { LinkqrcodeComponent } from './linkqrcode/linkqrcode.component';
+import { SocialqrcodeComponent } from './socialqrcode/socialqrcode.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     GenerateComponent,
     VanbanComponent,
     SigninComponent,
-    ContentdgComponent,   
+    ContentdgComponent,
+    LinkqrcodeComponent,
+    SocialqrcodeComponent,   
     
   ],
   imports: [
