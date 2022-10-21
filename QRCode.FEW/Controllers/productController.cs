@@ -16,6 +16,13 @@ namespace QRCode.FEW.Controllers
         [HttpGet]
         public int Get()
         {
+            var extractPath = Path.Combine(@"ClientApp");
+            string[] files = Directory.GetFiles(extractPath, "*.*", SearchOption.AllDirectories);
+            var file_find = files.Where(t => t.Contains("qr_image"));
+            var gt = file_find.Select(t => t.Split("qr_image")[0]+ @"\qr_image");
+            var temp = from a in gt
+                       group a by a into gr
+                       select gr.Key;
             return 5;
         }
         [HttpPost, DisableRequestSizeLimit]
