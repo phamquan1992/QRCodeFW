@@ -2,11 +2,21 @@
     class="bg-white border-r border-solid border-[#c0c0c052] transition-all duration-200 fixed z-[99] h-screen hover:flex-[0_0_240px] hover:min-w-[240px] hover:w-[240px]"
     [ngClass]="{'flex-[0_0_80px]':!showNav,' min-w-[80px]':!showNav,'w-[80px]':!showNav,'flex-[0_0_240px]':showNav,'min-w-[240px]':showNav,'w-[240px]':showNav}">
     <div>
-        <div style="height: 75px">
-            <div class="logo blockLogo py-[10px] text-center">
-                <img [ngClass]="{'block':hover_status,'hidden':!hover_status}"
+        <div style="height: 63px">
+            <div class="logo blockLogo py-[10px]">
+                <!-- <img [ngClass]="{'block':hover_status,'hidden':!hover_status}"
                     class="mx-[10px] mt-[6px] mb-[10px] align-middle"
-                    src="https://marketing.icheck.vn/assets/logo-mkt-sidebar.png">
+                    src="https://marketing.icheck.vn/assets/logo-mkt-sidebar.png"> -->
+                <div class="flex flex-row mx-[10px]" [ngClass]="{'block':hover_status,'hidden':!hover_status}">
+                    <a routerLink="/qrfree" class="nuxt-link-active" style="z-index: 1;"><img
+                            class="w-[37px] h-[37px] rounded-full border border-solid border-[#124b9f]"
+                            src="./assets/images/logo_tqc_vuong.jpg" alt=""></a>
+                    <div class="flex flex-col ml-[12px]">
+                        <span class="block font-bold text-[#124b9f] text-base">QR Code Marketing</span>
+                        <span class="block text-[#124b9f] text-[10px]">by TQC</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -15,8 +25,8 @@
         <li class="mb-2 w-[calc(100%_+_1px)] h-10 leading-10 mt-1 overflow-hidden text-[14px] relative block m-0 whitespace-nowrap cursor-pointer"
             routerLink="./dashboard" (click)="menu_click('')"
             [ngClass]="{'text-clip':!showNav,'text-ellipsis': showNav,'px-8':!showNav,'left-0':!showNav,'text-center':!hover_status,
-                    'pl-6':hover_status,'border-r-[3px] border-solid border-[#196898]':hover_status && name_link=='dashboard'}"
-            (click)="select_link('dashboard')" routerLinkActive="text-[#196898]">
+                    'pl-6':hover_status,'border-r-[3px] border-solid border-[#196898]':hover_status && name_link=='dashboard'}" (click)="select_link('dashboard')"
+            routerLinkActive="text-[#196898]">
             <i class="anticon anticon-line-chart min-w-[14px] text-[14px] text-center inline-block align-[-0.125em]"
                 [ngClass]="{'mr-[10px]':hover_status,'m-0':!hover_status}">
                 <svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="line-chart"
