@@ -16,14 +16,22 @@ namespace QRCode.FEW.Controllers
         [HttpGet]
         public int Get()
         {
+            return 5;
+        }
+        private string path_file()
+        {
             var extractPath = Path.Combine(@"ClientApp");
             string[] files = Directory.GetFiles(extractPath, "*.*", SearchOption.AllDirectories);
             var file_find = files.Where(t => t.Contains("qr_image"));
-            var gt = file_find.Select(t => t.Split("qr_image")[0]+ @"\qr_image");
+            var gt = file_find.Select(t => t.Split("qr_image")[0] + @"qr_image");
             var temp = from a in gt
                        group a by a into gr
                        select gr.Key;
-            return 5;
+            var any_src = temp.Any(t => t.Contains(@"ClientApp\src\assets"));
+            if (any_src)
+                return Path.Combine(@"ClientApp\src\assets", "qr_image");
+            else
+                return temp.FirstOrDefault();
         }
         [HttpPost, DisableRequestSizeLimit]
         public async Task<IActionResult> Upload()
@@ -32,7 +40,7 @@ namespace QRCode.FEW.Controllers
             {
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-                var folderName = Path.Combine(@"ClientApp\src\assets", "qr_image");
+                var folderName = path_file();
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
