@@ -10,6 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace QRCode.FEW
 {
@@ -37,7 +38,7 @@ namespace QRCode.FEW
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,9 +58,10 @@ namespace QRCode.FEW
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            string src_flie = path_file().Replace(@"\", "/") + "/";
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"ClientApp/src/assets/")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), src_flie)),
                 RequestPath = new PathString("/Resources")
             });
             if (!env.IsDevelopment())
@@ -88,6 +90,21 @@ namespace QRCode.FEW
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+        private string path_file()
+        {
+            var extractPath = Path.Combine(@"ClientApp");
+            string[] files = Directory.GetFiles(extractPath, "*.*", SearchOption.AllDirectories);
+            var file_find = files.Where(t => t.Contains("assets"));
+            var gt = file_find.Select(t => t.Split("assets")[0]);
+            var temp = from a in gt
+                       group a by a into gr
+                       select gr.Key;
+            var any_src = temp.Any(t => t.Contains(@"ClientApp\src"));
+            if (any_src)
+                return Path.Combine(@"ClientApp\src", "assets");
+            else
+                return temp.FirstOrDefault();
         }
     }
 }
