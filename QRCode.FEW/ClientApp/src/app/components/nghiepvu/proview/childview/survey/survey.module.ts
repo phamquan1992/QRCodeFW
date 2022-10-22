@@ -22,7 +22,7 @@ export const MY_DATE_FORMAT = {
   },
   display: {
     dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MM',
+    monthYearLabel: 'MM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MM YYYY',
   },
