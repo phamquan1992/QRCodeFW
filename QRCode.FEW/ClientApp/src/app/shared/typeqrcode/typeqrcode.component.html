@@ -68,8 +68,8 @@
 </div>
 
 <div *ngIf="profesional">
-    <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none collapse p-2 md:p-6 ease-in-out transition-all duration-300 h-auto"
-        [ngClass]="{'overflow-hidden':!thietke_draw,'h-[70px]':!thietke_draw}">
+    <div class="bg-white rounded-xl shadow-md mb-5 p-2 md:p-6 ease-in-out transition-all duration-300 h-auto"
+        [ngClass]="{'overflow-hidden':!thietke_draw,'max-h-[70px]':!thietke_draw,'max-h-screen':thietke_draw}">
         <h4 #thietke class="flex justify-between items-center mb-5 cursor-pointer" (click)="drawer_card('thietke')">
             <span class="text-lg">Thiết kế QR Code</span>
             <i tabindex="-1" class="t-icon cursor-pointer anticon" style="color: inherit; font-size: 18px;">
