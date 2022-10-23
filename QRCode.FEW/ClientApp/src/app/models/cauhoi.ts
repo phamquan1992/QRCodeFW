@@ -10,3 +10,7 @@ export interface element_value {
     key: string;
     value: string
 }
+export interface obj_value_form {
+    name: string;
+    value: string;
+  }

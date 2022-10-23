@@ -3,10 +3,8 @@ import { optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
-export interface obj_value_form {
-  name: string;
-  value: string;
-}
+import { obj_value_form } from 'src/app/models/cauhoi';
+
 
 @Component({
   selector: 'app-socialqrcode',

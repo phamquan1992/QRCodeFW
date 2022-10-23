@@ -13,7 +13,7 @@
                             data-content-region-name="generator_qrcode_text" data-content-index="2" class="mb-5">
                             <div *ngFor="let it of arr_link">
                                 <div class="mb-2 block text-black">
-                                    {{it.name}}
+                                    {{it.name=='Shopping'?'Trang bán hàng':it.name}}
                                 </div>
                                 <div class="ant-row ant-form-item mb-2">
                                     <div class="ant-col ant-form-item-control-wrapper">

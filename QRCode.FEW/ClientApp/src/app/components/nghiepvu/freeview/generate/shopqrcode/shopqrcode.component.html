@@ -1,0 +1,192 @@
+<div>
+    <div class="page-title mb-7 hidden md:block">
+        <h4 class="text-white text-3xl font-semibold mb-0">Tạo QR Code Trang bán hàng</h4>
+    </div>
+    <div class="home-page-generate mb-16">
+        <div class="ant-row relative h-auto box-border before:table before:content-[''] block"
+            style="margin-left: -20px; margin-right: -20px;">
+            <div class="relative min-h-[1px] block box-border w-full md:w-[58.33333333%] float-left grow-0 shrink-0 basis-auto"
+                style="padding-left: 20px; padding-right: 20px;">
+                <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none p-2 md:p-6">
+                    <form class="ant-form ant-form-horizontal" data-v-030d3430="">
+                        <div class="mb-5">
+                            <div>
+                                <div class="mb-2 block text-black">
+                                    Tên cửa hàng
+                                </div>
+                                <div class="ant-row ant-form-item">
+                                    <div class="ant-col ant-form-item-control-wrapper">
+                                        <div class="ant-form-item-control">
+                                            <span class="ant-form-item-children">
+                                                <input placeholder="Nhập tên QR Code" type="text"
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <div>
+                                <div class="mb-2 block text-black">
+                                    Giới thiệu
+                                </div>
+                                <div class="ant-row ant-form-item">
+                                    <div class="ant-col ant-form-item-control-wrapper">
+                                        <div class="ant-form-item-control has-success"><span
+                                                class="ant-form-item-children"><textarea #noidung
+                                                    placeholder="Nhập nội dung..." (keyup)="onchange_text(noidung)"
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8
+                                    py-[4px] px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    style="height: 115px; min-height: 115px; max-height: 9.0072e+15px;"></textarea></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5 flex justify-center">
+                            <div class="w-full mr-4">
+                                <div>
+                                    <div class="mb-2 block text-black">
+                                        Số điện thoại
+                                    </div>
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-control-wrapper">
+                                            <div class="ant-form-item-control">
+                                                <span class="ant-form-item-children">
+                                                    <input placeholder="Nhập số điện thoại" type="number"
+                                                        class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full">
+                                <div>
+                                    <div class="mb-2 block text-black">
+                                        Email
+                                    </div>
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-control-wrapper">
+                                            <div class="ant-form-item-control">
+                                                <span class="ant-form-item-children">
+                                                    <input placeholder="Nhập email" type="email"
+                                                        class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <div>
+                                <div class="mb-2 block text-black">
+                                    Nhập địa chỉ
+                                </div>
+                                <div class="ant-row ant-form-item">
+                                    <div class="ant-col ant-form-item-control-wrapper">
+                                        <div class="ant-form-item-control">
+                                            <span class="ant-form-item-children">
+                                                <input placeholder="Nhập tên QR Code" type="text"
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <div *ngFor="let it of arr_link">
+                                <div class="mb-2 block text-black">
+                                    {{it.name=='Shopping'?'Thương mại điện tử':it.name}}
+                                </div>
+                                <div class="ant-row ant-form-item mb-2">
+                                    <div class="ant-col ant-form-item-control-wrapper">
+                                        <div class="ant-form-item-control has-success flex w-full">
+                                            <input placeholder="https://..." name="{{it.name}}"
+                                                (keyup)="onchange_text($event.target)"
+                                                class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
+                                            <i class="fa fa-trash mt-2 ml-2 cursor-pointer" *ngIf="it.name!='Website'"
+                                                (click)="delete_link(it.name)" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <ul class="flex items-center mb-0">
+                                    <li class="cursor-pointer mr-4 text-center" (click)="add_link('Facebook')">
+                                        <i class="fa fa-facebook-official p-1 border-[2px] border-solid border-gray-600 rounded-full w-7 h-7"
+                                            aria-hidden="true"></i>
+                                    </li>
+                                    <li class="cursor-pointer mr-4 text-center" (click)="add_link('LinkedIn')">
+                                        <i class="fa fa-linkedin-square p-1 border-[2px] border-solid border-gray-600 rounded-full w-7 h-7"
+                                            aria-hidden="true"></i>
+                                    </li>
+                                    <li class="cursor-pointer mr-4 text-center" (click)="add_link('Twitter')">
+                                        <i class="fa fa-twitter-square p-1 border-[2px] border-solid border-gray-600 rounded-full w-7 h-7"
+                                            aria-hidden="true"></i>
+                                    </li>
+                                    <li class="cursor-pointer mr-4 text-center" (click)="add_link('Youtube')">
+                                        <i class="fa fa-youtube-play p-1 border-[2px] border-solid border-gray-600 rounded-full w-7 h-7"
+                                            aria-hidden="true"></i>
+                                    </li>
+                                    <li class="cursor-pointer mr-4 text-center" (click)="add_link('Shopping')">
+                                        <i class="fa fa-shopping-cart p-1 border-[2px] border-solid border-gray-600 rounded-full w-7 h-7"
+                                            aria-hidden="true"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <app-typeqrcode [data]="data" (option_output)="xuat_qr($event)"></app-typeqrcode>
+            </div>
+            <div class="relative min-h-[1px] box-border hidden md:block md:w-[41.66666667%] float-left grow-0 shrink-0 basis-auto"
+                style="padding-left: 20px; padding-right: 20px;">
+                <div class="py-6 px-6 bg-white rounded-xl relative shadow-md">
+                    <!-- ---------------------------------------- -->
+                    <div class="mb-5">
+                        <div class="relative">
+                            <div class="flex justify-center">
+                                <app-qrcode [op_tion]="op_tion" [is_download]="status">
+                                </app-qrcode>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="qrcode-step text-sm clear-both">
+                            <p class="mb-1">Cách đọc mã QR</p>
+                            <p><b>Bước 1: </b> Cài đặt các ứng dụng quét mã QR trên điện thoại</p>
+                            <p><b>Bước 2: </b> Mở ứng dụng quét mã QR, hướng camera của điện thoại
+                                về mã QR cần quét</p>
+                            <p><b>Bước 3: </b> Xem thông tin trả về</p>
+                        </div>
+                        <div class="flex justify-center absolute w-full left-0 -bottom-16">
+                            <!-- <button type="button"
+                                class="mr-5 save-btn ant-btn ant-btn-default ant-btn-lg btn-success rounded-md px-[50px] h-[40px] text-[16px] text-white border-transparent bg-[#00b289]"><span>Lưu</span></button> -->
+                            <button type="button" (click)="taiqr()"
+                                class="w-full download-btn ant-btn ant-btn-info ant-btn-lg rounded-md px-[50px] h-[40px] text-[16px] text-white border-transparent bg-[#53b6ef]"><span>Tải
+                                    QR Code xuống</span></button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="relative min-h-[1px] mb-5 box-border block w-full float-left grow-0 shrink-0 basis-auto md:hidden"
+                style="padding-left: 20px; padding-right: 20px;">
+                <button type="button" class="w-full download-btn ant-btn ant-btn-info ant-btn-lg
+                        rounded-md px-[50px] h-[40px] text-[16px] text-white border-transparent bg-[#53b6ef]"
+                    (click)="showDialog()">
+                    <span>Sinh mã QR Code</span></button>
+            </div>
+        </div>
+    </div>
+</div>

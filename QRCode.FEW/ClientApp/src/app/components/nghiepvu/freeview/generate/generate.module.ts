@@ -13,6 +13,7 @@ import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { LinkqrcodeComponent } from './linkqrcode/linkqrcode.component';
 import { SocialqrcodeComponent } from './socialqrcode/socialqrcode.component';
+import { ShopqrcodeComponent } from './shopqrcode/shopqrcode.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { SocialqrcodeComponent } from './socialqrcode/socialqrcode.component';
     SigninComponent,
     ContentdgComponent,
     LinkqrcodeComponent,
-    SocialqrcodeComponent,   
+    SocialqrcodeComponent,
+    ShopqrcodeComponent,   
     
   ],
   imports: [
