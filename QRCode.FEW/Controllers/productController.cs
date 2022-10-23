@@ -52,6 +52,7 @@ namespace QRCode.FEW.Controllers
                     {
                         file.CopyTo(stream);
                     }
+                    dbPath = "./assets" + dbPath.Split("assets")[1];
                     return Ok(new { dbPath });
                 }
                 else
