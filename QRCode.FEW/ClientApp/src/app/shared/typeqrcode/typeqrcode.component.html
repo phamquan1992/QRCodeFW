@@ -123,7 +123,7 @@
                 </span></label>
         </div>
         <div class="list-qrcode-configs-wrap">
-            <div *ngIf="_mau_chon==='exist'">0
+            <div *ngIf="_mau_chon==='exist'">
                 <div [ngClass]="{block:shape==='circle',hidden:shape!='circle'}" class="view_mobile overflow-x-auto">
                     <ul class="list-qrcode-configs flex justify-start items-center mb-5 w-max">
                         <li class="mr-2 relative cursor-pointer" *ngFor="let it of options_circle">
@@ -202,7 +202,7 @@
                 class="flex justify-center items-center mr-2 relative cursor-pointer w-[40px] h-[40px] border border-solid border-[#d6d6e0] rounded-md py-[6px]">
                 <img src="{{it.link_img}}" alt=""  (click)="action_select_ic(it.name)">
                 <img data-v-7be58c2e="" data-v-030d3430="" (click)="action_remove_ic(it.name)"
-                    src="https://marketing.icheck.vn/qrcode-free/_nuxt/43e92f6b6379334b8cbaad7e19f0d4b7.svg" alt=""
+                    src="./assets/images/ic-remove.png" alt=""
                     class="logo-close-icon cursor-pointer w-[14px] h-[14px] -top-[6px] -right-[6px] absolute"
                     [ngClass]="{'block':chon_icon==it.name,'hidden':chon_icon!=it.name}">
                 <!---->

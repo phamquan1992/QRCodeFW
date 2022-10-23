@@ -14,6 +14,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { LinkqrcodeComponent } from './linkqrcode/linkqrcode.component';
 import { SocialqrcodeComponent } from './socialqrcode/socialqrcode.component';
 import { ShopqrcodeComponent } from './shopqrcode/shopqrcode.component';
+import { ProductviewComponent } from './productview/productview.component';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -24,7 +27,8 @@ import { ShopqrcodeComponent } from './shopqrcode/shopqrcode.component';
     ContentdgComponent,
     LinkqrcodeComponent,
     SocialqrcodeComponent,
-    ShopqrcodeComponent,   
+    ShopqrcodeComponent,
+    ProductviewComponent,   
     
   ],
   imports: [
@@ -34,7 +38,9 @@ import { ShopqrcodeComponent } from './shopqrcode/shopqrcode.component';
     MatAutocompleteModule,
     FormsModule,
     NgxQrcodeStylingModule,
-    SharedModule
+    SharedModule,
+    MatChipsModule,
+    MatIconModule
   ]
 })
 export class GenerateModule { }
