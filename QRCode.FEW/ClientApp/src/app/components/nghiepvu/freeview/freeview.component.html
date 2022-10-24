@@ -3,7 +3,7 @@
     <!-- Giao diện destop -->
     <div class="max-w-[1280px] w-full justify-between m-auto items-center py-8 relative pr-20 hidden md:flex">
         <div class="flex flex-row items-center">
-            <a routerLink="/qrfree" class="nuxt-link-active" style="z-index: 1;"><img
+            <a routerLink="/qrcode-free" class="nuxt-link-active" style="z-index: 1;"><img
                     class="w-[52px] h-[52px] rounded-full" src="./assets/images/logo_tqc_vuong.jpg" alt=""></a>
             <div class="flex flex-col ml-[12px]">
                 <span class="block font-bold text-white text-xl">QR Code Marketing</span>
@@ -84,25 +84,13 @@
                 class="transform top-0 left-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-[1000]"
                 [ngClass]="{'translate-x-0':shownav,'-translate-x-full':!shownav}">
                 <div class="p-0 text-sm break-words">
-                    <a href="/qrcode-free/generate" class="nuxt-link-active text-black flex items-center px-6 py-3  ">
-                        <div class="mr-2"><img
-                                src="https://marketing.icheck.vn/qrcode-free/_nuxt/52b0dabf988f63a0401842f7087d09ac.svg"
-                                alt=""></div>
-                        <div>Trang chủ</div>
-                    </a>
-                    <a href="javascript:void(0)" class="text-black flex items-center px-6 py-3">
+                    <a routerLink="/portal" class="text-black flex items-center px-6 py-3">
                         <div class="mr-2"><img
                                 src="https://marketing.icheck.vn/qrcode-free/_nuxt/27e48213fd81ade9aa37c067c5e6c69b.svg"
                                 alt=""></div>
-                        <div>QRCode Doanh nghiệp</div>
+                        <div>Tạo cơ sở dữ liệu</div>
                     </a>
-                    <a href="/qrcode-free/qrcode-management" class="text-black flex items-center px-6 py-3  ">
-                        <div class="mr-2"><img
-                                src="https://marketing.icheck.vn/qrcode-free/_nuxt/27e48213fd81ade9aa37c067c5e6c69b.svg"
-                                alt=""></div>
-                        <div>QRCode Free</div>
-                    </a>
-                    <a href="/qrcode-free/package-service" class="text-black flex items-center px-6 py-3  ">
+                    <a routerLink="./dich-vu" class="text-black flex items-center px-6 py-3  ">
                         <div class="mr-2"><img
                                 src="https://marketing.icheck.vn/qrcode-free/_nuxt/b7309ecf919a2a38cf2deecf39c13c60.svg"
                                 alt=""></div>
