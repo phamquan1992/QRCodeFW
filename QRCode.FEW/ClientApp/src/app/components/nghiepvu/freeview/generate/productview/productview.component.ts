@@ -35,7 +35,9 @@ export class ProductviewComponent implements OnInit {
   status = '';
   is_any_select = false;
   arr_item: item_value[] = [{ value: 'Dịch vụ 1', is_select: false }, { value: 'Dịch vụ 2', is_select: false }, { value: 'Dịch vụ 3', is_select: false }];
+  arr_item_ks: item_value[] = [{ value: 'Khảo sát 1', is_select: false }, { value: 'Khảo sát 2', is_select: false }, { value: 'Khảo sát 3', is_select: false }];
   arr_value: item_value[] = [];
+  arr_value_ks: item_value[] = [];
   constructor(private dialog: MatDialog, private datepipe: DatePipe) {
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
@@ -46,6 +48,7 @@ export class ProductviewComponent implements OnInit {
   ngOnInit(): void {
     this.status = '';
     this.arr_value = this.arr_item;
+    this.arr_value_ks = this.arr_item_ks;
   }
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
@@ -115,6 +118,10 @@ export class ProductviewComponent implements OnInit {
   auto_change(obj_input: any) {
     let val = obj_input.value;
     this.arr_value = this.arr_item.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
+  }
+  auto_change_ks(obj_input: any) {
+    let val = obj_input.value;
+    this.arr_value_ks = this.arr_item_ks.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
   }
 
   separatorKeysCodes: number[] = [ENTER, COMMA];

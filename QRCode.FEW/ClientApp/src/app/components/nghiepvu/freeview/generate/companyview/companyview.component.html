@@ -35,8 +35,9 @@
                                     <div class="ant-col ant-form-item-control-wrapper">
                                         <div class="ant-form-item-control relative">
                                             <span class="ant-form-item-children">
-                                                <input class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                                (keyup)="auto_change_ks($event.target)"
+                                                <input
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change($event.target)"
                                                     placeholder="{{findDv(arr_value).length==0? 'Chọn gói dịch vụ':''}}"
                                                     [matAutocomplete]="dichvuAutocomplete" [value]="">
                                                 <mat-autocomplete #dichvuAutocomplete="matAutocomplete">
@@ -59,56 +60,19 @@
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
-                                    Sản phẩm
-                                </div>
-                                <div class="ant-row ant-form-item">
-                                    <div class="ant-col ant-form-item-control-wrapper">
-                                        <div class="ant-form-item-control">
-                                            <mat-chip-list #chipList aria-label="Fruit selection" matAutocompleteOrigin
-                                                #origin1="matAutocompleteOrigin">
-                                                <mat-chip *ngFor="let fruit of fruits" (removed)="remove(fruit)"
-                                                    style="margin-top: 2px; margin-bottom: 0px;min-height: 22px;border-radius: 4px;">
-                                                    {{fruit}}
-                                                    <button matChipRemove>
-                                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                                    </button>
-                                                </mat-chip>
-                                                <input placeholder="" #fruitInput style="width: 30px;flex: 1 0 30px;"
-                                                    [matAutocomplete]="auto" [matChipInputFor]="chipList"
-                                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                                    [matAutocompleteConnectedTo]="origin1"
-                                                    (matChipInputTokenEnd)="add($event)">
-                                            </mat-chip-list>
-                                            <mat-autocomplete #auto="matAutocomplete"
-                                                (optionSelected)="selected($event)">
-                                                <mat-option *ngFor="let fruit of filteredFruits | async"
-                                                    class="relative" style="height: 32px;" [value]="fruit">
-                                                    {{fruit}}
-                                                    <i *ngIf="check_select(fruit)"
-                                                        class="fa fa-check text-[#196898] absolute right-2 top-[10px]"
-                                                        aria-hidden="true" style="font-size: 12px;"></i>
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-5">
-                            <div>
-                                <div class="mb-2 block text-black">
-                                    Chọn khảo sát
+                                    Vai trò
                                 </div>
                                 <div class="ant-row ant-form-item">
                                     <div class="ant-col ant-form-item-control-wrapper">
                                         <div class="ant-form-item-control relative">
                                             <span class="ant-form-item-children">
-                                                <input class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                                (keyup)="auto_change($event.target)"
-                                                    placeholder='Chọn khảo sát'
-                                                    [matAutocomplete]="khaosatAutocomplete" [value]="">
-                                                <mat-autocomplete #khaosatAutocomplete="matAutocomplete">
-                                                    <mat-option *ngFor="let it of arr_value_ks" [value]="it.value"
+                                                <input
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change_vaitro($event.target)"
+                                                    placeholder='Chọn vai trò' [matAutocomplete]="vaitroAutocomplete"
+                                                    [value]="">
+                                                <mat-autocomplete #vaitroAutocomplete="matAutocomplete">
+                                                    <mat-option *ngFor="let it of arr_value_vaitro" [value]="it.value"
                                                         style="height: 32px; font-size: 14px;" class="relative">
                                                         <span>{{it.value}}</span>
                                                     </mat-option>
@@ -127,16 +91,59 @@
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
-                                    Tin nhắn
+                                    Chọn doanh nghiệp, cá nhân
                                 </div>
                                 <div class="ant-row ant-form-item">
                                     <div class="ant-col ant-form-item-control-wrapper">
-                                        <div class="ant-form-item-control has-success"><span
-                                                class="ant-form-item-children"><textarea #noidung
-                                                    placeholder="Nhập nội dung..." (keyup)="onchange_text(noidung)"
-                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8
-                                    py-[4px] px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                                    style="height: 115px; min-height: 115px; max-height: 9.0072e+15px;"></textarea></span>
+                                        <div class="ant-form-item-control relative">
+                                            <span class="ant-form-item-children">
+                                                <input
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change_obj($event.target)"
+                                                    placeholder='Chọn doanh nghiệp'
+                                                    [matAutocomplete]="doanhnghiepAutocomplete" [value]="">
+                                                <mat-autocomplete #doanhnghiepAutocomplete="matAutocomplete">
+                                                    <mat-option *ngFor="let it of arr_value_obj" [value]="it.value"
+                                                        style="height: 32px; font-size: 14px;" class="relative">
+                                                        <span>{{it.value}}</span>
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                                <span
+                                                    class="absolute top-1/2 right-[11px] z-[1] inline-block w-3 h-3 -mt-[6px] leading-3 text-center"
+                                                    style="user-select: none;">
+                                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <div>
+                                <div class="mb-2 block text-black">
+                                    Chọn khảo sát
+                                </div>
+                                <div class="ant-row ant-form-item">
+                                    <div class="ant-col ant-form-item-control-wrapper">
+                                        <div class="ant-form-item-control relative">
+                                            <span class="ant-form-item-children">
+                                                <input
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change($event.target)" placeholder='Chọn khảo sát'
+                                                    [matAutocomplete]="khaosatAutocomplete" [value]="">
+                                                <mat-autocomplete #khaosatAutocomplete="matAutocomplete">
+                                                    <mat-option *ngFor="let it of arr_value_ks" [value]="it.value"
+                                                        style="height: 32px; font-size: 14px;" class="relative">
+                                                        <span>{{it.value}}</span>
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                                <span
+                                                    class="absolute top-1/2 right-[11px] z-[1] inline-block w-3 h-3 -mt-[6px] leading-3 text-center"
+                                                    style="user-select: none;">
+                                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

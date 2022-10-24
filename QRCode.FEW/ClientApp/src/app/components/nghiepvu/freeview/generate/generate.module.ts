@@ -17,6 +17,8 @@ import { ShopqrcodeComponent } from './shopqrcode/shopqrcode.component';
 import { ProductviewComponent } from './productview/productview.component';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
+import { SurveyviewComponent } from './surveyview/surveyview.component';
+import { CompanyviewComponent } from './companyview/companyview.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import {MatIconModule} from '@angular/material/icon';
     LinkqrcodeComponent,
     SocialqrcodeComponent,
     ShopqrcodeComponent,
-    ProductviewComponent,   
+    ProductviewComponent,
+    SurveyviewComponent,
+    CompanyviewComponent,   
     
   ],
   imports: [
