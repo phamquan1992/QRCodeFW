@@ -16,7 +16,7 @@ export interface product {
     des_uses: string;
     des_guide: string;
     des_preserve: string;
-    lastcreated_date: string;
+    lastcreated_date: Date;
     lastcreated_by: number;
     status:boolean;
 }

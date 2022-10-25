@@ -6,17 +6,18 @@
 <section class="bg-[#8080801c] px-[15px] mb-[15px]">
     <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên hoặc mã sản phẩm">
+        placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter">
     <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên hoặc mã sản phẩm">
-        <option class="text-[13px]" value="active">Kích hoạt</option>
-        <option class="text-[13px]" value="inactive">Huỷ kích hoạt</option>
+        placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="value_select">
+        <option class="text-[13px]" value="all">Trạng thái sản phẩm</option>
+        <option class="text-[13px]" value="true">Kích hoạt</option>
+        <option class="text-[13px]" value="false">Huỷ kích hoạt</option>
     </select>
-    <button
+    <button (click)="applyFilter()"
         class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
         kiếm</button>
-    <button>
+    <button (click)="reload_grid()">
         <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
             style="display: inline-block; width: 25px;margin-left: 12px;">
     </button>
@@ -29,11 +30,11 @@
         <button
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]"
             routerLink="./add">Thêm mới</button>
-        <button
+        <button (click)="Xoa_sp_arr()"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#ff0000a6] text-white text-[13px] mr-[5px] mb-[5px]">Xoá</button>
-        <button
+        <button (click)="showhide_product(false)"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Ẩn</button>
-        <button
+        <button (click)="showhide_product(true)"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Hiện</button>
         <button (click)="createQR()"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Tạo
@@ -42,20 +43,19 @@
     <section class="mt-2">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
             <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef class="border border-solid border-[#0000001f] w-[100px]">
+                <th mat-header-cell *matHeaderCellDef class="border border-solid border-[#0000001f] w-[33px]">
                     <mat-checkbox (change)="$event ? masterToggle() : null"
                         [checked]="selection.hasValue() && isAllSelected()"
                         [indeterminate]="selection.hasValue() && !isAllSelected()">
                     </mat-checkbox>
                 </th>
-                <td mat-cell *matCellDef="let row" class="border border-solid border-[#0000001f] text-center">
+                <td mat-cell *matCellDef="let row" class="border border-solid border-[#0000001f] text-center cursor-pointer" (click)="selection.toggle(row)">
                     <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
                         [checked]="selection.isSelected(row)">
                     </mat-checkbox>
                 </td>
             </ng-container>
 
-            <!-- Position Column -->
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[300px]"> Tên sản
@@ -84,7 +84,7 @@
                     Ngày cập nhật</th>
                 <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    {{element.lastcreated_date}} </td>
+                    {{element.lastcreated_date|date: 'dd/MM/yyyy hh:mm:ss'}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action">
@@ -93,7 +93,7 @@
                     Hành động</th>
                 <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true"
+                    <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true" (click)="xoa_sp(element.qrproductid)"
                         [matTooltip]="'Xoá sản phẩm'" [matTooltipPosition]="'above'"></i>
                     <i class="fa fa-link px-[4px] cursor-pointer text-blue-600" aria-hidden="true"
                         [matTooltip]="'Chi tiết sản phẩm'" [matTooltipPosition]="'above'"></i>
@@ -102,7 +102,7 @@
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-5"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
             </tr>
         </table>
     </section>
