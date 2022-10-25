@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QRCode.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,9 +15,32 @@ namespace QRCode.FEW.Controllers
     public class productController : ControllerBase
     {
         [HttpGet]
-        public int Get()
+        public List<product> Get()
         {
-            return 5;
+            List<product> data = new List<product>();
+            for (int i = 1; i <= 10; i++)
+            {
+                product it = new product();
+                it.qrproductid = i;
+                it.name = "Sản phẩm " + i;
+                it.status = true;
+                it.lastcreated_date = DateTime.Now;
+                data.Add(it);
+            }
+            return data;
+        }
+        [HttpDelete]
+        [Route("Delete")]
+        public List<decimal> Delete([FromBody] decimal[] ids)
+        {
+            List<decimal> list_id = ids.ToList();
+            return list_id;
+        }
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public decimal Delete(decimal id)
+        {
+            return id;
         }
         private string path_file()
         {
