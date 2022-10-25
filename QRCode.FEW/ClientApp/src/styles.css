@@ -7,27 +7,29 @@ body {
     font-family: Lato, sans-serif;
     font-size: 16px;
 }
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
     border-radius: 4px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #196898; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #196898;
     border-radius: 4px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #115077; 
-  }
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #115077;
+}
+
 body {
     color: #000000a6;
     background-color: #ebf0f5;
@@ -74,6 +76,7 @@ img {
     margin-left: 20px;
     margin-right: 20px;
 }
-.pd_dialog_none{
+
+.pd_dialog_none {
     padding: 0px;
 }
