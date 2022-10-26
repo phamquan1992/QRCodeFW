@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { Inputcustom } from 'src/app/models/Inputcustom';
 import { product } from 'src/app/models/product';
 import { DataService } from 'src/app/services/data.service';
@@ -26,33 +26,17 @@ export class ProductsService {
   delete_product(arr_id: number[]) {
     return this.dataSrv.delete_array('product/delete', arr_id);
   }
-  delete_obj(id:string){
-    return this.dataSrv.delete('product/delete',id);
+  delete_obj(id: string) {
+    return this.dataSrv.delete('product/delete', id);
   }
   get_product(id: string | number) {
-    let pro_obj: product = {
-      qrproductid: 0,
-      name: '',
-      code: '',
-      category: '',
-      url_img: '',
-      url_video: '',
-      url_iso: '',
-      url_barcode: '',
-      price: 0,
-      slogan: '',
-      logo: '',
-      des_story: '',
-      des_pack: '',
-      des_element: '',
-      des_uses: '',
-      des_guide: '',
-      des_preserve: '',
-      lastcreated_date: null as any,
-      lastcreated_by: 0,
-      status: false
-    };
-    this.dataSrv.get('product/' + id).subscribe(t => pro_obj = t as product);
+    console.log(id);
+    let pro_obj: Observable<product> = this.dataSrv.get('product/' + id) as Observable<product>;
+    return pro_obj;
+  }
+  get_detail_product(id: string | number) {
+    id = id == '' ? '0' : id;
+    let pro_obj: Observable<Inputcustom[]> = this.dataSrv.get('product/detail/' + id) as Observable<Inputcustom[]>;
     return pro_obj;
   }
 }

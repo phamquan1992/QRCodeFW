@@ -1,7 +1,7 @@
 import { FormGroup } from "@angular/forms";
 
 export interface Inputcustom {
-  Title: string;
+  title: string;
   name: string;
   is_require: boolean;
   is_visible: boolean;

@@ -17,7 +17,6 @@ export class ProviewComponent implements OnInit {
 
   }
   showtenform(gt: any) {
-    debugger;
     this.ten_form_visible = gt;
   }
   hover_menu() {

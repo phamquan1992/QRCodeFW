@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QRCode.Core.Domain;
+using QRCode.Core.Domain2;
+using QRCode.Services.ISerivce;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,19 +16,86 @@ namespace QRCode.FEW.Controllers
     [ApiController]
     public class productController : ControllerBase
     {
+        private readonly IproductService _IproductService;
+        public productController(IproductService iproductService)
+        {
+            _IproductService = iproductService;
+        }
         [HttpGet]
         public List<product> Get()
         {
             List<product> data = new List<product>();
-            for (int i = 1; i <= 10; i++)
+            data = _IproductService.GetAll().ToList();
+            return data;
+        }
+        [HttpGet]
+        [Route("detail/{id}")]
+        public List<productdetail> GetProductdetails(int id)
+        {
+            List<productdetail> data = new List<productdetail>();
+            var product_it = new product();
+            if (id != 0)
+                product_it = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == id);
+            productdetail ma_sp = new productdetail
             {
-                product it = new product();
-                it.qrproductid = i;
-                it.name = "Sản phẩm " + i;
-                it.status = true;
-                it.lastcreated_date = DateTime.Now;
-                data.Add(it);
-            }
+                is_delete = false,
+                is_require = true,
+                is_visible = true,
+                name = "Ma_sp",
+                nhom = "macdinh",
+                Title = "Mã sản phẩm",
+                type = "text",
+                value_ip = product_it.code
+            };
+            data.Add(ma_sp);
+            productdetail ten_sp = new productdetail
+            {
+                is_delete = false,
+                is_require = true,
+                is_visible = true,
+                name = "Ten_sp",
+                nhom = "macdinh",
+                Title = "Tên sản phẩm",
+                type = "text",
+                value_ip = product_it.name
+            };
+            data.Add(ten_sp);
+            productdetail Danh_muc = new productdetail
+            {
+                is_delete = false,
+                is_require = true,
+                is_visible = true,
+                name = "Danh_muc",
+                nhom = "macdinh",
+                Title = "Danh mục",
+                type = "dropdown",
+                value_ip = product_it.category
+            };
+            data.Add(Danh_muc);
+            productdetail Gia_sp = new productdetail
+            {
+                is_delete = true,
+                is_require = true,
+                is_visible = true,
+                name = "Gia_sp",
+                nhom = "macdinh",
+                Title = "Giá sản phẩm",
+                type = "number",
+                value_ip = product_it.price == null ? "" : product_it.price.ToString("#.#")
+            };
+            data.Add(Gia_sp);
+            productdetail Slogan_sp = new productdetail
+            {
+                is_delete = true,
+                is_require = true,
+                is_visible = true,
+                name = "Slogan_sp",
+                nhom = "macdinh",
+                Title = "Slogan sản phẩm",
+                type = "text",
+                value_ip = product_it.slogan
+            };
+            data.Add(Slogan_sp);
             return data;
         }
         [HttpDelete]

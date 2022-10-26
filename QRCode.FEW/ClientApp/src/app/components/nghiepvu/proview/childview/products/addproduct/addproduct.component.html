@@ -18,6 +18,7 @@
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_daidien}}" alt="">
+                        <!-- <input type="hidden" [formControlName]="'img_daidien'" name="img_daidien" value=""> -->
                     </div>
                 </div>
             </div>
@@ -31,19 +32,7 @@
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_sanpham}}" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col relative my-2">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Logo</label>
-                <div class="flex flex-row">
-                    <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
-                        (click)="showDialog('logo')" style="width: 100px; height: 100px;">
-                        <img src="./assets/images/img_add.png" alt="">
-                    </button>
-                    <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        style="width: 100px; height: 100px;">
-                        <img src="{{src_logo}}" alt="">
+                        <!-- <input type="hidden" [formControlName]="'img_sanpham'"> -->
                     </div>
                 </div>
             </div>

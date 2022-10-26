@@ -27,7 +27,7 @@ export class AddinputComponent implements OnInit {
   add_input(_value: any) {
     this.dynamic_num = this.dynamic_num + 1;
     let tmp = {
-      Title: this.tieude_val,
+      title: this.tieude_val,
       name: 'txt_dynamic_' + this.dynamic_num,
       is_require: true,
       is_visible: true,

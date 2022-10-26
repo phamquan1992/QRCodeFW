@@ -3,6 +3,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Inputcustom } from 'src/app/models/Inputcustom';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogUploadComponent } from 'src/app/shared/dialog-upload/dialog-upload.component';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Observable, switchMap } from 'rxjs';
+import { ProductsService } from '../products.service';
+import { product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-addproduct',
@@ -27,66 +31,27 @@ export class AddproductComponent implements OnInit {
   src_video = '';
   open_menu_mota = false;
 
-  constructor(private dialog: MatDialog) {
-    this.data = [{
-      Title: 'Mã sản phẩm',
-      name: 'Ma_sp',
-      is_require: true,
-      is_visible: true,
-      type: 'text',
-      nhom: 'macdinh',
-      is_delete: false,
-      value_ip: ''
-    },
-    {
-      Title: 'Tên sản phẩm',
-      name: 'Ten_sp',
-      is_require: true,
-      is_visible: true,
-      type: 'text',
-      nhom: 'macdinh',
-      is_delete: false,
-      value_ip: ''
-    },
-    {
-      Title: 'Danh mục',
-      name: 'Danh_muc',
-      is_require: true,
-      is_visible: true,
-      type: 'dropdown',
-      nhom: 'macdinh',
-      is_delete: false,
-      value_ip: '123'
-    },
-    {
-      Title: 'Giá bán',
-      name: 'Gia_sp',
-      is_require: true,
-      is_visible: true,
-      type: 'text',
-      nhom: 'macdinh',
-      is_delete: false,
-      value_ip: ''
-    },
-    {
-      Title: 'Slogan sản phẩm',
-      name: 'Slogan_sp',
-      is_require: true,
-      is_visible: true,
-      type: 'text',
-      nhom: 'macdinh',
-      is_delete: false,
-      value_ip: ''
-    }
-    ];
-    this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
-    this.data_mota = this.data.filter(t => t.nhom == 'mota');
-    this.data_khac = this.data.filter(t => t.nhom == 'khac');
-    this.DataForm = this.generateFormControls();
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService) {
+
   }
   status_type = false;
+  gt_id!: Observable<string>;
+  value_id = '';
+  product$!: Observable<product>;
   ngOnInit(): void {
-
+    this.gt_id = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        params.get('id') == null ? '' : params.get('id')!)
+    );
+    this.gt_id.subscribe(t => this.value_id = t);
+    this.productSrc.get_detail_product(this.value_id).subscribe(t => {
+      this.data = t;
+      this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
+      this.data_mota = this.data.filter(t => t.nhom == 'mota');
+      this.data_khac = this.data.filter(t => t.nhom == 'khac');
+      this.DataForm = this.generateFormControls();
+      console.log(this.DataForm.value);
+    });
   }
   PreviewData() {
     this.payLoad = JSON.stringify(this.DataForm.getRawValue());
@@ -100,6 +65,8 @@ export class AddproductComponent implements OnInit {
     this.data.forEach(element => {
       tempGroup.addControl(element.name, new FormControl(''));
     });
+    tempGroup.addControl('img_sanpham', new FormControl(''));
+    tempGroup.addControl('img_daidien', new FormControl(''));
     return tempGroup;
   }
   add_input(tmp: Inputcustom) {
@@ -156,7 +123,7 @@ export class AddproductComponent implements OnInit {
   select_mota(value_gt: string, mota_gt: string) {
     this.open_menu_mota = false;
     let tmp = {
-      Title: mota_gt,
+      title: mota_gt,
       name: value_gt,
       is_require: true,
       is_visible: true,

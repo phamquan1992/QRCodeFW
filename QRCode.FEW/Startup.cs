@@ -8,6 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using QRCode.FEW.Extensions.NHibernate;
+using QRCode.Repositories.IRepository;
+using QRCode.Repositories.Repository;
+using QRCode.Services.ISerivce;
+using QRCode.Services.ServiceImp;
 using System;
 using System.IO;
 using System.Linq;
@@ -26,6 +31,14 @@ namespace QRCode.FEW
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddNHibernate(Configuration["ConnectionStrings:DefaultConnection"]);
+            #region Repository
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IproductRepository, productRepository>();
+            #endregion
+            #region Services
+            services.AddScoped<IproductService, productService>();
+            #endregion
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.Configure<FormOptions>(o =>
