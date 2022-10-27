@@ -51,6 +51,7 @@ export class DataService {
   }
   put(uri: string, data?: any) {
     this.getHearder();
+    debugger;
     return this.http.put(this.url_str + uri, data, { headers: this.headers }).pipe(
       map(
         response => {
@@ -62,6 +63,7 @@ export class DataService {
       }),
       catchError(error => {
         // this.mess.handError(error);
+        console.log(error);
         return error;
       })
     );

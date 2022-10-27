@@ -39,5 +39,10 @@ export class ProductsService {
     let pro_obj: Observable<Inputcustom[]> = this.dataSrv.get('product/detail/' + id) as Observable<Inputcustom[]>;
     return pro_obj;
   }
-  
+  update_product(pro_obj: product) {
+    return this.dataSrv.put('product/Update', pro_obj);
+  }
+  add_product(pro_obj: product) {
+    return this.dataSrv.post('product/Add', pro_obj);
+  }
 }

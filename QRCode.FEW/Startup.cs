@@ -51,6 +51,7 @@ namespace QRCode.FEW
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddControllers().AddNewtonsoftJson();
 
         }
 

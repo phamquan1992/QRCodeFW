@@ -91,7 +91,7 @@ namespace QRCode.FEW.Controllers
                 nhom = "macdinh",
                 Title = "Giá sản phẩm",
                 type = "number",
-                value_ip = product_it.price == null ? "" : product_it.price.ToString("#.#")
+                value_ip = product_it.price == null ? "" : product_it.price.Value.ToString("#.#")
             };
             data.Add(Gia_sp);
             productdetail Slogan_sp = new productdetail
@@ -277,6 +277,77 @@ namespace QRCode.FEW.Controllers
             }
           
             return data;
+        }
+        [HttpPut]
+        [Route("Update")]
+        public bool Update([FromBody] product product_up)
+        {
+            try
+            {
+                var product_it = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == product_up.qrproductid);
+                product_it.name = product_up.name;
+                product_it.code = product_up.code;
+                product_it.category = product_up.category;
+                product_it.url_img = product_up.url_img;
+                product_it.url_video = product_up.url_video;
+                product_it.url_iso = product_up.url_iso;
+                product_it.url_barcode = product_up.url_barcode;
+                product_it.price = product_up.price;
+                product_it.slogan = product_up.slogan;
+                product_it.logo = product_up.logo;
+                product_it.des_story = product_up.des_story;
+                product_it.des_pack = product_up.des_pack;
+                product_it.des_element = product_up.des_element;
+                product_it.des_uses = product_up.des_uses;
+                product_it.des_guide = product_up.des_guide;
+                product_it.des_preserve = product_up.des_preserve;
+                product_it.des_startdate = product_up.des_startdate;
+                product_it.des_enddate = product_up.des_enddate;
+                product_it.lastcreated_by = 0;
+                product_it.lastcreated_date = DateTime.Now;
+                _IproductService.Update(product_it);               
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+           
+            return true;
+        }
+        [HttpPost]
+        [Route("Add")]
+        public bool Add([FromBody] product product_up)
+        {
+            try
+            {
+                product product_it = new product();
+                product_it.name = product_up.name;
+                product_it.code = product_up.code;
+                product_it.category = product_up.category;
+                product_it.url_img = product_up.url_img;
+                product_it.url_video = product_up.url_video;
+                product_it.url_iso = product_up.url_iso;
+                product_it.url_barcode = product_up.url_barcode;
+                product_it.price = product_up.price;
+                product_it.slogan = product_up.slogan;
+                product_it.logo = product_up.logo;
+                product_it.des_story = product_up.des_story;
+                product_it.des_pack = product_up.des_pack;
+                product_it.des_element = product_up.des_element;
+                product_it.des_uses = product_up.des_uses;
+                product_it.des_guide = product_up.des_guide;
+                product_it.des_preserve = product_up.des_preserve;
+                product_it.des_startdate = product_up.des_startdate;
+                product_it.des_enddate = product_up.des_enddate;
+                product_it.created_by = 0;
+                product_it.created_date = DateTime.Now;
+                _IproductService.CreateNew(product_it);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
         [HttpDelete]
         [Route("Delete")]
