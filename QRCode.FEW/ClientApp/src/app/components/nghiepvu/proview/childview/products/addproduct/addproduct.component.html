@@ -9,16 +9,18 @@
     <form (ngSubmit)="PreviewData()" [formGroup]="DataForm" class="w-1/2">
         <div class="grid grid-cols-3 gap-4">
             <div class="flex flex-col relative my-2">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh đại diện sản phẩm</label>
+                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh đại diện sản
+                    phẩm</label>
                 <div class="flex flex-row">
                     <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
                         (click)="showDialog('daidien')" style="width: 100px; height: 100px;">
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_daidien!='','border-none':src_daidien==''}"
                         style="width: 100px; height: 100px;">
-                        <img src="{{src_daidien}}" alt="">
-                        <!-- <input type="hidden" [formControlName]="'img_daidien'" name="img_daidien" value=""> -->
+                        <img src="{{src_daidien}}" alt="" style="object-fit: contain;">
+                        <input type="hidden" [formControlName]="'logo'" name="logo" value="">
                     </div>
                 </div>
             </div>
@@ -30,22 +32,26 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_sanpham!='','border-none':src_sanpham==''}"
                         style="width: 100px; height: 100px;">
-                        <img src="{{src_sanpham}}" alt="">
-                        <!-- <input type="hidden" [formControlName]="'img_sanpham'"> -->
+                        <img src="{{src_sanpham}}" alt="" style="object-fit: contain;">
+                        <input type="hidden" [formControlName]="'url_img'">
                     </div>
                 </div>
             </div>
             <div class="flex flex-col relative my-2">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Chứng nhận, chứng chỉ</label>
+                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Chứng nhận, chứng
+                    chỉ</label>
                 <div class="flex flex-row">
                     <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
                         (click)="showDialog('chungchi')" style="width: 100px; height: 100px;">
-                        <img src="./assets/images/img_add.png" alt="">
+                        <img src="./assets/images/img_add.png" alt="" style="object-fit: contain;">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_chungchi!='','border-none':src_chungchi==''}"
                         style="width: 100px; height: 100px;">
-                        <img src="{{src_chungchi}}" alt="">
+                        <img src="{{src_chungchi}}" alt="" style="object-fit: contain;">
+                        <input type="hidden" [formControlName]="'url_iso'">
                     </div>
                 </div>
             </div>
@@ -57,8 +63,10 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_mavach!='','border-none':src_mavach==''}"
                         style="width: 100px; height: 100px;">
-                        <img src="{{src_mavach}}" alt="">
+                        <img src="{{src_mavach}}" alt="" style="object-fit: contain;">
+                        <input type="hidden" [formControlName]="'url_barcode'">
                     </div>
                 </div>
             </div>
@@ -70,6 +78,7 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_video!='','border-none':src_video==''}"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_video}}" alt="">
                     </div>
@@ -79,12 +88,13 @@
 
         <div class="grid grid-cols-3 gap-4">
             <app-custominput *ngFor="let it of data_macdinh" [form]="DataForm" [values]="it"
-                [ngClass]="{'col-span-2':it.name=='Ten_sp' || it.name=='Danh_muc','col-span-3': it.name=='Slogan_sp'}"
+                [ngClass]="{'col-span-2':it.name=='name' || it.name=='category','col-span-3': it.name=='slogan'}"
                 (out_delete)="delete_input_temp($event)"></app-custominput>
         </div>
         <!-- ---------------------------- -->
         <div class="border border-solid border-[#6867671c] h-[1px] w-full relative my-4">
-            <span class="block absolute -top-3 left-2 bg-[#fffdfd] px-1 font-bold text-sm font-[Roboto]">Mô tả sản phẩm</span>
+            <span class="block absolute -top-3 left-2 bg-[#fffdfd] px-1 font-bold text-sm font-[Roboto]">Mô tả sản
+                phẩm</span>
         </div>
         <div>
             <app-editorlayout *ngFor="let it of data_mota" [form]="DataForm" [values]="it"
@@ -92,24 +102,9 @@
             <div class="relative">
                 <ul class="block absolute -top-[334px] z-50 bg-white" style="box-shadow: 0 0 4px rgb(0 0 0 / 25%);"
                     [ngClass]="{'block':open_menu_mota,'hidden':!open_menu_mota}">
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('ccsp','Câu chuyện sản phẩm')">Câu chuyện sản phẩm</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('qtsanxuat','Quy trình sản xuất')">Quy trình sản xuất</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('qcdonggoi','Quy cách đóng gói')">Quy cách đóng gói</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('thanhphan','Thành phần')">Thành phần</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('congdung','Công dụng')">Công dụng</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('hdsd','Hướng dẫn sử dụng')">Hướng dẫn sử dụng</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('baoquan','Bảo quản')">Bảo quản</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('ngaysx','Ngày sản xuất')">Ngày sản xuất</li>
-                    <li class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
-                        (click)="select_mota('hsd','Hạn sử dụng')">Hạn sử dụng</li>
+                    <li *ngFor="let it of arr_mota"
+                        class="py-[10px] px-[20px] cursor-pointer text-[13px] hover:bg-[#6dd5f5] hover:text-white"
+                        (click)="select_mota(it.name,it.value)">{{it.value}}</li>
                 </ul>
                 <button type="button" (click)="open_menu_mota=!open_menu_mota"
                     class="mt-[23px] leading-[1.5] relative inline-block font-normal text-center cursor-pointer 
@@ -120,7 +115,8 @@
         </div>
         <!-- ---------------------------- -->
         <div class="border border-solid border-[#6867671c] h-[1px] w-full relative my-4">
-            <span class="block absolute -top-3 left-2 bg-[#fffdfd] px-1 font-bold text-sm font-[Roboto]">Thông tin khác</span>
+            <span class="block absolute -top-3 left-2 bg-[#fffdfd] px-1 font-bold text-sm font-[Roboto]">Thông tin
+                khác</span>
         </div>
         <div class="grid grid-cols-3 gap-4">
             <app-custominput *ngFor="let it of data_khac" [form]="DataForm" [values]="it"

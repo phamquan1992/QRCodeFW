@@ -20,15 +20,18 @@ export class AddinputComponent implements OnInit {
   @Input() type_input = 'text';
   tieude_val = '';
   tieude_val_close = '';
-  arr_thongtinkhac = ['Số công bố chất lượng', 'Số công bố An toàn thực phẩm', 'Số công bố lưu hành',
-    'Tiêu chuẩn áp dụng', 'Quy chuẩn áp dụng', 'Ngày gieo trồng', 'Ngày thu hoạch', 'Ngày đóng gói', 'Ngày đưa giống vào nuôi',
-    'Ngày xuất kho/xuất bán', 'Lô sản xuất', 'Ngày bắt đầu SX lô hàng', 'Ngày hoàn thành lô SX'];
+  arr_thongtinkhac = [
+    { name: 'dynamic_1', value: 'Số công bố chất lượng' }, { name: 'dynamic_2', value: 'Số công bố An toàn thực phẩm' }, { name: 'dynamic_3', value: 'Số công bố lưu hành' },
+    { name: 'dynamic_4', value: 'Tiêu chuẩn áp dụng' }, { name: 'dynamic_5', value: 'Quy chuẩn áp dụng' }, { name: 'dynamic_6', value: 'Ngày gieo trồng' },
+    { name: 'dynamic_7', value: 'Ngày thu hoạch' }, { name: 'dynamic_8', value: 'Ngày đóng gói' }, { name: 'dynamic_9', value: 'Ngày đưa giống vào nuôi' },
+    { name: 'dynamic_10', value: 'Ngày xuất kho/xuất bán' }, { name: 'dynamic_11', value: 'Lô sản xuất' }, { name: 'dynamic_12', value: 'Ngày bắt đầu SX lô hàng' },
+    { name: 'dynamic_13', value: 'Ngày hoàn thành lô SX' }];
 
   add_input(_value: any) {
     this.dynamic_num = this.dynamic_num + 1;
     let tmp = {
       title: this.tieude_val,
-      name: 'txt_dynamic_' + this.dynamic_num,
+      name: 'dynamic_' + this.dynamic_num,
       is_require: true,
       is_visible: true,
       type: 'text',
@@ -47,6 +50,6 @@ export class AddinputComponent implements OnInit {
     this.out_delete.emit(gt);
   }
   get_thongtinkhac(gt: any) {
-    this.tieude_val = gt;
+    this.tieude_val = gt.value;
   }
 }

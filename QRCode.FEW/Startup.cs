@@ -107,7 +107,7 @@ namespace QRCode.FEW
         private string path_file()
         {
             var extractPath = Path.Combine(@"ClientApp");
-            string[] files = Directory.GetFiles(extractPath, "*.*", SearchOption.AllDirectories);
+            string[] files = Directory.GetDirectories(extractPath, "*.*", SearchOption.AllDirectories);
             var file_find = files.Where(t => t.Contains("assets"));
             var gt = file_find.Select(t => t.Split("assets")[0]);
             var temp = from a in gt

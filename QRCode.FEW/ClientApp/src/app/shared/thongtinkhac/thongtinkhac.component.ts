@@ -2,6 +2,11 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { fromEvent, map, takeUntil } from 'rxjs';
 
+export interface it_ttkhac{
+  name:string;
+  value:string;
+}
+
 @Component({
   selector: 'app-thongtinkhac',
   templateUrl: './thongtinkhac.component.html',
@@ -10,9 +15,9 @@ import { fromEvent, map, takeUntil } from 'rxjs';
 export class ThongtinkhacComponent implements OnInit {
 
   constructor() { }
-  @Input() dataSource: string[] = [];
+  @Input() dataSource: it_ttkhac[] = [];
   @Output() select_value = new EventEmitter();
-  arr_data: string[] = [];
+  arr_data: it_ttkhac[] = [];
   rotate_it = false;
   @ViewChild('khacAutocomplete') khacAutocompleteRef!: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
@@ -24,10 +29,19 @@ export class ThongtinkhacComponent implements OnInit {
     this.arr_data = this.dataSource;
   }
   auto_change(val: string) {
-    this.arr_data = this.dataSource.filter(option => option.toLowerCase().includes(val.toLowerCase()));
+    this.arr_data = this.dataSource.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
   }
   close_auto(gt: string) {
+    console.log(gt);
     this.rotate_it = false;
+    //this.select_value.emit(gt);
+  }
+  displayFn(selectedoption: any) {
+    return selectedoption ? selectedoption.value : undefined;
+  }
+  select_it(evnt: any) {
+    console.log(evnt.option.value);
+    let gt = evnt.option.value;
     this.select_value.emit(gt);
   }
   autocompleteScroll() {

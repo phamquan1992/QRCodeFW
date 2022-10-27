@@ -7,52 +7,7 @@ import { product } from 'src/app/models/product';
 import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { ProductsService } from './products.service';
 
-const data_product: product[] = [
-  {
-    qrproductid: 1,
-    name: 'Sản phẩm 1',
-    code: '06475222',
-    category: '',
-    url_img: '',
-    url_video: '',
-    url_iso: '',
-    url_barcode: '',
-    price: 20000,
-    slogan: '',
-    logo: '',
-    des_story: '',
-    des_pack: '',
-    des_element: '',
-    des_uses: '',
-    des_guide: '',
-    des_preserve: '',
-    lastcreated_date: null as any,
-    lastcreated_by: 1,
-    status: false
-  },
-  {
-    qrproductid: 1,
-    name: 'Sản phẩm 2',
-    code: '06475222',
-    category: '',
-    url_img: '',
-    url_video: '',
-    url_iso: '',
-    url_barcode: '',
-    price: 20000,
-    slogan: '',
-    logo: '',
-    des_story: '',
-    des_pack: '',
-    des_element: '',
-    des_uses: '',
-    des_guide: '',
-    des_preserve: '',
-    lastcreated_date: null as any,
-    lastcreated_by: 1,
-    status: false
-  },
-]
+const data_product: product[] = [];
 
 @Component({
   selector: 'app-products',
@@ -73,6 +28,7 @@ export class ProductsComponent implements OnInit {
   constructor(private dialog: MatDialog, private productSrc: ProductsService) { }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<product>(data_product);
     this.productSrc.get_product_list().pipe().subscribe(t => {
       this.data_pr = t as product[];
       this.dataSource = new MatTableDataSource<product>(this.data_pr);

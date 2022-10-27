@@ -31,7 +31,7 @@ export class ProductsService {
   }
   get_product(id: string | number) {
     console.log(id);
-    let pro_obj: Observable<product> = this.dataSrv.get('product/' + id) as Observable<product>;
+    let pro_obj: Observable<product> = this.dataSrv.get('product/object/' + id) as Observable<product>;
     return pro_obj;
   }
   get_detail_product(id: string | number) {
@@ -39,4 +39,5 @@ export class ProductsService {
     let pro_obj: Observable<Inputcustom[]> = this.dataSrv.get('product/detail/' + id) as Observable<Inputcustom[]>;
     return pro_obj;
   }
+  
 }

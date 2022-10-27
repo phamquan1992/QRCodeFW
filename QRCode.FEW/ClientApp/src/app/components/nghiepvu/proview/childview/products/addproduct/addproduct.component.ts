@@ -14,7 +14,12 @@ import { product } from 'src/app/models/product';
   styleUrls: ['./addproduct.component.css']
 })
 export class AddproductComponent implements OnInit {
-  DataForm: FormGroup = new FormGroup({});
+  DataForm: FormGroup = new FormGroup({
+    logo: new FormControl(''),
+    url_img: new FormControl(''),
+    url_iso: new FormControl(''),
+    url_barcode: new FormControl('')
+  });
   payLoad: any;
   data!: Inputcustom[];
   data_macdinh!: Inputcustom[];
@@ -31,6 +36,18 @@ export class AddproductComponent implements OnInit {
   src_video = '';
   open_menu_mota = false;
 
+  arr_mota = [
+    { name: 'des_story', value: 'Câu chuyện sản phẩm' },
+    { name: 'des_story', value: 'Quy trình sản xuất' },
+    { name: 'des_pack', value: 'Quy cách đóng gói' },
+    { name: 'des_element', value: 'Thành phần' },
+    { name: 'des_uses', value: 'Công dụng' },
+    { name: 'des_guide', value: 'Hướng dẫn sử dụng' },
+    { name: 'des_preserve', value: 'Bảo quản' },
+    { name: 'des_startdate', value: 'Ngày sản xuất' },
+    { name: 'des_enddate', value: 'Hạn sử dụng' },
+  ];
+
   constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService) {
 
   }
@@ -39,18 +56,20 @@ export class AddproductComponent implements OnInit {
   value_id = '';
   product$!: Observable<product>;
   ngOnInit(): void {
+    this.data = [];
     this.gt_id = this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
-        params.get('id') == null ? '' : params.get('id')!)
+        params.get('id') == null ? '0' : params.get('id')!)
     );
-    this.gt_id.subscribe(t => this.value_id = t);
-    this.productSrc.get_detail_product(this.value_id).subscribe(t => {
-      this.data = t;
-      this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
-      this.data_mota = this.data.filter(t => t.nhom == 'mota');
-      this.data_khac = this.data.filter(t => t.nhom == 'khac');
-      this.DataForm = this.generateFormControls();
-      console.log(this.DataForm.value);
+    this.gt_id.subscribe(t => {
+      this.value_id = t;
+      this.productSrc.get_detail_product(this.value_id).subscribe(t => {
+        this.data = t;
+        this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
+        this.data_mota = this.data.filter(t => t.nhom == 'mota');
+        this.data_khac = this.data.filter(t => t.nhom == 'khac');
+        this.generateFormControls();
+      });
     });
   }
   PreviewData() {
@@ -58,19 +77,65 @@ export class AddproductComponent implements OnInit {
     this.data.forEach(element => {
       element.value_ip = this.DataForm.controls[element.name].value;
     });
-    console.log(JSON.stringify(this.data));
+    let proj: product = {
+      qrproductid: 0,
+      name: '',
+      code: '',
+      category: '',
+      price: 0,
+      slogan: '',
+      logo: '',
+      url_img: '',
+      url_iso: '',
+      url_barcode: '',
+      des_story: '',
+      des_pack: '',
+      des_element: '',
+      des_uses: '',
+      des_guide: '',
+      des_preserve: '',
+      des_startdate: '',
+      des_enddate: '',
+      url_video: '',
+      lastcreated_date: new Date(),
+      lastcreated_by: 0,
+      status: false
+    };
+    this.product$ = this.productSrc.get_product(this.value_id);
+
+    this.product$.subscribe(t => proj = t);
+
+    const myObj = JSON.parse(JSON.stringify(proj));
+    this.data.forEach(element => {
+      //Object.assign(obje, { [element.name]: element.value_ip });
+      myObj[element.name] = element.value_ip;
+    });
+    console.log(myObj);
   }
   generateFormControls() {
-    let tempGroup: FormGroup = new FormGroup({});
     this.data.forEach(element => {
-      tempGroup.addControl(element.name, new FormControl(''));
+      if (element.name != 'logo' && element.name != 'url_img' && element.name != 'url_iso' && element.name != 'url_barcode')
+        this.DataForm.addControl(element.name, new FormControl(''));
+      else {
+        debugger;
+        this.DataForm.controls[element.name].setValue(element.value_ip);
+        if (element.name == 'logo') {
+          this.src_daidien = element.value_ip;
+        }
+        if (element.name == 'url_img') {
+          this.src_sanpham = element.value_ip;
+        }
+        if (element.name == 'url_iso') {
+          this.src_chungchi = element.value_ip;
+        }
+        if (element.name == 'url_barcode') {
+          this.src_mavach = element.value_ip;
+        }
+      }
     });
-    tempGroup.addControl('img_sanpham', new FormControl(''));
-    tempGroup.addControl('img_daidien', new FormControl(''));
-    return tempGroup;
   }
   add_input(tmp: Inputcustom) {
-    console.log(tmp);
+
     this.dynamic_num = this.dynamic_num + 1;
     this.data.push(tmp);
     if (tmp.nhom == 'khac') {
@@ -105,16 +170,20 @@ export class AddproductComponent implements OnInit {
       res => {
         if (res != null && res != '' && res != undefined) {
           if (gt == 'daidien') {
-            this.src_daidien = '';
             this.src_daidien = res;
+            this.DataForm.controls['img_daidien'].setValue(res);
           }
           if (gt == 'sanpham') {
-            this.src_sanpham = '';
             this.src_sanpham = res;
+            this.DataForm.controls['img_sanpham'].setValue(res);
           }
-          if (gt == 'logo') {
-            this.src_sanpham = '';
-            this.src_logo = res;
+          if (gt == 'chungchi') {
+            this.src_chungchi = res;
+            this.DataForm.controls['img_chungchi'].setValue(res);
+          }
+          if (gt == 'mavach') {
+            this.src_mavach = res;
+            this.DataForm.controls['img_mavach'].setValue(res);
           }
         }
       }
@@ -132,6 +201,7 @@ export class AddproductComponent implements OnInit {
       is_delete: true,
       value_ip: ''
     };
+    console.log(tmp);
     this.data.push(tmp);
     this.data_mota = this.data.filter(t => t.nhom == 'mota');
     this.DataForm.addControl(tmp.name, new FormControl(''));

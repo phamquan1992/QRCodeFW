@@ -8,9 +8,10 @@
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
         (keyup)="auto_change(ipauto.value)" placeholder="Chọn tiêu đề" aria-label="State"
         [matAutocomplete]="khacAutocomplete">
-    <mat-autocomplete #khacAutocomplete="matAutocomplete" (opened)="autocompleteScroll()" (closed)="close_auto(ipauto.value)">
+    <mat-autocomplete #khacAutocomplete="matAutocomplete" (opened)="autocompleteScroll()"
+        (closed)="close_auto(ipauto.value)" [displayWith]="displayFn" (optionSelected)="select_it($event)">
         <mat-option *ngFor="let it of arr_data" [value]="it">
-            <span>{{it}}</span>
+            <span>{{it.value}}</span>
         </mat-option>
     </mat-autocomplete>
 </div>
