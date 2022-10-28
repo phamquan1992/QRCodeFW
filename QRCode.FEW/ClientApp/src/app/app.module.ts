@@ -10,7 +10,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     MatAutocompleteModule,
     FormsModule,
     HttpClientModule,
-    AngularEditorModule
+    AngularEditorModule,
+    ToastrModule.forRoot()
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

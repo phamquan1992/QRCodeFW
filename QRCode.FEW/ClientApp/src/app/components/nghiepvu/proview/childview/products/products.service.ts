@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
+import { category } from 'src/app/models/category';
 import { Inputcustom } from 'src/app/models/Inputcustom';
 import { product } from 'src/app/models/product';
 import { DataService } from 'src/app/services/data.service';
@@ -42,7 +43,13 @@ export class ProductsService {
   update_product(pro_obj: product) {
     return this.dataSrv.put('product/Update', pro_obj);
   }
+  update_status(arr_product: product[]){
+    return this.dataSrv.put('product/ChangeStatus',arr_product);
+  }
   add_product(pro_obj: product) {
     return this.dataSrv.post('product/Add', pro_obj);
+  }
+  get_category() {
+    return this.dataSrv.get('product/category') as Observable<category[]>;
   }
 }

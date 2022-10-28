@@ -1,12 +1,12 @@
 <div class="border-t border-solid border-[#e8e8e8]">
     <ul class="leading-[46px] whitespace-nowrap border-b border-solid border-[#e8e8e8] shadow-none
     box-border bg-white outline-0">
-        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">Thêm sản phẩm mới
+        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">{{tilte}}
         </li>
     </ul>
 </div>
 <section class="px-[15px] mb-[15px]">
-    <form (ngSubmit)="PreviewData()" [formGroup]="DataForm" class="w-1/2">
+    <form (ngSubmit)="UpdateData()" [formGroup]="DataForm" class="w-1/2">
         <div class="grid grid-cols-3 gap-4">
             <div class="flex flex-col relative my-2">
                 <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh đại diện sản
@@ -17,7 +17,7 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_daidien!='','border-none':src_daidien==''}"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_daidien!='','border-0':src_daidien=='' || src_daidien==null}"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_daidien}}" alt="" style="object-fit: contain;">
                         <input type="hidden" [formControlName]="'logo'" name="logo" value="">
@@ -32,7 +32,7 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_sanpham!='','border-none':src_sanpham==''}"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_sanpham!='','border-0':src_sanpham==''|| src_sanpham==null}"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_sanpham}}" alt="" style="object-fit: contain;">
                         <input type="hidden" [formControlName]="'url_img'">
@@ -48,7 +48,7 @@
                         <img src="./assets/images/img_add.png" alt="" style="object-fit: contain;">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_chungchi!='','border-none':src_chungchi==''}"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_chungchi!='','border-0':src_chungchi==''|| src_chungchi==null}"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_chungchi}}" alt="" style="object-fit: contain;">
                         <input type="hidden" [formControlName]="'url_iso'">
@@ -63,7 +63,7 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_mavach!='','border-none':src_mavach==''}"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_mavach!='','border-0':src_mavach==''|| src_mavach==null}"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_mavach}}" alt="" style="object-fit: contain;">
                         <input type="hidden" [formControlName]="'url_barcode'">
@@ -78,7 +78,7 @@
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_video!='','border-none':src_video==''}"
+                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_video!='','border-0':src_video==''|| src_video==null}"
                         style="width: 100px; height: 100px;">
                         <img src="{{src_video}}" alt="">
                     </div>
@@ -132,7 +132,7 @@
             </app-addinput>
         </div>
         <div class="text-center">
-            <button type="button" (click)="PreviewData()"
+            <button type="button" (click)="UpdateData()"
                 class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Cập
                 nhật</button>
             <button routerLink="/portal/products" type="button"

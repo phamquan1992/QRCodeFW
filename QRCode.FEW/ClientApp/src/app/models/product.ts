@@ -20,5 +20,6 @@ export interface product {
     url_video: string;  
     lastcreated_date: Date;
     lastcreated_by: number;
+    additional:string;
     status:boolean;
 }

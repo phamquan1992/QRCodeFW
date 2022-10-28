@@ -35,9 +35,13 @@ namespace QRCode.FEW
             #region Repository
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IproductRepository, productRepository>();
+            services.AddScoped<IlocationRepository, locationRepository>();
+            services.AddScoped<IcategoryRepository, categoryRepository>();
             #endregion
             #region Services
             services.AddScoped<IproductService, productService>();
+            services.AddScoped<IlocationService, locationService>();
+            services.AddScoped<IcategoryService, categoryService>();
             #endregion
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

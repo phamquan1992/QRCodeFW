@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable } from 'rxjs';
 import { product } from 'src/app/models/product';
+import { MessageService } from 'src/app/services/message.service';
 import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { ProductsService } from './products.service';
 
@@ -25,7 +26,7 @@ export class ProductsComponent implements OnInit {
   };
   value_select = 'all';
   name_filter = '';
-  constructor(private dialog: MatDialog, private productSrc: ProductsService) { }
+  constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService) { }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
@@ -86,17 +87,50 @@ export class ProductsComponent implements OnInit {
   }
   Xoa_sp_arr() {
     let arrID = this.selection.selected.map(t => t.qrproductid);
-    this.productSrc.delete_product(arrID).subscribe(t => { console.log(t); });
+    this.productSrc.delete_product(arrID).subscribe(t => {
+      if (t) {
+        this.mesSrc.success('Bạn đã thực hiện thành công!');
+        this.selection.clear();
+        this.get_data();
+      } else {
+        this.mesSrc.error('Có lỗi trong quá trình lưu dữ liệu');
+      }
+    });
 
   }
   xoa_sp(id: any) {
-    this.productSrc.delete_obj(id).subscribe(t => { console.log(t); });
+    this.productSrc.delete_obj(id).subscribe(t => {
+      if (t) {
+        this.mesSrc.success('Bạn đã thực hiện thành công!');
+        this.selection.clear();
+        this.get_data();
+      } else {
+        this.mesSrc.error('Có lỗi trong quá trình lưu dữ liệu');
+      }
+    });
+  }
+  get_data() {
+    this.dataSource = new MatTableDataSource<product>(data_product);
+    this.productSrc.get_product_list().pipe().subscribe(t => {
+      this.data_pr = t as product[];
+      this.dataSource = new MatTableDataSource<product>(this.data_pr);
+      this.dataSource.filterPredicate = this.customFilterPredicate();
+    });
   }
   showhide_product(trangthai: boolean) {
-    this.dataSource.data.forEach(row => {
-      if (this.selection.selected.indexOf(row) > -1)
-        row.status = trangthai;
+    this.selection.selected.forEach(element => {
+      element.status = trangthai;
     });
-    this.selection.clear();
+    this.productSrc.update_status(this.selection.selected).subscribe(
+      t => {
+        if (t) {
+          this.mesSrc.success('Bạn đã thực hiện thành công!');
+          this.selection.clear();
+          this.get_data();
+        } else {
+          this.mesSrc.error('Có lỗi trong quá trình lưu dữ liệu');
+        }
+      }
+    );
   }
 }

@@ -3,12 +3,9 @@ import { FormControl } from '@angular/forms';
 import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { cutom_it } from 'src/app/models/category';
 
-export interface cutom_it {
-  stt: number;
-  name: string;
-  mota: string;
-}
+
 
 @Component({
   selector: 'app-autocompleinput',
@@ -16,49 +13,9 @@ export interface cutom_it {
   styleUrls: ['./autocompleinput.component.css']
 })
 export class AutocompleinputComponent implements OnInit {
-
-  constructor() {
-    this.arr_item = this.temp_item;
-  }
   stateCtrl = new FormControl();
   arr_item!: cutom_it[];
-  temp_item: cutom_it[] = [
-    {
-      stt: 1,
-      name: 'Item 1',
-      mota: 'Danh mục 1',
-    }, 
-    {
-      stt: 2,
-      name: 'Item 2',
-      mota: 'Danh mục 2',
-    },
-    {
-      stt: 3,
-      name: 'Item 3',
-      mota: 'Danh mục 3',
-    },
-    {
-      stt: 4,
-      name: 'Item 4',
-      mota: 'Danh mục 4',
-    },
-    {
-      stt: 5,
-      name: 'Item 5',
-      mota: 'Danh mục 5',
-    },
-    {
-      stt: 6,
-      name: 'Item 6',
-      mota: 'Danh mục 6',
-    },
-    {
-      stt: 7,
-      name: 'Item 7',
-      mota: 'Danh mục 7',
-    },
-  ];
+  @Input() data!: cutom_it[]
   rotate_it = false;
   @ViewChild('statesAutocomplete') statesAutocompleteRef!: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
@@ -67,9 +24,18 @@ export class AutocompleinputComponent implements OnInit {
   @Input() set value_input(gt: string) {
     this._value_input = gt;
   }
+  constructor() {  
+  }
+  
   ngOnInit(): void {
+    this.arr_item = this.data;
   }
   close_event(gt: string) {
+    //this.val_out.emit(gt);
+  }
+  select_it(evnt: any) {
+    console.log(evnt.option.value);
+    let gt = evnt.option.value.name;
     this.val_out.emit(gt);
   }
   autocompleteScroll() {
@@ -96,7 +62,6 @@ export class AutocompleinputComponent implements OnInit {
             if (atBottom) {
               // fetch more data
               //this.filteredStates = [...this.filteredStates, ...this.states]
-              this.add_item();
             }
           });
       }
@@ -110,12 +75,15 @@ export class AutocompleinputComponent implements OnInit {
         name: 'Item ' + index,
         mota: 'Danh mục ' + index,
       };
-      this.temp_item.push(item_temp);
+      this.data.push(item_temp);
     };
-    this.arr_item = this.temp_item;
+    this.arr_item = this.data;
   }
   auto_change(obj_input: any) {
     let val = obj_input.value;
-    this.arr_item = this.temp_item.filter(option => option.mota.toLowerCase().includes(val.toLowerCase()));
+    this.arr_item = this.data.filter(option => option.mota.toLowerCase().includes(val.toLowerCase()));
+  }
+  displayFn(selectedoption: any) {
+    return selectedoption ? selectedoption.mota : undefined;
   }
 }

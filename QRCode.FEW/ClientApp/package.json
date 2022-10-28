@@ -26,6 +26,7 @@
     "fontawesome-4.7": "^4.7.0",
     "moment": "^2.29.4",
     "ngx-qrcode-styling": "^1.1.7",
+    "ngx-toastr": "^14.3.0",
     "ngx-webstorage-service": "^5.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",

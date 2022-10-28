@@ -9,10 +9,9 @@
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
         (keyup)="auto_change(ipauto)" placeholder="State" aria-label="State"
         [matAutocomplete]="statesAutocomplete" [value]="_value_input">
-    <mat-autocomplete #statesAutocomplete="matAutocomplete" (opened)="autocompleteScroll()" (closed)="close_event(ipauto.value)">
-        <mat-option *ngFor="let state of arr_item" [value]="state.name">
-            <span>{{state.stt}}</span>|
-            <span>{{state.name}}</span> |
+    <mat-autocomplete #statesAutocomplete="matAutocomplete" (opened)="autocompleteScroll()" 
+    (closed)="close_event(ipauto.value)" [displayWith]="displayFn" (optionSelected)="select_it($event)">
+        <mat-option *ngFor="let state of arr_item" [value]="state">
             <small>{{state.mota}}</small>
         </mat-option>
     </mat-autocomplete>

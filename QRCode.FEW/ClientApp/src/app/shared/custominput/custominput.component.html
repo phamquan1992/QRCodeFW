@@ -53,6 +53,6 @@
                 </svg></i>
         </div>
         <input type="hidden" [formControlName]="values.name" value="{{values.value_ip}}">
-        <app-autocompleinput [value_input]="values.value_ip" (val_out)="setval_out($event)"></app-autocompleinput>
+        <app-autocompleinput [value_input]="str_val" (val_out)="setval_out($event)" [data]="arr_cs"></app-autocompleinput>
     </div>
 </div>

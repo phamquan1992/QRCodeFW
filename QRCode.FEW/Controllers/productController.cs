@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using QRCode.Core.Domain;
 using QRCode.Core.Domain2;
 using QRCode.FEW.Extensions.Common;
@@ -18,9 +19,11 @@ namespace QRCode.FEW.Controllers
     public class productController : ControllerBase
     {
         private readonly IproductService _IproductService;
-        public productController(IproductService iproductService)
+        private readonly IcategoryService _IcategoryService;
+        public productController(IproductService iproductService, IcategoryService icategoryService)
         {
             _IproductService = iproductService;
+            _IcategoryService = icategoryService;
         }
         [HttpGet]
         public List<product> Get()
@@ -38,6 +41,36 @@ namespace QRCode.FEW.Controllers
                 product_it = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == id);
             return product_it;
         }
+        private List<productdetail> get_json(string data)
+        {
+            List<productdetail> list = new List<productdetail>();
+            JArray array = JArray.Parse(data);
+            JObject firstObject = (JObject)array.First;
+            //String adminValue = (String)firstObject.GetValue("ADMIN");
+            foreach (JObject content in array.Children<JObject>())
+            {
+                foreach (JProperty prop in content.Properties())
+                {
+                    productdetail it = new productdetail();
+                    it.name = prop.Name;
+                    JObject obj_value = JObject.Parse(prop.Value.ToString());
+                    foreach (JProperty item2 in obj_value.Properties())
+                    {
+                        if (item2.Name == "title")
+                            it.Title = item2.Value.ToString();
+                        if (item2.Name == "value")
+                            it.value_ip = item2.Value.ToString();
+                    }
+                    it.is_delete = true;
+                    it.is_require = false;
+                    it.is_visible = false;
+                    it.type = "text";
+                    it.nhom = "khac";
+                    list.Add(it);
+                }
+            }
+            return list;
+        }
         [HttpGet]
         [Route("detail/{id}")]
         public List<productdetail> GetProductdetails(int id)
@@ -46,6 +79,7 @@ namespace QRCode.FEW.Controllers
             var product_it = new product();
             if (id != 0)
                 product_it = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == id);
+
             productdetail ma_sp = new productdetail
             {
                 is_delete = false,
@@ -84,7 +118,7 @@ namespace QRCode.FEW.Controllers
             data.Add(Danh_muc);
             productdetail Gia_sp = new productdetail
             {
-                is_delete = true,
+                is_delete = false,
                 is_require = true,
                 is_visible = true,
                 name = "price",
@@ -96,7 +130,7 @@ namespace QRCode.FEW.Controllers
             data.Add(Gia_sp);
             productdetail Slogan_sp = new productdetail
             {
-                is_delete = true,
+                is_delete = false,
                 is_require = true,
                 is_visible = true,
                 name = "slogan",
@@ -155,7 +189,7 @@ namespace QRCode.FEW.Controllers
             };
             data.Add(img_mavach);
 
-            if(!string.IsNullOrEmpty(product_it.des_story))
+            if (!string.IsNullOrEmpty(product_it.des_story))
             {
                 productdetail des_story = new productdetail
                 {
@@ -275,7 +309,8 @@ namespace QRCode.FEW.Controllers
                 };
                 data.Add(des_enddate);
             }
-          
+            if (!string.IsNullOrEmpty(product_it.additional))
+                data.AddRange(get_json(product_it.additional));
             return data;
         }
         [HttpPut]
@@ -303,15 +338,23 @@ namespace QRCode.FEW.Controllers
                 product_it.des_preserve = product_up.des_preserve;
                 product_it.des_startdate = product_up.des_startdate;
                 product_it.des_enddate = product_up.des_enddate;
+                product_it.additional = product_up.additional;
                 product_it.lastcreated_by = 0;
                 product_it.lastcreated_date = DateTime.Now;
-                _IproductService.Update(product_it);               
+                _IproductService.Update(product_it);
             }
             catch (Exception ex)
             {
                 return false;
             }
-           
+
+            return true;
+        }
+        [HttpPut]
+        [Route("ChangeStatus")]
+        public bool UpdateStatus([FromBody] product[] products)
+        {
+            _IproductService.UpdateRange(products.ToList());
             return true;
         }
         [HttpPost]
@@ -339,6 +382,7 @@ namespace QRCode.FEW.Controllers
                 product_it.des_preserve = product_up.des_preserve;
                 product_it.des_startdate = product_up.des_startdate;
                 product_it.des_enddate = product_up.des_enddate;
+                product_it.additional = product_up.additional;
                 product_it.created_by = 0;
                 product_it.created_date = DateTime.Now;
                 _IproductService.CreateNew(product_it);
@@ -351,16 +395,31 @@ namespace QRCode.FEW.Controllers
         }
         [HttpDelete]
         [Route("Delete")]
-        public List<decimal> Delete([FromBody] decimal[] ids)
+        public bool Delete([FromBody] decimal[] ids)
         {
-            List<decimal> list_id = ids.ToList();
-            return list_id;
+            List<product> data = new List<product>();
+            data = _IproductService.GetAll().Where(t => ids.Contains(t.qrproductid)).ToList();
+            _IproductService.DeleteRange(data);
+            return true;
         }
         [HttpDelete]
         [Route("Delete/{id}")]
-        public decimal Delete(decimal id)
+        public bool Delete(decimal id)
         {
-            return id;
+            var data = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == id);
+            return true;
+        }
+        [HttpGet]
+        [Route("category")]
+        public List<category> GetCategories()
+        {
+            List<category> data = new List<category>();
+            var query = _IcategoryService.GetAll();
+            if (query != null && query.Count() > 0)
+            {
+                data = query.ToList();
+            }
+            return data;
         }
         private string path_file()
         {

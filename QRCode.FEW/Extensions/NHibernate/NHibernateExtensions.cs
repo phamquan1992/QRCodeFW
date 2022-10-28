@@ -19,6 +19,8 @@ namespace QRCode.FEW.Extensions.NHibernate
                 .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString).ShowSql)
                 .Cache(c => c.UseQueryCache().UseSecondLevelCache().ProviderClass<HashtableCacheProvider>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<productMapping>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<locationMapping>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<categoryMapping>())
                 .ExposeConfiguration(cf => new SchemaUpdate(cf).Execute(false, false));
 
             var sessionFactory = configuration.BuildSessionFactory();
