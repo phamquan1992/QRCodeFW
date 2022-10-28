@@ -16,14 +16,16 @@ namespace QRCode.Repositories.Repository
             _session = session;
         }
 
-        public void Add(T entity)
+        public bool Add(T entity)
         {
+            bool result = false;
             using (var transaction = _session.BeginTransaction())
             {
                 try
                 {
                     _session.Save(entity);
                     transaction.Commit();
+                    result = true;
                 }
                 catch (Exception)
                 {
@@ -31,14 +33,15 @@ namespace QRCode.Repositories.Repository
                     {
                         transaction.Rollback();
                     }
-
-                    throw;
+                    result = false;
                 }
             }
+            return result;
         }
 
-        public void AddRange(IEnumerable<T> entities)
+        public bool AddRange(IEnumerable<T> entities)
         {
+            bool result = false;
             using (var transaction = _session.BeginTransaction())
             {
                 try
@@ -48,6 +51,7 @@ namespace QRCode.Repositories.Repository
                         _session.Save(entity);
                         transaction.Commit();
                     }
+                    result = true;
                 }
                 catch (Exception)
                 {
@@ -55,14 +59,15 @@ namespace QRCode.Repositories.Repository
                     {
                         transaction.Rollback();
                     }
-
-                    throw;
+                    result = false;
                 }
             }
+            return result;
         }
 
-        public void Update(T entity)
+        public bool Update(T entity)
         {
+            bool result = false;
             using (var transaction = _session.BeginTransaction())
             {
                 try
@@ -76,14 +81,15 @@ namespace QRCode.Repositories.Repository
                     {
                         transaction.Rollback();
                     }
-
-                    throw;
+                    result = false;
                 }
             }
+            return result;
         }
 
-        public void UpdateRange(IEnumerable<T> entities)
+        public bool UpdateRange(IEnumerable<T> entities)
         {
+            bool result = false;
             using (var transaction = _session.BeginTransaction())
             {
                 try
@@ -100,20 +106,22 @@ namespace QRCode.Repositories.Repository
                     {
                         transaction.Rollback();
                     }
-
-                    throw;
+                    result = false;
                 }
+                return result;
             }
         }
 
-        public void Delete(T entity)
+        public bool Delete(T entity)
         {
+            bool result = false;
             using (var transaction = _session.BeginTransaction())
             {
                 try
                 {
                     _session.Delete(entity);
                     transaction.Commit();
+                    result = true;
                 }
                 catch (Exception)
                 {
@@ -121,14 +129,15 @@ namespace QRCode.Repositories.Repository
                     {
                         transaction.Rollback();
                     }
-
-                    throw;
+                    result = false;
                 }
             }
+            return result;
         }
 
-        public void DeleteRange(IEnumerable<T> entities)
+        public bool DeleteRange(IEnumerable<T> entities)
         {
+            bool result = false;
             using (var transaction = _session.BeginTransaction())
             {
                 try
@@ -138,6 +147,7 @@ namespace QRCode.Repositories.Repository
                         _session.Delete(item);
                         transaction.Commit();
                     }
+                    result = true;
                 }
                 catch (Exception)
                 {
@@ -146,9 +156,10 @@ namespace QRCode.Repositories.Repository
                         transaction.Rollback();
                     }
 
-                    throw;
+                    result = false;
                 }
             }
+            return result;
         }
 
         public IQueryable<T> GetAll()

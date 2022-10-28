@@ -10,10 +10,12 @@ namespace QRCode.Repositories.Repository
     public class UnitOfWork: IUnitOfWork
     {
         public IproductRepository productRepository { get; }
+        public IlocationRepository locationRepository { get; }
+        public IcategoryRepository categoryRepository { get; }
         private readonly ISessionFactory _sessionFactory;
         private readonly ITransaction _transaction;
         public ISession Session { get; private set; }
-        public UnitOfWork(ISessionFactory sessionFactory,IproductRepository productRepository)
+        public UnitOfWork(ISessionFactory sessionFactory,IproductRepository productRepository, IlocationRepository locationRepository, IcategoryRepository categoryRepository)
         {
             this._sessionFactory = sessionFactory;
             this.Session = _sessionFactory.OpenSession();
@@ -22,6 +24,8 @@ namespace QRCode.Repositories.Repository
                 this.Session = _sessionFactory.OpenSession();
             this._transaction = Session.BeginTransaction(IsolationLevel.ReadCommitted);
             this.productRepository = productRepository;
+            this.locationRepository = locationRepository;
+            this.categoryRepository = categoryRepository;
         }
         public void Dispose()
         {
