@@ -11,6 +11,8 @@ namespace QRCode.Services.ISerivce
         IQueryable<product> GetAll();
         bool CreateNew(product obj);
         bool Update(product obj);
+        bool UpdateRange(List<product> obj);
         bool Delete(product obj);
+        bool DeleteRange(List<product> obj);
     }
 }

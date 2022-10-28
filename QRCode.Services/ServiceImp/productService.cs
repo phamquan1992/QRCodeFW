@@ -23,8 +23,8 @@ namespace QRCode.Services.ServiceImp
         {
             try
             {
-                _unitOfWork.productRepository.Add(obj);
-                return true;
+              return  _unitOfWork.productRepository.Add(obj);
+                
             }
             catch (Exception)
             {
@@ -35,8 +35,20 @@ namespace QRCode.Services.ServiceImp
         {
             try
             {
-                _unitOfWork.productRepository.Update(obj);
-                return true;
+                return _unitOfWork.productRepository.Update(obj);
+                
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdateRange(List<product> obj)
+        {
+            try
+            {
+                return _unitOfWork.productRepository.UpdateRange(obj);
+                
             }
             catch (Exception)
             {
@@ -47,8 +59,19 @@ namespace QRCode.Services.ServiceImp
         {
             try
             {
-                _unitOfWork.productRepository.Delete(obj);
-                return true;
+                return _unitOfWork.productRepository.Delete(obj);
+                
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool DeleteRange(List<product> obj)
+        {
+            try
+            {
+                return _unitOfWork.productRepository.DeleteRange(obj);
             }
             catch (Exception)
             {
