@@ -14,7 +14,7 @@ namespace QRCode.Core.Domain
         public virtual string url_video { get; set; }
         public virtual string url_iso { get; set; }
         public virtual string url_barcode { get; set; }
-        public virtual decimal price { get; set; }
+        public virtual decimal? price { get; set; }
         public virtual string slogan { get; set; }
         public virtual string logo { get; set; }
         public virtual string des_story { get; set; }
