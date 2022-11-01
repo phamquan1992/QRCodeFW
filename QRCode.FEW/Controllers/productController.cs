@@ -399,15 +399,14 @@ namespace QRCode.FEW.Controllers
         {
             List<product> data = new List<product>();
             data = _IproductService.GetAll().Where(t => ids.Contains(t.qrproductid)).ToList();
-            _IproductService.DeleteRange(data);
-            return true;
+            return _IproductService.DeleteRange(data);
         }
         [HttpDelete]
         [Route("Delete/{id}")]
         public bool Delete(decimal id)
         {
             var data = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == id);
-            return true;
+            return _IproductService.Delete(data);
         }
         [HttpGet]
         [Route("category")]
