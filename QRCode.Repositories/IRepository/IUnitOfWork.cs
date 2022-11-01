@@ -9,6 +9,7 @@ namespace QRCode.Repositories.IRepository
         IproductRepository productRepository { get; }
         IlocationRepository locationRepository { get; }
         IcategoryRepository categoryRepository { get; }
+        Iqr_enterpriseRepository qr_enterpriseRepository { get; }
         void Commit();
         void Rollback();
     }

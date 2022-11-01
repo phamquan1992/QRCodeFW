@@ -27,7 +27,7 @@ namespace QRCode.Repositories.Repository
                     transaction.Commit();
                     result = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (!transaction.WasCommitted)
                     {
@@ -48,12 +48,12 @@ namespace QRCode.Repositories.Repository
                 {
                     foreach (T entity in entities)
                     {
-                        _session.Save(entity);
-                        transaction.Commit();
+                        _session.Save(entity);                        
                     }
+                    transaction.Commit();
                     result = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (!transaction.WasCommitted)
                     {
@@ -74,8 +74,9 @@ namespace QRCode.Repositories.Repository
                 {
                     _session.Update(entity);
                     transaction.Commit();
+                    result = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (!transaction.WasCommitted)
                     {
@@ -96,11 +97,12 @@ namespace QRCode.Repositories.Repository
                 {
                     foreach (T entity in entities)
                     {
-                        _session.Update(entity);
-                        transaction.Commit();
+                        _session.Update(entity);                        
                     }
+                    transaction.Commit();
+                    result = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (!transaction.WasCommitted)
                     {
@@ -123,7 +125,7 @@ namespace QRCode.Repositories.Repository
                     transaction.Commit();
                     result = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (!transaction.WasCommitted)
                     {
@@ -144,12 +146,12 @@ namespace QRCode.Repositories.Repository
                 {
                     foreach (T item in entities)
                     {
-                        _session.Delete(item);
-                        transaction.Commit();
+                        _session.Delete(item);                        
                     }
+                    transaction.Commit();
                     result = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (!transaction.WasCommitted)
                     {

@@ -7,15 +7,16 @@ using System.Text;
 
 namespace QRCode.Repositories.Repository
 {
-    public class UnitOfWork: IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public IproductRepository productRepository { get; }
         public IlocationRepository locationRepository { get; }
         public IcategoryRepository categoryRepository { get; }
+        public Iqr_enterpriseRepository qr_enterpriseRepository { get; }
         private readonly ISessionFactory _sessionFactory;
         private readonly ITransaction _transaction;
         public ISession Session { get; private set; }
-        public UnitOfWork(ISessionFactory sessionFactory,IproductRepository productRepository, IlocationRepository locationRepository, IcategoryRepository categoryRepository)
+        public UnitOfWork(ISessionFactory sessionFactory, IproductRepository productRepository, IlocationRepository locationRepository, IcategoryRepository categoryRepository, Iqr_enterpriseRepository qr_enterpriseRepository)
         {
             this._sessionFactory = sessionFactory;
             this.Session = _sessionFactory.OpenSession();
@@ -26,6 +27,7 @@ namespace QRCode.Repositories.Repository
             this.productRepository = productRepository;
             this.locationRepository = locationRepository;
             this.categoryRepository = categoryRepository;
+            this.qr_enterpriseRepository = qr_enterpriseRepository;
         }
         public void Dispose()
         {
