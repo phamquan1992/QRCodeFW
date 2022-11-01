@@ -15,6 +15,8 @@ import { ThongtinkhacComponent } from './thongtinkhac/thongtinkhac.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { EditorlayoutComponent } from './editorlayout/editorlayout.component';
 import { ImportfileComponent } from './importfile/importfile.component';
+import { AlertdeleteComponent } from './alertdelete/alertdelete.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -27,16 +29,18 @@ import { ImportfileComponent } from './importfile/importfile.component';
     DialogUploadComponent,
     ThongtinkhacComponent,
     EditorlayoutComponent,
-    ImportfileComponent
+    ImportfileComponent,
+    AlertdeleteComponent
   ],
   imports: [
     CommonModule, ReactiveFormsModule, FormsModule,
-    NgxQrcodeStylingModule, MatAutocompleteModule, MatDialogModule, AngularEditorModule
+    NgxQrcodeStylingModule, MatAutocompleteModule, MatDialogModule, AngularEditorModule,
+    MatIconModule
   ], exports: [
     CustominputComponent,
     AddinputComponent,
     QrcodeComponent,
     TypeqrcodeComponent,
-    AutocompleinputComponent, UploadinputComponent, DialogUploadComponent, ThongtinkhacComponent, EditorlayoutComponent,ImportfileComponent]
+    AutocompleinputComponent, UploadinputComponent, DialogUploadComponent, ThongtinkhacComponent, EditorlayoutComponent,ImportfileComponent,AlertdeleteComponent]
 })
 export class SharedModule { }

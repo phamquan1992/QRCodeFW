@@ -1,11 +1,12 @@
 <div class="border-t border-solid border-[#e8e8e8]">
     <ul class="leading-[46px] whitespace-nowrap border-b border-solid border-[#e8e8e8] shadow-none
     box-border bg-white outline-0">
-        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">Thêm doanh nghiệp, cá nhân mới
+        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">Thêm doanh nghiệp, cá
+            nhân mới
         </li>
     </ul>
 </div>
-<div class="w-1/2 relative">
+<form class="w-1/2 relative" [formGroup]="DataForm">
     <div class="grid grid-cols-2 gap-2 p-6">
         <div class="flex flex-col relative my-2">
             <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh đại diện</label>
@@ -17,6 +18,7 @@
                 <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                     style="width: 100px; height: 100px;">
                     <img src="{{src_daidien}}" alt="">
+                    <input type="hidden" [formControlName]="'logo'" name="logo" value="">
                 </div>
             </div>
         </div>
@@ -64,19 +66,27 @@
                 nghiệp</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Nhập tên điểm check in, cửa hàng, toà nhà, tài xế...">
+                placeholder="Nhập tên điểm check in, cửa hàng, toà nhà, tài xế..." [formControlName]="'name'"
+                name="name" value="">
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Mã số thuế</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Mã số thuế">
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Mã số thuế"
+                [formControlName]="'taxcode'" name="taxcode" value="">
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Điện thoại liên
                 hệ</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Số điện thoại doanh nghiệp">
+                placeholder="Số điện thoại doanh nghiệp" [formControlName]="'tel'" name="tel" value="">
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Fax</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Fax"
+                [formControlName]="'fax'" name="fax" value="">
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Quốc gia</label>
@@ -89,7 +99,7 @@
                 </span>
                 <input #input_quocgia class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    placeholder="--Quốc gia--" aria-label="State" [matAutocomplete]="quocgiaAutocomplete">
+                    placeholder="--Quốc gia--" aria-label="State" [matAutocomplete]="quocgiaAutocomplete" value="Việt Nam" disabled>
                 <mat-autocomplete #quocgiaAutocomplete="matAutocomplete">
                     <mat-option *ngFor="let it of array_quocgia" [value]="it.value">
                         <span>{{it.value}}</span>
@@ -111,14 +121,14 @@
                 <input #input_tinh_none class="w-full text-ellipsis relative py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="tinhAutocomplete"
-                    (keyup)="auto_tinh_change(input_tinh_none)">
+                    (keyup)="auto_tinh_change(input_tinh_none)" [value]="val_tinh">
                 <mat-autocomplete #tinhAutocomplete="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="select_it($event)">
                     <mat-option *ngFor="let it of arr_tinh" [value]="it">
-                        <span>{{it.ten}}</span>
+                        <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
-                <input #hd_tinh type="hidden" [value]="_tinh_val">
+                <input #hd_tinh type="hidden" [formControlName]="'province'">
             </div>
         </div>
         <div>
@@ -133,13 +143,14 @@
                 <input #input_huyen class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="huyenAutocomplete"
-                    (keyup)="auto_huyen_chang(input_huyen)">
+                    (keyup)="auto_huyen_chang(input_huyen)" [value]="val_huyen">
                 <mat-autocomplete #huyenAutocomplete="matAutocomplete" [displayWith]="displayFn"
-                    (optionSelected)="select_it_xa($event)">
+                    (optionSelected)="select_it_huyen($event)">
                     <mat-option *ngFor="let it of array_huyen" [value]="it">
-                        <span>{{it.ten}}</span>
+                        <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
+                <input type="hidden" [formControlName]="'district'" name="district" value="">
             </div>
         </div>
         <div>
@@ -154,53 +165,90 @@
                 <input #input_xa class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Xã, phường--" aria-label="State" [matAutocomplete]="xaAutocomplete"
-                    (keyup)="auto_xa_chang(input_xa)">
+                    (keyup)="auto_xa_chang(input_xa)" [value]="val_xa">
                 <mat-autocomplete #xaAutocomplete="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="select_it_xa($event)">
                     <mat-option *ngFor="let it of array_xa" [value]="it">
-                        <span>{{it.ten}}</span>
+                        <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
+                <input type="hidden" [formControlName]="'wards'" name="wards" value="">
             </div>
         </div>
-        <div class="col-span-2">
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nhóm ngành</label>
-            <div class="relative">
-                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
-                    style="user-select: none;">
-                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
-                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
-                        style="font-weight: 400; font-size: 13px;"></i>
-                </span>
-                <input #input_huyen class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    placeholder="--Chọn nhóm ngành--" aria-label="State" [matAutocomplete]="nhomnganhAutocomplete">
-                <mat-autocomplete #nhomnganhAutocomplete="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let it of arr_nhomnganh" [value]="it">
-                        <span>{{it.ten}}</span>
-                    </mat-option>
-                </mat-autocomplete>
-            </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nghề nghiệp</label>
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Nghề nghiệp"
+                [formControlName]="'occupation'" name="occupation" value="">
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Email</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Nhập email tại đây">
+                placeholder="Nhập email tại đây" [formControlName]="'email'" name="email" value="">
         </div>
-        <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Website</label>
+        <div class="col-span-2">
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Địa chỉ</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Website doanh nghiệp">
+                placeholder="Nhập email tại đây" [formControlName]="'address'" name="address" value="">
+        </div>
+        <div class="col-span-2" *ngFor="let it of arr_dynamic">
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">{{it.key}}</label>
+            <div class="flex">
+                <input type="text" class=" float-left w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="{{it.key}} doanh nghiệp, cá nhân" [formControlName]="it.key">
+                <i class="fa fa-trash-o float-left pt-[11px] text-red-600 cursor-pointer" aria-hidden="true"
+                    (click)="xoa_dynamic(it.key)"></i>
+            </div>
+
+        </div>
+        <div class="col-span-2">
+            <ul class="inline-block">
+                <li class="float-left mr-1 font-bold font-[Roboto]">Thêm liên kết: </li>
+                <li (click)="add_dynamic('Website')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Website')}"><img
+                        src="./assets/images/icon-add-website.svg" style="width: 24px; height: 24px;"></li>
+                <li (click)="add_dynamic('Facebook')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Facebook')}"><img
+                        src="./assets/images/icon-facebook.svg"></li>
+                <li (click)="add_dynamic('Shopee')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Shopee')}"><img src="./assets/images/icon-shopee.svg">
+                </li>
+                <li (click)="add_dynamic('Zalo')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Zalo')}"><img src="./assets/images/icon-zalo.svg">
+                </li>
+                <li (click)="add_dynamic('Instagram')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Instagram')}"><img src="./assets/images/icon-ig.svg">
+                </li>
+                <li (click)="add_dynamic('Tiktok')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Tiktok')}"><img src="./assets/images/icon-tiktok.svg">
+                </li>
+                <li (click)="add_dynamic('Tiki')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Tiki')}"><img src="./assets/images/icon-tiki.svg">
+                </li>
+                <li (click)="add_dynamic('Youtube')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Youtube')}"><img
+                        src="./assets/images/icon-youtube.svg"></li>
+                <li (click)="add_dynamic('Linkedin')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Linkedin')}"><img
+                        src="./assets/images/icon-linkedin.svg"></li>
+                <li (click)="add_dynamic('Lazada')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Lazada')}"><img src="./assets/images/icon-lazada.svg">
+                </li>
+                <li (click)="add_dynamic('Sendo')" class="float-left mr-1 cursor-pointer"
+                    [ngClass]="{'ic-link-active':select_dynamic('Sendo')}"><img src="./assets/images/icon-sendo.svg">
+                </li>
+            </ul>
         </div>
     </div>
     <div class="text-center">
-        <button type="button"
+        <button type="button" (click)="UpdateData()"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Cập
             nhật</button>
-        <button routerLink="/portal/products" type="button"
+        <button routerLink="/portal/companies" type="button"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Quay
             lại</button>
     </div>
-</div>
+</form>

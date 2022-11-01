@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable } from 'rxjs';
 import { product } from 'src/app/models/product';
 import { MessageService } from 'src/app/services/message.service';
+import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.component';
 import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { ProductsService } from './products.service';
 
@@ -129,6 +130,25 @@ export class ProductsComponent implements OnInit {
           this.get_data();
         } else {
           this.mesSrc.error('Có lỗi trong quá trình lưu dữ liệu');
+        }
+      }
+    );    
+  }
+  showXoaDialog(act: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "390px";
+    dialogConfig.panelClass = "pd_dialog_none";
+    dialogConfig.data = "Bạn chắc chắn muốn xoá bản ghi này?";
+    this.dialog.open(AlertdeleteComponent, dialogConfig).afterClosed().subscribe(
+      res => {
+        if (res) {
+          if (act != '') {
+            this.xoa_sp(act);
+          } else {
+            this.Xoa_sp_arr();
+          }
         }
       }
     );

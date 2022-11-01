@@ -1,5 +1,5 @@
 <div (mouseover)="hover_menu()" (mouseleave)="leave_menu()" #menuleft
-    class="bg-white border-r border-solid border-[#c0c0c052] transition-all duration-200 fixed z-[99] h-screen hover:flex-[0_0_240px] hover:min-w-[240px] hover:w-[240px]"
+    class="bg-white border-r border-solid border-[#c0c0c052] transition-all duration-200 fixed h-screen hover:flex-[0_0_240px] hover:min-w-[240px] hover:w-[240px] z-[2000]"
     [ngClass]="{'flex-[0_0_80px]':!showNav,' min-w-[80px]':!showNav,'w-[80px]':!showNav,'flex-[0_0_240px]':showNav,'min-w-[240px]':showNav,'w-[240px]':showNav}">
     <div>
         <div style="height: 63px">

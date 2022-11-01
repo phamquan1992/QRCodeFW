@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-uploadinput',
@@ -12,6 +12,7 @@ export class UploadinputComponent implements OnInit {
   message!: string;
   @Output() public onUploadFinished = new EventEmitter();
   fileToUpload!: File;
+  @Input() save_upload = '';
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
   }
 
@@ -27,7 +28,7 @@ export class UploadinputComponent implements OnInit {
   uploadFile = (fileToUpload: File) => {
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    this.http.post(this.url_string + 'api/product', formData, { reportProgress: true, observe: 'events' })
+    this.http.post(this.url_string + 'api/' + this.save_upload, formData, { reportProgress: true, observe: 'events' })
       .subscribe({
         next: (event) => {
           if (event.type === HttpEventType.UploadProgress) {

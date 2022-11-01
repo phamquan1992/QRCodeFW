@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dialog-upload',
@@ -8,9 +8,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogUploadComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogUploadComponent>) { }
+  save_forder: string = '';
+  constructor(public dialogRef: MatDialogRef<DialogUploadComponent>, @Inject(MAT_DIALOG_DATA) public data: string) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {   
+    this.save_forder = this.data;
   }
   str_src = '';
   load_src_file(gt: any) {
@@ -20,7 +22,7 @@ export class DialogUploadComponent implements OnInit {
     // }, 3000);
     this.bt_click(gt);
   }
-  bt_click(gt:any){
+  bt_click(gt: any) {
     this.dialogRef.close(gt);
   }
 }

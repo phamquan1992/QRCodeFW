@@ -8,6 +8,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CompanylistComponent } from './companylist/companylist.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -21,7 +23,8 @@ import { CompanylistComponent } from './companylist/companylist.component';
     CompaniesRoutingModule,
     MatTableModule,
     MatCheckboxModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,FormsModule, ReactiveFormsModule,
+    MatTooltipModule
   ]
 })
 export class CompaniesModule { }

@@ -9,6 +9,7 @@ const routes: Routes = [
     path: '', component: CompaniesComponent, children: [
       { path: 'list', component: CompanylistComponent },
       { path: 'add', component: AddcompanyComponent },
+      { path: 'edit/:id', component: AddcompanyComponent },
       { path: '', redirectTo: 'list', pathMatch: 'full' }
     ]
   }

@@ -58,24 +58,37 @@ export class AddproductComponent implements OnInit {
     product$!: Observable<product>;
     ngOnInit(): void {
         this.data = [];
-        this.gt_id = this.route.paramMap.pipe(
-            switchMap((params: ParamMap) =>
-                params.get('id') == null ? '0' : params.get('id')!)
-        );
-        this.gt_id.subscribe(t => {
-            this.value_id = t;
-            if (this.value_id != '0') {
-                this.tilte = 'Thông tin sản phẩm';
-            }
-            this.productSrc.get_detail_product(this.value_id).subscribe(t => {
-                this.data = t;
-                this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
-                this.data_mota = this.data.filter(t => t.nhom == 'mota');
-                this.data_khac = this.data.filter(t => t.nhom == 'khac');
-                console.log(this.data_khac);
-                this.generateFormControls();
-            });
+        // this.gt_id = this.route.paramMap.pipe(
+        //     switchMap((params: ParamMap) =>
+        //         params.get('id') == null ? '0' : params.get('id')!)
+        // );
+        let id = this.route.snapshot.paramMap.get('id');
+        this.value_id = id == null ? '0' : id.toString();
+        if (this.value_id != '0') {
+            this.tilte = 'Thông tin sản phẩm';
+        }
+        this.productSrc.get_detail_product(this.value_id).subscribe(t => {
+            this.data = t;
+            this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
+            this.data_mota = this.data.filter(t => t.nhom == 'mota');
+            this.data_khac = this.data.filter(t => t.nhom == 'khac');
+            console.log(this.data_khac);
+            this.generateFormControls();
         });
+        // this.gt_id.subscribe(t => {
+        //     this.value_id = t;
+        //     if (this.value_id != '0') {
+        //         this.tilte = 'Thông tin sản phẩm';
+        //     }
+        //     this.productSrc.get_detail_product(this.value_id).subscribe(t => {
+        //         this.data = t;
+        //         this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
+        //         this.data_mota = this.data.filter(t => t.nhom == 'mota');
+        //         this.data_khac = this.data.filter(t => t.nhom == 'khac');
+        //         console.log(this.data_khac);
+        //         this.generateFormControls();
+        //     });
+        // });
     }
     convert_dynamic_value(arr: any) {
 
@@ -86,7 +99,7 @@ export class AddproductComponent implements OnInit {
         this.product$.subscribe(t => {
             const myObj = JSON.parse(JSON.stringify(t));
             let arr_key = Object.keys(myObj);
-            let arr_dynamic: { [x: string]: { title: string; value: string; }; }[]= [];
+            let arr_dynamic: { [x: string]: { title: string; value: string; }; }[] = [];
             this.data.forEach(element => {
                 element.value_ip = this.DataForm.controls[element.name].value;
                 if (element.name.indexOf('dynamic_') == -1)
@@ -107,6 +120,8 @@ export class AddproductComponent implements OnInit {
             });
             if (arr_dynamic.length > 0) {
                 myObj['additional'] = JSON.stringify(arr_dynamic);
+            } else {
+                myObj['additional'] = "";
             }
             arr_key.forEach(element => {
                 if (element != 'qrproductid' && element != 'created_by' && element != 'created_date' && element != 'lastcreated_by' && element != 'lastcreated_date'
@@ -189,6 +204,7 @@ export class AddproductComponent implements OnInit {
         dialogConfig.width = "520px";
         // dialogConfig.height = "310px";
         dialogConfig.panelClass = "pd_dialog_none";
+        dialogConfig.data='product';
         this.dialog.open(DialogUploadComponent, dialogConfig).afterClosed().subscribe(
             res => {
                 if (res != null && res != '' && res != undefined) {
