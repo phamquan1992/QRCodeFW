@@ -37,11 +37,13 @@ namespace QRCode.FEW
             services.AddScoped<IproductRepository, productRepository>();
             services.AddScoped<IlocationRepository, locationRepository>();
             services.AddScoped<IcategoryRepository, categoryRepository>();
+            services.AddScoped<Iqr_enterpriseRepository, qr_enterpriseRepository>();
             #endregion
             #region Services
             services.AddScoped<IproductService, productService>();
             services.AddScoped<IlocationService, locationService>();
             services.AddScoped<IcategoryService, categoryService>();
+            services.AddScoped<Iqr_enterpriseService, qr_enterpriseService>();
             #endregion
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -59,6 +61,7 @@ namespace QRCode.FEW
 
         }
 
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
