@@ -1,6 +1,9 @@
 import { Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { nguoidung } from 'src/app/models/nguoidung';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { ObservableService } from 'src/app/services/observable.service';
 import { LoginComponent } from '../../share/login/login.component';
 import { SigninComponent } from '../../share/signin/signin.component';
 
@@ -13,11 +16,28 @@ export class FreeviewComponent implements OnInit {
   shownav: boolean = false;
   status = '';
   is_login = false;
+  nguoidung: nguoidung = {
+    email: '',
+    id: '',
+    sodt: '',
+    token: ''
+  };
   public innerWidth: any;
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _sharingService: ObservableService, private storage: LocalStorageService) {
 
   }
   ngOnInit(): void {
+    let user = this.storage.getUserInfo();
+    if (user != undefined)
+      this.nguoidung = user;
+    else {
+      this.nguoidung = {
+        email: '',
+        id: '',
+        sodt: '',
+        token: ''
+      };
+    }
     this.innerWidth = window.innerWidth;
   }
   @HostListener('window:resize', ['$event'])
@@ -44,6 +64,14 @@ export class FreeviewComponent implements OnInit {
   }
   log_out() {
     this.is_login = false;
+    this._sharingService.reMoveUserValue();
+    this.router.navigate(['/qrcode-free']);
+    this.nguoidung = {
+      email: '',
+      id: '',
+      sodt: '',
+      token: ''
+    };
   }
   showDialog(status: string) {
     const dialogConfig = new MatDialogConfig();
@@ -58,7 +86,7 @@ export class FreeviewComponent implements OnInit {
     if (status === 'login') {
       this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
         res => {
-          this.is_login = true;
+          //this.is_login = true;
         }
       );
     }

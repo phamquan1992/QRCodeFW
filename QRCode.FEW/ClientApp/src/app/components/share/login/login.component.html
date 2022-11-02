@@ -5,16 +5,15 @@
     </div>
     <div class="right flex flex-grow flex-col items-center justify-center px-3 relative">
         <div class="w-full flex flex-col items-center justify-center">
-            <img src="./assets/images/logo_tqc_vuong.jpg" alt=""
-                class="w-[188px] h-[188px] rounded-full ">
-            <form class="auth-form mt-6 w-full ant-form ant-form-horizontal">
+            <img src="./assets/images/logo_tqc_vuong.jpg" alt="" class="w-[188px] h-[188px] rounded-full ">
+            <div class="auth-form mt-6 w-full ant-form ant-form-horizontal">
                 <div class="mb-6 ant-row ant-form-item" data-track-content="" data-content-name="phoneLogin"
                     data-content-region-name="generator_login" data-content-index="1">
                     <div class="ant-col ant-form-item-label"><label title="Số điện thoại"
                             class="ant-form-item-required">Số điện thoại</label></div>
                     <div class="ant-col ant-form-item-control-wrapper">
                         <div class="ant-form-item-control has-success"><span class="ant-form-item-children">
-                                <input placeholder="Nhập số điện thoại" type="text"
+                                <input placeholder="Nhập số điện thoại" type="text" [(ngModel)]="user_name"
                                     class="ant-input box-border m-0 list-none relative inline-block w-full h-8 py-1 px-[11px] text-sm border border-solid border-[#d9d9d9] rounded-[4px] transition-all ease-in-out duration-300 hover:border-[#40a9ff] focus:border-[#40a9ff]">
                             </span>
                             <!---->
@@ -30,20 +29,21 @@
                             <span class="ant-form-item-children"><span
                                     class="ant-input-affix-wrapper ant-input-password relative">
                                     <input placeholder="Nhập mật khẩu" [type]="is_showpass?'text':'password'"
+                                        [(ngModel)]="pass_word"
                                         class="ant-input  box-border m-0 list-none relative inline-block w-full h-8 py-1 px-[11px] text-sm border border-solid border-[#d9d9d9] rounded-[4px] transition-all ease-in-out duration-300 hover:border-[#40a9ff] focus:border-[#40a9ff]">
                                     <span
                                         class="ant-input-suffix absolute top-[6%] h-6 w-6 flex items-center text-[#000000a6] right-3"><i
                                             aria-label="icon: eye-invisible" tabindex="-1"
                                             class="anticon anticon-eye-invisible ant-input-password-icon">
-                                            <svg viewBox="64 64 896 896" data-icon="eye-invisible"
-                                                (click)="show_pass()" width="1em" height="1em" fill="currentColor"
-                                                aria-hidden="true" focusable="false" class="">
-                                                <path *ngIf="!is_showpass" 
+                                            <svg viewBox="64 64 896 896" data-icon="eye-invisible" (click)="show_pass()"
+                                                width="1em" height="1em" fill="currentColor" aria-hidden="true"
+                                                focusable="false" class="">
+                                                <path *ngIf="!is_showpass"
                                                     d="M942.2 486.2Q889.47 375.11 816.7 305l-50.88 50.88C807.31 395.53 843.45 447.4 874.7 512 791.5 684.2 673.4 766 512 766q-72.67 0-133.87-22.38L323 798.75Q408 838 512 838q288.3 0 430.2-300.3a60.29 60.29 0 0 0 0-51.5zm-63.57-320.64L836 122.88a8 8 0 0 0-11.32 0L715.31 232.2Q624.86 186 512 186q-288.3 0-430.2 300.3a60.3 60.3 0 0 0 0 51.5q56.69 119.4 136.5 191.41L112.48 835a8 8 0 0 0 0 11.31L155.17 889a8 8 0 0 0 11.31 0l712.15-712.12a8 8 0 0 0 0-11.32zM149.3 512C232.6 339.8 350.7 258 512 258c54.54 0 104.13 9.36 149.12 28.39l-70.3 70.3a176 176 0 0 0-238.13 238.13l-83.42 83.42C223.1 637.49 183.3 582.28 149.3 512zm246.7 0a112.11 112.11 0 0 1 146.2-106.69L401.31 546.2A112 112 0 0 1 396 512z">
                                                 </path>
                                                 <path *ngIf="is_showpass"
-                                                d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 0 0 0 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z">
-                                            </path>
+                                                    d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 0 0 0 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z">
+                                                </path>
                                             </svg>
                                         </i>
                                     </span>
@@ -85,7 +85,7 @@
                     <a class="link text-[#00b289] underline underline-offset-2 cursor-pointer"
                         (click)="showDialog()">tại đây</a>
                 </div>
-            </form>
+            </div>
         </div>
         <img data-v-7a2ee0cb="" (click)="onClose()"
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJrSURBVHgBtVZPaxNREJ/3dmlToRo99pTSQxEU00MPnpJcPYgFDx7bYxRhpRcRIRso4s1XRCteip9A8Ask/QRG8OBxT+JBYrCHJCXvjTOv7iZZun9okh88lsybzG9n5rdvnoAMeC/fVqV0KwKhigJKZCqd72APhegIIzpG60/q1ZNOWhyRRuAIt0HBq5AD5NdGPWqqg6ftXESed1yU14YNQPTgMkBU5nSlqdReL5HIe35UcpbEZwQswwwQIDr6DHfU63owtoUklIlzddialWSK7O9yLcxMhhtcrnmRMDiWXO03xsTAjT8iZUELFgBjRjUWiM3IcUQDFgThuDa28F58LEtXf01z3iitQbd3Cn9oxe39wRn8/PU77e82KylcvZtF8njvvl3Xi6uRfXtr09r26w9hpbCcFgKklNQaIe6kOfHbciY3iCQkY5JHD2p2n/f6g2FaCPqYZcW5W7mnqIKFJKfRSMP3HwHcvrluyW7Rc7u8GZG8P/5iy5cGVhyJQRQhA90o4NCSTZJ0Y31LQElCTmysr031Av+vvGCiIMsp3pN4z3KgR1oQQZoHB5ok4XLxmiTLUh2d7B2JiCdpThf1JOwZ264UliATGr6JPMdP+MZxGSfZ4zDSbNmzbr/xoUWZVWEB4IH4plmvWdVpjU1YEHjq8tMSqYN6m6R6CHMGGjgMR3v0HaEc+EjDCuYEHnzoFvzwd0Sk/Gc9lLgzDzI7XSmW8sf3hqmTQfn1AGW/NksZuVxa0gj3x/eFc/IEsOx5IOZVI9372hqhyf2+cD8rgOe/Kwsjd3mcIJryxCEcUPCA5HtiDLSTCEL8A8UyJr8qeANYAAAAAElFTkSuQmCC"

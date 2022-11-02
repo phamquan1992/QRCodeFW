@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { image_obj } from 'src/app/models/image_obj';
+import { nguoidung } from 'src/app/models/nguoidung';
 import { optioncs } from 'src/app/models/optioncs';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-typeqrcode',
@@ -10,7 +12,7 @@ import { optioncs } from 'src/app/models/optioncs';
 })
 export class TypeqrcodeComponent implements OnInit, OnChanges {
 
-  constructor(private datepipe: DatePipe) { }
+  constructor(private datepipe: DatePipe, private storage: LocalStorageService) { }
   ngOnChanges(changes: SimpleChanges): void {
     this.change_val();
   }
@@ -20,6 +22,12 @@ export class TypeqrcodeComponent implements OnInit, OnChanges {
   file!: ElementRef;
   @ViewChild("filepro")
   filepro!: ElementRef;
+  nguoidung: nguoidung = {
+    email: '',
+    id: '',
+    sodt: '',
+    token: ''
+  };
   openfile() {
     this.file.nativeElement.click();
   }
@@ -201,6 +209,12 @@ export class TypeqrcodeComponent implements OnInit, OnChanges {
   chon_icon = '';
   icon_count = 0;
   ngOnInit(): void {
+    let user = this.storage.getUserInfo();
+    if (user != undefined)
+      this.profesional = true;
+    else {
+      this.profesional = false;
+    }
     this.shape = this.profesional ? 'circle' : 'square';
     this._mau_chon = this.profesional ? 'exist' : 'self';
     this.select_img(this.profesional ? 'IMG1' : 'IMG_DF1');

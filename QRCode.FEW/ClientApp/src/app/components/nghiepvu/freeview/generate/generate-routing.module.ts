@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CanactiveGuard } from 'src/app/securities/canactive.guard';
 import { CompanyviewComponent } from './companyview/companyview.component';
 import { GenerateComponent } from './generate.component';
 import { LinkqrcodeComponent } from './linkqrcode/linkqrcode.component';
@@ -15,9 +16,9 @@ const routes: Routes = [{
     { path: 'link', component: LinkqrcodeComponent },
     { path: 'social', component: SocialqrcodeComponent },
     { path: 'shop', component: ShopqrcodeComponent },
-    { path: 'product', component: ProductviewComponent },
-    { path: 'survey', component: SurveyviewComponent },
-    { path: 'ojbect', component: CompanyviewComponent },
+    { path: 'product', canActivate: [CanactiveGuard], component: ProductviewComponent },
+    { path: 'survey', canActivate: [CanactiveGuard], component: SurveyviewComponent },
+    { path: 'ojbect', canActivate: [CanactiveGuard], component: CompanyviewComponent },
     { path: '', redirectTo: 'link', pathMatch: 'full' }
 
   ]

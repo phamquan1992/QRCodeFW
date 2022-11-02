@@ -1,5 +1,6 @@
-export interface nguoidung{
-    tendangnhap:string;
-    ten:string;
-    token:string;
+export interface nguoidung {
+    email: string;
+    id: string;
+    sodt: string;
+    token: string;
 }

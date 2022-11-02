@@ -58,7 +58,7 @@ export class LocalStorageService {
     return this.stringStorage.get(key) || '';
   }
 
-  public removeUserValue(): void {
+  public removeUserValue(): void {;
     return this.storage.remove(this.UI);
   }
   public removeTokenValue(): void {

@@ -11,8 +11,6 @@ import { DashboardComponent } from './childview/dashboard/dashboard.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AddcompanyComponent } from './childview/companies/addcompany/addcompany.component';
-import { CompaniesComponent } from './childview/companies/companies.component';
 
 
 @NgModule({

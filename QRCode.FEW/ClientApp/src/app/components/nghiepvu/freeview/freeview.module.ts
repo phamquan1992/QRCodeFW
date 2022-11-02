@@ -5,6 +5,8 @@ import { FreeviewRoutingModule } from './freeview-routing.module';
 import { FreeviewComponent } from './freeview.component';
 import { DichvuComponent } from './dichvu/dichvu.component';
 import { LoginComponent } from '../../share/login/login.component';
+import { FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -15,7 +17,8 @@ import { LoginComponent } from '../../share/login/login.component';
   ],
   imports: [
     CommonModule,
-    FreeviewRoutingModule
+    FreeviewRoutingModule,
+    FormsModule
   ]
 })
 export class FreeviewModule { }
