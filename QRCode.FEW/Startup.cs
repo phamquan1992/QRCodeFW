@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using QRCode.FEW.Extensions.NHibernate;
 using QRCode.Repositories.IRepository;
 using QRCode.Repositories.Repository;
@@ -16,6 +18,7 @@ using QRCode.Services.ServiceImp;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace QRCode.FEW
 {
@@ -38,12 +41,14 @@ namespace QRCode.FEW
             services.AddScoped<IlocationRepository, locationRepository>();
             services.AddScoped<IcategoryRepository, categoryRepository>();
             services.AddScoped<Iqr_enterpriseRepository, qr_enterpriseRepository>();
+            services.AddScoped<IuserdataRepository, userdataRepository>();
             #endregion
             #region Services
             services.AddScoped<IproductService, productService>();
             services.AddScoped<IlocationService, locationService>();
             services.AddScoped<IcategoryService, categoryService>();
             services.AddScoped<Iqr_enterpriseService, qr_enterpriseService>();
+            services.AddScoped<IuserdataService, userdataService>();
             #endregion
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -58,7 +63,20 @@ namespace QRCode.FEW
                 configuration.RootPath = "ClientApp/dist";
             });
             services.AddControllers().AddNewtonsoftJson();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
+            {
+                option.RequireHttpsMetadata = false;
+                option.SaveToken = true;
+                option.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:Audience"],
+                    ValidIssuer = Configuration["JWT:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
 
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
