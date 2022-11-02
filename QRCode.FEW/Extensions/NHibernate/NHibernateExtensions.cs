@@ -22,6 +22,7 @@ namespace QRCode.FEW.Extensions.NHibernate
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<locationMapping>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<categoryMapping>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<qr_enterpriseMapping>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<userdataMapping>())
                 .ExposeConfiguration(cf => new SchemaUpdate(cf).Execute(false, false));
 
             var sessionFactory = configuration.BuildSessionFactory();
