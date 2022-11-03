@@ -100,6 +100,7 @@ namespace QRCode.FEW.Extensions.Common
                 client.Port = 587;
                 client.Credentials = new NetworkCredential(_gmailsend, _gmailpassword);
                 client.EnableSsl = true;
+                client.UseDefaultCredentials = true;
                 return await SendMail(_from, _to, _subject, _body, client);
             }
 
