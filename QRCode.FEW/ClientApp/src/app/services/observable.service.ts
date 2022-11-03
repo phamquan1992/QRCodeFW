@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { nguoidung } from '../models/nguoidung';
 import { LocalStorageService } from './local-storage.service';
 
@@ -24,7 +24,10 @@ export class ObservableService {
     this.currentPage = new BehaviorSubject<string>("");
     this.currentToken = new BehaviorSubject<string>(curToken);
   }
-
+  private _refeshrequired = new Subject<void>();
+  get Refeshrequired() {
+    return this._refeshrequired;
+  }
   getCurrentPage(): Observable<string> {
     return this.currentPage.asObservable();
   }
@@ -34,6 +37,7 @@ export class ObservableService {
   }
 
   getUserInfo(): Observable<nguoidung> {
+    this.Refeshrequired.next();
     return this.userInfo.asObservable();
   }
 
@@ -48,8 +52,9 @@ export class ObservableService {
       this.storage.setUserInfo(newValue);
     }
   }
-  reMoveUserValue() {
+  reMoveUserValue() {  
     this.storage.removeUserValue();
+    this.Refeshrequired.next();
   }
   getTokenValue(): Observable<string> {
     return this.currentToken;

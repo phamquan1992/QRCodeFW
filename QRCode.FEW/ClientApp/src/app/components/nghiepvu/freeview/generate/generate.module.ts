@@ -8,7 +8,6 @@ import { SigninComponent } from 'src/app/components/share/signin/signin.componen
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { FormsModule } from '@angular/forms';
 import { NgxQrcodeStylingModule } from 'ngx-qrcode-styling';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { LinkqrcodeComponent } from './linkqrcode/linkqrcode.component';
@@ -19,6 +18,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import { SurveyviewComponent } from './surveyview/surveyview.component';
 import { CompanyviewComponent } from './companyview/companyview.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -44,7 +44,8 @@ import { CompanyviewComponent } from './companyview/companyview.component';
     NgxQrcodeStylingModule,
     SharedModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    ReactiveFormsModule
   ]
 })
 export class GenerateModule { }

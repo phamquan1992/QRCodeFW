@@ -11,3 +11,8 @@ export class optioncs {
     background_color!:string;
     shape!:string;
 }
+export interface mail_model{
+    email:string;
+    sdt:string;
+    password:string;
+}

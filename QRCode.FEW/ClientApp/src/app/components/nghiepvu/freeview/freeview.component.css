@@ -1,0 +1,3 @@
+::ng-deep .custom-dialog-container .mat-dialog-container {
+    overflow-y: hidden;
+  }

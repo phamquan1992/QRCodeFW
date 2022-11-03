@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
                 } else {
                     this.messSrc.success('Đăng nhập thành công!');
                     this._sharingService.setUserValue(t as nguoidung);
-                    this.router.navigate(['/portal']);
+                    //this.router.navigate(['/portal']);
                     this.onClose();
                 }
                

@@ -1,6 +1,7 @@
 import { Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ObservableService } from 'src/app/services/observable.service';
@@ -16,28 +17,38 @@ export class FreeviewComponent implements OnInit {
   shownav: boolean = false;
   status = '';
   is_login = false;
-  nguoidung: nguoidung = {
+  public nguoidung: nguoidung = {
     email: '',
     id: '',
     sodt: '',
     token: ''
   };
+  currUser!: Observable<nguoidung>;
+
   public innerWidth: any;
   constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _sharingService: ObservableService, private storage: LocalStorageService) {
 
   }
   ngOnInit(): void {
-    let user = this.storage.getUserInfo();
-    if (user != undefined)
-      this.nguoidung = user;
-    else {
-      this.nguoidung = {
-        email: '',
-        id: '',
-        sodt: '',
-        token: ''
-      };
-    }
+    this.currUser = this._sharingService.getUserInfo();
+    this.currUser.subscribe(
+      t => {
+        if (t != undefined)
+          this.nguoidung = t;
+        else {
+          this.nguoidung = {
+            email: '',
+            id: '',
+            sodt: '',
+            token: ''
+          };
+        }
+      }
+    );
+    this._sharingService.getAuthenState().subscribe(
+      t => this.is_login = t
+    );
+
     this.innerWidth = window.innerWidth;
   }
   @HostListener('window:resize', ['$event'])
@@ -56,11 +67,7 @@ export class FreeviewComponent implements OnInit {
       this.showDialog('login');
   }
   tao_db() {
-    if (this.is_login === false)
-      this.dang_nhap();
-    else {
-      this.router.navigate(['/portal']);
-    }
+    this.router.navigate(['/portal']);
   }
   log_out() {
     this.is_login = false;
@@ -72,6 +79,11 @@ export class FreeviewComponent implements OnInit {
       sodt: '',
       token: ''
     };
+    this._sharingService.getAuthenState().subscribe(
+      t => {
+        console.log(t);
+      }
+    );
   }
   showDialog(status: string) {
     const dialogConfig = new MatDialogConfig();
@@ -83,20 +95,11 @@ export class FreeviewComponent implements OnInit {
     dialogConfig.maxHeight = this.innerWidth >= 1024 ? '' : "95%";
     dialogConfig.panelClass = "magrin_pane";
     dialogConfig.disableClose = true;
-    if (status === 'login') {
-      this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
-        res => {
-          //this.is_login = true;
-        }
-      );
-    }
-    if (status === 'singin') {
-      this.dialog.open(SigninComponent, dialogConfig).afterClosed().subscribe(
-        res => {
-          // this.rowSelect = -1;
-        }
-      );
-    }
+    this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
+      res => {
+        this._sharingService.getUserInfo();
+      }
+    );
   }
 
 }

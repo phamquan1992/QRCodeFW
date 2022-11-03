@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using QRCode.Core.Domain2;
 using QRCode.FEW.Extensions.NHibernate;
 using QRCode.Repositories.IRepository;
 using QRCode.Repositories.Repository;
@@ -50,6 +52,22 @@ namespace QRCode.FEW
             services.AddScoped<Iqr_enterpriseService, qr_enterpriseService>();
             services.AddScoped<IuserdataService, userdataService>();
             #endregion
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "_101SendEmailNotificationDoNetCoreWebAPI", Version = "v1" });
+            });
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
+
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.Configure<FormOptions>(o =>
@@ -87,6 +105,8 @@ namespace QRCode.FEW
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "_101SendEmailNotificationDoNetCoreWebAPI v1"));
             }
             else
             {
