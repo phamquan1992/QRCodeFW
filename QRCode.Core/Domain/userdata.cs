@@ -11,5 +11,6 @@ namespace QRCode.Core.Domain
         public virtual string sdt { get; set; }
         public virtual string password { get; set; }
         public virtual DateTime? created_date { get; set; }
+        public virtual bool status { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace QRCode.Core.Domain2
     }
     public class MailRequest
     {
+        public string sdt { get; set; }
+        public string pass { get; set; }
         public string ToEmail { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
@@ -26,5 +28,10 @@ namespace QRCode.Core.Domain2
         public string Password { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
+    }
+    public class result_objet
+    {
+        public string key { get; set; }
+        public string value { get; set; }
     }
 }

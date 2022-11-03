@@ -12,9 +12,10 @@ namespace QRCode.Core.Domain
             Table("userdata");
             Id(x => x.userid).GeneratedBy.Identity();
             Map(x => x.created_date).Nullable();
-            Map(x => x.email).Nullable();
-            Map(x => x.password).Nullable();
-            Map(x => x.sdt).Nullable();
+            Map(x => x.email).Not.Nullable();
+            Map(x => x.password).Not.Nullable();
+            Map(x => x.sdt).Not.Nullable();
+            Map(x => x.status).Nullable();
         }
     }
 }
