@@ -39,6 +39,11 @@ namespace QRCode.FEW.Controllers
                     sodt = nd.sdt,
                     token = ""
                 };
+                if (!nd.status)
+                {
+                    nguoidung.id = -1000;
+                    return nguoidung;
+                }
                 var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub,_configuration["JWT:Subject"]),
