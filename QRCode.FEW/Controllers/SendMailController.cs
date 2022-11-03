@@ -39,7 +39,7 @@ namespace QRCode.FEW.Controllers
         {
             try
             {
-                await MailUtils.SendMailGoogleSmtp("thanlong92vip@gmail.com", "phamquan2471992@gmail.com", "safsd", "Adsadsad", "quan pham", "Thanlong.92");
+                await MailUtils.SendMailGoogleSmtp("thanlong92vip@gmail.com", request.ToEmail, request.Subject, request.Body, "quan pham", "Thanlong.92");
                 return Ok();
             }
             catch (Exception ex)
