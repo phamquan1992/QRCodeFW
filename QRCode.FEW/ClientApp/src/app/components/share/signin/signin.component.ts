@@ -1,5 +1,5 @@
 import { E } from '@angular/cdk/keycodes';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MailRequest, mail_model, result_object } from 'src/app/models/optioncs';
@@ -18,7 +18,10 @@ export const passwordMatchingValidatior: ValidatorFn = (control: AbstractControl
 })
 export class SigninComponent implements OnInit {
   DataForm!: FormGroup;
-  constructor(public dialogRef: MatDialogRef<SigninComponent>, private dataSrc: DataService, private mess: MessageService) { }
+  url_str: string = '';
+  constructor(public dialogRef: MatDialogRef<SigninComponent>, private dataSrc: DataService, private mess: MessageService, @Inject('BASE_URL') baseUrl: string) {
+    this.url_str = baseUrl;
+  }
 
   ngOnInit(): void {
     this.DataForm = new FormGroup({
@@ -32,17 +35,17 @@ export class SigninComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close();
-   
+
   }
   dang_ky() {
-    if(this.DataForm.invalid){
+    if (this.DataForm.invalid) {
       return;
     }
     console.log(this.DataForm.value);
     let mail_xacnhan = this.DataForm.controls['email'].value;
     let sdt_xacnhan = this.DataForm.controls['sdt'].value;
     let pass_xacnhan = this.DataForm.controls['password'].value;
-    let url_xacnhan = 'https://localhost:44308/api/SendMail/XacThuc?sdt=' + sdt_xacnhan;
+    let url_xacnhan = this.url_str + 'api/SendMail/XacThuc?sdt=' + sdt_xacnhan;
     let mail_objet: MailRequest = {
       sdt: sdt_xacnhan,
       pass: pass_xacnhan,
@@ -58,10 +61,10 @@ export class SigninComponent implements OnInit {
       if (kq.result == "Success") {
         this.mess.success('Bạn đã đăng ký thành công!');
         this.dialogRef.close();
-      }else{
+      } else {
         this.mess.error('Có lỗi trong quá trình đăng ký!');
       }
-      
+
     });
   }
 }
