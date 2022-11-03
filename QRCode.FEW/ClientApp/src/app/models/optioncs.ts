@@ -16,3 +16,13 @@ export interface mail_model{
     sdt:string;
     password:string;
 }
+export interface MailRequest{
+    toemail:string;
+    subject:string;
+    body:string;
+    sdt:string;
+    pass:string;
+}
+export interface result_object{
+    result:string;
+}

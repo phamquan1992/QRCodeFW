@@ -88,9 +88,11 @@
                                     <input placeholder="Nhập lại mật khẩu..." type="password" autocomplete="off"
                                         class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
                                         [formControlName]="'repassword'" required>
-                                    
-                                    <div *ngIf="DataForm.errors?.['notmatched'] && (DataForm.touched || DataForm.dirty)" class="cross-validation-error-message alert alert-danger">
-                                        <span *ngIf="this.DataForm.errors!=null" class="text-red-600 text-xs">Mật khẩu không trùng khớp!</span>
+
+                                    <div *ngIf="DataForm.errors?.['notmatched'] && (DataForm.touched || DataForm.dirty)"
+                                        class="cross-validation-error-message alert alert-danger">
+                                        <span *ngIf="this.DataForm.errors!=null" class="text-red-600 text-xs">Mật khẩu
+                                            không trùng khớp!</span>
                                     </div>
                                 </span>
                                 <!---->
@@ -102,8 +104,9 @@
                             <div class="ant-form-item-control"><span class="ant-form-item-children">
                                     <div class="w-full flex justify-center">
                                         <button (click)="dang_ky()" type="button" class="btn-submit my-2 ant-btn ant-btn-primary
-                                            w-full rounded-[6px] h-11 bg-[#00b289] border-[#00b289] inline-block relative items-center whitespace-nowrap font-normal px-[15px]
-                    cursor-pointer text-white">
+                                            w-full rounded-[6px] h-11  inline-block relative items-center 
+                                            whitespace-nowrap font-normal px-[15px] text-white" 
+                                            [ngClass]="{'cursor-not-allowed bg-[#7addc6] border-[#7addc6]':DataForm.invalid,'cursor-pointer bg-[#00b289] border-[#00b289]':!DataForm.invalid}">
                                             <span>Đăng ký</span></button>
                                     </div>
                                 </span>

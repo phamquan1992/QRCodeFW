@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
         this.is_showpass = !this.is_showpass;
     }
     showDialog() {
+        this.dialogRef.close();
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit {
         dialogConfig.panelClass = "magrin_pane";
         this.dialog.open(SigninComponent, dialogConfig).afterClosed().subscribe(
             res => {
-                // this.rowSelect = -1;
+               
             }
         );
     }
@@ -56,13 +57,17 @@ export class LoginComponent implements OnInit {
                 let nd = t as nguoidung;
                 if (nd.id == '0') {
                     this.messSrc.error('Số điện thoại hoặc mật khẩu không hợp lệ!');
-                } else {
+                }
+                else if (nd.id == '-1000') {
+                    this.messSrc.warn('Tài khoản chưa được kích hoạt!\r\n'+'Vui lòng vào email đã đăng ký để kích hoạt tài khoản');
+                }
+                else {
                     this.messSrc.success('Đăng nhập thành công!');
                     this._sharingService.setUserValue(t as nguoidung);
                     //this.router.navigate(['/portal']);
                     this.onClose();
                 }
-               
+
             }
         );
     }

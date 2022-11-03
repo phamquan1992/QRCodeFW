@@ -33,6 +33,7 @@ export class DataService {
     }));
   }
   post(uri: string, data?: any) {
+    debugger;
     this.getHearder();
     return this.http.post(this.url_str + uri, data, { headers: this.headers }).pipe(
       map(
@@ -44,7 +45,7 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        // this.mess.handError(error);
+        console.log(error);
         return error;
       })
     );
