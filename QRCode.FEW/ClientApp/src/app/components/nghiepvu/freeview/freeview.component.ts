@@ -13,7 +13,7 @@ import { SigninComponent } from '../../share/signin/signin.component';
   templateUrl: './freeview.component.html',
   styleUrls: ['./freeview.component.css']
 })
-export class FreeviewComponent implements OnInit,OnChanges {
+export class FreeviewComponent implements OnInit {
   shownav: boolean = false;
   status = '';
   is_login = false;
@@ -28,9 +28,6 @@ export class FreeviewComponent implements OnInit,OnChanges {
   public innerWidth: any;
   constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _sharingService: ObservableService, private storage: LocalStorageService) {
 
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
   ngOnInit(): void {
     debugger;
