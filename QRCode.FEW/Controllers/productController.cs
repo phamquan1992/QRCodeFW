@@ -188,7 +188,21 @@ namespace QRCode.FEW.Controllers
                 value_ip = product_it.url_barcode
             };
             data.Add(img_mavach);
-
+            if (!string.IsNullOrEmpty(product_it.url_video))
+            {
+                productdetail video_product = new productdetail
+                {
+                    is_delete = true,
+                    is_require = true,
+                    is_visible = true,
+                    name = "url_video",
+                    nhom = "macdinh",
+                    Title = "Video sản phẩm",
+                    type = "",
+                    value_ip = product_it.url_video
+                };
+                data.Add(video_product);
+            }
             if (!string.IsNullOrEmpty(product_it.des_story))
             {
                 productdetail des_story = new productdetail
@@ -204,6 +218,7 @@ namespace QRCode.FEW.Controllers
                 };
                 data.Add(des_story);
             }
+           
             if (!string.IsNullOrEmpty(product_it.des_pack))
             {
                 productdetail des_pack = new productdetail
