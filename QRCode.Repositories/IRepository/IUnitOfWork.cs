@@ -11,6 +11,7 @@ namespace QRCode.Repositories.IRepository
         IcategoryRepository categoryRepository { get; }
         IuserdataRepository userdataRepository { get; }
         Iqr_enterpriseRepository qr_enterpriseRepository { get; }
+        Iqr_paymentRepository qr_paymentRepository { get; }
         void Commit();
         void Rollback();
     }
