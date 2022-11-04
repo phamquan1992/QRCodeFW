@@ -14,9 +14,7 @@ export class ObservableService {
   private currentPage: BehaviorSubject<string>;
   private currentToken: BehaviorSubject<string>;
 
-  constructor(
-    private storage: LocalStorageService
-  ) {
+  constructor(private storage: LocalStorageService) {
     let currUser = storage.getUserInfo();
     let curToken = storage.getTokenInfo();
     this.userInfo = new BehaviorSubject<nguoidung>(currUser);
@@ -37,7 +35,8 @@ export class ObservableService {
   }
 
   getUserInfo(): Observable<nguoidung> {
-    this.Refeshrequired.next();
+    let currUser = this.storage.getUserInfo();
+    this.userInfo = new BehaviorSubject<nguoidung>(currUser);
     return this.userInfo.asObservable();
   }
 
@@ -52,7 +51,7 @@ export class ObservableService {
       this.storage.setUserInfo(newValue);
     }
   }
-  reMoveUserValue() {  
+  reMoveUserValue() {
     this.storage.removeUserValue();
     this.Refeshrequired.next();
   }
@@ -70,6 +69,8 @@ export class ObservableService {
     this.storage.removeTokenValue();
   }
   getAuthenState(): Observable<boolean> {
+    let currUser = this.storage.getUserInfo();
+    this.isAuthenticated = new BehaviorSubject<boolean>(currUser != undefined);
     return this.isAuthenticated.asObservable();
   }
 

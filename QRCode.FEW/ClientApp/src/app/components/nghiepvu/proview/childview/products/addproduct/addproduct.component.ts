@@ -8,6 +8,7 @@ import { Observable, switchMap } from 'rxjs';
 import { ProductsService } from '../products.service';
 import { product } from 'src/app/models/product';
 import { MessageService } from 'src/app/services/message.service';
+import { data_upload } from 'src/app/models/optioncs';
 
 @Component({
     selector: 'app-addproduct',
@@ -19,7 +20,8 @@ export class AddproductComponent implements OnInit {
         logo: new FormControl(''),
         url_img: new FormControl(''),
         url_iso: new FormControl(''),
-        url_barcode: new FormControl('')
+        url_barcode: new FormControl(''),
+        url_video: new FormControl(''),
     });
     payLoad: any;
     data!: Inputcustom[];
@@ -153,7 +155,7 @@ export class AddproductComponent implements OnInit {
     }
     generateFormControls() {
         this.data.forEach(element => {
-            if (element.name != 'logo' && element.name != 'url_img' && element.name != 'url_iso' && element.name != 'url_barcode')
+            if (element.name != 'logo' && element.name != 'url_img' && element.name != 'url_iso' && element.name != 'url_barcode' && element.name != 'url_video')
                 this.DataForm.addControl(element.name, new FormControl(''));
             else {
                 this.DataForm.controls[element.name].setValue(element.value_ip);
@@ -168,6 +170,9 @@ export class AddproductComponent implements OnInit {
                 }
                 if (element.name == 'url_barcode') {
                     this.src_mavach = element.value_ip;
+                }
+                if (element.name == 'url_video') {
+                    this.src_video = element.value_ip;
                 }
             }
         });
@@ -198,31 +203,41 @@ export class AddproductComponent implements OnInit {
     }
     str_st = '';
     showDialog(gt: string) {
+        let data_show: data_upload = {
+            type_file: 'image',
+            forder_save: 'product'
+        }
+        if (gt == 'video')
+            data_show.type_file = 'video';
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.autoFocus = true;
         dialogConfig.width = "520px";
         // dialogConfig.height = "310px";
         dialogConfig.panelClass = "pd_dialog_none";
-        dialogConfig.data='product';
+        dialogConfig.data = data_show;
         this.dialog.open(DialogUploadComponent, dialogConfig).afterClosed().subscribe(
             res => {
-                if (res != null && res != '' && res != undefined) {
+                debugger;
+                if (res != null && res != '' && res != undefined) {                    
                     if (gt == 'daidien') {
                         this.src_daidien = res;
                         this.DataForm.controls['logo'].setValue(res);
-                    }
-                    if (gt == 'sanpham') {
+                    } else if (gt == 'sanpham') {
                         this.src_sanpham = res;
                         this.DataForm.controls['url_img'].setValue(res);
                     }
-                    if (gt == 'chungchi') {
+                    else if (gt == 'chungchi') {
                         this.src_chungchi = res;
                         this.DataForm.controls['url_iso'].setValue(res);
                     }
-                    if (gt == 'mavach') {
+                    else if (gt == 'mavach') {
                         this.src_mavach = res;
                         this.DataForm.controls['url_barcode'].setValue(res);
+                    }
+                    else if (gt == 'video') {
+                        this.src_video = res;
+                        this.DataForm.controls['url_video'].setValue(res);
                     }
                 }
             }

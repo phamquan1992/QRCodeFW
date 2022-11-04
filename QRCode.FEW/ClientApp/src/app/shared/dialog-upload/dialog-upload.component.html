@@ -4,7 +4,7 @@
             <div>Tải ảnh lên</div>
         </div>
     </div>
-    <app-uploadinput (onUploadFinished)="load_src_file($event)" [save_upload]="save_forder"></app-uploadinput>
+    <app-uploadinput (onUploadFinished)="load_src_file($event)" [save_upload]="save_forder" [type_upload]="type_file"></app-uploadinput>
     <button class="absolute top-0 right-0 h-[43px] w-[43px] text-white"><i class="fa fa-times" aria-hidden="true"
             (click)="bt_click('')"></i></button>
 </div>

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { data_upload } from 'src/app/models/optioncs';
 
 @Component({
   selector: 'app-dialog-upload',
@@ -9,10 +10,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class DialogUploadComponent implements OnInit {
 
   save_forder: string = '';
-  constructor(public dialogRef: MatDialogRef<DialogUploadComponent>, @Inject(MAT_DIALOG_DATA) public data: string) { }
+  type_file: string = '';
+  constructor(public dialogRef: MatDialogRef<DialogUploadComponent>, @Inject(MAT_DIALOG_DATA) public data: data_upload) { }
 
-  ngOnInit(): void {   
-    this.save_forder = this.data;
+  ngOnInit(): void {
+    this.save_forder = this.data.forder_save;
+    this.type_file = this.data.type_file;
   }
   str_src = '';
   load_src_file(gt: any) {

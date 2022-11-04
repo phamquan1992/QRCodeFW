@@ -33,8 +33,9 @@ export class FreeviewComponent implements OnInit {
     this.currUser = this._sharingService.getUserInfo();
     this.currUser.subscribe(
       t => {
-        if (t != undefined)
+        if (t != undefined) {
           this.nguoidung = t;
+        }
         else {
           this.nguoidung = {
             email: '',

@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { location } from 'src/app/models/location';
+import { data_upload } from 'src/app/models/optioncs';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
 import { MessageService } from 'src/app/services/message.service';
 import { DialogUploadComponent } from 'src/app/shared/dialog-upload/dialog-upload.component';
@@ -40,7 +41,7 @@ export class AddcompanyComponent implements OnInit {
   val_tinh = '';
   val_huyen = '';
   val_xa = '';
-  
+
   arr_dynamic: item_dropdown_cp[] = [];
   src_daidien = '';
   src_bia = '';
@@ -139,12 +140,18 @@ export class AddcompanyComponent implements OnInit {
     }
   }
   showDialog(gt: string) {
+    let data_show: data_upload = {
+      type_file: 'image',
+      forder_save: 'qr_enterprise'
+    }
+    if (gt == 'video')
+      data_show.type_file = 'video';
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "520px";
     dialogConfig.panelClass = "pd_dialog_none";
-    dialogConfig.data = 'qr_enterprise';
+    dialogConfig.data = data_show;
     this.dialog.open(DialogUploadComponent, dialogConfig).afterClosed().subscribe(
       res => {
         if (res != null && res != '' && res != undefined) {
