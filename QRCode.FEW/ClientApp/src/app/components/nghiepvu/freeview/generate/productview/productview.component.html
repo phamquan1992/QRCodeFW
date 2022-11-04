@@ -66,9 +66,9 @@
                                         <div class="ant-form-item-control">
                                             <mat-chip-list #chipList aria-label="Fruit selection" matAutocompleteOrigin
                                                 #origin1="matAutocompleteOrigin">
-                                                <mat-chip *ngFor="let fruit of fruits" (removed)="remove(fruit)"
+                                                <mat-chip *ngFor="let it of arr_chip_product" (removed)="remove(it)"
                                                     style="margin-top: 2px; margin-bottom: 0px;min-height: 22px;border-radius: 4px;">
-                                                    {{fruit}}
+                                                    {{it.name}}
                                                     <button matChipRemove>
                                                         <i class="fa fa-times" aria-hidden="true"></i>
                                                     </button>
@@ -81,9 +81,9 @@
                                             </mat-chip-list>
                                             <mat-autocomplete #auto="matAutocomplete"
                                                 (optionSelected)="selected($event)">
-                                                <mat-option *ngFor="let fruit of filteredFruits | async"
+                                                <mat-option *ngFor="let fruit of filter_product | async"
                                                     class="relative" style="height: 32px;" [value]="fruit">
-                                                    {{fruit}}
+                                                    {{fruit.name}}
                                                     <i *ngIf="check_select(fruit)"
                                                         class="fa fa-check text-[#196898] absolute right-2 top-[10px]"
                                                         aria-hidden="true" style="font-size: 12px;"></i>

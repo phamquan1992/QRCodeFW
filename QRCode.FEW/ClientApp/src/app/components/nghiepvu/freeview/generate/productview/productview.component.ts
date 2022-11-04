@@ -8,6 +8,8 @@ import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { map, Observable, startWith } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { product } from 'src/app/models/product';
+import { ProductsService } from '../../../proview/childview/products/products.service';
 export interface item_value {
   value: string;
   is_select: boolean;
@@ -38,17 +40,22 @@ export class ProductviewComponent implements OnInit {
   arr_item_ks: item_value[] = [{ value: 'Khảo sát 1', is_select: false }, { value: 'Khảo sát 2', is_select: false }, { value: 'Khảo sát 3', is_select: false }];
   arr_value: item_value[] = [];
   arr_value_ks: item_value[] = [];
-  constructor(private dialog: MatDialog, private datepipe: DatePipe) {
-    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
-      startWith(null),
-      map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allFruits.slice())),
-    );
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl('');
+  arr_product_core!: Observable<product[]>;
+  arr_chip_product: product[] = [];
+  filter_product!: Observable<product[]>;
+  @ViewChild('fruitInput') fruitInput!: ElementRef<HTMLInputElement>;
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService) {
+
   }
 
   ngOnInit(): void {
     this.status = '';
     this.arr_value = this.arr_item;
     this.arr_value_ks = this.arr_item_ks;
+    this.arr_product_core = this.productSrc.get_product_list();
+    this.filter_product = this.arr_product_core;
   }
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
@@ -124,18 +131,12 @@ export class ProductviewComponent implements OnInit {
     this.arr_value_ks = this.arr_item_ks.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
   }
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('');
-  filteredFruits!: Observable<string[]>;
-  fruits: string[] = ['Lemon'];
-  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
-  @ViewChild('fruitInput') fruitInput!: ElementRef<HTMLInputElement>;
   add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
+    console.log(event);
+    const value = (event.value || {}) as product;
     // Add our fruit
     if (value) {
-      this.fruits.push(value);
+      this.arr_chip_product.push(value);
     }
 
     // Clear the input value
@@ -144,30 +145,32 @@ export class ProductviewComponent implements OnInit {
     this.fruitCtrl.setValue(null);
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  remove(fruit: product): void {
+    const index = this.arr_chip_product.findIndex(t => t == fruit);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.arr_chip_product.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    let id_fruit = this.fruits.findIndex(t => t == event.option.viewValue);
-    if (id_fruit == -1)
-      this.fruits.push(event.option.viewValue);
+    console.log(event);
+    let object_select = event.option.value as product;
+    let idex_product = this.arr_chip_product.findIndex(t => t == object_select);
+    if (idex_product == -1)
+      this.arr_chip_product.push(object_select);
     else
-      this.fruits.splice(id_fruit, 1);
+      this.arr_chip_product.splice(idex_product, 1);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
   }
-  check_select(gt: string) {
-    const index = this.fruits.indexOf(gt);
+  check_select(gt: product) {
+    const index = this.arr_chip_product.indexOf(gt);
     return index == -1 ? false : true;
   }
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  // private _filter(value: string): string[] {
+  //   const filterValue = value.toLowerCase();
 
-    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
-  }
+  //   return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+  // }
 }

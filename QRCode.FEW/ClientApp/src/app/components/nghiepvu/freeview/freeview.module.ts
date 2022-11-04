@@ -6,6 +6,8 @@ import { FreeviewComponent } from './freeview.component';
 import { DichvuComponent } from './dichvu/dichvu.component';
 import { LoginComponent } from '../../share/login/login.component';
 import { FormsModule } from '@angular/forms';
+import { DangkyComponent } from './dichvu/dangky/dangky.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -14,11 +16,13 @@ import { FormsModule } from '@angular/forms';
     FreeviewComponent,
     DichvuComponent,
     LoginComponent,
+    DangkyComponent,
   ],
   imports: [
     CommonModule,
     FreeviewRoutingModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ]
 })
 export class FreeviewModule { }

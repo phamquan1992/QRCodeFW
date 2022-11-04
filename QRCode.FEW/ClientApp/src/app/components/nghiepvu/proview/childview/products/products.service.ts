@@ -22,7 +22,7 @@ export class ProductsService {
     this.RefeshRequired.next();
   }
   get_product_list() {
-    return this.dataSrv.get('product');
+    return this.dataSrv.get('product') as Observable<product[]>;
   }
   delete_product(arr_id: number[]) {
     return this.dataSrv.delete_array('product/delete', arr_id);

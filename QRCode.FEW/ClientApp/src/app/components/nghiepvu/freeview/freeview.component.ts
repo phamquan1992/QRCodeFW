@@ -30,7 +30,6 @@ export class FreeviewComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    debugger;
     this.currUser = this._sharingService.getUserInfo();
     this.currUser.subscribe(
       t => {
