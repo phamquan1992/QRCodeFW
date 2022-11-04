@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QRCode.Core.Domain2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,16 @@ namespace QRCode.FEW.Extensions.Common
                 return Path.Combine(@"ClientApp\src\assets\qr_image", ac_upload);
             else
                 return temp.FirstOrDefault();
+        }
+        public List<package_objet> GetPackage_Objets()
+        {
+            List<package_objet> list_pack = new List<package_objet>
+            {
+                new package_objet{packcode="Pack1",packname="Gói 5 mã 1 năm",price=2500000},
+                new package_objet{packcode="Pack2",packname="Gói 10 mã 1 năm",price=3000000},
+                new package_objet{packcode="Pack3",packname="Gói 20 mã 1 năm",price=4000000}
+            };
+            return list_pack;
         }
     }
 }
