@@ -34,4 +34,10 @@ namespace QRCode.Core.Domain2
         public string key { get; set; }
         public string value { get; set; }
     }
+    public class package_objet
+    {
+        public string packcode { get; set; }
+        public string packname { get; set; }
+        public decimal price { get; set; }
+    }
 }
