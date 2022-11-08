@@ -2,6 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { product } from 'src/app/models/product';
 import { MessageService } from 'src/app/services/message.service';
@@ -27,7 +28,7 @@ export class ProductsComponent implements OnInit {
   };
   value_select = 'all';
   name_filter = '';
-  constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService) { }
+  constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService, private router: Router) { }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
@@ -132,7 +133,7 @@ export class ProductsComponent implements OnInit {
           this.mesSrc.error('Có lỗi trong quá trình lưu dữ liệu');
         }
       }
-    );    
+    );
   }
   showXoaDialog(act: string) {
     const dialogConfig = new MatDialogConfig();
@@ -152,5 +153,9 @@ export class ProductsComponent implements OnInit {
         }
       }
     );
+  }
+  doublerow(id: number) {
+    let link = '/portal/products/edit/' + id;
+    this.router.navigate([link]);
   }
 }

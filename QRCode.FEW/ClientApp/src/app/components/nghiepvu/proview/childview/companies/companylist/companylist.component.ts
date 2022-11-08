@@ -175,4 +175,8 @@ export class CompanylistComponent implements OnInit {
       }
     );
   }
+  doublerow(id: number) {
+    let link = '/portal/companies/edit/' + id;
+    this.router.navigate([link]);
+  }
 }

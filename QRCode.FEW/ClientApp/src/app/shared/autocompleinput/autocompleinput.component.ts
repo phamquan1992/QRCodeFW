@@ -21,20 +21,27 @@ export class AutocompleinputComponent implements OnInit {
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
   @Output() val_out = new EventEmitter<string>();
   _value_input = '';
+  isequ = false;
   @Input() set value_input(gt: string) {
     this._value_input = gt;
+    if (gt != null && gt != '')
+      this.isequ = true;
   }
-  constructor() {  
+  constructor() {
   }
-  
+
   ngOnInit(): void {
     this.arr_item = this.data;
   }
   close_event(gt: string) {
-    //this.val_out.emit(gt);
+    this.rotate_it = false;
   }
-  select_it(evnt: any) {
-    console.log(evnt.option.value);
+  get isValid() { return this.isequ; }
+  select_it(evnt: any, data: string) {
+    if (data != null)
+      this.isequ = true;
+    else
+      this.isequ = false;
     let gt = evnt.option.value.name;
     this.val_out.emit(gt);
   }
@@ -81,9 +88,23 @@ export class AutocompleinputComponent implements OnInit {
   }
   auto_change(obj_input: any) {
     let val = obj_input.value;
+    if (val != null && val != '')
+      this.isequ = true;
+    else {
+      this.val_out.emit('');
+      this.isequ = false;
+    }
+
     this.arr_item = this.data.filter(option => option.mota.toLowerCase().includes(val.toLowerCase()));
   }
   displayFn(selectedoption: any) {
     return selectedoption ? selectedoption.mota : undefined;
+  }
+  openPanel(evt: any): void {
+    evt.stopPropagation();
+    if (!this.autocompleteTrigger.panelOpen)
+      this.autocompleteTrigger.openPanel();
+    else
+      this.autocompleteTrigger.closePanel();
   }
 }

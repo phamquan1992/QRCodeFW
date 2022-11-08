@@ -22,10 +22,6 @@ export class ObservableService {
     this.currentPage = new BehaviorSubject<string>("");
     this.currentToken = new BehaviorSubject<string>(curToken);
   }
-  private _refeshrequired = new Subject<void>();
-  get Refeshrequired() {
-    return this._refeshrequired;
-  }
   getCurrentPage(): Observable<string> {
     return this.currentPage.asObservable();
   }
@@ -35,8 +31,8 @@ export class ObservableService {
   }
 
   getUserInfo(): Observable<nguoidung> {
-    let currUser = this.storage.getUserInfo();
-    this.userInfo = new BehaviorSubject<nguoidung>(currUser);
+    // let currUser = this.storage.getUserInfo();
+    // this.userInfo = new BehaviorSubject<nguoidung>(currUser);
     return this.userInfo.asObservable();
   }
 
@@ -53,7 +49,8 @@ export class ObservableService {
   }
   reMoveUserValue() {
     this.storage.removeUserValue();
-    this.Refeshrequired.next();
+    // let currUser = this.storage.getUserInfo();
+    // this.userInfo = new BehaviorSubject<nguoidung>(currUser);
   }
   getTokenValue(): Observable<string> {
     return this.currentToken;
@@ -71,6 +68,8 @@ export class ObservableService {
   getAuthenState(): Observable<boolean> {
     let currUser = this.storage.getUserInfo();
     this.isAuthenticated = new BehaviorSubject<boolean>(currUser != undefined);
+    console.log(currUser);
+    this.isAuthenticated.asObservable().subscribe(t=>console.log(t));
     return this.isAuthenticated.asObservable();
   }
 

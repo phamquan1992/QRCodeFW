@@ -9,19 +9,24 @@
     <form (ngSubmit)="UpdateData()" [formGroup]="DataForm" class="w-1/2">
         <div class="grid grid-cols-3 gap-4">
             <div class="flex flex-col relative my-2">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh đại diện sản
-                    phẩm</label>
+                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">
+                    <span>Ảnh đại diện</span>
+                    <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span> </span></label>
                 <div class="flex flex-row">
                     <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
                         (click)="showDialog('daidien')" style="width: 100px; height: 100px;">
                         <img src="./assets/images/img_add.png" alt="">
                     </button>
-                    <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
-                        [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_daidien!='','border-0':src_daidien=='' || src_daidien==null}"
+                    <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1 border"
+                        [ngClass]="{' border-solid border-[#d9d9d9] rounded-[7px]':src_daidien!='',' border-red-600':src_daidien=='' || src_daidien==null}"
                         style="width: 100px; height: 100px;">
-                        <img src="{{src_daidien}}" alt="" style="object-fit: contain;">
+                        <img src="{{src_daidien}}" alt="" style="object-fit: contain;">                        
                         <input type="hidden" [formControlName]="'logo'" name="logo" value="">
                     </div>
+                </div>
+                <div *ngIf="src_daidien=='' || src_daidien==null">
+                    <span class="text-red-600 text-xs italic">Ảnh đại diện không
+                        được để trống!</span>
                 </div>
             </div>
             <div class="flex flex-col relative my-2">
@@ -80,7 +85,7 @@
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                         [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_video!='','border-0':src_video==''|| src_video==null}"
                         style="width: 180px; height: 100px;">
-                        <video src="{{src_video}}" alt="" controls></video>
+                        <video *ngIf="src_video!=''" src="{{src_video}}" alt="" controls></video>
                         <input type="hidden" [formControlName]="'url_video'">
                     </div>
                 </div>
@@ -93,7 +98,7 @@
                 (out_delete)="delete_input_temp($event)"></app-custominput>
         </div>
         <!-- ---------------------------- -->
-        <div class="border border-solid border-[#6867671c] h-[1px] w-full relative my-4">
+        <div class="border border-solid border-[#6867671c] h-[1px] w-full relative mt-6 mb-4">
             <span class="block absolute -top-3 left-2 bg-[#fffdfd] px-1 font-bold text-sm font-[Roboto]">Mô tả sản
                 phẩm</span>
         </div>
@@ -115,7 +120,7 @@
             </div>
         </div>
         <!-- ---------------------------- -->
-        <div class="border border-solid border-[#6867671c] h-[1px] w-full relative my-4">
+        <div class="border border-solid border-[#6867671c] h-[1px] w-full relative mt-6 mb-4">
             <span class="block absolute -top-3 left-2 bg-[#fffdfd] px-1 font-bold text-sm font-[Roboto]">Thông tin
                 khác</span>
         </div>
@@ -133,8 +138,9 @@
             </app-addinput>
         </div>
         <div class="text-center">
-            <button type="button" (click)="UpdateData()"
-                class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Cập
+            <button type="button" (click)="UpdateData()" [disabled]="DataForm.invalid"
+                class="leading-[1.5] relative inline-block font-normal text-center h-8 px-[15px] text-[13px] mr-[5px] mb-[5px]"
+                [ngClass]="{'cursor-not-allowed bg-[#f5f5f5] border-[#d9d9d9] text-[#00000040]':DataForm.invalid,'text-white cursor-pointer bg-[#196898] border-[#196898]':DataForm.valid}">Cập
                 nhật</button>
             <button routerLink="/portal/products" type="button"
                 class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Quay

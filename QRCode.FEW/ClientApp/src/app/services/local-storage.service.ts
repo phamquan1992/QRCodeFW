@@ -12,7 +12,7 @@ export class LocalStorageService {
   private stringStorage!: StorageService<string>;
   public UI: string = '996F1E39-17E2-4171-963A-F21B92E1228A';
   private SK = '2FA7DCC4-0E8B-461E-AD06-120C7A9E6D59';
-  private TOKEN_KEY = 'TOKEN_VALUE';
+  private TOKEN_KEY = '2FA7DCC4-0E8B-461E-AD06-120C7A9B54ER';
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) {
     this.numberStorage = storage.withDefaultTranscoder(StorageTranscoders.NUMBER);
     this.stringStorage = storage.withDefaultTranscoder(StorageTranscoders.STRING);

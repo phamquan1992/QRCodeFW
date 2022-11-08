@@ -10,6 +10,9 @@ import { map, Observable, startWith } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { product } from 'src/app/models/product';
 import { ProductsService } from '../../../proview/childview/products/products.service';
+import { PaynemtService } from 'src/app/services/paynemt.service';
+import { qr_payment } from 'src/app/models/qr_payment';
+import { ObservableService } from 'src/app/services/observable.service';
 export interface item_value {
   value: string;
   is_select: boolean;
@@ -45,8 +48,10 @@ export class ProductviewComponent implements OnInit {
   arr_product_core!: Observable<product[]>;
   arr_chip_product: product[] = [];
   filter_product!: Observable<product[]>;
+  arr_payment!: Observable<qr_payment[]>;
+  filter_payment!: Observable<qr_payment[]>;
   @ViewChild('fruitInput') fruitInput!: ElementRef<HTMLInputElement>;
-  constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService) {
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService) {
 
   }
 
@@ -56,12 +61,26 @@ export class ProductviewComponent implements OnInit {
     this.arr_value_ks = this.arr_item_ks;
     this.arr_product_core = this.productSrc.get_product_list();
     this.filter_product = this.arr_product_core;
+    this.sharingSrc.getUserInfo().subscribe(user => {
+      this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
+      this.filter_payment = this.arr_payment;
+    });
   }
+ 
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
   taiqr() {
     this.now = new Date();
     this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+  }
+  filter_payment_action(evet:any){
+
+  }
+  displayFn(selectedoption: any) {
+    return selectedoption ? selectedoption.packname : undefined;
+  }
+  select_payment(evnt: any) {
+    let gt = evnt.option.value.packcode;
   }
   showDialog() {
     const dialogConfig = new MatDialogConfig();

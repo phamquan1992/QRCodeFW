@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, AfterViewChecked, ChangeDetectionStrategy } from '@angular/core';
 import { MessageService } from 'src/app/services/message.service';
+import { ObservableService } from 'src/app/services/observable.service';
 
 @Component({
   selector: 'app-uploadinput',
@@ -15,13 +16,20 @@ export class UploadinputComponent implements OnInit {
   fileToUpload!: File;
   @Input() save_upload = '';
   @Input() type_upload = '';
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private messSrc: MessageService) {
+  private token = '';
+  private headers = new HttpHeaders();
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private messSrc: MessageService, private sharingService: ObservableService) {
     this.url_string = baseUrl;
+    this.sharingService.getTokenValue().subscribe(t => { this.token = `Bearer ${t}`; });
   }
 
   ngOnInit(): void {
   }
-
+  getHearder() {
+    this.headers = new HttpHeaders();
+    this.token = this.token.replace('"', '').replace('"', '');
+    this.headers = this.headers.set("Authorization", this.token);
+  }
   handleFileInput(gt: any) {
     this.fileToUpload = gt.files.item(0);
     console.log(this.fileToUpload);
@@ -29,13 +37,14 @@ export class UploadinputComponent implements OnInit {
   }
   str_img: any;
   uploadFile = (fileToUpload: File) => {
+    this.getHearder();
     if (fileToUpload.type.indexOf(this.type_upload) == -1) {
       this.messSrc.error('File không đúng định dạng');
       this.onUploadFinished.emit('');
     } else {
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
-      this.http.post(this.url_string + 'api/' + this.save_upload, formData, { reportProgress: true, observe: 'events' })
+      this.http.post(this.url_string + 'api/' + this.save_upload, formData, { headers: this.headers, reportProgress: true, observe: 'events' })
         .subscribe({
           next: (event) => {
             if (event.type === HttpEventType.UploadProgress) {

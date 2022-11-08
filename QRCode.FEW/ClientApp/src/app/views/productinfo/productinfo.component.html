@@ -1,0 +1,71 @@
+<div class="md:max-w-[1200px] bg-white mx-auto h-screen w-full" style="font-family: Roboto, sans-serif; color: #111;">
+    <div *ngIf="(product$ | async) as data">
+        <div class="w-full inline-block">
+            <img src="{{data.url_img}}" alt="">
+        </div>
+        <div class="px-[24px] pt-[24px] bg-white min-h-screen">
+            <div>
+                <h1 class="font-bold leading-6 overflow-ellipsis text-xl">{{data.name}}</h1>
+            </div>
+            <div class="text-xl text-[#4265ed] font-bold pb-6 mb-6 border-b border-solid border-[#e6e6e6]">
+                {{data.price|number}} vnđ
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_story">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Câu chuyện sản phẩm</h1>
+                <div [innerHTML]="data.des_story|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_manufactur">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Quy trình sản xuất</h1>
+                <div [innerHTML]="data.des_manufactur|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6" *ngIf="data.des_pack">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Quy cách đóng gói</h1>
+                <div [innerHTML]="data.des_pack|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_element">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Thành phần</h1>
+                <div [innerHTML]="data.des_element|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6" *ngIf="data.des_uses">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Công dụng</h1>
+                <div [innerHTML]="data.des_uses|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_guide">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Hướng dẫn sử dụng</h1>
+                <div [innerHTML]="data.des_guide|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_preserve">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Bảo quản</h1>
+                <div [innerHTML]="data.des_preserve|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_startdate">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Ngày sản xuất</h1>
+                <div [innerHTML]="data.des_startdate|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.des_enddate">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Hạn sử dụng</h1>
+                <div [innerHTML]="data.des_enddate|safeHtml"></div>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.additional !=''">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Thông tin thêm</h1>
+                <ul *ngFor="let it of arr_dynamic">
+                    <li>
+                        <div class="grid gap-1 md:grid-cols-3 grid-cols-1">
+                            <div><span class="font-bold text-sm text-[13px]">- {{it.title}}:</span></div>
+                            <div class="md:col-span-2"><span class="text-sm text-[13px] break-words">{{it.value}}</span></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>

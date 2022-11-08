@@ -1,0 +1,7 @@
+::ng-deep .mat-select-panel{
+    position: absolute;
+    top: 24px;
+    left: 15px;
+    min-width: calc(100% + 3px) !important;
+    border-radius: 0px !important;
+}

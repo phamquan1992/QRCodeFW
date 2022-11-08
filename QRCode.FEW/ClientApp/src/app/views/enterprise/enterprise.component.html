@@ -1,0 +1,48 @@
+<div class="md:max-w-[1200px] bg-[#e5e5e5] mx-auto h-screen w-full"
+    style="font-family: Roboto, sans-serif; color: #111;">
+    <div *ngIf="(companyObj$ | async) as data">
+        <div class="relative w-full bg-gradient-to-r from-[#124b9f] to-[#4076c2] min-h-[150px] md:min-h-[300px]">
+            <div class="absolute w-full top-0 left-0 h-full flex flex-col justify-center items-center px-6">
+                <img alt="" class="mb-8 w-[60px] h-[60px] md:w-[150px] md:h-[150px] rounded-full object-cover"
+                    src="{{data.logo}}">
+            </div>
+        </div>
+        <div class="relative -mt-8 bg-white mx-6 rounded-[8px]">
+            <div class="p-6">
+                <h2 _ngcontent-oxy-c71="" class="font-bold text-xl"> {{data.name}}</h2>
+            </div>
+        </div>
+        <div class="relative m-8 bg-white mx-6 rounded-[8px]">
+            <div class="p-6">
+                <h2 _ngcontent-oxy-c71="" class="font-bold mb-2"> Thông tin chung</h2>
+                <div class="mb-2" *ngIf="data.address">
+                    <div class="flex flex-row">
+                        <i class="fa fa-map-marker mr-1" aria-hidden="true"></i>
+                        <span class="inline-block">{{data.address}}</span>
+                    </div>
+                </div>
+                <div class="mb-2" *ngIf="data.tel"><span> <i class="fa fa-phone mr-1"
+                            aria-hidden="true"></i>{{data.tel}}</span></div>
+                <div class="mb-2" *ngIf="data.fax"><span> <i class="fa fa-fax mr-1"
+                            aria-hidden="true"></i>{{data.fax}}</span></div>
+                <div class="mb-2" *ngIf="data.email"><span> <i class="fa fa-envelope mr-1"
+                            aria-hidden="true"></i>{{data.email}}</span></div>
+            </div>
+        </div>
+        <div class="relative m-8 bg-white mx-6 rounded-[8px]" *ngIf="arr_link.length>0">
+            <div class="p-6">
+                <h2 _ngcontent-oxy-c71="" class="font-bold mb-2">Liên kết</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4">
+                    <div *ngFor="let it_lk of arr_link">
+                        <a href="{{it_lk.link}}" class="cursor-pointer">
+                            <img _ngcontent-joq-c197="" src="{{it_lk.url_img}}" class="ic-link-active"
+                                style="width: 24px; height: 24px; display: inline-block; margin-right: 4px;">
+                            <span class="inline-block align-text-top">{{it_lk.name}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

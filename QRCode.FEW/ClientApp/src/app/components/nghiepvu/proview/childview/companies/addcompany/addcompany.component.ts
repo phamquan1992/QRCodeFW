@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
@@ -22,18 +22,18 @@ export interface item_dropdown_cp {
 })
 export class AddcompanyComponent implements OnInit {
   DataForm: FormGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     taxcode: new FormControl(''),
-    tel: new FormControl(''),
-    email: new FormControl(''),
+    tel: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(11)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     fax: new FormControl(''),
-    logo: new FormControl(''),
-    nation: new FormControl(''),
-    province: new FormControl(''),
-    district: new FormControl(''),
-    wards: new FormControl(''),
-    occupation: new FormControl(''),
-    address: new FormControl(''),
+    logo: new FormControl('', Validators.required),
+    nation: new FormControl('', Validators.required),
+    province: new FormControl('', Validators.required),
+    district: new FormControl('', Validators.required),
+    wards: new FormControl('', Validators.required),
+    occupation: new FormControl('', Validators.required),
+    address: new FormControl('', Validators.required),
   });
   constructor(private dialog: MatDialog, private companySrc: CompaniesService, private messSrc: MessageService, private route: ActivatedRoute, private router: Router) { }
   gt_id!: Observable<string>;
@@ -213,14 +213,23 @@ export class AddcompanyComponent implements OnInit {
   auto_tinh_change(obj_input: any) {
     let val = obj_input.value;
     this.arr_tinh = this.arr_tinh_tmp.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    if (val == '' || val == null) {
+      this.DataForm.controls['province'].setValue('');;
+    }
   }
   auto_huyen_chang(obj_input: any) {
     let val = obj_input.value;
     this.array_huyen = this.array_huyen_tmp.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    if (val == '' || val == null) {
+      this.DataForm.controls['district'].setValue('');;
+    }
   }
   auto_xa_chang(obj_input: any) {
     let val = obj_input.value;
     this.array_xa = this.array_xa_tmp.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    if (val == '' || val == null) {
+      this.DataForm.controls['wards'].setValue('');;
+    }
   }
   UpdateData() {
     const myObj = JSON.parse(JSON.stringify(this.data_update));
@@ -302,5 +311,8 @@ export class AddcompanyComponent implements OnInit {
     let index_dynamic = this.arr_dynamic.map(t => t.key).indexOf(name);
     this.arr_dynamic.splice(index_dynamic, 1);
   }
-
+  focusOutFunction(name: string) {
+    let value_gt = this.DataForm.controls[name].value;
+    console.log(value_gt); 
+  }
 }

@@ -20,6 +20,7 @@ export class AddinputComponent implements OnInit {
   @Input() type_input = 'text';
   tieude_val = '';
   tieude_val_close = '';
+  name_select='';
   arr_thongtinkhac = [
     { name: 'dynamic_1', value: 'Số công bố chất lượng' }, { name: 'dynamic_2', value: 'Số công bố An toàn thực phẩm' }, { name: 'dynamic_3', value: 'Số công bố lưu hành' },
     { name: 'dynamic_4', value: 'Tiêu chuẩn áp dụng' }, { name: 'dynamic_5', value: 'Quy chuẩn áp dụng' }, { name: 'dynamic_6', value: 'Ngày gieo trồng' },
@@ -31,7 +32,7 @@ export class AddinputComponent implements OnInit {
     this.dynamic_num = this.dynamic_num + 1;
     let tmp = {
       title: this.tieude_val,
-      name: 'dynamic_' + this.dynamic_num,
+      name: this.name_select,
       is_require: true,
       is_visible: true,
       type: 'text',
@@ -50,6 +51,7 @@ export class AddinputComponent implements OnInit {
     this.out_delete.emit(gt);
   }
   get_thongtinkhac(gt: any) {
+    this.name_select=gt.name;
     this.tieude_val = gt.value;
   }
 }

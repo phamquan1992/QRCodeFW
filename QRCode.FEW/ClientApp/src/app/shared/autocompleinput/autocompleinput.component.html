@@ -1,18 +1,21 @@
-
 <div class="relative">
     <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable" style="user-select: none;">
-        <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
-            [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true" 
+        <i class="fa fa-angle-up text-gray-800 transition-all duration-300 cursor-pointer" (click)="openPanel($event)"
+            [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
             style="font-weight: 400; font-size: 13px;"></i>
     </span>
     <input #ipauto class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        (keyup)="auto_change(ipauto)" placeholder="State" aria-label="State"
-        [matAutocomplete]="statesAutocomplete" [value]="_value_input">
-    <mat-autocomplete #statesAutocomplete="matAutocomplete" (opened)="autocompleteScroll()" 
-    (closed)="close_event(ipauto.value)" [displayWith]="displayFn" (optionSelected)="select_it($event)">
-        <mat-option *ngFor="let state of arr_item" [value]="state">
-            <small>{{state.mota}}</small>
+    bg-white border border-solid  my-[3px] mr-[6px] ml-0 h-8 text-[13px]" (keyup)="auto_change(ipauto)"
+        placeholder="Danh mục" aria-label="State" [matAutocomplete]="dmAutocomplete" [value]="_value_input"
+        [ngClass]="{'border-red-600':!isValid,'border-[#d9d9d9]':isValid}">
+    <div *ngIf="!isValid">
+        <span class="text-red-600 text-xs italic">Danh mục không được để trống!</span>
+    </div>
+    <mat-autocomplete #dmAutocomplete="matAutocomplete" (opened)="autocompleteScroll()"
+        (closed)="close_event(ipauto.value)" [displayWith]="displayFn"
+        (optionSelected)="select_it($event,ipauto.value)">
+        <mat-option *ngFor="let dm of arr_item" [value]="dm">
+            <small>{{dm.mota}}</small>
         </mat-option>
     </mat-autocomplete>
 </div>

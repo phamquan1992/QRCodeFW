@@ -1,4 +1,4 @@
-import { Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -13,43 +13,27 @@ import { SigninComponent } from '../../share/signin/signin.component';
   templateUrl: './freeview.component.html',
   styleUrls: ['./freeview.component.css']
 })
-export class FreeviewComponent implements OnInit {
+export class FreeviewComponent implements OnInit, OnDestroy {
   shownav: boolean = false;
   status = '';
-  is_login = false;
+  is_login: Observable<boolean>;
   public nguoidung: nguoidung = {
     email: '',
     id: '',
     sodt: '',
     token: ''
   };
-  currUser!: Observable<nguoidung>;
+  currUser: Observable<nguoidung>;
 
   public innerWidth: any;
   constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _sharingService: ObservableService, private storage: LocalStorageService) {
+    this.currUser = this._sharingService.getUserInfo();
+    this.is_login = this._sharingService.getAuthenState();
+  }
+  ngOnDestroy(): void {
 
   }
   ngOnInit(): void {
-    this.currUser = this._sharingService.getUserInfo();
-    this.currUser.subscribe(
-      t => {
-        if (t != undefined) {
-          this.nguoidung = t;
-        }
-        else {
-          this.nguoidung = {
-            email: '',
-            id: '',
-            sodt: '',
-            token: ''
-          };
-        }
-      }
-    );
-    this._sharingService.getAuthenState().subscribe(
-      t => this.is_login = t
-    );
-
     this.innerWidth = window.innerWidth;
   }
   @HostListener('window:resize', ['$event'])
@@ -63,23 +47,19 @@ export class FreeviewComponent implements OnInit {
     console.log(event);
   }
   dang_nhap() {
-    //this.is_login = false;
-    if (this.is_login === false)
-      this.showDialog('login');
+    this.showDialog('login');
   }
   tao_db() {
     this.router.navigate(['/portal']);
   }
   log_out() {
-    this.is_login = false;
+    //this.is_login = false;    
     this._sharingService.reMoveUserValue();
+    this._sharingService.reMoveTokenValue();
+
+    this.currUser = this._sharingService.getUserInfo();
+    this.is_login = this._sharingService.getAuthenState();
     this.router.navigate(['/qrcode-free']);
-    this.nguoidung = {
-      email: '',
-      id: '',
-      sodt: '',
-      token: ''
-    };
   }
   showDialog(status: string) {
     const dialogConfig = new MatDialogConfig();

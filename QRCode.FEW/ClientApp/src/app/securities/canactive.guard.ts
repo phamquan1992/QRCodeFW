@@ -13,19 +13,23 @@ import { ObservableService } from '../services/observable.service';
 export class CanactiveGuard implements CanActivate {
   constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog, private _sharingService: ObservableService) { }
   canActivate(
-    route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(state.url);
+    route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    console.log(state1.url);
     let user = this.storage.getUserInfo();
     if (user != undefined) {
       return true;
     }
     else {
-      this.showDialog();
+      this.storage.removeTokenValue();
+      this.storage.removeUserValue();
+      this._sharingService.reMoveUserValue();
+      this._sharingService.reMoveTokenValue();
+      this.showDialog(state1);
     }
 
     return false;
   }
-  showDialog() {
+  showDialog(state1: RouterStateSnapshot) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -35,6 +39,7 @@ export class CanactiveGuard implements CanActivate {
     this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
       res => {
         this._sharingService.getUserInfo();
+        this.router.navigate(['/qrcode-free']);
       }
     );
   }

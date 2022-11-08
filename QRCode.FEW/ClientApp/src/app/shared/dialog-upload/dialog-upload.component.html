@@ -1,7 +1,7 @@
 <div class="w-full h-full relative">
     <div class="bg-[#196898] py-[10px] px-[15px]">
         <div class="text-white text-sm leading-[22px] break-words font-medium">
-            <div>Tải ảnh lên</div>
+            <div>{{tieu_de}}</div>
         </div>
     </div>
     <app-uploadinput (onUploadFinished)="load_src_file($event)" [save_upload]="save_forder" [type_upload]="type_file"></app-uploadinput>

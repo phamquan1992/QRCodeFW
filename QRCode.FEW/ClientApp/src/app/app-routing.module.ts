@@ -4,13 +4,14 @@ import { CanactiveGuard } from 'src/app/securities/canactive.guard';
 
 const routes: Routes = [
   { path: 'qrcode-free', loadChildren: () => import('./components/nghiepvu/freeview/freeview.module').then(m => m.FreeviewModule) },
-  { path: 'portal',canActivate:[CanactiveGuard], loadChildren: () => import('./components/nghiepvu/proview/proview.module').then(m => m.ProviewModule) },
-  { path: '', redirectTo: 'qrcode-free', pathMatch: 'full' }
+  { path: 'portal', canActivate: [CanactiveGuard], loadChildren: () => import('./components/nghiepvu/proview/proview.module').then(m => m.ProviewModule) },
+  { path: '', redirectTo: 'qrcode-free', pathMatch: 'full' },
+  { path: 'views', loadChildren: () => import('./views/views.module').then(m => m.ViewsModule) },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[CanactiveGuard]
+  providers: [CanactiveGuard]
 })
 export class AppRoutingModule { }

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Inputcustom } from 'src/app/models/Inputcustom';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogUploadComponent } from 'src/app/shared/dialog-upload/dialog-upload.component';
@@ -8,7 +8,7 @@ import { Observable, switchMap } from 'rxjs';
 import { ProductsService } from '../products.service';
 import { product } from 'src/app/models/product';
 import { MessageService } from 'src/app/services/message.service';
-import { data_upload } from 'src/app/models/optioncs';
+import { data_upload, temp_object, value_it } from 'src/app/models/optioncs';
 
 @Component({
     selector: 'app-addproduct',
@@ -17,7 +17,7 @@ import { data_upload } from 'src/app/models/optioncs';
 })
 export class AddproductComponent implements OnInit {
     DataForm: FormGroup = new FormGroup({
-        logo: new FormControl(''),
+        logo: new FormControl('', Validators.required),
         url_img: new FormControl(''),
         url_iso: new FormControl(''),
         url_barcode: new FormControl(''),
@@ -39,9 +39,14 @@ export class AddproductComponent implements OnInit {
     src_video = '';
     open_menu_mota = false;
     tilte = 'Thêm sản phẩm mới';
+    status_type = false;
+    gt_id!: Observable<string>;
+    value_id = '';
+    show_capnhat = false;
+    product$!: Observable<product>;
     arr_mota = [
         { name: 'des_story', value: 'Câu chuyện sản phẩm' },
-        { name: 'des_story', value: 'Quy trình sản xuất' },
+        { name: 'des_manufactur', value: 'Quy trình sản xuất' },
         { name: 'des_pack', value: 'Quy cách đóng gói' },
         { name: 'des_element', value: 'Thành phần' },
         { name: 'des_uses', value: 'Công dụng' },
@@ -54,16 +59,8 @@ export class AddproductComponent implements OnInit {
     constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService, private mesSrc: MessageService) {
 
     }
-    status_type = false;
-    gt_id!: Observable<string>;
-    value_id = '';
-    product$!: Observable<product>;
     ngOnInit(): void {
         this.data = [];
-        // this.gt_id = this.route.paramMap.pipe(
-        //     switchMap((params: ParamMap) =>
-        //         params.get('id') == null ? '0' : params.get('id')!)
-        // );
         let id = this.route.snapshot.paramMap.get('id');
         this.value_id = id == null ? '0' : id.toString();
         if (this.value_id != '0') {
@@ -71,66 +68,59 @@ export class AddproductComponent implements OnInit {
         }
         this.productSrc.get_detail_product(this.value_id).subscribe(t => {
             this.data = t;
-            this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
+            this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh' && t.type != '');
             this.data_mota = this.data.filter(t => t.nhom == 'mota');
             this.data_khac = this.data.filter(t => t.nhom == 'khac');
-            console.log(this.data_khac);
             this.generateFormControls();
         });
-        // this.gt_id.subscribe(t => {
-        //     this.value_id = t;
-        //     if (this.value_id != '0') {
-        //         this.tilte = 'Thông tin sản phẩm';
-        //     }
-        //     this.productSrc.get_detail_product(this.value_id).subscribe(t => {
-        //         this.data = t;
-        //         this.data_macdinh = this.data.filter(t => t.nhom == 'macdinh');
-        //         this.data_mota = this.data.filter(t => t.nhom == 'mota');
-        //         this.data_khac = this.data.filter(t => t.nhom == 'khac');
-        //         console.log(this.data_khac);
-        //         this.generateFormControls();
-        //     });
-        // });
-    }
-    convert_dynamic_value(arr: any) {
-
     }
     UpdateData() {
+        if (this.DataForm.invalid) {
+            this.mesSrc.error('Bạn chưa nhập đầy đủ thông tin bắt buộc');
+            return;
+        }
         this.payLoad = JSON.stringify(this.DataForm.getRawValue());
         this.product$ = this.productSrc.get_product(this.value_id);
         this.product$.subscribe(t => {
             const myObj = JSON.parse(JSON.stringify(t));
             let arr_key = Object.keys(myObj);
-            let arr_dynamic: { [x: string]: { title: string; value: string; }; }[] = [];
+            let arr_dynamic2: temp_object[] = [];
+
             this.data.forEach(element => {
                 element.value_ip = this.DataForm.controls[element.name].value;
-                if (element.name.indexOf('dynamic_') == -1)
-                    myObj[element.name] = element.value_ip;
+                if (element.name.indexOf('dynamic_') == -1) {
+                    console.log(element.value_ip);
+                    myObj[element.name] = element.value_ip != null ? element.value_ip.toString().trim() : element.value_ip;
+                }
                 else {
-                    let obj_dynamic = {
-                        [element.name]: {
-                            title: element.title,
-                            value: element.value_ip
-                        }
+                    let parent_dynamic2: temp_object = {
+                        key: '',
+                        values: {} as value_it
                     };
-                    arr_dynamic.push(obj_dynamic);
+                    let obj_dynamic2: value_it = {
+                        title: element.title,
+                        value: element.value_ip != null ? element.value_ip.toString().trim() : element.value_ip
+                    };
+                    parent_dynamic2.key = element.name;
+                    parent_dynamic2.values = obj_dynamic2;
+                    arr_dynamic2.push(parent_dynamic2);
                 }
                 let index_arr = arr_key.indexOf(element.name);
                 if (index_arr > -1) {
                     arr_key.splice(index_arr, 1);
                 }
             });
-            if (arr_dynamic.length > 0) {
-                myObj['additional'] = JSON.stringify(arr_dynamic);
+            if (arr_dynamic2.length > 0) {
+                myObj['additional'] = JSON.stringify(arr_dynamic2);
             } else {
-                myObj['additional'] = "";
+                myObj['additional'] = null;
             }
             arr_key.forEach(element => {
                 if (element != 'qrproductid' && element != 'created_by' && element != 'created_date' && element != 'lastcreated_by' && element != 'lastcreated_date'
                     && element != 'status' && element != 'additional')
                     myObj[element] = null;
             });
-            console.log(JSON.stringify(myObj));
+            // console.log(JSON.stringify(myObj));
             if (this.value_id != '0')
                 this.productSrc.update_product(myObj).subscribe(t => {
                     if (t) {
@@ -156,9 +146,9 @@ export class AddproductComponent implements OnInit {
     generateFormControls() {
         this.data.forEach(element => {
             if (element.name != 'logo' && element.name != 'url_img' && element.name != 'url_iso' && element.name != 'url_barcode' && element.name != 'url_video')
-                this.DataForm.addControl(element.name, new FormControl(''));
+                this.DataForm.addControl(element.name, new FormControl(element.value_ip || '', element.is_require ? Validators.required : null));
             else {
-                this.DataForm.controls[element.name].setValue(element.value_ip);
+                this.DataForm.controls[element.name].setValue(element.value_ip || '');
                 if (element.name == 'logo') {
                     this.src_daidien = element.value_ip;
                 }
@@ -187,7 +177,7 @@ export class AddproductComponent implements OnInit {
         if (tmp.nhom == 'mota') {
             this.data_mota.push(tmp);
         }
-        this.DataForm.addControl(tmp.name, new FormControl(''));
+        this.DataForm.addControl(tmp.name, new FormControl(tmp.value_ip, tmp.is_require ? Validators.required : null));
     }
     exit_thempro(gt: boolean) {
         this.status_type = gt;
@@ -219,7 +209,7 @@ export class AddproductComponent implements OnInit {
         this.dialog.open(DialogUploadComponent, dialogConfig).afterClosed().subscribe(
             res => {
                 debugger;
-                if (res != null && res != '' && res != undefined) {                    
+                if (res != null && res != '' && res != undefined) {
                     if (gt == 'daidien') {
                         this.src_daidien = res;
                         this.DataForm.controls['logo'].setValue(res);
@@ -255,7 +245,6 @@ export class AddproductComponent implements OnInit {
             is_delete: true,
             value_ip: ''
         };
-        // console.log(tmp);
         this.data.push(tmp);
         this.data_mota = this.data.filter(t => t.nhom == 'mota');
         this.DataForm.addControl(tmp.name, new FormControl(''));

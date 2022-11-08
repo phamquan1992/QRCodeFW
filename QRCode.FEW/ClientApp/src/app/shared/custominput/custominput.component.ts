@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ProductsService } from 'src/app/components/nghiepvu/proview/childview/products/products.service';
 import { cutom_it } from 'src/app/models/category';
@@ -9,7 +9,8 @@ import { Inputcustom } from 'src/app/models/Inputcustom';
 @Component({
   selector: 'app-custominput',
   templateUrl: './custominput.component.html',
-  styleUrls: ['./custominput.component.css']
+  styleUrls: ['./custominput.component.css'],
+
 })
 export class CustominputComponent implements OnInit {
   @Input() data = '';
@@ -21,7 +22,9 @@ export class CustominputComponent implements OnInit {
   str_val = '';
   constructor(private producSrc: ProductsService) { }
   ngOnInit(): void {
-    this.form.controls[this.values.name].setValue(this.values.value_ip);
+    // this.values.value_ip = this.values.value_ip == null ? ' ' : this.values.value_ip;
+    // this.form.controls[this.values.name].setValue(this.values.value_ip || null);
+
     if (this.values.name == 'category') {
       this.producSrc.get_category().subscribe(t => {
         let dem = 1;
@@ -36,10 +39,15 @@ export class CustominputComponent implements OnInit {
       });
     }
   }
+  focusFunction(event: any, ten: string) {
+    this.form.controls[this.values.name].setValue(event.target.value.trim());
+  }
   delete_input(gt: string) {
     this.out_delete.emit(gt);
   }
   setval_out(gt: any) {
+    debugger;
     this.form.controls[this.values.name].setValue(gt);
   }
+  get isValid() { return this.form.controls[this.values.name].valid; }
 }

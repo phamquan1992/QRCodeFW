@@ -15,11 +15,16 @@
                     (click)="showDialog('daidien')" style="width: 100px; height: 100px;">
                     <img src="./assets/images/img_add.png" alt="">
                 </button>
-                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1 border rounded-[7px]"
+                    [ngClass]="{'border-solid border-[#d9d9d9]':src_daidien!='',' border-solid border-red-600':src_daidien=='' || src_daidien==null}"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_daidien}}" alt="">
+                    <img src="{{src_daidien}}" alt="" style="object-fit: contain;">
                     <input type="hidden" [formControlName]="'logo'" name="logo" value="">
                 </div>
+            </div>
+            <div *ngIf="src_daidien=='' || src_daidien==null">
+                <span class="text-red-600 text-xs italic">Ảnh đại diện không
+                    được để trống!</span>
             </div>
         </div>
         <div class="flex flex-col relative my-2">
@@ -67,23 +72,41 @@
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 placeholder="Nhập tên điểm check in, cửa hàng, toà nhà, tài xế..." [formControlName]="'name'"
-                name="name" value="">
+                [ngClass]="{'border-red-600':!DataForm.controls['name'].valid && (DataForm.controls['name'].dirty || DataForm.controls['name'].touched) && DataForm.controls['name'].errors?.['required']}"
+                name="name" value="" required>
+            <div
+                *ngIf="!DataForm.controls['name'].valid  && (DataForm.controls['name'].dirty || DataForm.controls['name'].touched)">
+                <span *ngIf="DataForm.controls['name'].errors?.['required']" class="text-red-600 text-xs italic">Trường
+                    không
+                    được để trống!</span>
+            </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Mã số thuế</label>
+            <label for="taxcode" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Mã số thuế</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Mã số thuế"
                 [formControlName]="'taxcode'" name="taxcode" value="">
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Điện thoại liên
+            <label for="tel" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Điện thoại liên
                 hệ</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Số điện thoại doanh nghiệp" [formControlName]="'tel'" name="tel" value="">
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" [ngClass]="{'border-red-600':((!DataForm.controls['tel'].valid) && (DataForm.controls['tel'].dirty || DataForm.controls['tel'].touched) && DataForm.controls['tel'].errors?.['required'])
+            ||DataForm.controls['tel'].hasError('minlength') || DataForm.controls['tel'].hasError('maxlength')}"
+                placeholder="Số điện thoại doanh nghiệp" [formControlName]="'tel'" name="tel" value="" required>
+            <div
+                *ngIf="!DataForm.controls['tel'].valid  && (DataForm.controls['tel'].dirty || DataForm.controls['tel'].touched)">
+                <span *ngIf="DataForm.controls['tel'].errors?.['required']" class="text-red-600 text-xs italic">Trường
+                    không
+                    được để trống!</span>
+                <span *ngIf="DataForm.controls['tel'].hasError('minlength')" class="text-red-600 text-xs">Độ dài tối
+                    thiểu 9 ký tự!</span>
+                <span *ngIf="DataForm.controls['tel'].hasError('maxlength')" class="text-red-600 text-xs">Độ dài tối đa
+                    12 ký tự!</span>
+            </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Fax</label>
+            <label for="fax" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Fax</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Fax"
                 [formControlName]="'fax'" name="fax" value="">
@@ -99,7 +122,8 @@
                 </span>
                 <input #input_quocgia class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    placeholder="--Quốc gia--" aria-label="State" [matAutocomplete]="quocgiaAutocomplete" value="Việt Nam" disabled>
+                    placeholder="--Quốc gia--" aria-label="State" [matAutocomplete]="quocgiaAutocomplete"
+                    value="Việt Nam" disabled>
                 <mat-autocomplete #quocgiaAutocomplete="matAutocomplete">
                     <mat-option *ngFor="let it of array_quocgia" [value]="it.value">
                         <span>{{it.value}}</span>
@@ -121,13 +145,21 @@
                 <input #input_tinh_none class="w-full text-ellipsis relative py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="tinhAutocomplete"
-                    (keyup)="auto_tinh_change(input_tinh_none)" [value]="val_tinh">
+                    (keyup)="auto_tinh_change(input_tinh_none)" [value]="val_tinh"
+                    (focusout)="focusOutFunction('province')"
+                    [ngClass]="{'border-red-600':!DataForm.controls['province'].valid}">
                 <mat-autocomplete #tinhAutocomplete="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="select_it($event)">
                     <mat-option *ngFor="let it of arr_tinh" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
+                <div *ngIf="!DataForm.controls['province'].valid">
+                    <span *ngIf="DataForm.controls['tel'].errors?.['required']"
+                        class="text-red-600 text-xs italic">Trường
+                        không
+                        được để trống!</span>
+                </div>
                 <input #hd_tinh type="hidden" [formControlName]="'province'">
             </div>
         </div>
@@ -143,13 +175,20 @@
                 <input #input_huyen class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="huyenAutocomplete"
-                    (keyup)="auto_huyen_chang(input_huyen)" [value]="val_huyen">
+                    (keyup)="auto_huyen_chang(input_huyen)" [value]="val_huyen"
+                    [ngClass]="{'border-red-600':!DataForm.controls['district'].valid}"
+                    (focusout)="focusOutFunction('district')">
                 <mat-autocomplete #huyenAutocomplete="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="select_it_huyen($event)">
                     <mat-option *ngFor="let it of array_huyen" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
+                <div *ngIf="!DataForm.controls['district'].valid">
+                    <span *ngIf="DataForm.controls['tel'].errors?.['required']" class="text-red-600 text-xs italic">
+                        Trường không được để trống!
+                    </span>
+                </div>
                 <input type="hidden" [formControlName]="'district'" name="district" value="">
             </div>
         </div>
@@ -165,13 +204,20 @@
                 <input #input_xa class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Xã, phường--" aria-label="State" [matAutocomplete]="xaAutocomplete"
-                    (keyup)="auto_xa_chang(input_xa)" [value]="val_xa">
+                    (keyup)="auto_xa_chang(input_xa)" [value]="val_xa"
+                    [ngClass]="{'border-red-600':!DataForm.controls['wards'].valid}"
+                    (focusout)="focusOutFunction('wards')">
                 <mat-autocomplete #xaAutocomplete="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="select_it_xa($event)">
                     <mat-option *ngFor="let it of array_xa" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
+                <div *ngIf="!DataForm.controls['wards'].valid">
+                    <span *ngIf="DataForm.controls['tel'].errors?.['required']" class="text-red-600 text-xs italic">
+                        Trường không được để trống!
+                    </span>
+                </div>
                 <input type="hidden" [formControlName]="'wards'" name="wards" value="">
             </div>
         </div>
@@ -179,19 +225,41 @@
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nghề nghiệp</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Nghề nghiệp"
-                [formControlName]="'occupation'" name="occupation" value="">
+                [ngClass]="{'border-red-600':!DataForm.controls['occupation'].valid && (DataForm.controls['occupation'].dirty || DataForm.controls['occupation'].touched) && DataForm.controls['occupation'].errors?.['required']}"
+                [formControlName]="'occupation'" name="occupation" value="" required>
+            <div
+                *ngIf="!DataForm.controls['occupation'].valid  && (DataForm.controls['occupation'].dirty || DataForm.controls['occupation'].touched)">
+                <span *ngIf="DataForm.controls['occupation'].errors?.['required']"
+                    class="text-red-600 text-xs italic">Trường
+                    không
+                    được để trống!</span>
+            </div>
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Email</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Nhập email tại đây" [formControlName]="'email'" name="email" value="">
+                placeholder="Nhập email tại đây" [formControlName]="'email'" name="email" value="" required
+                [ngClass]="{'border-red-600':!DataForm.controls['email'].valid && (DataForm.controls['email'].dirty || DataForm.controls['email'].touched) && DataForm.controls['email'].errors?.['required']}">
+            <div
+                *ngIf="!DataForm.controls['email'].valid  && (DataForm.controls['email'].dirty || DataForm.controls['email'].touched)">
+                <span *ngIf="DataForm.controls['email'].errors?.['required']" class="text-red-600 text-xs italic">Trường
+                    không được để trống!</span>
+            </div>
         </div>
         <div class="col-span-2">
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Địa chỉ</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                placeholder="Nhập email tại đây" [formControlName]="'address'" name="address" value="">
+                placeholder="Nhập địa chỉ tại đây" [formControlName]="'address'" name="address" value="" required
+                [ngClass]="{'border-red-600':(!DataForm.controls['address'].valid && (DataForm.controls['address'].dirty || DataForm.controls['address'].touched) && DataForm.controls['address'].errors?.['required'])
+                ||DataForm.controls['address'].hasError('minlength') || DataForm.controls['tel'].hasError('maxlength')}">
+            <div
+                *ngIf="!DataForm.controls['address'].valid  && (DataForm.controls['address'].dirty || DataForm.controls['address'].touched)">
+                <span *ngIf="DataForm.controls['address'].errors?.['required']"
+                    class="text-red-600 text-xs italic">Trường
+                    không được để trống!</span>
+            </div>
         </div>
         <div class="col-span-2" *ngFor="let it of arr_dynamic">
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">{{it.key}}</label>
@@ -245,6 +313,7 @@
     </div>
     <div class="text-center">
         <button type="button" (click)="UpdateData()"
+            [ngClass]="{'cursor-not-allowed bg-[#f5f5f5] border-[#d9d9d9] text-[#00000040]':DataForm.invalid,'text-white cursor-pointer bg-[#196898] border-[#196898]':DataForm.valid}"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Cập
             nhật</button>
         <button routerLink="/portal/companies" type="button"

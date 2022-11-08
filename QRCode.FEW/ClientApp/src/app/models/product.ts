@@ -10,6 +10,7 @@ export interface product {
     url_iso: string;
     url_barcode: string; 
     des_story: string;
+    des_manufactur:string;
     des_pack: string;
     des_element: string;
     des_uses: string;

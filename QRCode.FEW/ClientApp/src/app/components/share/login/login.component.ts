@@ -64,7 +64,8 @@ export class LoginComponent implements OnInit {
                 else {
                     this.messSrc.success('Đăng nhập thành công!');
                     this._sharingService.setUserValue(t as nguoidung);
-                    this.router.navigate(['/portal']);
+                    this._sharingService.setTokenValue(nd.token);
+                    this.router.navigate(['/qrcode-free']);
                     this.onClose();
                 }
 

@@ -65,7 +65,7 @@ export class DichvuComponent implements OnInit {
   }
   dangky_tuychon() {
     if (this.pkg_code == '' || this.pkg_time == '') {
-
+      return;
     }
     this.sharingSrc.getAuthenState().subscribe(t => {
       if (t) {

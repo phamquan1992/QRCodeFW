@@ -1,0 +1,4 @@
+.ic-link-active {
+    -webkit-filter: invert(31%) sepia(78%) saturate(1550%) hue-rotate(213deg) brightness(97%) contrast(92%);
+    filter: invert(31%) sepia(78%) saturate(1550%) hue-rotate(213deg) brightness(97%) contrast(92%);
+}

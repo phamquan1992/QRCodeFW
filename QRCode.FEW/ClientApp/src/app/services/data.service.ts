@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { catchError, map, Subject, tap } from 'rxjs';
 import { ObservableService } from './observable.service';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class DataService {
   url_str!: string;
   private headers = new HttpHeaders();
   private token = '';
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sharingService: ObservableService) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sharingService: ObservableService,private mess: MessageService) {
     this.url_str = baseUrl + 'api/';
     this.sharingService.getTokenValue().subscribe(t => { this.token = `Bearer ${t}`; });
   }
@@ -28,7 +29,7 @@ export class DataService {
     this.getHearder();
     const link = this.url_str + uri;
     return this.http.get(link, { headers: this.headers }).pipe(catchError(error => {
-      //this.mess.handError(error);
+      this.mess.handError(error);      
       return error;
     }));
   }
@@ -45,7 +46,7 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        console.log(error);
+        this.mess.handError(error);        
         return error;
       })
     );
@@ -63,8 +64,7 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        // this.mess.handError(error);
-        console.log(error);
+        this.mess.handError(error);        
         return error;
       })
     );
@@ -85,7 +85,7 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        // this.mess.handError(error);
+        this.mess.handError(error);
         return error;
       })
     );
@@ -102,7 +102,7 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        // this.mess.handError(error);
+        this.mess.handError(error);
         return error;
       })
     );
