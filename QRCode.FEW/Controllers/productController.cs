@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using QRCode.Core.Domain;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class productController : ControllerBase
@@ -49,25 +51,38 @@ namespace QRCode.FEW.Controllers
             //String adminValue = (String)firstObject.GetValue("ADMIN");
             foreach (JObject content in array.Children<JObject>())
             {
-                foreach (JProperty prop in content.Properties())
-                {
-                    productdetail it = new productdetail();
-                    it.name = prop.Name;
-                    JObject obj_value = JObject.Parse(prop.Value.ToString());
-                    foreach (JProperty item2 in obj_value.Properties())
-                    {
-                        if (item2.Name == "title")
-                            it.Title = item2.Value.ToString();
-                        if (item2.Name == "value")
-                            it.value_ip = item2.Value.ToString();
-                    }
-                    it.is_delete = true;
-                    it.is_require = false;
-                    it.is_visible = false;
-                    it.type = "text";
-                    it.nhom = "khac";
-                    list.Add(it);
-                }
+                //foreach (JProperty prop in content.Properties())
+                //{
+                //    productdetail it = new productdetail();
+                //    it.name = prop.Name;
+                //    JObject obj_value = JObject.Parse(prop.Value.ToString());
+                //    foreach (JProperty item2 in obj_value.Properties())
+                //    {
+                //        if (item2.Name == "title")
+                //            it.Title = item2.Value.ToString();
+                //        if (item2.Name == "value")
+                //            it.value_ip = item2.Value.ToString();
+                //    }
+                //    it.is_delete = true;
+                //    it.is_require = false;
+                //    it.is_visible = false;
+                //    it.type = "text";
+                //    it.nhom = "khac";
+                //    list.Add(it);
+                //}
+                productdetail it = new productdetail();
+                var name_obj = content["key"].ToString();
+                it.name = name_obj;
+                var value_obj = content["values"].ToString();
+                JObject obj_value = JObject.Parse(content["values"].ToString());
+                it.Title = obj_value["title"].ToString();
+                it.value_ip = obj_value["value"].ToString();
+                it.is_delete = true;
+                it.is_require = true;
+                it.is_visible = false;
+                it.type = "text";
+                it.nhom = "khac";
+                list.Add(it);
             }
             return list;
         }
@@ -83,7 +98,7 @@ namespace QRCode.FEW.Controllers
             productdetail ma_sp = new productdetail
             {
                 is_delete = false,
-                is_require = true,
+                is_require = false,
                 is_visible = true,
                 name = "code",
                 nhom = "macdinh",
@@ -125,7 +140,7 @@ namespace QRCode.FEW.Controllers
                 nhom = "macdinh",
                 Title = "Giá sản phẩm",
                 type = "number",
-                value_ip = product_it.price == null ? "" : product_it.price.Value.ToString("#.#")
+                value_ip = product_it.price == null ? null : product_it.price.Value.ToString("#.#")
             };
             data.Add(Gia_sp);
             productdetail Slogan_sp = new productdetail
@@ -218,7 +233,7 @@ namespace QRCode.FEW.Controllers
                 };
                 data.Add(des_story);
             }
-           
+
             if (!string.IsNullOrEmpty(product_it.des_pack))
             {
                 productdetail des_pack = new productdetail
@@ -400,13 +415,12 @@ namespace QRCode.FEW.Controllers
                 product_it.additional = product_up.additional;
                 product_it.created_by = 0;
                 product_it.created_date = DateTime.Now;
-                _IproductService.CreateNew(product_it);
+                return _IproductService.CreateNew(product_it);
             }
             catch (Exception ex)
             {
                 return false;
             }
-            return true;
         }
         [HttpDelete]
         [Route("Delete")]

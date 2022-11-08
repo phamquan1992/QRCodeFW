@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QRCode.Core.Domain;
 using QRCode.Core.Domain2;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class qr_paymentController : ControllerBase
