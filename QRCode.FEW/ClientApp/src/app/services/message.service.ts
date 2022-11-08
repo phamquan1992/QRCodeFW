@@ -43,30 +43,15 @@ export class MessageService {
       this._sharingService.reMoveUserValue();
       //this._sharingService.setUserValue(nd);
       //this.router.navigate(['/qrcode-free']);
-      this.showDialog();
     } else if (error.status == 403) {
       this.error('Trang không tồn tại');
       this._sharingService.reMoveTokenValue();
       this._sharingService.reMoveUserValue();
       //this._sharingService.setUserValue(nd);
       this.router.navigate(['/qrcode-free']);
-      this.showDialog();
     } else {
       let errMsg = JSON.parse(error._body).Message;
       this.error(errMsg);
     }
-  }
-  showDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    dialogConfig.maxWidth = "95%";
-    dialogConfig.panelClass = ['md:w-[900px]', 'md:h-[585px]', 'w-full', 'h-[95%]', 'magrin_pane'];
-    dialogConfig.disableClose = true;
-    this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
-      res => {
-        this._sharingService.getUserInfo();
-      }
-    );
   }
 }

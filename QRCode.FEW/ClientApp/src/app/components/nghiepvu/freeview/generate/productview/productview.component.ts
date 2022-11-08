@@ -59,21 +59,22 @@ export class ProductviewComponent implements OnInit {
     this.status = '';
     this.arr_value = this.arr_item;
     this.arr_value_ks = this.arr_item_ks;
-    this.arr_product_core = this.productSrc.get_product_list();
-    this.filter_product = this.arr_product_core;
+    debugger;
     this.sharingSrc.getUserInfo().subscribe(user => {
       this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
       this.filter_payment = this.arr_payment;
+      this.arr_product_core = this.productSrc.get_product_list();
+      this.filter_product = this.arr_product_core;
     });
   }
- 
+
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
   taiqr() {
     this.now = new Date();
     this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
   }
-  filter_payment_action(evet:any){
+  filter_payment_action(evet: any) {
 
   }
   displayFn(selectedoption: any) {
