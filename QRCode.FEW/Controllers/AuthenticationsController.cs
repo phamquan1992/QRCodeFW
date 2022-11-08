@@ -55,7 +55,8 @@ namespace QRCode.FEW.Controllers
                 };
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var token = new JwtSecurityToken(_configuration["JWT:Issuer"], _configuration["JWT:Audience"], claims, expires: DateTime.Now.AddMinutes(3), signingCredentials: signIn);
+                DateTime time_expires = DateTime.Now.AddMinutes(3);
+                var token = new JwtSecurityToken(_configuration["JWT:Issuer"], _configuration["JWT:Audience"], claims, expires: time_expires, signingCredentials: signIn);
                 nguoidung.token = new JwtSecurityTokenHandler().WriteToken(token);
                 return nguoidung;
             }
