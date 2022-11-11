@@ -20,7 +20,7 @@
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1 border"
                         [ngClass]="{' border-solid border-[#d9d9d9] rounded-[7px]':src_daidien!='',' border-red-600':src_daidien=='' || src_daidien==null}"
                         style="width: 100px; height: 100px;">
-                        <img src="{{src_daidien}}" alt="" style="object-fit: contain;">                        
+                        <img src="{{src_daidien}}" alt="" style="object-fit: contain;">
                         <input type="hidden" [formControlName]="'logo'" name="logo" value="">
                     </div>
                 </div>
@@ -94,7 +94,7 @@
 
         <div class="grid grid-cols-3 gap-4">
             <app-custominput *ngFor="let it of data_macdinh" [form]="DataForm" [values]="it"
-                [ngClass]="{'col-span-2':it.name=='name' || it.name=='category','col-span-3': it.name=='slogan'}"
+                [ngClass]="{'col-span-2':it.name=='name' || it.name=='category','col-span-3': it.name=='slogan'|| it.name=='enterpriseid'}"
                 (out_delete)="delete_input_temp($event)"></app-custominput>
         </div>
         <!-- ---------------------------- -->

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
@@ -13,6 +13,10 @@ import { ProductsService } from '../../../proview/childview/products/products.se
 import { PaynemtService } from 'src/app/services/paynemt.service';
 import { qr_payment } from 'src/app/models/qr_payment';
 import { ObservableService } from 'src/app/services/observable.service';
+import { qr_gencode } from 'src/app/models/qr_gencode';
+import { nguoidung } from 'src/app/models/nguoidung';
+import { GencodeService } from 'src/app/services/gencode.service';
+import { MessageService } from 'src/app/services/message.service';
 export interface item_value {
   value: string;
   is_select: boolean;
@@ -51,15 +55,20 @@ export class ProductviewComponent implements OnInit {
   arr_payment!: Observable<qr_payment[]>;
   filter_payment!: Observable<qr_payment[]>;
   @ViewChild('fruitInput') fruitInput!: ElementRef<HTMLInputElement>;
-  constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService) {
-
+  name_qrcode = '';
+  qrpaymentid = '';
+  qrproductid = '';
+  code_tmp = '';
+  str_url = '';
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService, private paymentSrc: PaynemtService,
+    private sharingSrc: ObservableService, private gencodeSrc: GencodeService, private mesSrc: MessageService, @Inject('BASE_URL') baseUrl: string) {
+    this.str_url = baseUrl;
   }
 
   ngOnInit(): void {
     this.status = '';
     this.arr_value = this.arr_item;
     this.arr_value_ks = this.arr_item_ks;
-    debugger;
     this.sharingSrc.getUserInfo().subscribe(user => {
       this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
       this.filter_payment = this.arr_payment;
@@ -70,9 +79,51 @@ export class ProductviewComponent implements OnInit {
 
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
+  op_tion_temp: optioncs = new optioncs();
   taiqr() {
-    this.now = new Date();
-    this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    // this.now = new Date();
+    // this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    let user_id: string = '';
+    this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
+    let gencode_obj: qr_gencode = {
+      qrgencodeid: 0,
+      typecode: '',
+      dataid: 0,
+      image: '',
+      name: '',
+      code: '',
+      status: 0,
+      created_date: new Date(),
+      created_by: 0,
+      lastcreated_date: new Date(),
+      lastcreated_by: 0,
+      qrpaymentid: 0
+    };
+    gencode_obj.code = this.code_tmp;
+    gencode_obj.typecode = "product";
+    gencode_obj.dataid = Number(this.qrproductid);
+    gencode_obj.qrpaymentid = Number(this.qrpaymentid);
+    gencode_obj.name = this.name_qrcode;
+    gencode_obj.image = this.convert_img_qrcode();
+    gencode_obj.status = 1;
+    gencode_obj.created_by = Number(user_id);
+    this.gencodeSrc.add_gencode(gencode_obj).subscribe(t => {
+      if (t) {
+        this.mesSrc.success('Tạo QR code thành công');
+      } else {
+        this.mesSrc.error('Có lỗi trong quá trình xử lý dữ liệu');
+      }
+    });
+  }
+  convert_img_qrcode() {
+    let dt = document.getElementById('qrcontset') as HTMLElement;
+    let canvas = dt.getElementsByTagName('canvas');
+    let tmp = canvas[0] as HTMLCanvasElement;
+    //let ctx = tmp.getContext('2d');
+    //ctx?.fillRect(10, 10, 10, 10);
+    //ctx?.fillRect(30, 10, 10, 10);
+    const data = tmp.toDataURL();
+    return data;
   }
   filter_payment_action(evet: any) {
 
@@ -80,8 +131,33 @@ export class ProductviewComponent implements OnInit {
   displayFn(selectedoption: any) {
     return selectedoption ? selectedoption.packname : undefined;
   }
+  displayProduct(selectedoption: any) {
+    return selectedoption ? selectedoption.name : undefined;
+  }
   select_payment(evnt: any) {
-    let gt = evnt.option.value.packcode;
+    let gt = evnt.option.value.qrpaymentid;
+    this.qrpaymentid = gt;
+    if (this.qrproductid != null && this.qrpaymentid != null)
+      this.get_link_qr();
+
+  }
+  select_product(evnt: any) {
+    let gt = evnt.option.value.qrproductid;
+    this.qrproductid = gt;
+    if (this.qrproductid != null && this.qrpaymentid != null)
+      this.get_link_qr();
+  }
+  get_link_qr() {
+    let user_id: string = '';
+    let typecode = 'product';
+    this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
+    let dataid = this.qrproductid;
+    let paymentid = this.qrpaymentid;
+    let time_gen = this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    let id_str = time_gen + dataid + paymentid;
+    this.code_tmp = id_str;
+    let url = this.str_url + 'views/' + typecode + '/' + id_str;
+    this.data = url;
   }
   showDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -105,6 +181,7 @@ export class ProductviewComponent implements OnInit {
       this.data = " ";
     //this.change_val();
   }
+
   change_val() {
     this.op_tion = {
       data: this.data,
@@ -122,6 +199,20 @@ export class ProductviewComponent implements OnInit {
   }
   xuat_qr(item: optioncs) {
     this.op_tion = item;
+    this.op_tion_temp = {
+      data: ' ',
+      image: item.image,
+      witdth: item.witdth,
+      height: item.height,
+      margin: item.margin,
+      dotstyle: item.dotstyle,
+      cornersDot_type: item.cornersDot_type,
+      cornerSquareType: item.cornerSquareType,
+      dotcolor: item.dotcolor,
+      background_color: item.background_color,
+      shape: item.shape
+    };
+    console.log(item);
   }
   openOrClosePanel(evt: any, trigger: MatAutocompleteTrigger): void {
     evt.stopPropagation();
@@ -150,7 +241,10 @@ export class ProductviewComponent implements OnInit {
     let val = obj_input.value;
     this.arr_value_ks = this.arr_item_ks.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
   }
-
+  auto_change_product(obj_input: any) {
+    let val = obj_input.value;
+    this.filter_product = this.arr_product_core.pipe(map(ft => ft.filter(t => t.name.toLowerCase().includes(val.toLowerCase()))));
+  }
   add(event: MatChipInputEvent): void {
     console.log(event);
     const value = (event.value || {}) as product;

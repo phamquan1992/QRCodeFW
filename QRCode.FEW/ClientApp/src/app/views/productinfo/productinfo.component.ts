@@ -1,9 +1,11 @@
-import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { ProductsService } from 'src/app/components/nghiepvu/proview/childview/products/products.service';
 import { temp_object, value_it } from 'src/app/models/optioncs';
-import { product } from 'src/app/models/product';
+import { product, productview } from 'src/app/models/product';
+import { ViewdataService } from 'src/app/services/viewdata.service';
 
 @Pipe({ name: "safeHtml" })
 export class SafeHtmlPipe implements PipeTransform {
@@ -19,21 +21,28 @@ export class SafeHtmlPipe implements PipeTransform {
   styleUrls: ['./productinfo.component.css']
 })
 export class ProductinfoComponent implements OnInit {
-  product$!: Observable<product>;
+  product$!: Observable<productview>;
   arr_dynamic: value_it[] = [];
   data1!: string;
-  constructor(private productSrc: ProductsService) { }
+  constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.product$ = this.productSrc.get_product(4);
+    let id = this.route.snapshot.paramMap.get('id');
+    let value_id = id == null ? '0' : id.toString();
+    this.product$ = this.viewDataSrc.get_view_product(value_id);
     this.product$.subscribe(t => {
-      let arr_temp = JSON.parse(t.additional) as temp_object[];
-      arr_temp.forEach(element => {
-        let it_temp = element.values;
-        this.arr_dynamic.push(it_temp);
-      });
+      if (t.additional != null) {
+        let arr_temp = JSON.parse(t.additional) as temp_object[];
+        arr_temp.forEach(element => {
+          let it_temp = element.values;
+          this.arr_dynamic.push(it_temp);
+        });
+      }
     });
   }
-
-
+  select_product(id: number) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = "reload";
+    this.router.navigate(['/views/product/' + id]);
+  }
 }

@@ -3,6 +3,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
+import { CompaniesService } from '../../../proview/childview/companies/companies.service';
+import { map, Observable } from 'rxjs';
+import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { qr_payment } from 'src/app/models/qr_payment';
+import { PaynemtService } from 'src/app/services/paynemt.service';
+import { ObservableService } from 'src/app/services/observable.service';
 
 export interface item_value_obj {
   value: string;
@@ -37,7 +43,11 @@ export class CompanyviewComponent implements OnInit {
   arr_value_vaitro: item_value_obj[] = [];
   arr_value_obj: item_value_obj[] = [];
   arr_value_ks: item_value_obj[] = [];
-  constructor(private dialog: MatDialog, private datepipe: DatePipe) { }
+  list_enterprise!: Observable<qr_enterprise[]>;
+  filter_enterprise!: Observable<qr_enterprise[]>;
+  arr_payment!: Observable<qr_payment[]>;
+  filter_payment!: Observable<qr_payment[]>;
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private companySrc: CompaniesService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService) { }
 
   ngOnInit(): void {
     this.status = '';
@@ -45,6 +55,12 @@ export class CompanyviewComponent implements OnInit {
     this.arr_value_vaitro = this.arr_item_vaitro;
     this.arr_value_obj = this.arr_item_obj;
     this.arr_value_ks = this.arr_item_ks;
+    this.list_enterprise = this.companySrc.get_list_cty();
+    this.filter_enterprise = this.list_enterprise;
+    this.sharingSrc.getUserInfo().subscribe(user => {
+      this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
+      this.filter_payment = this.arr_payment;
+    });
   }
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
@@ -105,10 +121,19 @@ export class CompanyviewComponent implements OnInit {
   }
   auto_change_obj(obj_input: any) {
     let val = obj_input.value;
-    this.arr_value_obj = this.arr_item_obj.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
+    this.filter_enterprise = this.list_enterprise.pipe(map(op => op.filter(t => t.name.toLowerCase().includes(val.toLowerCase()))));
   }
   auto_change_ks(obj_input: any) {
     let val = obj_input.value;
-    this.arr_value_ks = this.arr_item_ks.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
+    this.filter_payment = this.arr_payment.pipe(map(op => op.filter(t => t.packname.toLowerCase().includes(val.toLowerCase()))));
+  }
+  displayFn(selectedoption: any) {
+    return selectedoption ? selectedoption.packname : undefined;
+  }
+  displayenter(selectedoption: any) {
+    return selectedoption ? selectedoption.name : undefined;
+  }
+  select_payment(evnt: any) {
+    let gt = evnt.option.value.packcode;
   }
 }

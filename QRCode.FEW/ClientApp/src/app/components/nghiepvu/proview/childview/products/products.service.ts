@@ -3,6 +3,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { category } from 'src/app/models/category';
 import { Inputcustom } from 'src/app/models/Inputcustom';
 import { product } from 'src/app/models/product';
+import { qr_enterprise } from 'src/app/models/qr_enterprise';
 import { DataService } from 'src/app/services/data.service';
 
 @Injectable({
@@ -51,5 +52,12 @@ export class ProductsService {
   }
   get_category() {
     return this.dataSrv.get('product/category') as Observable<category[]>;
+  }
+  get_list_company(){
+    return this.dataSrv.get('qr_enterprise/list') as Observable<qr_enterprise[]>;
+  }
+  get_view_product(id: string | number){
+    let pro_obj: Observable<product> = this.dataSrv.get('ViewData/product/' + id) as Observable<product>;
+    return pro_obj;
   }
 }

@@ -6,8 +6,8 @@ import { ViewsComponent } from './views.component';
 
 const routes: Routes = [{
   path: '', component: ViewsComponent, children: [
-    { path: 'product', component: ProductinfoComponent },
-    { path: 'enterprise', component: EnterpriseComponent },
+    { path: 'product/:id', component: ProductinfoComponent },
+    { path: 'enterprise/:id', component: EnterpriseComponent },
     { path: '', redirectTo: 'product', pathMatch: 'full' }
   ]
 }];

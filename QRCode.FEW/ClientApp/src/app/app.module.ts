@@ -8,9 +8,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ToastrModule } from 'ngx-toastr';
+import { CLIInterceptor } from './interceptor/httpInterceptor';
 
 @NgModule({
   declarations: [

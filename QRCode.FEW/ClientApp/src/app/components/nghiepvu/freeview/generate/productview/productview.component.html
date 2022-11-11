@@ -8,7 +8,7 @@
             <div class="relative min-h-[1px] block box-border w-full md:w-[58.33333333%] float-left grow-0 shrink-0 basis-auto"
                 style="padding-left: 20px; padding-right: 20px;">
                 <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none p-2 md:p-6">
-                    <form class="ant-form ant-form-horizontal">
+                    <div class="ant-form ant-form-horizontal">
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
@@ -18,7 +18,7 @@
                                     <div class="ant-col -wrapper">
                                         <div class="">
                                             <span>
-                                                <input placeholder="Nhập tên QR Code" type="text"
+                                                <input placeholder="Nhập tên QR Code" type="text" [(ngModel)]="name_qrcode"
                                                     class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
                                             </span>
                                         </div>
@@ -43,10 +43,10 @@
                                                 <mat-autocomplete #dichvuAutocomplete="matAutocomplete"
                                                     [displayWith]="displayFn" (optionSelected)="select_payment($event)">
                                                     <mat-option *ngFor="let it of filter_payment|async" [value]="it"
-                                                        style="height: 70px; font-size: 14px; border-bottom: 1px solid #d9d9d9;"
+                                                        style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
                                                         class="relative">
-                                                        <span>Gói dịch vụ: {{it.packname}}</span><br>
-                                                        <span>Ngày kích hoạt: {{it.payment_date|date:
+                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b> {{it.packname}}</span><br>
+                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b> {{it.payment_date|date:
                                                             'dd/MM/yyyy'}}</span>
                                                     </mat-option>
                                                     <mat-option *ngIf="(filter_payment | async)?.length == 0">
@@ -71,6 +71,35 @@
                                 </div>
                                 <div class="ant-row ant-form-item">
                                     <div class="ant-col -wrapper">
+                                        <div class=" relative">
+                                            <span>
+                                                <input
+                                                    class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change_product($event.target)"
+                                                    placeholder="Chọn sản phẩm"
+                                                    [matAutocomplete]="productAutocomplete" [value]="">
+                                                <mat-autocomplete #productAutocomplete="matAutocomplete"
+                                                    [displayWith]="displayProduct" (optionSelected)="select_product($event)">
+                                                    <mat-option *ngFor="let it of filter_product|async" [value]="it"
+                                                        style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
+                                                        class="relative">
+                                                        <span class="text-[13px]">{{it.name}}</span>
+                                                    </mat-option>
+                                                    <mat-option *ngIf="(filter_product | async)?.length == 0">
+                                                        <span>Không có dữ liệu hiển thị</span>
+                                                    </mat-option>
+                                                </mat-autocomplete>
+                                                <span
+                                                    class="absolute top-1/2 right-[11px] z-[1] inline-block w-3 h-3 -mt-[6px] leading-3 text-center"
+                                                    style="user-select: none;">
+                                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="ant-row ant-form-item">
+                                    <div class="ant-col -wrapper">
                                         <div class="">
                                             <mat-chip-list #chipList aria-label="Fruit selection" matAutocompleteOrigin
                                                 #origin1="matAutocompleteOrigin">
@@ -87,7 +116,7 @@
                                                     [matAutocompleteConnectedTo]="origin1"
                                                     (matChipInputTokenEnd)="add($event)">
                                             </mat-chip-list>
-                                            <mat-autocomplete #auto="matAutocomplete"
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct"
                                                 (optionSelected)="selected($event)">
                                                 <mat-option *ngFor="let fruit of filter_product | async"
                                                     class="relative" style="height: 32px;" [value]="fruit">
@@ -99,10 +128,10 @@
                                             </mat-autocomplete>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
-                        <div class="mb-5">
+                        <!-- <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
                                     Chọn khảo sát
@@ -148,8 +177,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </div> -->
+                    </div>
                 </div>
                 <app-typeqrcode [data]="data" (option_output)="xuat_qr($event)"></app-typeqrcode>
             </div>
@@ -160,7 +189,9 @@
                     <div class="mb-5">
                         <div class="relative">
                             <div class="flex justify-center">
-                                <app-qrcode [op_tion]="op_tion" [is_download]="status">
+                                <app-qrcode [op_tion]="op_tion" [is_download]="status" id="qrcontset" class="hidden">
+                                </app-qrcode>
+                                <app-qrcode [op_tion]="op_tion_temp" [is_download]="'false'">
                                 </app-qrcode>
                             </div>
                         </div>

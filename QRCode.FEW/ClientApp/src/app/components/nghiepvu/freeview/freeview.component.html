@@ -23,16 +23,17 @@
                     Dịch vụ
                 </a>
             </div>
-            <button type="button" (click)="dang_nhap()" class="ml-4 ant-btn ant-btn-background-ghost text-white bg-transparent border border-solid border-white
+            <button *ngIf="is_login | async" type="button" class="ml-4 ant-btn ant-btn-background-ghost text-white bg-transparent border border-solid border-white
       relative font-normal leading-[1.499] inline-block whitespace-nowrap text-center cursor-pointer select-none touch-manipulation h-8
       px-[15px] text-[14px] rounded-[4px]">
-                <div *ngIf="is_login | async;let val">
-                    <span>{{(currUser|async)?.sodt}}</span>
-                </div>
+                <span>{{(currUser|async)?.sodt}}</span>
+            </button>
+            <button *ngIf="!(is_login | async)" type="button" (click)="dang_nhap()" class="ml-4 ant-btn ant-btn-background-ghost text-white bg-transparent border border-solid border-white
+      relative font-normal leading-[1.499] inline-block whitespace-nowrap text-center cursor-pointer select-none touch-manipulation h-8
+      px-[15px] text-[14px] rounded-[4px]">
                 <div *ngIf="!(is_login | async)">
                     <span>Đăng nhập</span>
                 </div>
-
             </button>
             <img *ngIf="(is_login|async)" (click)="log_out()"
                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADTSURBVHgB7ZTdDcIwDIQdxB6UDToKTAAbICYANigTICYpI7BBYQK6gXFEkCIUYrtKxQP+pJP6c/XVkRMAw/grELEmtaQHpvHvFlASKlhlAj8pFx66kdKBEpcJRtBROefuUvMEfkTxYFqotZ8PzjdGxytSy4WPEbwk9ZLwJJkJrr/4O820T0HPiQpeE88P0fWG5H/wDFpQzyx8twv3+1z9IR1zzElb2tNNzmQHSMwN5PSabrngI8jReHn8ZAqmuRlS23EGfJ0+b8X40+lCS9yDYRjEE7FvRheah/5GAAAAAElFTkSuQmCC"

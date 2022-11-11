@@ -19,8 +19,9 @@ export class QrcodeComponent implements OnInit, OnChanges {
     if (this._is_download.indexOf('download') > -1) {
       this.onDownload();
     }
-  }
 
+  }
+ 
   ngOnInit(): void {
     this.config = {
       width: this._op_tion.witdth,
@@ -87,7 +88,7 @@ export class QrcodeComponent implements OnInit, OnChanges {
     });
   }
   convert_data(data: string) {
-    let gt= (window as any).unescape(encodeURIComponent(data));
+    let gt = (window as any).unescape(encodeURIComponent(data));
     return gt;
   }
   update_qr() {
@@ -192,5 +193,14 @@ export class QrcodeComponent implements OnInit, OnChanges {
     }
     return result;
   }
-
+  convert_img_qrcode() {
+    let canvas = document.getElementsByTagName('canvas') as HTMLCollection;
+    let tmp = canvas[0] as HTMLCanvasElement;
+    let ctx = tmp.getContext('2d');
+    // ctx?.fillRect(10, 10, 10, 10);
+    //ctx?.fillRect(30, 10, 10, 10);
+    const data = tmp.toDataURL();
+    console.log(data);
+    return data;
+  }
 }

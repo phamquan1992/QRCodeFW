@@ -49,8 +49,8 @@ export class ObservableService {
   }
   reMoveUserValue() {
     this.storage.removeUserValue();
-    // let currUser = this.storage.getUserInfo();
-    // this.userInfo = new BehaviorSubject<nguoidung>(currUser);
+    let currUser = this.storage.getUserInfo();
+    this.userInfo = new BehaviorSubject<nguoidung>(currUser);
   }
   getTokenValue(): Observable<string> {
     return this.currentToken;

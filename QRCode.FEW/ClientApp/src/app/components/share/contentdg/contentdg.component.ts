@@ -14,6 +14,7 @@ export class ContentdgComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: optioncs) { }
   status = '';
   now: Date = new Date();
+  op_tion_temp: optioncs = new optioncs();
   op_tion: optioncs = {
     data: " ",
     image: '',
@@ -30,6 +31,19 @@ export class ContentdgComponent implements OnInit {
   ngOnInit(): void {
     this.status = '';
     this.op_tion = this.data;
+    this.op_tion_temp = {
+      data: ' ',
+      image: this.data.image,
+      witdth: this.data.witdth,
+      height: this.data.height,
+      margin: this.data.margin,
+      dotstyle: this.data.dotstyle,
+      cornersDot_type: this.data.cornersDot_type,
+      cornerSquareType: this.data.cornerSquareType,
+      dotcolor: this.data.dotcolor,
+      background_color: this.data.background_color,
+      shape: this.data.shape
+    };
   }
   onClose() {
     this.dialogRef.close();

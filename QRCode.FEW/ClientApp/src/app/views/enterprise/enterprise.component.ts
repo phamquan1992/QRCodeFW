@@ -31,7 +31,7 @@ export class EnterpriseComponent implements OnInit {
   constructor(private congtySrc: CompaniesService) { }
   companyObj$!: Observable<qr_enterprise>;
   ngOnInit(): void {
-    this.companyObj$ = this.congtySrc.get_object_cty('26');
+    this.companyObj$ = this.congtySrc.get_view_enterprise('26');
     this.arr_link = [];
     this.companyObj$.subscribe(t => {
       if (t.additional != null && t.additional != '') {        

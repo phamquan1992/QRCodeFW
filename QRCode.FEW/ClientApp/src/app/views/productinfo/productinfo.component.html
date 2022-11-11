@@ -1,3 +1,10 @@
+<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" *ngIf="!(product$ | async)"
+    viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+    </path>
+</svg>
 <div class="md:max-w-[1200px] bg-white mx-auto h-screen w-full" style="font-family: Roboto, sans-serif; color: #111;">
     <div *ngIf="(product$ | async) as data">
         <div class="w-full inline-block">
@@ -54,16 +61,36 @@
                 <div [innerHTML]="data.des_enddate|safeHtml"></div>
             </div>
             <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
-                *ngIf="data.additional !=''">
+                *ngIf="data.additional !=null">
                 <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Thông tin thêm</h1>
                 <ul *ngFor="let it of arr_dynamic">
                     <li>
                         <div class="grid gap-1 md:grid-cols-3 grid-cols-1">
                             <div><span class="font-bold text-sm text-[13px]">- {{it.title}}:</span></div>
-                            <div class="md:col-span-2"><span class="text-sm text-[13px] break-words">{{it.value}}</span></div>
+                            <div class="md:col-span-2"><span class="text-sm text-[13px] break-words">{{it.value}}</span>
+                            </div>
                         </div>
                     </li>
                 </ul>
+            </div>
+            <div class="border-b border-solid border-[#e6e6e6] text-justify overflow-hidden mb-6"
+                *ngIf="data.list_ref.length>0">
+                <h1 class="font-bold leading-6 overflow-ellipsis text-[#124b9f]">Sản phẩm liên quan</h1>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 my-2">
+                    <div *ngFor="let it of data.list_ref"
+                        class="border border-solid border-[#e6e6e6] flex justify-center flex-col">
+                        <img src="{{it.url_img}}" alt="" style="height: 144px;object-fit: cover;"
+                            (click)="select_product(it.qrproductid)">
+                        <div class="p-2">
+                            <p class="inline-block overflow-hidden text-ellipsis mb-2 w-full text-sm cursor-pointer"
+                                routerLink="/views/product/{{it.qrproductid}}" (click)="select_product(it.qrproductid)">
+                                {{it.name}}</p>
+                            <span class="inline-block w-full text-sm font-bold text-[#f59e0b]">{{it.price|number}}
+                                đ</span>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -40,6 +40,10 @@ export class CompaniesService {
   delete_arr(arr_id: number[]) {
     return this.dataSrv.delete_array('qr_enterprise/delete', arr_id);
   }
+  get_view_enterprise(id: string | number){
+    let pro_obj: Observable<qr_enterprise> = this.dataSrv.get('ViewData/enterprise/' + id) as Observable<qr_enterprise>;
+    return pro_obj;
+  }
   array_quocgia = [{ key: 'Albania', value: 'Albania' },
   { key: 'Algeria', value: 'Algeria' },
   { key: 'American Samoa', value: 'American Samoa' },

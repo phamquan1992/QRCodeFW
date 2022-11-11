@@ -38,6 +38,19 @@ export class CustominputComponent implements OnInit {
         });
       });
     }
+    if (this.values.name == 'enterpriseid') {
+      this.producSrc.get_list_company().subscribe(t => {
+        let dem = 1;
+        t.forEach(element => {
+          let it = { stt: dem, name: element.qrenterpriseid.toString(), mota: element.name };
+          this.arr_cs.push(it);
+          dem = dem + 1;
+          if (this.values.value_ip == element.qrenterpriseid.toString()) {
+            this.str_val = element.name
+          }
+        });
+      });
+    }
   }
   focusFunction(event: any, ten: string) {
     this.form.controls[this.values.name].setValue(event.target.value.trim());

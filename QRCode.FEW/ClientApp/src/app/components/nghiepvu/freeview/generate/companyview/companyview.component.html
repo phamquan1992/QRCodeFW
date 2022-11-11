@@ -32,18 +32,25 @@
                                     Chọn gói dịch vụ
                                 </div>
                                 <div class="ant-row ant-form-item">
-                                    <div class="ant-col ant-form-item-control-wrapper">
-                                        <div class="ant-form-item-control relative">
-                                            <span class="ant-form-item-children">
+                                    <div class="ant-col -wrapper">
+                                        <div class=" relative">
+                                            <span>
                                                 <input
-                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                                    (keyup)="auto_change($event.target)"
-                                                    placeholder="{{findDv(arr_value).length==0? 'Chọn gói dịch vụ':''}}"
+                                                    class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change_ks($event.target)"
+                                                    placeholder="Chọn gói dịch vụ"
                                                     [matAutocomplete]="dichvuAutocomplete" [value]="">
-                                                <mat-autocomplete #dichvuAutocomplete="matAutocomplete">
-                                                    <mat-option *ngFor="let it of arr_value" [value]="it.value"
-                                                        style="height: 32px; font-size: 14px;" class="relative">
-                                                        <span>{{it.value}}</span>
+                                                <mat-autocomplete #dichvuAutocomplete="matAutocomplete"
+                                                    [displayWith]="displayFn" (optionSelected)="select_payment($event)">
+                                                    <mat-option *ngFor="let it of filter_payment|async" [value]="it"
+                                                        style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
+                                                        class="relative">
+                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b> {{it.packname}}</span><br>
+                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b> {{it.payment_date|date:
+                                                            'dd/MM/yyyy'}}</span>
+                                                    </mat-option>
+                                                    <mat-option *ngIf="(filter_payment | async)?.length == 0">
+                                                        <span>Không có dữ liệu hiển thị</span>
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <span
@@ -57,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-5">
+                        <!-- <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
                                     Vai trò
@@ -87,7 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
@@ -102,10 +109,13 @@
                                                     (keyup)="auto_change_obj($event.target)"
                                                     placeholder='Chọn doanh nghiệp'
                                                     [matAutocomplete]="doanhnghiepAutocomplete" [value]="">
-                                                <mat-autocomplete #doanhnghiepAutocomplete="matAutocomplete">
-                                                    <mat-option *ngFor="let it of arr_value_obj" [value]="it.value"
+                                                <mat-autocomplete #doanhnghiepAutocomplete="matAutocomplete" [displayWith]="displayenter">
+                                                    <mat-option *ngFor="let it of filter_enterprise|async" [value]="it"
                                                         style="height: 32px; font-size: 14px;" class="relative">
-                                                        <span>{{it.value}}</span>
+                                                        <span>{{it.name}}</span>
+                                                    </mat-option>
+                                                    <mat-option *ngIf="(filter_enterprise | async)?.length == 0">
+                                                        <span>Không có dữ liệu hiển thị</span>
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <span
@@ -119,7 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-5">
+                        <!-- <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
                                     Chọn khảo sát
@@ -148,7 +158,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
                 <app-typeqrcode [data]="data" (option_output)="xuat_qr($event)"></app-typeqrcode>

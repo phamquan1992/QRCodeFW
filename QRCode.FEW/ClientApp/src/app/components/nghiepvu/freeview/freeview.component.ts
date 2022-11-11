@@ -57,9 +57,12 @@ export class FreeviewComponent implements OnInit, OnDestroy {
     this._sharingService.reMoveUserValue();
     this._sharingService.reMoveTokenValue();
 
-    this.currUser = this._sharingService.getUserInfo();
-    this.is_login = this._sharingService.getAuthenState();
-    this.router.navigate(['/qrcode-free']);
+    // this.currUser = this._sharingService.getUserInfo();
+    // this.is_login = this._sharingService.getAuthenState();
+    // this.router.navigate(['/qrcode-free']);
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation="reload";
+    this.router.navigate(['./'],{relativeTo:this.route});
   }
   showDialog(status: string) {
     const dialogConfig = new MatDialogConfig();
