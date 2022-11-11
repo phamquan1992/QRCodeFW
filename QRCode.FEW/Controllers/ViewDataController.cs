@@ -24,15 +24,24 @@ namespace QRCode.FEW.Controllers
             _Iqr_gencodeService = qr_gencodeService;
         }
         [HttpGet]
-        [Route("product/{id}")]
-        public productview Get_obj(string id)
+        [Route("product/{id}/{id2}")]
+        public productview Get_obj(string id, string id2)
         {
             var product_view = new productview();
             if (!string.IsNullOrEmpty(id))
             {
-                var gencode_list = _Iqr_gencodeService.GetAll();
-                var gencode_obj = gencode_list.FirstOrDefault(t => t.code == id);
-                var product_it = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == gencode_obj.dataid);
+                decimal id_product = 0;
+                if (id2 == "gen")
+                {
+                    var gencode_list = _Iqr_gencodeService.GetAll();
+                    var gencode_obj = gencode_list.FirstOrDefault(t => t.code == id);
+                    id_product = gencode_obj.dataid;
+                }
+                else
+                {
+                    id_product = Decimal.Parse(id);
+                }
+                var product_it = _IproductService.GetAll().FirstOrDefault(t => t.qrproductid == id_product);
                 product_view.additional = product_it.additional;
                 product_view.des_element = product_it.des_element;
                 product_view.des_enddate = product_it.des_enddate;
@@ -72,13 +81,46 @@ namespace QRCode.FEW.Controllers
         }
         [HttpGet]
         [Route("enterprise/{id}")]
-        public async Task<qr_enterprise> GetObject(long id)
+        public async Task<enterprisview> GetObject(string id)
         {
-            var object_data = new qr_enterprise();
-            var temp_data = GetCongty().FirstOrDefault(t => t.qrenterpriseid == id);
-            if (temp_data != null)
-                object_data = await Task.FromResult(temp_data);
-            return object_data;
+            var obj_temp = new enterprisview();
+            if (!string.IsNullOrEmpty(id))
+            {
+                var gencode_list = _Iqr_gencodeService.GetAll();
+                var gencode_obj = gencode_list.FirstOrDefault(t => t.code == id);
+                var temp_data = await Task.FromResult(GetCongty().FirstOrDefault(t => t.qrenterpriseid == gencode_obj.dataid));
+                if (temp_data != null)
+                {
+                    obj_temp.additional = temp_data.additional;
+                    obj_temp.address = temp_data.address;
+                    obj_temp.email = temp_data.email;
+                    obj_temp.fax = temp_data.fax;
+                    obj_temp.logo = temp_data.logo;
+                    obj_temp.name = temp_data.name;
+                    obj_temp.qrenterpriseid = temp_data.qrenterpriseid;
+                    obj_temp.tel = temp_data.tel;
+                    obj_temp.list_ref = GetListProduct_byenterprise(gencode_obj.dataid);
+                }
+            }
+            return obj_temp;
+        }
+        private List<productview> GetListProduct_byenterprise(decimal enterpriseid)
+        {
+            List<productview> data = new List<productview>();
+            var temp = _IproductService.GetAll().Where(t => t.enterpriseid == enterpriseid);
+            if (temp.Count() > 0)
+            {
+                data = (from a in temp
+                        select new productview
+                        {
+                            name = a.name,
+                            url_img = a.url_img,
+                            qrproductid = a.qrproductid,
+                            enterpriseid = enterpriseid,
+                            price = a.price
+                        }).ToList();
+            }
+            return data;
         }
         private List<qr_enterprise> GetCongty()
         {
