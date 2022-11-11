@@ -44,5 +44,6 @@ namespace QRCode.Core.Domain2
         public string fax { get; set; }
         public string email { get; set; }
         public string additional { get; set; }
+        public List<productview> list_ref { get; set; }
     }
 }
