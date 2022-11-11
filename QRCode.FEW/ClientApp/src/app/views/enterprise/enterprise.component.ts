@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CompaniesService } from 'src/app/components/nghiepvu/proview/childview/companies/companies.service';
-import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { enterprisview, qr_enterprise } from 'src/app/models/qr_enterprise';
+import { ViewdataService } from 'src/app/services/viewdata.service';
 export interface view_link_web {
   link: string;
   url_img: string;
@@ -28,13 +30,15 @@ export class EnterpriseComponent implements OnInit {
     { name: 'Sendo', url: './assets/images/icon-sendo.svg' },
   ];
   arr_link!: view_link_web[];
-  constructor(private congtySrc: CompaniesService) { }
-  companyObj$!: Observable<qr_enterprise>;
+  constructor(private congtySrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
+  companyObj$!: Observable<enterprisview>;
   ngOnInit(): void {
-    this.companyObj$ = this.congtySrc.get_view_enterprise('26');
+    let id = this.route.snapshot.paramMap.get('id');
+    let value_id = id == null ? '0' : id.toString();
+    this.companyObj$ = this.congtySrc.get_view_enterprise(value_id);
     this.arr_link = [];
     this.companyObj$.subscribe(t => {
-      if (t.additional != null && t.additional != '') {        
+      if (t.additional != null && t.additional != '') {
         const myObj = JSON.parse(t.additional);
         let arr_key = Object.keys(myObj);
         arr_key.forEach(element => {
@@ -55,5 +59,8 @@ export class EnterpriseComponent implements OnInit {
   get_url(name: string) {
     let index_tem = this.arr_url.findIndex(t => t.name == name);
     return this.arr_url[index_tem].url;
+  }
+  select_product(id: number) {
+    this.router.navigate(['/views/product/' + id]);
   }
 }

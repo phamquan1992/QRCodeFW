@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { optioncs } from 'src/app/models/optioncs';
+import { data_dialog_input, optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
 
@@ -46,6 +46,10 @@ export class SurveyviewComponent implements OnInit {
     this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
   }
   showDialog() {
+    let data_input: data_dialog_input = {
+      option: this.op_tion,
+      status: false
+    };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -53,7 +57,7 @@ export class SurveyviewComponent implements OnInit {
     dialogConfig.height = "100%";
     dialogConfig.maxWidth = "95%";
     dialogConfig.maxHeight = "95%";
-    dialogConfig.data = this.op_tion;
+    dialogConfig.data = data_input;
     // dialogConfig.height = "310px";
     this.dialog.open(ContentdgComponent, dialogConfig).afterClosed().subscribe(
       res => {

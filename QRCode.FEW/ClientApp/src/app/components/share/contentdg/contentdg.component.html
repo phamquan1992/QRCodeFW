@@ -1,22 +1,24 @@
 <div class="w-full h-full relative">
     <button class="absolute -top-[24px] -right-[24px] w-6 h-6 bg-red-600 text-white" (click)="onClose()">X</button>
     <div class="relative min-h-[1px] box-border block w-full float-left grow-0 shrink-0 basis-auto">
-        <div data-v-a92dbf4c="" data-v-65d622e9="" class=" bg-white rounded-xl relative">
+        <div data-v-65d622e9="" class=" bg-white rounded-xl relative">
             <!-- ---------------------------------------- -->
             <div class="mb-5">
                 <div class="relative">
                     <div class="flex justify-center">
                         <div style="width: 240;height: 240;">
-                            <app-qrcode [op_tion]="op_tion" [is_download]="status" class="hidden">
+                            <app-qrcode [op_tion]="op_tion" [is_download]="status" id="qrcontentmb"
+                                [ngClass]="{'hidden':data.status,'block':!data.status}">
                             </app-qrcode>
-                            <app-qrcode [op_tion]="op_tion_temp" [is_download]="'false'">
+                            <app-qrcode [op_tion]="op_tion_temp" [is_download]="'false'"
+                            [ngClass]="{'hidden':!data.status,'block':data.status}">
                             </app-qrcode>
                         </div>
                     </div>
                 </div>
             </div>
             <div data-v-a92dbf4c="">
-                <div data-v-a92dbf4c="" class="qrcode-step text-sm">
+                <div class="qrcode-step text-sm">
                     <p class="mb-1 text-sm">Cách đọc mã QR</p>
                     <p class="text-sm"><b class="text-sm">Bước 1: </b> Cài đặt các ứng dụng quét mã QR trên điện thoại
                     </p>
@@ -25,19 +27,14 @@
                         về mã QR cần quét</p>
                     <p class="text-sm"><b class="text-sm">Bước 3: </b> Xem thông tin trả về</p>
                 </div>
-                <div data-v-a92dbf4c="" class="inline-block justify-center absolute w-full">
-                    <button data-v-a92dbf4c="" type="button" (click)="taiqr()" class="w-full download-btn ant-btn ant-btn-info ant-btn-lg
-              rounded-md px-[30px] h-[30px] text-xs text-white border-transparent bg-[#53b6ef]"><span>Tải QR Code
-                            xuống</span></button>
-                    <div class="flex mt-4">
-                        <button data-v-a92dbf4c="" type="button"
-                            class="w-1/2 mr-2 save-btn ant-btn ant-btn-default ant-btn-lg btn-success
-                      rounded-md px-[30px] h-[30px] text-xs text-gray-600 border-transparent bg-white  border border-solid border-gray-300">
-                            <span>Lưu</span></button>
-                        <button data-v-a92dbf4c="" type="button" class="w-1/2 ml-2 save-btn ant-btn ant-btn-default ant-btn-lg btn-success
-                rounded-md px-[30px] h-[30px] text-xs text-gray-600 border-transparent bg-white border border-solid border-gray-300
-                "><span>Chia sẻ</span></button>
-                    </div>
+                <div class="inline-block justify-center absolute w-full">
+                    <button *ngIf="!data.status" type="button" (click)="taiqr()" class="w-full download-btn ant-btn ant-btn-info ant-btn-lg
+              rounded-md px-[30px] h-[30px] text-xs text-white border-transparent bg-[#53b6ef]">
+                        <span>Tải QR Code xuống</span>
+                    </button>
+                    <button *ngIf="data.status" type="button" (click)="save_qrcode()" class="w-full download-btn ant-btn ant-btn-info ant-btn-lg
+                    rounded-md px-[30px] h-[30px] text-xs text-white border-transparent bg-[#53b6ef]">
+                        <span>Lưu mã QR Code</span></button>
 
                 </div>
             </div>

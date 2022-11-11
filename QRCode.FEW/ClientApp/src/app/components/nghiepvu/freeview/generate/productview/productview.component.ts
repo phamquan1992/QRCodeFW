@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { optioncs } from 'src/app/models/optioncs';
+import { data_dialog_input, optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -43,8 +43,6 @@ export class ProductviewComponent implements OnInit {
 
   status = '';
   is_any_select = false;
-  arr_item: item_value[] = [{ value: 'Dịch vụ 1', is_select: false }, { value: 'Dịch vụ 2', is_select: false }, { value: 'Dịch vụ 3', is_select: false }];
-  arr_item_ks: item_value[] = [{ value: 'Khảo sát 1', is_select: false }, { value: 'Khảo sát 2', is_select: false }, { value: 'Khảo sát 3', is_select: false }];
   arr_value: item_value[] = [];
   arr_value_ks: item_value[] = [];
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -67,8 +65,6 @@ export class ProductviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.status = '';
-    this.arr_value = this.arr_item;
-    this.arr_value_ks = this.arr_item_ks;
     this.sharingSrc.getUserInfo().subscribe(user => {
       this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
       this.filter_payment = this.arr_payment;
@@ -148,6 +144,7 @@ export class ProductviewComponent implements OnInit {
       this.get_link_qr();
   }
   get_link_qr() {
+    this.now = new Date();
     let user_id: string = '';
     let typecode = 'product';
     this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
@@ -160,6 +157,10 @@ export class ProductviewComponent implements OnInit {
     this.data = url;
   }
   showDialog() {
+    let data_input: data_dialog_input = {
+      option: this.op_tion,
+      status: true
+    };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -167,11 +168,41 @@ export class ProductviewComponent implements OnInit {
     dialogConfig.height = "100%";
     dialogConfig.maxWidth = "95%";
     dialogConfig.maxHeight = "95%";
-    dialogConfig.data = this.op_tion;
+    dialogConfig.data = data_input;
     // dialogConfig.height = "310px";
     this.dialog.open(ContentdgComponent, dialogConfig).afterClosed().subscribe(
       res => {
-        // this.rowSelect = -1;
+        let user_id: string = '';
+        this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
+        let gencode_obj: qr_gencode = {
+          qrgencodeid: 0,
+          typecode: '',
+          dataid: 0,
+          image: '',
+          name: '',
+          code: '',
+          status: 0,
+          created_date: new Date(),
+          created_by: 0,
+          lastcreated_date: new Date(),
+          lastcreated_by: 0,
+          qrpaymentid: 0
+        };
+        gencode_obj.code = this.code_tmp;
+        gencode_obj.typecode = "product";
+        gencode_obj.dataid = Number(this.qrproductid);
+        gencode_obj.qrpaymentid = Number(this.qrpaymentid);
+        gencode_obj.name = this.name_qrcode;
+        gencode_obj.image = res;
+        gencode_obj.status = 1;
+        gencode_obj.created_by = Number(user_id);
+        this.gencodeSrc.add_gencode(gencode_obj).subscribe(t => {
+          if (t) {
+            this.mesSrc.success('Tạo QR code thành công');
+          } else {
+            this.mesSrc.error('Có lỗi trong quá trình xử lý dữ liệu');
+          }
+        });
       }
     );
   }
@@ -233,13 +264,13 @@ export class ProductviewComponent implements OnInit {
   findDv(gt: item_value[]): any {
     return gt.filter(t => t.is_select);
   }
-  auto_change(obj_input: any) {
-    let val = obj_input.value;
-    this.arr_value = this.arr_item.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
-  }
+  // auto_change(obj_input: any) {
+  //   let val = obj_input.value;
+  //   this.arr_value = this.arr_item.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
+  // }
   auto_change_ks(obj_input: any) {
     let val = obj_input.value;
-    this.arr_value_ks = this.arr_item_ks.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
+    this.filter_payment = this.arr_payment.pipe(map(ft => ft.filter(t => t.packname.toLowerCase().includes(val.toLowerCase()))));
   }
   auto_change_product(obj_input: any) {
     let val = obj_input.value;
@@ -282,9 +313,4 @@ export class ProductviewComponent implements OnInit {
     const index = this.arr_chip_product.indexOf(gt);
     return index == -1 ? false : true;
   }
-  // private _filter(value: string): string[] {
-  //   const filterValue = value.toLowerCase();
-
-  //   return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
-  // }
 }

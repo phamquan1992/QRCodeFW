@@ -38,3 +38,7 @@ export interface value_it {
     title: string;
     value: string;
 }
+export interface data_dialog_input {
+    option: optioncs;
+    status: boolean;
+}

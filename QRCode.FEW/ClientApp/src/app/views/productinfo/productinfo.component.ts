@@ -27,9 +27,12 @@ export class ProductinfoComponent implements OnInit {
   constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    debugger;
     let id = this.route.snapshot.paramMap.get('id');
+    let id2 = this.route.snapshot.paramMap.get('id2');
     let value_id = id == null ? '0' : id.toString();
-    this.product$ = this.viewDataSrc.get_view_product(value_id);
+    let value_id2 = id2 == null ? 'all' : id2.toString();
+    this.product$ = this.viewDataSrc.get_view_product(value_id, value_id2);
     this.product$.subscribe(t => {
       if (t.additional != null) {
         let arr_temp = JSON.parse(t.additional) as temp_object[];
@@ -43,6 +46,6 @@ export class ProductinfoComponent implements OnInit {
   select_product(id: number) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(['/views/product/' + id]);
+    this.router.navigate(['/views/product/' + id + '/all']);
   }
 }

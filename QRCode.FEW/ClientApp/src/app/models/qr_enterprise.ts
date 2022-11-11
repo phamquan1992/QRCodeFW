@@ -1,3 +1,5 @@
+import { productview } from "./product";
+
 export interface qr_enterprise {
     qrenterpriseid: number;
     name: string;
@@ -18,4 +20,15 @@ export interface qr_enterprise {
     lastcreated_by: number;
     status: boolean;
     address: string;
+}
+export interface enterprisview {
+    additional: string;
+    address: string;
+    email: string;
+    fax: string;
+    logo: string;
+    name: string;
+    qrenterpriseid: number;
+    tel: string;
+    list_ref: productview[]
 }

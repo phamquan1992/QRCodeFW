@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { optioncs } from 'src/app/models/optioncs';
+import { data_dialog_input, optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
 import { CompaniesService } from '../../../proview/childview/companies/companies.service';
@@ -9,6 +9,9 @@ import { qr_enterprise } from 'src/app/models/qr_enterprise';
 import { qr_payment } from 'src/app/models/qr_payment';
 import { PaynemtService } from 'src/app/services/paynemt.service';
 import { ObservableService } from 'src/app/services/observable.service';
+import { qr_gencode } from 'src/app/models/qr_gencode';
+import { MessageService } from 'src/app/services/message.service';
+import { GencodeService } from 'src/app/services/gencode.service';
 
 export interface item_value_obj {
   value: string;
@@ -47,7 +50,17 @@ export class CompanyviewComponent implements OnInit {
   filter_enterprise!: Observable<qr_enterprise[]>;
   arr_payment!: Observable<qr_payment[]>;
   filter_payment!: Observable<qr_payment[]>;
-  constructor(private dialog: MatDialog, private datepipe: DatePipe, private companySrc: CompaniesService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService) { }
+  name_qrcode = '';
+  qrpaymentid = '';
+  code_tmp = '';
+  str_url = '';
+  enterprise_id = '';
+  op_tion_temp: optioncs = new optioncs();
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private companySrc: CompaniesService,
+    private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string,
+    private gencodeSrc: GencodeService, private mesSrc: MessageService) {
+    this.str_url = baseUrl;
+  }
 
   ngOnInit(): void {
     this.status = '';
@@ -65,10 +78,45 @@ export class CompanyviewComponent implements OnInit {
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
   taiqr() {
-    this.now = new Date();
-    this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    // this.now = new Date();
+    // this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    let user_id: string = '';
+    this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
+    let gencode_obj: qr_gencode = {
+      qrgencodeid: 0,
+      typecode: '',
+      dataid: 0,
+      image: '',
+      name: '',
+      code: '',
+      status: 0,
+      created_date: new Date(),
+      created_by: 0,
+      lastcreated_date: new Date(),
+      lastcreated_by: 0,
+      qrpaymentid: 0
+    };
+    gencode_obj.code = this.code_tmp;
+    gencode_obj.typecode = "enterprise";
+    gencode_obj.dataid = Number(this.enterprise_id);
+    gencode_obj.qrpaymentid = Number(this.qrpaymentid);
+    gencode_obj.name = this.name_qrcode;
+    gencode_obj.image = this.convert_img_qrcode();
+    gencode_obj.status = 1;
+    gencode_obj.created_by = Number(user_id);
+    this.gencodeSrc.add_gencode(gencode_obj).subscribe(t => {
+      if (t) {
+        this.mesSrc.success('Tạo QR code thành công');
+      } else {
+        this.mesSrc.error('Có lỗi trong quá trình xử lý dữ liệu');
+      }
+    });
   }
   showDialog() {
+    let data_input: data_dialog_input = {
+      option: this.op_tion,
+      status: true
+    };
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -76,11 +124,41 @@ export class CompanyviewComponent implements OnInit {
     dialogConfig.height = "100%";
     dialogConfig.maxWidth = "95%";
     dialogConfig.maxHeight = "95%";
-    dialogConfig.data = this.op_tion;
+    dialogConfig.data = data_input;
     // dialogConfig.height = "310px";
     this.dialog.open(ContentdgComponent, dialogConfig).afterClosed().subscribe(
       res => {
-        // this.rowSelect = -1;
+        let user_id: string = '';
+        this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
+        let gencode_obj: qr_gencode = {
+          qrgencodeid: 0,
+          typecode: '',
+          dataid: 0,
+          image: '',
+          name: '',
+          code: '',
+          status: 0,
+          created_date: new Date(),
+          created_by: 0,
+          lastcreated_date: new Date(),
+          lastcreated_by: 0,
+          qrpaymentid: 0
+        };
+        gencode_obj.code = this.code_tmp;
+        gencode_obj.typecode = "enterprise";
+        gencode_obj.dataid = Number(this.enterprise_id);
+        gencode_obj.qrpaymentid = Number(this.qrpaymentid);
+        gencode_obj.name = this.name_qrcode;
+        gencode_obj.image = res;
+        gencode_obj.status = 1;
+        gencode_obj.created_by = Number(user_id);
+        this.gencodeSrc.add_gencode(gencode_obj).subscribe(t => {
+          if (t) {
+            this.mesSrc.success('Tạo QR code thành công');
+          } else {
+            this.mesSrc.error('Có lỗi trong quá trình xử lý dữ liệu');
+          }
+        });
       }
     );
   }
@@ -107,6 +185,19 @@ export class CompanyviewComponent implements OnInit {
   }
   xuat_qr(item: optioncs) {
     this.op_tion = item;
+    this.op_tion_temp = {
+      data: ' ',
+      image: item.image,
+      witdth: item.witdth,
+      height: item.height,
+      margin: item.margin,
+      dotstyle: item.dotstyle,
+      cornersDot_type: item.cornersDot_type,
+      cornerSquareType: item.cornerSquareType,
+      dotcolor: item.dotcolor,
+      background_color: item.background_color,
+      shape: item.shape
+    };
   }
   findDv(gt: item_value_obj[]): any {
     return gt.filter(t => t.is_select);
@@ -134,6 +225,36 @@ export class CompanyviewComponent implements OnInit {
     return selectedoption ? selectedoption.name : undefined;
   }
   select_payment(evnt: any) {
-    let gt = evnt.option.value.packcode;
+    let gt = evnt.option.value.qrpaymentid;
+    this.qrpaymentid = gt;
+    if (this.enterprise_id != null && this.qrpaymentid != null)
+      this.get_link_qr();
+
+  }
+  select_enterprise(evnt: any) {
+    let gt = evnt.option.value.qrenterpriseid;
+    this.enterprise_id = gt;
+    if (this.enterprise_id != null && this.qrpaymentid != null)
+      this.get_link_qr();
+  }
+  get_link_qr() {
+    this.now = new Date();
+    let user_id: string = '';
+    let typecode = 'product';
+    this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
+    let dataid = this.enterprise_id;
+    let paymentid = this.qrpaymentid;
+    let time_gen = this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    let id_str = time_gen + dataid + paymentid;
+    this.code_tmp = id_str;
+    let url = this.str_url + 'views/' + typecode + '/' + id_str;
+    this.data = url;
+  }
+  convert_img_qrcode() {
+    let dt = document.getElementById('qrcontset') as HTMLElement;
+    let canvas = dt.getElementsByTagName('canvas');
+    let tmp = canvas[0] as HTMLCanvasElement;
+    const data = tmp.toDataURL();
+    return data;
   }
 }
