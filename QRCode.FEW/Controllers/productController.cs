@@ -155,6 +155,18 @@ namespace QRCode.FEW.Controllers
                 value_ip = product_it.slogan
             };
             data.Add(Slogan_sp);
+            productdetail enterprise_sp = new productdetail
+            {
+                is_delete = false,
+                is_require = true,
+                is_visible = true,
+                name = "enterpriseid",
+                nhom = "macdinh",
+                Title = "Doanh nghiệp",
+                type = "dropdown",
+                value_ip = product_it.enterpriseid.ToString()
+            };
+            data.Add(enterprise_sp);
             productdetail img_daidien = new productdetail
             {
                 is_delete = true,
@@ -363,6 +375,7 @@ namespace QRCode.FEW.Controllers
                 product_it.des_story = product_up.des_story;
                 product_it.des_pack = product_up.des_pack;
                 product_it.des_element = product_up.des_element;
+                product_it.enterpriseid = product_up.enterpriseid;
                 product_it.des_uses = product_up.des_uses;
                 product_it.des_guide = product_up.des_guide;
                 product_it.des_preserve = product_up.des_preserve;
@@ -413,7 +426,8 @@ namespace QRCode.FEW.Controllers
                 product_it.des_startdate = product_up.des_startdate;
                 product_it.des_enddate = product_up.des_enddate;
                 product_it.additional = product_up.additional;
-                product_it.created_by = 0;
+                product_it.enterpriseid = product_up.enterpriseid;
+                product_it.created_by = product_up.created_by;
                 product_it.created_date = DateTime.Now;
                 return _IproductService.CreateNew(product_it);
             }
