@@ -20,8 +20,10 @@ namespace QRCode.Core.Domain
             Map(x => x.url_barcode).Nullable();
             Map(x => x.price).Nullable();
             Map(x => x.slogan).Nullable();
+            Map(x => x.enterpriseid).Nullable();
             Map(x => x.logo).Not.Nullable();
             Map(x => x.des_story).Nullable();
+            Map(x => x.des_manufactur).Nullable();
             Map(x => x.des_pack).Nullable();
             Map(x => x.des_element).Nullable();
             Map(x => x.des_uses).Nullable();

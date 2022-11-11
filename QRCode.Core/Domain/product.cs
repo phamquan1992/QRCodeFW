@@ -19,6 +19,7 @@ namespace QRCode.Core.Domain
         public virtual string logo { get; set; }
         public virtual string des_story { get; set; }
         public virtual string des_pack { get; set; }
+        public virtual string des_manufactur { get; set; }
         public virtual string des_element { get; set; }
         public virtual string des_uses { get; set; }
         public virtual string des_guide { get; set; }
@@ -30,6 +31,7 @@ namespace QRCode.Core.Domain
         public virtual decimal created_by { get; set; }
         public virtual DateTime? lastcreated_date { get; set; }
         public virtual decimal lastcreated_by { get; set; }
+        public virtual decimal enterpriseid { get; set; }
         public virtual bool status { get; set; }
 
     }
