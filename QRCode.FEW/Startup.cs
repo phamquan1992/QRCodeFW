@@ -45,6 +45,7 @@ namespace QRCode.FEW
             services.AddScoped<Iqr_enterpriseRepository, qr_enterpriseRepository>();
             services.AddScoped<IuserdataRepository, userdataRepository>();
             services.AddScoped<Iqr_paymentRepository, qr_paymentRepository>();
+            services.AddScoped<Iqr_gencodeRepository, qr_gencodeRepository>();
             #endregion
             #region Services
             services.AddScoped<IproductService, productService>();
@@ -53,6 +54,7 @@ namespace QRCode.FEW
             services.AddScoped<Iqr_enterpriseService, qr_enterpriseService>();
             services.AddScoped<IuserdataService, userdataService>();
             services.AddScoped<Iqr_paymentService, qr_paymentService>();
+            services.AddScoped<Iqr_gencodeService, qr_gencodeService>();
             #endregion
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
