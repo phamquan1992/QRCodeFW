@@ -46,4 +46,19 @@ namespace QRCode.Core.Domain2
         public string additional { get; set; }
         public List<productview> list_ref { get; set; }
     }
+    public class gencodeview
+    {
+        public string qr_name { get; set; }
+        public string qr_img { get; set; }
+        public string qr_tpye { get; set; }
+        public string qr_obj_name { get; set; }
+        public string qr_obj_url { get; set; }
+        public string status_qr { get; set; }
+        public string status_pack { get; set; }
+        public string pack_name { get; set; }
+        public DateTime create_date_qr { get; set; }
+        public DateTime exp_date { get; set; }
+        public int qrgencodeid { get; set; }
+        public string qr_code { get; set; }
+    }
 }
