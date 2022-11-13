@@ -26,7 +26,10 @@ namespace QRCode.Repositories.Repository
             this.Session = _sessionFactory.OpenSession();
             this.Session.FlushMode = FlushMode.Auto;
             if (!Session.IsOpen && Session.Connection.State != ConnectionState.Open)
+            {
                 this.Session = _sessionFactory.OpenSession();
+            }
+                
             this._transaction = Session.BeginTransaction(IsolationLevel.ReadCommitted);
             this.productRepository = productRepository;
             this.locationRepository = locationRepository;
