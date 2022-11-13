@@ -152,8 +152,8 @@ export class ProductviewComponent implements OnInit {
     let paymentid = this.qrpaymentid;
     let time_gen = this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
     let id_str = time_gen + dataid + paymentid;
-    this.code_tmp = id_str;
-    let url = this.str_url + 'views/' + typecode + '/' + id_str;
+    this.code_tmp = 'P' + id_str;
+    let url = this.str_url + 'views/' + typecode + '/' + id_str + '/gen';
     this.data = url;
   }
   showDialog() {

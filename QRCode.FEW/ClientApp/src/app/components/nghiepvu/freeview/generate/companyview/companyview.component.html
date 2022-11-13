@@ -18,7 +18,8 @@
                                     <div class="ant-col ant-form-item-control-wrapper">
                                         <div class="ant-form-item-control">
                                             <span class="ant-form-item-children">
-                                                <input placeholder="Nhập tên QR Code" type="text" [(ngModel)]="name_qrcode"
+                                                <input placeholder="Nhập tên QR Code" type="text"
+                                                    [(ngModel)]="name_qrcode"
                                                     class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
                                             </span>
                                         </div>
@@ -45,8 +46,10 @@
                                                     <mat-option *ngFor="let it of filter_payment|async" [value]="it"
                                                         style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
                                                         class="relative">
-                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b> {{it.packname}}</span><br>
-                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b> {{it.payment_date|date:
+                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b>
+                                                            {{it.packname}}</span><br>
+                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b>
+                                                            {{it.payment_date|date:
                                                             'dd/MM/yyyy'}}</span>
                                                     </mat-option>
                                                     <mat-option *ngIf="(filter_payment | async)?.length == 0">
@@ -109,7 +112,9 @@
                                                     (keyup)="auto_change_obj($event.target)"
                                                     placeholder='Chọn doanh nghiệp'
                                                     [matAutocomplete]="doanhnghiepAutocomplete" [value]="">
-                                                <mat-autocomplete #doanhnghiepAutocomplete="matAutocomplete" [displayWith]="displayenter" (optionSelected)="select_enterprise($event)">
+                                                <mat-autocomplete #doanhnghiepAutocomplete="matAutocomplete"
+                                                    [displayWith]="displayenter"
+                                                    (optionSelected)="select_enterprise($event)">
                                                     <mat-option *ngFor="let it of filter_enterprise|async" [value]="it"
                                                         style="height: 32px; font-size: 14px;" class="relative">
                                                         <span>{{it.name}}</span>
@@ -189,8 +194,9 @@
                             <!-- <button type="button"
                                 class="mr-5 save-btn ant-btn ant-btn-default ant-btn-lg btn-success rounded-md px-[50px] h-[40px] text-[16px] text-white border-transparent bg-[#00b289]"><span>Lưu</span></button> -->
                             <button type="button" (click)="taiqr()"
-                                class="w-full download-btn ant-btn ant-btn-info ant-btn-lg rounded-md px-[50px] h-[40px] text-[16px] text-white border-transparent bg-[#53b6ef]"><span>Tải
-                                    QR Code xuống</span></button>
+                                class="w-full download-btn ant-btn ant-btn-info ant-btn-lg rounded-md px-[50px] h-[40px] text-[16px] text-white border-transparent bg-[#53b6ef]">
+                                <span>Sinh mã QR Code</span>
+                            </button>
                         </div>
                     </div>
 

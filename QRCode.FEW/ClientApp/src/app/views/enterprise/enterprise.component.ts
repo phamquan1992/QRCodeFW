@@ -61,6 +61,6 @@ export class EnterpriseComponent implements OnInit {
     return this.arr_url[index_tem].url;
   }
   select_product(id: number) {
-    this.router.navigate(['/views/product/' + id]);
+    this.router.navigate(['/views/product/' + id+'/object']);
   }
 }

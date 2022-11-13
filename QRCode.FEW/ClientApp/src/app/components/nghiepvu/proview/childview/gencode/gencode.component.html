@@ -1,0 +1,195 @@
+<div class="layoutQ px-[1px] py-[15px]">
+    <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
+        Doanh nghiệp, cá nhân
+    </h3>
+</div>
+<!-- <section class="bg-[#8080801c] px-[15px] mb-[15px]">
+    <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+        placeholder="Tên, số điện thoại hoặc mã số thuế" [(ngModel)]="name_filter">
+    <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
+    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="--Tỉnh thành--" [(ngModel)]="value_select">
+        <option class="text-[13px] p-1 block" value="all">--Tỉnh thành--</option>
+        <option *ngFor="let it of arr_tinh" class="text-[13px] p-1 block" value="{{it.code}}">{{it.name}}</option>
+    </select>
+    <button  (click)="applyFilter()"
+        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
+        kiếm</button>
+    <button (click)="reload_grid()">
+        <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
+            style="display: inline-block; width: 25px;margin-left: 12px;">
+    </button>
+</section> -->
+<div class="px-[15px]">
+    <section>
+        <!-- <button
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Import
+            doanh nghiệp, cá nhân</button> -->
+        <!-- <button
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]"
+            (click)="them_moi()">Thêm mới</button>
+        <button (click)="showXoaDialog('')"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#ff0000a6] text-white text-[13px] mr-[5px] mb-[5px]">Xoá</button>
+        <button (click)="showhide_product(false)"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Ẩn</button>
+        <button (click)="showhide_product(true)"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Hiện</button> -->
+        <!-- <button
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Tạo
+            QR Code </button> -->
+    </section>
+    <section class="h-4/6 overflow-auto">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="border border-solid border-[#1310101f] w-[80px]">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class="border border-solid border-[#0000001f] text-center"
+                    (click)="selection.toggle(row)">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="qr_name">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto]">
+                    Tên QR Code
+                </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center font-[Roboto]" style="padding: 4px;">
+                    <span class="text-[13px]">{{element.qr_name}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="qr_img">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto]"
+                    style="width: 100px;"> Ảnh
+                    QR Code </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] break-all text-center " style="padding: 8px;">
+                    <div class="flex flex-col w-full h-full">
+                        <div class="w-full flex justify-center">
+                            <img [src]="element.qr_img" alt="" class="cursor-pointer" style="width: 50px;"
+                                (click)="zoom_img(element.qr_img)">
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-row mt-1">
+                        <div class="w-1/2">
+                            <i class="fa fa-clone float-right mr-1 text-[#ffa500] cursor-pointer" aria-hidden="true"
+                                (click)="copy_url(element.qr_code,element.qr_tpye)"></i>
+                        </div>
+                        <div class="w-1/2">
+                            <i class="fa fa-download float-left ml-1 text-[#196898] cursor-pointer" aria-hidden="true"
+                                (click)="download_img(element.qr_img)"></i>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qr_tpye">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto]"
+                    style="width: 120px;">
+                    Loại QR Code
+                </th>
+                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] text-center"
+                    style="padding: 4px;" [ngSwitch]="element.qr_tpye">
+                    <span class="text-[13px] font-[Roboto]" *ngSwitchCase="'product'">Gán sản phẩm</span>
+                    <span class="text-[13px] font-[Roboto]" *ngSwitchCase="'enterprise'">Gán doanh nghiệp</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qr_obj_name">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto] ">
+                    Đối tượng </th>
+                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] text-center"
+                    style="padding: 4px;">
+                    <a class="text-[13px] font-[Roboto] text-[#196898]"
+                        [routerLink]="element.qr_obj_url">{{element.qr_obj_name}}</a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status_qr">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto]"
+                    style="width: 100px;">
+                    Trạng thái
+                </th>
+                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] text-center"
+                    style="padding: 4px;" [ngSwitch]="element.status_qr">
+                    <span
+                        class="text-[13px] font-[Roboto] border border-solid border-[#b7eb8f] text-[#52c41a] bg-[#f6ffed] block"
+                        *ngSwitchCase="'Kích hoạt'">{{element.status_qr}}</span>
+                    <span
+                        class="text-[13px] font-[Roboto] border border-solid border-[#ffa39e] text-[#f5222d] bg-[#fff1f0] block"
+                        *ngSwitchCase="'Huỷ kích hoạt'">{{element.status_qr}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="pack_name">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto] "
+                    style="width: 120px;">
+                    Trạng thái gói dịch vụ
+                </th>
+                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] text-center"
+                    style="padding: 4px;">
+                    <span class="text-[13px] font-[Roboto] block">{{element.pack_name}}</span>
+                    <div [ngSwitch]="element.status_pack">
+                        <span
+                            class="text-[13px] font-[Roboto] border border-solid border-[#b7eb8f] text-[#52c41a] bg-[#f6ffed] block"
+                            *ngSwitchCase="'Chưa hết hạn'">{{element.status_pack}}</span>
+                        <span
+                            class="text-[13px] font-[Roboto] border border-solid border-[#ffa39e] text-[#f5222d] bg-[#fff1f0] block"
+                            *ngSwitchCase="'Hết hạn'">{{element.status_pack}}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="create_date_qr">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto]"
+                    style="width: 100px;">
+                    Thời gian kích hoạt QR Code </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center text-[13px] font-[Roboto]"
+                    style="padding: 4px;">
+                    {{element.create_date_qr|date: 'dd/MM/yyy'}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="exp_date">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold font-[Roboto] text-center"
+                    style="width: 100px;">
+                    Hạn sử dụng </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center text-[13px] font-[Roboto]"
+                    style="padding: 4px;">
+                    {{element.exp_date|date: 'dd/MM/yyy'}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-[13px] font-bold  font-[Roboto]"
+                    style="width: 100px;">
+                    Thao tác</th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
+                    <mat-slide-toggle [checked]="element.status_qr=='Kích hoạt'" (change)="active_status(element)">
+                    </mat-slide-toggle>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="h-5"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+        </table>
+    </section>
+</div>

@@ -240,13 +240,13 @@ export class CompanyviewComponent implements OnInit {
   get_link_qr() {
     this.now = new Date();
     let user_id: string = '';
-    let typecode = 'product';
+    let typecode = 'enterprise';
     this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
     let dataid = this.enterprise_id;
     let paymentid = this.qrpaymentid;
     let time_gen = this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
     let id_str = time_gen + dataid + paymentid;
-    this.code_tmp = id_str;
+    this.code_tmp = 'E'+id_str;
     let url = this.str_url + 'views/' + typecode + '/' + id_str;
     this.data = url;
   }

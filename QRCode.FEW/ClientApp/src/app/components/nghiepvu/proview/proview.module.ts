@@ -11,6 +11,9 @@ import { DashboardComponent } from './childview/dashboard/dashboard.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { GencodeComponent } from './childview/gencode/gencode.component';
+import { ShowimgComponent } from './childview/gencode/showimg/showimg.component';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -19,12 +22,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SidenavComponent,
     AcountinfoComponent,
     DashboardComponent,
+    GencodeComponent,
+    ShowimgComponent,
     // CompaniesComponent,
     // AddcompanyComponent
   ],
   imports: [
     CommonModule,
-    ProviewRoutingModule, MatSidenavModule, MatListModule, MatTableModule,MatCheckboxModule,MatAutocompleteModule
+    ProviewRoutingModule, MatSidenavModule, MatListModule, MatTableModule,MatCheckboxModule,MatAutocompleteModule,
+    MatSlideToggleModule
   ]
 })
 export class ProviewModule { }

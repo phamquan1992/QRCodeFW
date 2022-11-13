@@ -45,7 +45,7 @@
         </div>
         <div class="relative m-8 bg-white mx-6 rounded-[8px]" *ngIf="data.list_ref.length > 0">
             <div class="p-6">
-                <h2 _ngcontent-oxy-c71="" class="font-bold mb-2">Sản phẩm doanh nghiep</h2>
+                <h2 _ngcontent-oxy-c71="" class="font-bold mb-2">Sản phẩm phân phối</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 my-2">
                     <div *ngFor="let it of data.list_ref"
                         class="border border-solid border-[#e6e6e6] flex justify-center flex-col">
@@ -53,7 +53,7 @@
                             (click)="select_product(it.qrproductid)">
                         <div class="p-2">
                             <p class="inline-block overflow-hidden text-ellipsis mb-2 w-full text-sm cursor-pointer"
-                                routerLink="/views/product/{{it.qrproductid}}" (click)="select_product(it.qrproductid)">
+                                (click)="select_product(it.qrproductid)">
                                 {{it.name}}</p>
                             <span class="inline-block w-full text-sm font-bold text-[#f59e0b]">{{it.price|number}}
                                 đ</span>
