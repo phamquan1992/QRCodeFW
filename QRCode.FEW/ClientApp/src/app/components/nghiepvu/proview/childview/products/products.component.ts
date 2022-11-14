@@ -24,6 +24,7 @@ export class ProductsComponent implements OnInit {
   selection = new SelectionModel<product>(true, []);
   filterProduct = {
     name: '',
+    code:'',
     status: ''
   };
   value_select = 'all';
@@ -35,11 +36,12 @@ export class ProductsComponent implements OnInit {
     this.productSrc.get_product_list().pipe().subscribe(t => {
       this.data_pr = t as product[];
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
-      this.dataSource.filterPredicate = this.customFilterPredicate();
+      this.dataSource.filterPredicate = this.createFilter();
     });
   }
   reload_grid() {
     this.filterProduct['name'] = '';
+    this.filterProduct['code'] = '';
     this.filterProduct['status'] = '';
     this.name_filter = '';
     this.value_select = 'all';
@@ -48,17 +50,47 @@ export class ProductsComponent implements OnInit {
   }
   applyFilter() {
     this.filterProduct['name'] = this.name_filter;
+    this.filterProduct['code'] = this.name_filter;
     this.filterProduct['status'] = this.value_select == 'all' ? '' : this.value_select;
-    console.log(JSON.stringify(this.filterProduct));
+    
     this.dataSource.filter = JSON.stringify(this.filterProduct);
   }
   customFilterPredicate() {
     const myFilterPredicate = (data: product, filter: string): boolean => {
       let searchString = JSON.parse(filter);
-      return data.name.toString().trim().indexOf(searchString.name) !== -1 &&
+      return data.name.toString().trim().indexOf(searchString.name) !== -1 && data.code.toString().trim().indexOf(searchString.name) !== -1 &&
         data.status.toString().trim().toLowerCase().indexOf(searchString.status.toLowerCase()) !== -1;
     }
     return myFilterPredicate;
+  }
+  createFilter() {
+    let filterFunction = function (data: any, filter: string): boolean {
+      let searchTerms = JSON.parse(filter);
+      let isFilterSet = false;
+      for (const col in searchTerms) {
+        if (searchTerms[col].toString() !== '') {
+          isFilterSet = true;
+        } else {
+          delete searchTerms[col];
+        }
+      }
+
+      let nameSearch = () => {
+        let found = false;
+        if (isFilterSet) {
+          for (const col in searchTerms) {
+            if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+              found = true
+            }
+          }
+          return found
+        } else {
+          return true;
+        }
+      }
+      return nameSearch();
+    }
+    return filterFunction;
   }
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -116,7 +148,7 @@ export class ProductsComponent implements OnInit {
     this.productSrc.get_product_list().pipe().subscribe(t => {
       this.data_pr = t as product[];
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
-      this.dataSource.filterPredicate = this.customFilterPredicate();
+      this.dataSource.filterPredicate = this.createFilter();
     });
   }
   showhide_product(trangthai: boolean) {
