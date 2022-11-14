@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using QRCode.Core.Domain;
 using QRCode.Core.Domain2;
@@ -22,15 +23,18 @@ namespace QRCode.FEW.Controllers
     {
         private readonly IproductService _IproductService;
         private readonly IcategoryService _IcategoryService;
-        public productController(IproductService iproductService, IcategoryService icategoryService)
+        private readonly ILogger<productController> _logger;
+        public productController(IproductService iproductService, IcategoryService icategoryService, ILogger<productController> logger)
         {
             _IproductService = iproductService;
             _IcategoryService = icategoryService;
+            _logger = logger;
         }
         [HttpGet]
         public List<product> Get()
         {
             var req = Request;
+            _logger.LogError("TestLog");
             List<product> data = new List<product>();
             data = _IproductService.GetAll().ToList();
             return data;
