@@ -73,6 +73,7 @@ namespace QRCode.FEW.Controllers
             try
             {
                 qr_payment obj = new qr_payment();
+                obj.userid = model.userid;
                 obj.created_by = model.created_by;
                 obj.created_date = DateTime.Now;
                 obj.packcode = model.packcode;
