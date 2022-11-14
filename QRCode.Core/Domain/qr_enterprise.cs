@@ -25,6 +25,7 @@ namespace QRCode.Core.Domain
         public virtual int lastcreated_by { get; set; }
         public virtual bool status { get; set; }
         public virtual string address { get; set; }
+        public virtual string sectors_code { get; set; }
 
     }
 }

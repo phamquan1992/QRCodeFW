@@ -29,6 +29,7 @@ namespace QRCode.Core.Domain
             Map(x => x.lastcreated_by).Nullable();
             Map(x => x.status).Nullable();
             Map(x => x.address).Nullable();
+            Map(x => x.sectors_code).Nullable();
         }
     }
 }
