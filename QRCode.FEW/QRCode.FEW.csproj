@@ -46,6 +46,13 @@
     <Folder Include="ClientApp\src\assets\qr_image\enterprise\" />
     <Folder Include="ClientApp\src\assets\qr_image\gencode\" />
     <Folder Include="ClientApp\src\assets\qr_image\products\" />
+    <Folder Include="logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
