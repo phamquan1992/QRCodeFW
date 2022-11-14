@@ -93,7 +93,7 @@ namespace QRCode.FEW.Controllers
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
                 model.sectors_code = qr_model.sectors_code;
-                model.lastcreated_by = qr_model.created_by;
+                model.lastcreated_by = qr_model.lastcreated_by;
                 model.lastcreated_date = DateTime.Now;
                 return _Iqr_enterpriseService.Update(model);
             }
