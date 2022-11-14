@@ -39,8 +39,9 @@ export class DangkyComponent implements OnInit {
       lastcreated_by: 0
     };
     this._sharingService.getUserInfo().subscribe(user => {
-      pay.userid = user.id as unknown as number;
-      pay.created_by = user.id as unknown as number;
+      debugger;
+      pay.userid = Number(user.id);
+      pay.created_by = Number(user.id);
       pay.packcode = this.data.pack_code;
       pay.packname = this.data.pack_name;
       console.log(JSON.stringify(pay));

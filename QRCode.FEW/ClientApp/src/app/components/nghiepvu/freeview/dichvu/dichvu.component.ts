@@ -82,9 +82,10 @@ export class DichvuComponent implements OnInit {
     dialogConfig.maxWidth = "95%";
     dialogConfig.panelClass = ['md:w-[900px]', 'md:h-[585px]', 'w-full', 'h-[95%]', 'magrin_pane'];
     dialogConfig.disableClose = true;
+    dialogConfig.data='dichvu';
     this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
       res => {
-        this.sharingSrc.getUserInfo();
+        //this.sharingSrc.getUserInfo();
       }
     );
   }
