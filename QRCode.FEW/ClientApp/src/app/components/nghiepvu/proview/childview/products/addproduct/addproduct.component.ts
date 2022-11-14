@@ -9,6 +9,8 @@ import { ProductsService } from '../products.service';
 import { product } from 'src/app/models/product';
 import { MessageService } from 'src/app/services/message.service';
 import { data_upload, temp_object, value_it } from 'src/app/models/optioncs';
+import { ObservableService } from 'src/app/services/observable.service';
+import { nguoidung } from 'src/app/models/nguoidung';
 
 @Component({
     selector: 'app-addproduct',
@@ -55,8 +57,8 @@ export class AddproductComponent implements OnInit {
         { name: 'des_startdate', value: 'Ngày sản xuất' },
         { name: 'des_enddate', value: 'Hạn sử dụng' },
     ];
-
-    constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService, private mesSrc: MessageService) {
+    user_info!: nguoidung;
+    constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService, private mesSrc: MessageService, private sharingSrc: ObservableService) {
 
     }
     ngOnInit(): void {
@@ -72,6 +74,9 @@ export class AddproductComponent implements OnInit {
             this.data_mota = this.data.filter(t => t.nhom == 'mota');
             this.data_khac = this.data.filter(t => t.nhom == 'khac');
             this.generateFormControls();
+        });
+        this.sharingSrc.getUserInfo().subscribe(t => {
+            this.user_info = t;
         });
     }
     UpdateData() {
@@ -121,7 +126,8 @@ export class AddproductComponent implements OnInit {
                     myObj[element] = null;
             });
             // console.log(JSON.stringify(myObj));
-            if (this.value_id != '0')
+            if (this.value_id != '0') {
+                myObj['created_by'] = this.user_info.id;
                 this.productSrc.update_product(myObj).subscribe(t => {
                     if (t) {
                         this.mesSrc.success('Bạn đã thực hiện thành công!');
@@ -130,7 +136,9 @@ export class AddproductComponent implements OnInit {
                         this.mesSrc.error('Có lỗi trong quá trình lưu dữ liệu');
                     }
                 });
-            else
+            }
+            else {
+                myObj['lastcreated_by'] = this.user_info.id;
                 this.productSrc.add_product(myObj).subscribe(
                     t => {
                         if (t) {
@@ -141,6 +149,7 @@ export class AddproductComponent implements OnInit {
                         }
                     }
                 );
+            }
         });
     }
     generateFormControls() {
