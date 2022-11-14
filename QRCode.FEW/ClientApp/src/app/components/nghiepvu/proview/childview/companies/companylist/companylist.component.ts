@@ -160,6 +160,10 @@ export class CompanylistComponent implements OnInit {
     return filterFunction;
   }
   showhide_product(trangthai: boolean) {
+    if(this.selection.selected.length==0){
+      this.mesSrc.error('Bạn chưa chọn bản ghi nào');
+      return;
+    }
     this.selection.selected.forEach(element => {
       element.status = trangthai;
     });

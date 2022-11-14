@@ -68,7 +68,7 @@ export class ProductviewComponent implements OnInit {
     this.sharingSrc.getUserInfo().subscribe(user => {
       this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
       this.filter_payment = this.arr_payment;
-      this.arr_product_core = this.productSrc.get_product_list();
+      this.arr_product_core = this.productSrc.get_product_list().pipe(map(m => m.filter(t => t.status)));
       this.filter_product = this.arr_product_core;
     });
   }

@@ -24,7 +24,7 @@ export class ProductsComponent implements OnInit {
   selection = new SelectionModel<product>(true, []);
   filterProduct = {
     name: '',
-    code:'',
+    code: '',
     status: ''
   };
   value_select = 'all';
@@ -52,7 +52,7 @@ export class ProductsComponent implements OnInit {
     this.filterProduct['name'] = this.name_filter;
     this.filterProduct['code'] = this.name_filter;
     this.filterProduct['status'] = this.value_select == 'all' ? '' : this.value_select;
-    
+
     this.dataSource.filter = JSON.stringify(this.filterProduct);
   }
   customFilterPredicate() {
@@ -152,6 +152,10 @@ export class ProductsComponent implements OnInit {
     });
   }
   showhide_product(trangthai: boolean) {
+    if (this.selection.selected.length == 0) {
+      this.mesSrc.error('Bạn chưa chọn bản ghi nào');
+      return;
+    }
     this.selection.selected.forEach(element => {
       element.status = trangthai;
     });

@@ -68,7 +68,7 @@ export class CompanyviewComponent implements OnInit {
     this.arr_value_vaitro = this.arr_item_vaitro;
     this.arr_value_obj = this.arr_item_obj;
     this.arr_value_ks = this.arr_item_ks;
-    this.list_enterprise = this.companySrc.get_list_cty();
+    this.list_enterprise = this.companySrc.get_list_cty().pipe(map(m => m.filter(t => t.status)));
     this.filter_enterprise = this.list_enterprise;
     this.sharingSrc.getUserInfo().subscribe(user => {
       this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
@@ -246,7 +246,7 @@ export class CompanyviewComponent implements OnInit {
     let paymentid = this.qrpaymentid;
     let time_gen = this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
     let id_str = time_gen + dataid + paymentid;
-    this.code_tmp = 'E'+id_str;
+    this.code_tmp = 'E' + id_str;
     let url = this.str_url + 'views/' + typecode + '/' + id_str;
     this.data = url;
   }

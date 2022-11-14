@@ -67,8 +67,11 @@
             </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Tên doanh
-                nghiệp</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Tên doanh nghiệp</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 placeholder="Nhập tên điểm check in, cửa hàng, toà nhà, tài xế..." [formControlName]="'name'"
@@ -88,8 +91,11 @@
                 [formControlName]="'taxcode'" name="taxcode" value="">
         </div>
         <div>
-            <label for="tel" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Điện thoại liên
-                hệ</label>
+            <label for="tel" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Điện thoại liên hệ</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" [ngClass]="{'border-red-600':((!DataForm.controls['tel'].valid) && (DataForm.controls['tel'].dirty || DataForm.controls['tel'].touched) && DataForm.controls['tel'].errors?.['required'])
             ||DataForm.controls['tel'].hasError('minlength') || DataForm.controls['tel'].hasError('maxlength')}"
@@ -222,7 +228,11 @@
             </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Nghề nghiệp</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Nghề nghiệp</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Nghề nghiệp"
                 [ngClass]="{'border-red-600':!DataForm.controls['occupation'].valid && (DataForm.controls['occupation'].dirty || DataForm.controls['occupation'].touched) && DataForm.controls['occupation'].errors?.['required']}"
@@ -236,7 +246,11 @@
             </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Email</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Email</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 placeholder="Nhập email tại đây" [formControlName]="'email'" name="email" value="" required
@@ -248,7 +262,11 @@
             </div>
         </div>
         <div class="col-span-2">
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Địa chỉ</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Địa chỉ</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 placeholder="Nhập địa chỉ tại đây" [formControlName]="'address'" name="address" value="" required
