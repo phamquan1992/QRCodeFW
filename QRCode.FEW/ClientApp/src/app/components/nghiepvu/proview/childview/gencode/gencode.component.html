@@ -1,25 +1,56 @@
 <div class="layoutQ px-[1px] py-[15px]">
     <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
-        Doanh nghiệp, cá nhân
+        Danh sách QR Code
     </h3>
 </div>
-<!-- <section class="bg-[#8080801c] px-[15px] mb-[15px]">
-    <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên, số điện thoại hoặc mã số thuế" [(ngModel)]="name_filter">
-    <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="--Tỉnh thành--" [(ngModel)]="value_select">
-        <option class="text-[13px] p-1 block" value="all">--Tỉnh thành--</option>
-        <option *ngFor="let it of arr_tinh" class="text-[13px] p-1 block" value="{{it.code}}">{{it.name}}</option>
-    </select>
-    <button  (click)="applyFilter()"
-        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
+<section class="bg-[#8080801c] px-[15px] mb-[15px] flex">
+    <div class="w-[250px] mr-[6px]">
+        <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+        bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên QR Code"
+            [(ngModel)]="nameqr_filter">
+    </div>
+    <div class="w-[250px] mr-[6px]">
+        <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+    bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên đối tượng"
+            [(ngModel)]="nameobj_filter">
+    </div>
+    <div class="w-[250px] inline-block mr-[6px]">
+        <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_loaiQR"
+            [placeholder_str]="'Loại QR Code'"></app-autocompleinput>
+    </div>
+    <div class="w-[250px] inline-block mr-[6px]">
+        <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_pack"
+            [placeholder_str]="'Gói dịch vụ'" class="w-[250px]"></app-autocompleinput>
+    </div>
+    <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+        <mat-date-range-input [rangePicker]="picker"
+            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
+            style="display:inline-block;width:100%;text-align: center;opacity: 1;">
+            <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
+                (click)="picker.open()" (keyup)="input1_change($event)"/>
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker.open()" />
+        </mat-date-range-input>
+        <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
+    </div>
+    <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+        <mat-date-range-input [rangePicker]="picker2"
+            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
+            style="display:inline-block;width:100%;text-align: center;opacity: 1;">
+            <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;"
+                (click)="picker2.open()" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker2.open()" />
+        </mat-date-range-input>
+        <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
+    </div>
+
+    <button (click)="applyFilter()"
+        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] w-[100px] my-[3px]">Tìm
         kiếm</button>
     <button (click)="reload_grid()">
         <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
             style="display: inline-block; width: 25px;margin-left: 12px;">
     </button>
-</section> -->
+</section>
 <div class="px-[15px]">
     <section>
         <!-- <button

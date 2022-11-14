@@ -39,6 +39,17 @@ td.mat-footer-cell:first-of-type {
 ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
     background-color: rgb(21, 65, 146) !important;
 }
-::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar{
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
     background-color: #4099ff8a;
+}
+
+::ng-deep .mat-date-range-input-container {
+    width: 100%;
+    justify-content: center;
+}
+
+::ng-deep .mat-date-range-input-start-wrapper {
+    flex-grow: 1;
+    ;
 }

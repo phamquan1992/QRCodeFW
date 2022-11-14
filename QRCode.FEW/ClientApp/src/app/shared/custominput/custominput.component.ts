@@ -59,7 +59,6 @@ export class CustominputComponent implements OnInit {
     this.out_delete.emit(gt);
   }
   setval_out(gt: any) {
-    debugger;
     this.form.controls[this.values.name].setValue(gt);
   }
   get isValid() { return this.form.controls[this.values.name].valid; }

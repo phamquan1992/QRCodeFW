@@ -3,10 +3,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { cutom_it } from 'src/app/models/category';
 import { gencodeview } from 'src/app/models/qr_gencode';
 import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
+import { PaynemtService } from 'src/app/services/paynemt.service';
 import { ShowimgComponent } from './showimg/showimg.component';
 
 @Component({
@@ -21,7 +23,14 @@ export class GencodeComponent implements OnInit {
   selection = new SelectionModel<gencodeview>(true, []);
   displayedColumns: string[] = ['select', 'qr_name', 'qr_img', 'qr_tpye', 'qr_obj_name', 'status_qr', 'pack_name', 'create_date_qr', 'exp_date', 'action'];
   str_url = '';
-  constructor(private gencodeSrc: GencodeService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
+  arr_filter_loaiQR: cutom_it[] = [
+    { mota: "Gán sản phẩm", name: "product", stt: 1 },
+    { mota: "Gán doanh nghiệp", name: "enterprise", stt: 1 },
+  ];
+  arr_filter_pack: cutom_it[] = [];
+  nameqr_filter = '';
+  nameobj_filter = '';
+  constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
     private messSrc: MessageService) {
     this.str_url = baseUrl;
   }
@@ -37,8 +46,20 @@ export class GencodeComponent implements OnInit {
         this.data_arr = it;
         this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
       });
-
+      this.paymentSrc.get_payment_list(Number(t.id)).subscribe(t => {
+        t.forEach(element => {
+          let it_tmp: cutom_it = {
+            stt: 0,
+            name: '',
+            mota: ''
+          };
+          it_tmp.mota = element.packname;
+          it_tmp.name = element.qrpaymentid.toString();
+          this.arr_filter_pack.push(it_tmp);
+        });
+      });
     });
+
   }
   masterToggle() {
     this.isAllSelected() ?
@@ -96,5 +117,17 @@ export class GencodeComponent implements OnInit {
       element.status_qr = 'Kích hoạt';
     }
     this.messSrc.success(element.status_qr + " QR Code thành công");
+  }
+  applyFilter() {
+
+  }
+  reload_grid() {
+
+  }
+  setval_loaiQR(gt: any) {
+
+  }
+  input1_change(event:any){
+    console.log(event);
   }
 }

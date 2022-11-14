@@ -15,7 +15,12 @@ import { cutom_it } from 'src/app/models/category';
 export class AutocompleinputComponent implements OnInit {
   stateCtrl = new FormControl();
   arr_item!: cutom_it[];
-  @Input() data!: cutom_it[]
+  @Input() data!: cutom_it[];
+  @Input() placeholder_str = 'Danh mục';
+  _ischeck: boolean = false;
+  @Input() set ischeck(gt: boolean) {
+    this._ischeck = gt;
+  }
   rotate_it = false;
   @ViewChild('statesAutocomplete') statesAutocompleteRef!: MatAutocomplete;
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger!: MatAutocompleteTrigger;
@@ -36,7 +41,15 @@ export class AutocompleinputComponent implements OnInit {
   close_event(gt: string) {
     this.rotate_it = false;
   }
-  get isValid() { return this.isequ; }
+  // get isValid() { return this.isequ; }
+  get isValid() {
+    if (this._ischeck)
+      return this.isequ;
+    else
+      return true;
+  }
+
+
   select_it(evnt: any, data: string) {
     if (data != null)
       this.isequ = true;
@@ -87,6 +100,7 @@ export class AutocompleinputComponent implements OnInit {
     this.arr_item = this.data;
   }
   auto_change(obj_input: any) {
+    debugger;
     let val = obj_input.value;
     if (val != null && val != '')
       this.isequ = true;

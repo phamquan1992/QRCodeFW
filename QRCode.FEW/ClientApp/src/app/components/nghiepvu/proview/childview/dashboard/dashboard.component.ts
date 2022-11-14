@@ -34,12 +34,6 @@ export class DashboardComponent implements OnInit {
       image_src: './assets/images/dashboard-crown.png'
     },
     {
-      bg_color: 'bg-[#518AE0]',
-      name: 'QR code miễm phí',
-      so_luong: 0,
-      image_src: './assets/images/dashboard-app.png'
-    },
-    {
       bg_color: 'bg-[#F7941E]',
       name: 'Khảo sát',
       so_luong: 0,

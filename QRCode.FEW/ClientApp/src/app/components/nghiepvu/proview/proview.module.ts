@@ -14,8 +14,22 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { GencodeComponent } from './childview/gencode/gencode.component';
 import { ShowimgComponent } from './childview/gencode/showimg/showimg.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
-
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+export const MY_DATE_FORMAT = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MM/YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MM/YYYY',
+  },
+};
 @NgModule({
   declarations: [
     ProviewComponent,
@@ -30,7 +44,18 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
   imports: [
     CommonModule,
     ProviewRoutingModule, MatSidenavModule, MatListModule, MatTableModule,MatCheckboxModule,MatAutocompleteModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,FormsModule,SharedModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
+  providers:[
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
   ]
 })
 export class ProviewModule { }
