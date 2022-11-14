@@ -1,5 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { DataService } from 'src/app/services/data.service';
@@ -14,7 +14,7 @@ import { SigninComponent } from '../signin/signin.component';
 })
 export class LoginComponent implements OnInit {
 
-    constructor(private dialog: MatDialog, public dialogRef: MatDialogRef<LoginComponent>,
+    constructor(private dialog: MatDialog, public dialogRef: MatDialogRef<LoginComponent>, @Inject(MAT_DIALOG_DATA) public data: string,
         private router: Router, private dataSrv: DataService, private _sharingService: ObservableService,
         private messSrc: MessageService) { }
     public innerWidth: any;
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
         dialogConfig.panelClass = "magrin_pane";
         this.dialog.open(SigninComponent, dialogConfig).afterClosed().subscribe(
             res => {
-               
+
             }
         );
     }
@@ -59,13 +59,16 @@ export class LoginComponent implements OnInit {
                     this.messSrc.error('Số điện thoại hoặc mật khẩu không hợp lệ!');
                 }
                 else if (nd.id == '-1000') {
-                    this.messSrc.warn('Tài khoản chưa được kích hoạt!\r\n'+'Vui lòng vào email đã đăng ký để kích hoạt tài khoản');
+                    this.messSrc.warn('Tài khoản chưa được kích hoạt!\r\n' + 'Vui lòng vào email đã đăng ký để kích hoạt tài khoản');
                 }
                 else {
                     this.messSrc.success('Đăng nhập thành công!');
                     this._sharingService.setUserValue(t as nguoidung);
                     this._sharingService.setTokenValue(nd.token);
-                    this.router.navigate(['/qrcode-free']);
+                    if (this.data == 'dichvu')
+                        this.router.navigate(['qrcode-free/dich-vu']);
+                    else
+                        this.router.navigate(['/qrcode-free']);
                     this.onClose();
                 }
 
