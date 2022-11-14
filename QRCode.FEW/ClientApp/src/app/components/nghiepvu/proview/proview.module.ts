@@ -14,7 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { GencodeComponent } from './childview/gencode/gencode.component';
 import { ShowimgComponent } from './childview/gencode/showimg/showimg.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
@@ -44,7 +44,7 @@ export const MY_DATE_FORMAT = {
   imports: [
     CommonModule,
     ProviewRoutingModule, MatSidenavModule, MatListModule, MatTableModule,MatCheckboxModule,MatAutocompleteModule,
-    MatSlideToggleModule,FormsModule,SharedModule,
+    MatSlideToggleModule,FormsModule,SharedModule,ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
   ],

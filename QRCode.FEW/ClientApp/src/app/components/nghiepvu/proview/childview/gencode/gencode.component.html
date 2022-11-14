@@ -23,22 +23,22 @@
             [placeholder_str]="'Gói dịch vụ'" class="w-[250px]"></app-autocompleinput>
     </div>
     <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
-        <mat-date-range-input [rangePicker]="picker"
-            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
+        <mat-date-range-input [rangePicker]="picker" [formGroup]="range_active"
+            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75]"
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
+            <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;" formControlName="start_active"
                 (click)="picker.open()" (keyup)="input1_change($event)"/>
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker.open()" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker.open()" formControlName="end_active"/>
         </mat-date-range-input>
         <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
     </div>
     <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
-        <mat-date-range-input [rangePicker]="picker2"
+        <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;"
+            <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;" formControlName="start_exp"
                 (click)="picker2.open()" />
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker2.open()" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker2.open()" formControlName="end_exp"/>
         </mat-date-range-input>
         <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
     </div>

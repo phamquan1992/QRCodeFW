@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
@@ -30,6 +31,24 @@ export class GencodeComponent implements OnInit {
   arr_filter_pack: cutom_it[] = [];
   nameqr_filter = '';
   nameobj_filter = '';
+  range_active = new FormGroup({
+    start_active: new FormControl(null),
+    end_active: new FormControl(null),
+  });
+  range_exp = new FormGroup({
+    start_exp: new FormControl(null),
+    end_exp: new FormControl(null),
+  });
+  filter_gencode = {
+    qr_name: '',
+    qr_obj_name: '',
+    pack_name: '',
+    province: '',
+    create_date_qr_start: '',
+    create_date_qr_end: '',
+    exp_date_start: '',
+    exp_date_end: ''
+  };
   constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
     private messSrc: MessageService) {
     this.str_url = baseUrl;
@@ -119,7 +138,10 @@ export class GencodeComponent implements OnInit {
     this.messSrc.success(element.status_qr + " QR Code thành công");
   }
   applyFilter() {
+    let start_active = this.range_active.controls['start_active'].value;
+    let end_active = this.range_active.controls['end_active'].value;
 
+    console.log(start_active);
   }
   reload_grid() {
 
@@ -127,7 +149,66 @@ export class GencodeComponent implements OnInit {
   setval_loaiQR(gt: any) {
 
   }
-  input1_change(event:any){
+  input1_change(event: any) {
     console.log(event);
+  }
+  createFilter() {
+    let filterFunction = function (data: any, filter: string): boolean {
+      let searchTerms = JSON.parse(filter);
+      let isFilterSet = false;
+      for (const col in searchTerms) {
+        if (searchTerms[col].toString() !== '') {
+          isFilterSet = true;
+        } else {
+          delete searchTerms[col];
+        }
+      }
+
+      let nameSearch = () => {
+        let found = false;
+        if (isFilterSet) {
+          for (const col in searchTerms) {
+            if (col == 'create_date_qr_start' || col == 'create_date_qr_end') {
+              const temp_date = new Date(searchTerms[col]);
+              let data_date = new Date(data['create_date_qr']);
+              if (col == 'create_date_qr_start') {
+                if (temp_date >= data_date) {
+                  found = true
+                }
+              }
+              if (col == 'create_date_qr_end') {
+                if (temp_date <= data_date) {
+                  found = true
+                }
+              }
+            } else if (col == 'exp_date_start' || col == 'exp_date_end') {
+              const temp_date = new Date(searchTerms[col]);
+              let data_date = new Date(data['exp_date']);
+              if (col == 'exp_date_start') {
+                if (temp_date >= data_date) {
+                  found = true
+                }
+              }
+              if (col == 'exp_date_end') {
+                if (temp_date <= data_date) {
+                  found = true
+                }
+              }
+            }
+            else {
+              if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+                found = true
+              }
+            }
+
+          }
+          return found
+        } else {
+          return true;
+        }
+      }
+      return nameSearch();
+    }
+    return filterFunction;
   }
 }
