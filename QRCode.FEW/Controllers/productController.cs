@@ -30,6 +30,7 @@ namespace QRCode.FEW.Controllers
         [HttpGet]
         public List<product> Get()
         {
+            var req = Request;
             List<product> data = new List<product>();
             data = _IproductService.GetAll().ToList();
             return data;
@@ -347,7 +348,7 @@ namespace QRCode.FEW.Controllers
                     nhom = "mota",
                     Title = "Hạn sử dụng",
                     type = "",
-                    value_ip = product_it.des_preserve
+                    value_ip = product_it.des_enddate
                 };
                 data.Add(des_enddate);
             }
@@ -384,21 +385,18 @@ namespace QRCode.FEW.Controllers
                 product_it.additional = product_up.additional;
                 product_it.lastcreated_by = 0;
                 product_it.lastcreated_date = DateTime.Now;
-                _IproductService.Update(product_it);
+                return _IproductService.Update(product_it);
             }
             catch (Exception ex)
             {
                 return false;
             }
-
-            return true;
         }
         [HttpPut]
         [Route("ChangeStatus")]
         public bool UpdateStatus([FromBody] product[] products)
         {
-            _IproductService.UpdateRange(products.ToList());
-            return true;
+            return _IproductService.UpdateRange(products.ToList());
         }
         [HttpPost]
         [Route("Add")]
