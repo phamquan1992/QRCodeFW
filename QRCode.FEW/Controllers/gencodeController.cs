@@ -48,47 +48,62 @@ namespace QRCode.FEW.Controllers
             var list_gencode = _Iqr_gencodeService.GetAll().Where(t => t.created_by == userid);
             var list_gen_product = new List<gencodeview>();
             var list_gen_enterprise = new List<gencodeview>();
-            list_gen_product = (from a in list_payment
-                                from b in list_gencode
-                                from c in list_product
-                                where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrproductid
-                                select new gencodeview
-                                {
-                                    create_date_qr = b.created_date.Value,
-                                    exp_date = a.created_date.Value.AddYears(1),
-                                    qr_img = b.image,
-                                    qr_name = b.name,
-                                    qr_obj_name = c.name,
-                                    qr_obj_url = "/portal/products/edit/" + b.dataid,
-                                    qr_tpye = b.typecode,
-                                    status_pack = a.created_date.Value.AddYears(1) > DateTime.Now.Date ? "Chưa hết hạn" : "Hết hạn",
-                                    status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
-                                    qrgencodeid = b.qrgencodeid,
-                                    pack_name = a.packname,
-                                    qr_code = b.code
-                                }).ToList();
+            try
+            {
+                list_gen_product = (from a in list_payment
+                                    from b in list_gencode
+                                    from c in list_product
+                                    where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrproductid
+                                    select new gencodeview
+                                    {
+                                        create_date_qr = b.created_date.Value,
+                                        exp_date = a.created_date.Value.AddYears(1),
+                                        qr_img = b.image,
+                                        qr_name = b.name,
+                                        qr_obj_name = c.name,
+                                        qr_obj_url = "/portal/products/edit/" + b.dataid,
+                                        qr_tpye = b.typecode,
+                                        status_pack = a.created_date.Value.AddYears(1) > DateTime.Now.Date ? "Chưa hết hạn" : "Hết hạn",
+                                        status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
+                                        qrgencodeid = b.qrgencodeid,
+                                        pack_name = a.packname,
+                                        qr_code = b.code
+                                    }).ToList();
 
-            list_gen_enterprise = (from a in list_payment
-                                   from b in list_gencode
-                                   from c in list_enterprise
-                                   where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrenterpriseid
-                                   select new gencodeview
-                                   {
-                                       create_date_qr = b.created_date.Value,
-                                       exp_date = a.created_date.Value.AddYears(1),
-                                       qr_img = b.image,
-                                       qr_name = b.name,
-                                       qr_obj_name = c.name,
-                                       qr_obj_url = "/portal/companies/edit/" + b.dataid,
-                                       qr_tpye = b.typecode,
-                                       status_pack = a.created_date.Value.AddYears(1) >= DateTime.Now.Date ? "Chưa hết hạn" : "Hết hạn",
-                                       status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
-                                       qrgencodeid = b.qrgencodeid,
-                                       pack_name = a.packname,
-                                       qr_code = b.code
-                                   }).ToList();
-            list_gen_product.AddRange(list_gen_enterprise);
+                list_gen_enterprise = (from a in list_payment
+                                       from b in list_gencode
+                                       from c in list_enterprise
+                                       where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrenterpriseid
+                                       select new gencodeview
+                                       {
+                                           create_date_qr = b.created_date.Value,
+                                           exp_date = a.created_date.Value.AddYears(1),
+                                           qr_img = b.image,
+                                           qr_name = b.name,
+                                           qr_obj_name = c.name,
+                                           qr_obj_url = "/portal/companies/edit/" + b.dataid,
+                                           qr_tpye = b.typecode,
+                                           status_pack = a.created_date.Value.AddYears(1) >= DateTime.Now.Date ? "Chưa hết hạn" : "Hết hạn",
+                                           status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
+                                           qrgencodeid = b.qrgencodeid,
+                                           pack_name = a.packname,
+                                           qr_code = b.code
+                                       }).ToList();
+                list_gen_product.AddRange(list_gen_enterprise);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
             return list_gen_product;
+        }
+        [HttpGet]
+        [Route("list2")]
+        public List<gencodeview> Listgencode2(string id, string loaisp, string goidv)
+        {
+            return new List<gencodeview>();
         }
         [HttpPost]
         [Route("Add")]

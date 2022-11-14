@@ -45,7 +45,7 @@ namespace QRCode.FEW.Controllers
             bool check = false;
             var list_pay = _Iqr_paymentService.GetAll();
             if (list_pay != null && list_pay.Count() > 0)
-                check = list_pay.Any(t => t.userid == userid && t.packcode == packcode && t.payment_date != null && t.payment_date.Value <= DateTime.Now.Date && t.payment_date.Value <= get_exptime(t.payment_date.Value));
+                check = list_pay.Any(t => t.userid == userid && t.packcode == packcode && t.payment_date != null && t.payment_date.Value <= DateTime.Now.Date && DateTime.Now.Date <= get_exptime(t.payment_date.Value));
             return check;
         }
         [HttpGet]
@@ -60,9 +60,9 @@ namespace QRCode.FEW.Controllers
                 if (list_pay.Count() > 0)
                 {
                     data = list_pay.ToList();
-                    data = data.Where(t => t.payment_date.Value <= get_exptime(t.payment_date.Value)).ToList();
+                    data = data.Where(t => DateTime.Now.Date <= get_exptime(t.payment_date.Value)).ToList();
                 }
-                    
+
             }
             return data;
         }
