@@ -68,7 +68,7 @@
         </div>
         <div>
             <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
-                <span>Tên doanh nghiệp</span>
+                <span>Tên doanh nghiệp, cá nhân</span>
                 <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
                 </span>
             </label>
@@ -138,8 +138,11 @@
             </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Tỉnh/thành
-                phố</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Tỉnh, thành phố</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <div class="relative">
                 <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
                     style="user-select: none;">
@@ -161,7 +164,7 @@
                     </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['province'].valid">
-                    <span *ngIf="DataForm.controls['tel'].errors?.['required']"
+                    <span *ngIf="DataForm.controls['province'].errors?.['required']"
                         class="text-red-600 text-xs italic">Trường
                         không
                         được để trống!</span>
@@ -170,7 +173,11 @@
             </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Quận, huyện</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Quận, huyện</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <div class="relative">
                 <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
                     style="user-select: none;">
@@ -191,7 +198,7 @@
                     </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['district'].valid">
-                    <span *ngIf="DataForm.controls['tel'].errors?.['required']" class="text-red-600 text-xs italic">
+                    <span *ngIf="DataForm.controls['district'].errors?.['required']" class="text-red-600 text-xs italic">
                         Trường không được để trống!
                     </span>
                 </div>
@@ -199,7 +206,11 @@
             </div>
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Xã, phường</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Xã, phường</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <div class="relative">
                 <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
                     style="user-select: none;">
@@ -220,11 +231,45 @@
                     </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['wards'].valid">
-                    <span *ngIf="DataForm.controls['tel'].errors?.['required']" class="text-red-600 text-xs italic">
+                    <span *ngIf="DataForm.controls['wards'].errors?.['required']" class="text-red-600 text-xs italic">
                         Trường không được để trống!
                     </span>
                 </div>
                 <input type="hidden" [formControlName]="'wards'" name="wards" value="">
+            </div>
+        </div>
+        <div>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Nhóm ngành</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
+            <div class="relative">
+                <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
+                    style="user-select: none;">
+                    <i class="fa fa-angle-up text-gray-800 transition-all duration-300"
+                        [ngClass]="{'rotate-0 pr-2 pl-0':rotate_it,'rotate-180 pl-2':!rotate_it}" aria-hidden="true"
+                        style="font-weight: 400; font-size: 13px;"></i>
+                </span>
+                <input #input_sector class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="--Nhóm ngành--" aria-label="State" [matAutocomplete]="sectorAutocomplete"
+                    (keyup)="auto_sector_change(input_sector)" [value]="val_sector"
+                    [ngClass]="{'border-red-600':!DataForm.controls['sectors_code'].valid}"
+                    (focusout)="focusOutFunction('sectors_code')">
+                <mat-autocomplete #sectorAutocomplete="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="select_it_sectors($event)">
+                    <mat-option *ngFor="let it of array_sectors" [value]="it">
+                        <span>{{it.name}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+                <input type="hidden" [formControlName]="'sectors_code'" name="sectors_code" value="">
+                <div *ngIf="!DataForm.controls['sectors_code'].valid">
+                    <span *ngIf="DataForm.controls['sectors_code'].errors?.['required']" class="text-red-600 text-xs italic">
+                        Trường không được để trống!
+                    </span>
+                </div>
+
             </div>
         </div>
         <div>

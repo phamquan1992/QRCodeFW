@@ -1,12 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { location } from 'src/app/models/location';
+import { nguoidung } from 'src/app/models/nguoidung';
 import { data_upload } from 'src/app/models/optioncs';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { sectors } from 'src/app/models/sectors';
 import { MessageService } from 'src/app/services/message.service';
+import { ObservableService } from 'src/app/services/observable.service';
+import { SectorsService } from 'src/app/services/sectors.service';
 import { DialogUploadComponent } from 'src/app/shared/dialog-upload/dialog-upload.component';
 import { CompaniesService } from '../companies.service';
 
@@ -34,13 +39,17 @@ export class AddcompanyComponent implements OnInit {
     wards: new FormControl('', Validators.required),
     occupation: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
+    sectors_code: new FormControl('', Validators.required),
   });
-  constructor(private dialog: MatDialog, private companySrc: CompaniesService, private messSrc: MessageService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private dialog: MatDialog, private companySrc: CompaniesService, private sharingSrc: ObservableService,
+    private messSrc: MessageService, private route: ActivatedRoute, private router: Router,
+    private sectorSrc: SectorsService, private datepipe: DatePipe) { }
   gt_id!: Observable<string>;
   value_id = '';
   val_tinh = '';
   val_huyen = '';
   val_xa = '';
+  val_sector = '';
 
   arr_dynamic: item_dropdown_cp[] = [];
   src_daidien = '';
@@ -58,34 +67,12 @@ export class AddcompanyComponent implements OnInit {
   array_huyen_tmp: location[] = [];
   array_xa_tmp: location[] = [];
   array_xa: location[] = [];
-  arr_nhomnganh = [
-    {
-      ma: 'Nganh1',
-      ten: 'Nhóm ngành 1'
-    },
-    {
-      ma: 'Nganh2',
-      ten: 'Nhóm ngành 2'
-    },
-    {
-      ma: 'Nganh3',
-      ten: 'Nhóm ngành 3'
-    },
-    {
-      ma: 'Nganh4',
-      ten: 'Nhóm ngành 4'
-    },
-    {
-      ma: 'Nganh5',
-      ten: 'Nhóm ngành 5'
-    },
-    {
-      ma: 'Nganh6',
-      ten: 'Nhóm ngành 6'
-    },
-  ];
+  array_sectors: sectors[] = [];
+  array_sectors_core: sectors[] = [];
   data_update!: qr_enterprise;
+  user_info!: nguoidung;
   ngOnInit(): void {
+    this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
     this.array_quocgia = this.companySrc.array_quocgia;
     this.companySrc.get_location('00').subscribe(t => {
       this.arr_tinh_tmp = t;
@@ -93,10 +80,15 @@ export class AddcompanyComponent implements OnInit {
     });
     let id = this.route.snapshot.paramMap.get('id');
     this.value_id = id == null ? '0' : id.toString();
+    this.sectorSrc.getList().subscribe(t => {
+      this.array_sectors_core = t;
+      this.array_sectors = t;
+    });
     this.companySrc.get_object_cty(this.value_id).subscribe(t => {
       this.data_update = t;
       this.get_data_edit(t);
     });
+
   }
   get_data_edit(data_edit: qr_enterprise) {
     this.DataForm.controls['name'].setValue(data_edit.name);
@@ -109,6 +101,7 @@ export class AddcompanyComponent implements OnInit {
     this.DataForm.controls['province'].setValue(data_edit.province);
     this.DataForm.controls['district'].setValue(data_edit.district);
     this.DataForm.controls['wards'].setValue(data_edit.wards);
+    this.DataForm.controls['sectors_code'].setValue(data_edit.sectors_code);
     this.DataForm.controls['occupation'].setValue(data_edit.occupation);
     this.DataForm.controls['address'].setValue(data_edit.address);
     if (this.value_id != '0') {
@@ -123,6 +116,9 @@ export class AddcompanyComponent implements OnInit {
           this.array_xa = this.array_xa_tmp;
           this.val_xa = this.array_xa_tmp.filter(tk => tk.code == data_edit.wards)[0].name;
         });
+        let idex_tmp = t.findIndex(k => k.code == data_edit.sectors_code);
+        if (idex_tmp != -1)
+          this.val_sector = this.array_sectors[idex_tmp].name;
       });
       if (data_edit.additional != null && data_edit.additional != '') {
         let arr_temp = JSON.parse(data_edit.additional);
@@ -208,7 +204,7 @@ export class AddcompanyComponent implements OnInit {
   }
   select_it_xa(evnt: any) {
     let gt = evnt.option.value.code;
-    this.DataForm.controls['wards'].setValue(gt);
+    this.DataForm.controls['sectors_code'].setValue(gt);
   }
   auto_tinh_change(obj_input: any) {
     let val = obj_input.value;
@@ -230,6 +226,18 @@ export class AddcompanyComponent implements OnInit {
     if (val == '' || val == null) {
       this.DataForm.controls['wards'].setValue('');;
     }
+  }
+  auto_sector_change(obj_input: any) {
+    let val = obj_input.value;
+    this.array_sectors = this.array_sectors_core.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    if (val == '' || val == null) {
+      this.DataForm.controls['sectors_code'].setValue('');;
+    }
+  }
+  select_it_sectors(evnt: any) {
+    let gt = evnt.option.value.code;
+    console.log(gt);
+    this.DataForm.controls['sectors_code'].setValue(gt);
   }
   UpdateData() {
     const myObj = JSON.parse(JSON.stringify(this.data_update));
@@ -255,6 +263,14 @@ export class AddcompanyComponent implements OnInit {
             arr_dynamic = obj_dy;
           }
         }
+      }
+      let time_now = new Date();
+      if (myObj['qrenterpriseid'] != 0 && myObj['qrenterpriseid'] != null) {
+        myObj['lastcreated_by'] = this.user_info.id;
+        myObj['lastcreated_date'] = time_now;
+      } else {
+        myObj['created_by'] = this.user_info.id;
+        myObj['created_date'] = time_now;
       }
     });
 
@@ -313,6 +329,6 @@ export class AddcompanyComponent implements OnInit {
   }
   focusOutFunction(name: string) {
     let value_gt = this.DataForm.controls[name].value;
-    console.log(value_gt); 
+    console.log(value_gt);
   }
 }

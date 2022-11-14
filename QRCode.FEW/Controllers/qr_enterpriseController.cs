@@ -62,7 +62,8 @@ namespace QRCode.FEW.Controllers
                 model.taxcode = qr_model.taxcode;
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
-                model.created_by = 0;
+                model.sectors_code = qr_model.sectors_code;
+                model.created_by = qr_model.created_by;
                 model.created_date = DateTime.Now;
                 return _Iqr_enterpriseService.CreateNew(model);
             }
@@ -91,7 +92,8 @@ namespace QRCode.FEW.Controllers
                 model.taxcode = qr_model.taxcode;
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
-                model.lastcreated_by = 0;
+                model.sectors_code = qr_model.sectors_code;
+                model.lastcreated_by = qr_model.created_by;
                 model.lastcreated_date = DateTime.Now;
                 return _Iqr_enterpriseService.Update(model);
             }
