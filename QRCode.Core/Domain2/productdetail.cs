@@ -60,5 +60,13 @@ namespace QRCode.Core.Domain2
         public DateTime exp_date { get; set; }
         public int qrgencodeid { get; set; }
         public string qr_code { get; set; }
+        public int qrpaymentid { get; set; }
+    }
+    public class gencode_status
+    {
+        public int qrgencodeid { get; set; }
+        public int qrpaymentid { get; set; }
+        public int status { get; set; }
+        public int userid { get; set; }
     }
 }
