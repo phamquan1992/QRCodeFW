@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { nguoidung } from 'src/app/models/nguoidung';
 import { data_upload } from 'src/app/models/optioncs';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
 import { sectors } from 'src/app/models/sectors';
+import { CommonService } from 'src/app/services/common.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { SectorsService } from 'src/app/services/sectors.service';
@@ -43,7 +44,7 @@ export class AddcompanyComponent implements OnInit {
   });
   constructor(private dialog: MatDialog, private companySrc: CompaniesService, private sharingSrc: ObservableService,
     private messSrc: MessageService, private route: ActivatedRoute, private router: Router,
-    private sectorSrc: SectorsService, private datepipe: DatePipe) { }
+    private sectorSrc: SectorsService, private datepipe: DatePipe, private commonSrc: CommonService) { }
   gt_id!: Observable<string>;
   value_id = '';
   val_tinh = '';
@@ -71,6 +72,9 @@ export class AddcompanyComponent implements OnInit {
   array_sectors_core: sectors[] = [];
   data_update!: qr_enterprise;
   user_info!: nguoidung;
+  @ViewChild('input_tinh_none') tinhtRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('input_huyen') huyenRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('input_xa') xaRef!: ElementRef<HTMLInputElement>;
   ngOnInit(): void {
     this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
     this.array_quocgia = this.companySrc.array_quocgia;
@@ -206,32 +210,71 @@ export class AddcompanyComponent implements OnInit {
     let gt = evnt.option.value.code;
     this.DataForm.controls['wards'].setValue(gt);
   }
+  setEmpty_location(obj_tem: HTMLInputElement, name_obj: string) {
+    //obj_tem.value = '';
+    this.DataForm.controls[name_obj].setValue('');
+    if (name_obj == 'province') {
+      this.DataForm.controls['district'].setValue('');
+      this.DataForm.controls['wards'].setValue('');
+      this.array_huyen = [];
+      this.array_xa = [];
+      this.huyenRef.nativeElement.value = '';
+      this.xaRef.nativeElement.value = '';
+    } else if (name_obj == 'district') {
+      this.DataForm.controls['wards'].setValue('');
+      this.array_xa = [];
+      this.xaRef.nativeElement.value = '';
+    }
+  }
   auto_tinh_change(obj_input: any) {
     let val = obj_input.value;
-    this.arr_tinh = this.arr_tinh_tmp.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
     if (val == '' || val == null) {
-      this.DataForm.controls['province'].setValue('');;
+      this.DataForm.controls['province'].setValue('');
+    }
+    this.arr_tinh = this.arr_tinh_tmp.filter(option => this.commonSrc.likevalue(option.name, val));
+    if (this.arr_tinh.length == 0) {
+      val = val.substring(0, val.length - 1);
+      obj_input.value = val;
+      this.setEmpty_location(obj_input, 'province');
+      this.arr_tinh = this.arr_tinh_tmp.filter(option => this.commonSrc.likevalue(option.name, val));
     }
   }
   auto_huyen_chang(obj_input: any) {
     let val = obj_input.value;
-    this.array_huyen = this.array_huyen_tmp.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    this.array_huyen = this.array_huyen_tmp.filter(option => this.commonSrc.likevalue(option.name, val));
     if (val == '' || val == null) {
-      this.DataForm.controls['district'].setValue('');;
+      this.DataForm.controls['district'].setValue('');
+    }
+    if (this.array_huyen.length == 0) {
+      val = val.substring(0, val.length - 1);
+      obj_input.value = val;
+      this.setEmpty_location(obj_input, 'district');
+      this.array_huyen = this.array_huyen_tmp.filter(option => this.commonSrc.likevalue(option.name, val));
     }
   }
   auto_xa_chang(obj_input: any) {
     let val = obj_input.value;
-    this.array_xa = this.array_xa_tmp.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    this.array_xa = this.array_xa_tmp.filter(option => this.commonSrc.likevalue(option.name, val));
     if (val == '' || val == null) {
-      this.DataForm.controls['wards'].setValue('');;
+      this.DataForm.controls['wards'].setValue('');
+    }
+    if (this.array_xa.length == 0) {
+      val = val.substring(0, val.length - 1);
+      obj_input.value = val;
+      this.setEmpty_location(obj_input, 'wards');
+      this.array_xa = this.array_xa_tmp.filter(option => this.commonSrc.likevalue(option.name, val));
     }
   }
   auto_sector_change(obj_input: any) {
     let val = obj_input.value;
-    this.array_sectors = this.array_sectors_core.filter(option => option.name.toLowerCase().includes(val.toLowerCase()));
+    this.array_sectors = this.array_sectors_core.filter(option => this.commonSrc.likevalue(option.name, val));
     if (val == '' || val == null) {
-      this.DataForm.controls['sectors_code'].setValue('');;
+      this.DataForm.controls['sectors_code'].setValue('');
+    }
+    if (this.array_sectors.length == 0) {
+      val = val.substring(0, val.length - 1);
+      obj_input.value = val;
+      this.array_sectors = this.array_sectors_core.filter(option => this.commonSrc.likevalue(option.name, val));
     }
   }
   select_it_sectors(evnt: any) {
@@ -330,8 +373,38 @@ export class AddcompanyComponent implements OnInit {
     let index_dynamic = this.arr_dynamic.map(t => t.key).indexOf(name);
     this.arr_dynamic.splice(index_dynamic, 1);
   }
-  focusOutFunction(name: string) {
-    let value_gt = this.DataForm.controls[name].value;
-    console.log(value_gt);
+  focusOutFunction(obj_input: any, name: string) {
+
+  }
+  close_select(obj_input: any, name: string) {
+    let val = obj_input.value.trim();
+    if (name == 'province') {
+      this.arr_tinh = this.arr_tinh_tmp.filter(option => option.name.toLowerCase() == val.toLowerCase());
+      if (this.arr_tinh.length == 0) {
+        obj_input.value = '';
+        this.arr_tinh = this.arr_tinh_tmp;
+        this.setEmpty_location(obj_input, name);
+      }
+    } else if (name == 'district') {
+      this.array_huyen = this.array_huyen_tmp.filter(option => option.name.toLowerCase() == val.toLowerCase());
+      if (this.array_huyen.length == 0) {
+        obj_input.value = '';
+        this.array_huyen = this.array_huyen_tmp;
+        this.setEmpty_location(obj_input, name);
+      }
+    } else if (name == 'wards') {
+      this.array_xa = this.array_xa_tmp.filter(option => option.name.toLowerCase() == val.toLowerCase());
+      if (this.array_xa.length == 0) {
+        obj_input.value = '';
+        this.array_xa = this.array_xa_tmp;
+        this.setEmpty_location(obj_input, name);
+      }
+    } else {
+      this.array_sectors = this.array_sectors_core.filter(option => option.name.toLowerCase() == val.toLowerCase());
+      if (this.array_sectors.length == 0) {
+        obj_input.value = '';
+        this.array_sectors = this.array_sectors_core;
+      }
+    }
   }
 }

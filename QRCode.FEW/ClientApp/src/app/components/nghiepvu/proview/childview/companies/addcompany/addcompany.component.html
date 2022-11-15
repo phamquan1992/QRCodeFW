@@ -155,10 +155,10 @@
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                     placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="tinhAutocomplete"
                     (keyup)="auto_tinh_change(input_tinh_none)" [value]="val_tinh"
-                    (focusout)="focusOutFunction('province')"
+                    (focusout)="focusOutFunction(input_tinh_none,'province')"
                     [ngClass]="{'border-red-600':!DataForm.controls['province'].valid}">
                 <mat-autocomplete #tinhAutocomplete="matAutocomplete" [displayWith]="displayFn"
-                    (optionSelected)="select_it($event)">
+                    (optionSelected)="select_it($event)" (closed)="close_select(input_tinh_none,'province')">
                     <mat-option *ngFor="let it of arr_tinh" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
@@ -190,15 +190,16 @@
                     placeholder="--Quận, huyện--" aria-label="State" [matAutocomplete]="huyenAutocomplete"
                     (keyup)="auto_huyen_chang(input_huyen)" [value]="val_huyen"
                     [ngClass]="{'border-red-600':!DataForm.controls['district'].valid}"
-                    (focusout)="focusOutFunction('district')">
+                    (focusout)="focusOutFunction(input_huyen,'district')">
                 <mat-autocomplete #huyenAutocomplete="matAutocomplete" [displayWith]="displayFn"
-                    (optionSelected)="select_it_huyen($event)">
+                    (optionSelected)="select_it_huyen($event)" (closed)="close_select(input_huyen,'district')">
                     <mat-option *ngFor="let it of array_huyen" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['district'].valid">
-                    <span *ngIf="DataForm.controls['district'].errors?.['required']" class="text-red-600 text-xs italic">
+                    <span *ngIf="DataForm.controls['district'].errors?.['required']"
+                        class="text-red-600 text-xs italic">
                         Trường không được để trống!
                     </span>
                 </div>
@@ -223,9 +224,9 @@
                     placeholder="--Xã, phường--" aria-label="State" [matAutocomplete]="xaAutocomplete"
                     (keyup)="auto_xa_chang(input_xa)" [value]="val_xa"
                     [ngClass]="{'border-red-600':!DataForm.controls['wards'].valid}"
-                    (focusout)="focusOutFunction('wards')">
+                    (focusout)="focusOutFunction(input_xa,'wards')">
                 <mat-autocomplete #xaAutocomplete="matAutocomplete" [displayWith]="displayFn"
-                    (optionSelected)="select_it_xa($event)">
+                    (optionSelected)="select_it_xa($event)" (closed)="close_select(input_xa,'wards')">
                     <mat-option *ngFor="let it of array_xa" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
@@ -256,16 +257,17 @@
                     placeholder="--Nhóm ngành--" aria-label="State" [matAutocomplete]="sectorAutocomplete"
                     (keyup)="auto_sector_change(input_sector)" [value]="val_sector"
                     [ngClass]="{'border-red-600':!DataForm.controls['sectors_code'].valid}"
-                    (focusout)="focusOutFunction('sectors_code')">
+                    (focusout)="focusOutFunction(input_sector,'sectors_code')">
                 <mat-autocomplete #sectorAutocomplete="matAutocomplete" [displayWith]="displayFn"
-                    (optionSelected)="select_it_sectors($event)">
+                    (optionSelected)="select_it_sectors($event)" (closed)="close_select(input_sector,'sectors_code')">
                     <mat-option *ngFor="let it of array_sectors" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
                 </mat-autocomplete>
                 <input type="hidden" [formControlName]="'sectors_code'" name="sectors_code" value="">
                 <div *ngIf="!DataForm.controls['sectors_code'].valid">
-                    <span *ngIf="DataForm.controls['sectors_code'].errors?.['required']" class="text-red-600 text-xs italic">
+                    <span *ngIf="DataForm.controls['sectors_code'].errors?.['required']"
+                        class="text-red-600 text-xs italic">
                         Trường không được để trống!
                     </span>
                 </div>

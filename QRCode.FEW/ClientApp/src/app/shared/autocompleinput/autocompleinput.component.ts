@@ -4,6 +4,7 @@ import { Observable, fromEvent } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { cutom_it } from 'src/app/models/category';
+import { CommonService } from 'src/app/services/common.service';
 
 
 
@@ -32,7 +33,7 @@ export class AutocompleinputComponent implements OnInit {
     if (gt != null && gt != '')
       this.isequ = true;
   }
-  constructor() {
+  constructor(private commonSrc: CommonService) {
   }
 
   ngOnInit(): void {
@@ -50,8 +51,8 @@ export class AutocompleinputComponent implements OnInit {
     }
     this.arr_item = this.data.filter(option => option.mota.toLowerCase() == val.toLowerCase());
     if (this.arr_item.length == 0) {
-      obj_input.value = '';
-      this.arr_item = this.data;
+      val = val.substring(0, val.length - 1);
+      obj_input.value = val;      
       this.isequ = false;
     }
   }
@@ -122,10 +123,12 @@ export class AutocompleinputComponent implements OnInit {
       this.isequ = false;
     }
 
-    this.arr_item = this.data.filter(option => option.mota.toLowerCase().includes(val.toLowerCase()));
+    //this.arr_item = this.data.filter(option => option.mota.toLowerCase().includes(val.toLowerCase()));//commonSrc
+    this.arr_item = this.data.filter(option => this.commonSrc.likevalue(option.mota, val));
     if (this.arr_item.length == 0) {
-      obj_input.value = '';
-      this.arr_item = this.data;
+      val = val.substring(0, val.length - 1);
+      obj_input.value = val;
+      this.arr_item = this.data.filter(option => this.commonSrc.likevalue(option.mota, val));
     }
 
   }
