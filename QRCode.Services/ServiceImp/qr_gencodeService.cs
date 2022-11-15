@@ -43,6 +43,18 @@ namespace QRCode.Services.ServiceImp
                 return false;
             }
         }
+        public bool UpdateRange(List<qr_gencode> obj)
+        {
+            try
+            {
+                return _unitOfWork.qr_gencodeRepository.UpdateRange(obj);
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public bool Delete(qr_gencode obj)
         {
             try

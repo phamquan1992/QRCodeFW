@@ -1,4 +1,5 @@
 ﻿using QRCode.Core.Domain;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace QRCode.Services.ISerivce
@@ -8,6 +9,7 @@ namespace QRCode.Services.ISerivce
         IQueryable<qr_gencode> GetAll();
         bool CreateNew(qr_gencode obj);
         bool Update(qr_gencode obj);
+        bool UpdateRange(List<qr_gencode> obj);
         bool Delete(qr_gencode obj);
     }
 }
