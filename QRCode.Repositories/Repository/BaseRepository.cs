@@ -48,7 +48,7 @@ namespace QRCode.Repositories.Repository
                 {
                     foreach (T entity in entities)
                     {
-                        _session.Save(entity);                        
+                        _session.Save(entity);
                     }
                     transaction.Commit();
                     result = true;
@@ -97,7 +97,7 @@ namespace QRCode.Repositories.Repository
                 {
                     foreach (T entity in entities)
                     {
-                        _session.Update(entity);                        
+                        _session.Update(entity);
                     }
                     transaction.Commit();
                     result = true;
@@ -146,7 +146,7 @@ namespace QRCode.Repositories.Repository
                 {
                     foreach (T item in entities)
                     {
-                        _session.Delete(item);                        
+                        _session.Delete(item);
                     }
                     transaction.Commit();
                     result = true;
@@ -166,7 +166,17 @@ namespace QRCode.Repositories.Repository
 
         public IQueryable<T> GetAll()
         {
-            return _session.Query<T>();
+            IQueryable<T> data = (new List<T>()).AsQueryable();
+            try
+            {
+                data = _session.Query<T>();
+                bool check = data.Any();
+            }
+            catch (Exception ex)
+            {
+                data = (new List<T>()).AsQueryable();
+            }
+            return data;
         }
 
         public T FindBy(Expression<Func<T, bool>> expression)
