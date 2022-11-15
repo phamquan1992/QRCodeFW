@@ -79,6 +79,10 @@ export class ProductviewComponent implements OnInit {
   taiqr() {
     // this.now = new Date();
     // this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
+    if (this.name_qrcode == '' || this.qrpaymentid == '' || this.qrproductid == '') {
+      this.mesSrc.error('Chưa đầy đủ thông tin để tạo QR Code');
+      return;
+    }
     let user_id: string = '';
     this.sharingSrc.getUserInfo().subscribe(t => user_id = t.id);
     let gencode_obj: qr_gencode = {
@@ -106,6 +110,8 @@ export class ProductviewComponent implements OnInit {
     this.gencodeSrc.add_gencode(gencode_obj).subscribe(t => {
       if (t) {
         this.mesSrc.success('Tạo QR code thành công');
+        let time_now = new Date();
+        this.status = 'download' + this.datepipe.transform(time_now, 'yyyyMMddHHmmss');
       } else {
         this.mesSrc.error('Có lỗi trong quá trình xử lý dữ liệu');
       }
@@ -157,6 +163,10 @@ export class ProductviewComponent implements OnInit {
     this.data = url;
   }
   showDialog() {
+    if (this.name_qrcode == '' || this.qrpaymentid == '' || this.qrproductid == '') {
+      this.mesSrc.error('Chưa đầy đủ thông tin để tạo QR Code');
+      return;
+    }
     let data_input: data_dialog_input = {
       option: this.op_tion,
       status: true
@@ -199,6 +209,8 @@ export class ProductviewComponent implements OnInit {
         this.gencodeSrc.add_gencode(gencode_obj).subscribe(t => {
           if (t) {
             this.mesSrc.success('Tạo QR code thành công');
+            let time_now = new Date();
+            this.status = 'download' + this.datepipe.transform(time_now, 'yyyyMMddHHmmss');
           } else {
             this.mesSrc.error('Có lỗi trong quá trình xử lý dữ liệu');
           }

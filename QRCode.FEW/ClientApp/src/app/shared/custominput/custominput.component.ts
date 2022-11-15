@@ -62,4 +62,5 @@ export class CustominputComponent implements OnInit {
     this.form.controls[this.values.name].setValue(gt);
   }
   get isValid() { return this.form.controls[this.values.name].valid; }
+  
 }

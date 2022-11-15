@@ -5,12 +5,14 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { cutom_it } from 'src/app/models/category';
-import { gencodeview } from 'src/app/models/qr_gencode';
+import { nguoidung } from 'src/app/models/nguoidung';
+import { gencodeview, gencode_status, qr_gencode } from 'src/app/models/qr_gencode';
 import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { PaynemtService } from 'src/app/services/paynemt.service';
 import { ShowimgComponent } from './showimg/showimg.component';
+import { SyncpackComponent } from './syncpack/syncpack.component';
 
 @Component({
   selector: 'app-gencode',
@@ -49,13 +51,14 @@ export class GencodeComponent implements OnInit {
     exp_date_start: '',
     exp_date_end: ''
   };
+  user_info!: nguoidung;
   constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
     private messSrc: MessageService) {
     this.str_url = baseUrl;
   }
   ngOnInit(): void {
     this.get_data();
-
+    this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
   }
   get_data() {
     this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
@@ -129,13 +132,66 @@ export class GencodeComponent implements OnInit {
       }
     );
   }
+  chon_dichvu() {
+    if (this.selection.selected.length == 0) {
+      this.messSrc.error("Bạn chưa chọn bản ghi nào!");
+      return;
+    }
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "350px";
+    // dialogConfig.height = "350px";
+    dialogConfig.panelClass = "magrin_pane";
+    //dialogConfig.data = str_data;
+    this.dialog.open(SyncpackComponent, dialogConfig).afterClosed().subscribe(
+      res => {
+        if (res != null && res != '') {
+          let arr_gen: gencode_status[] = [];
+          this.selection.selected.forEach(element => {
+            let status_obj: gencode_status = {
+              qrgencodeid: element.qrgencodeid,
+              status: 0,
+              userid: Number(this.user_info.id),
+              qrpaymentid: res
+            }
+            arr_gen.push(status_obj);
+          });
+          this.gencodeSrc.sync_pack(arr_gen).subscribe(t => {
+            if (t){
+              this.messSrc.success("Bạn đã thực hiện thành công");
+              this.selection.clear();
+              this.get_data();
+            }           
+            else
+              this.messSrc.error("Có lỗi trong quá trình xử lý dữ liệu");
+          });
+        }
+      }
+    );
+  }
   active_status(element: gencodeview) {
     if (element.status_qr == 'Kích hoạt') {
       element.status_qr = 'Huỷ kích hoạt';
     } else {
       element.status_qr = 'Kích hoạt';
     }
-    this.messSrc.success(element.status_qr + " QR Code thành công");
+    let status_obj: gencode_status = {
+      qrgencodeid: element.qrgencodeid,
+      status: element.status_qr == 'Kích hoạt' ? 1 : 0,
+      userid: Number(this.user_info.id),
+      qrpaymentid: 0
+    }
+    let arr_gen: gencode_status[] = [];
+    arr_gen.push(status_obj)
+    this.gencodeSrc.update_status(arr_gen).subscribe(t => {
+      if (t) {
+        this.messSrc.success(element.status_qr + " QR Code thành công");
+      } else {
+        this.messSrc.error(element.status_qr + " QR Code thất bại");
+      }
+    });
+
   }
   applyFilter() {
     let start_active = this.range_active.controls['start_active'].value;
@@ -210,5 +266,30 @@ export class GencodeComponent implements OnInit {
       return nameSearch();
     }
     return filterFunction;
+  }
+  showhide_gencode(gt: boolean) {
+    if (this.selection.selected.length == 0) {
+      this.messSrc.error('Bạn chưa chọn bản ghi nào');
+      return;
+    }
+    let arr_gen: gencode_status[] = [];
+    this.selection.selected.forEach(element => {
+      element.status_qr = gt ? 'Kích hoạt' : 'Huỷ kích hoạt';;
+      let status_obj: gencode_status = {
+        qrgencodeid: element.qrgencodeid,
+        status: gt ? 1 : 0,
+        userid: Number(this.user_info.id),
+        qrpaymentid: 0
+      }
+      arr_gen.push(status_obj);
+    });
+    let str_trangthai = gt ? 'Kích hoạt' : 'Huỷ kích hoạt';
+    this.gencodeSrc.update_status(arr_gen).subscribe(t => {
+      if (t) {
+        this.messSrc.success(str_trangthai + " QR Code thành công");
+      } else {
+        this.messSrc.error(str_trangthai + " QR Code thất bại");
+      }
+    });
   }
 }

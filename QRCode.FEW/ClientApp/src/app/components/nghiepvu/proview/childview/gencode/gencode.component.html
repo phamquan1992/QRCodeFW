@@ -26,9 +26,10 @@
         <mat-date-range-input [rangePicker]="picker" [formGroup]="range_active"
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75]"
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;" formControlName="start_active"
-                (click)="picker.open()" (keyup)="input1_change($event)"/>
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker.open()" formControlName="end_active"/>
+            <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
+                formControlName="start_active" (click)="picker.open()" (keyup)="input1_change($event)" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker.open()"
+                formControlName="end_active" />
         </mat-date-range-input>
         <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
     </div>
@@ -36,9 +37,10 @@
         <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;" formControlName="start_exp"
-                (click)="picker2.open()" />
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker2.open()" formControlName="end_exp"/>
+            <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;"
+                formControlName="start_exp" (click)="picker2.open()" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker2.open()"
+                formControlName="end_exp" />
         </mat-date-range-input>
         <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
     </div>
@@ -52,22 +54,13 @@
     </button>
 </section>
 <div class="px-[15px]">
-    <section>
-        <!-- <button
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Import
-            doanh nghiệp, cá nhân</button> -->
-        <!-- <button
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]"
-            (click)="them_moi()">Thêm mới</button>
-        <button (click)="showXoaDialog('')"
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#ff0000a6] text-white text-[13px] mr-[5px] mb-[5px]">Xoá</button>
-        <button (click)="showhide_product(false)"
+    <section>        
+        <button (click)="showhide_gencode(false)"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Ẩn</button>
-        <button (click)="showhide_product(true)"
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Hiện</button> -->
-        <!-- <button
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Tạo
-            QR Code </button> -->
+        <button (click)="showhide_gencode(true)"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Hiện</button>
+        <button (click)="chon_dichvu()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Chuyển gói dịch vụ </button>
     </section>
     <section class="h-4/6 overflow-auto">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
@@ -215,6 +208,7 @@
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
                     <mat-slide-toggle [checked]="element.status_qr=='Kích hoạt'" (change)="active_status(element)">
                     </mat-slide-toggle>
+                    <i class="fa fa-history ml-2 text-red-600" style="font-size: 20px;" aria-hidden="true"></i>
                 </td>
             </ng-container>
 

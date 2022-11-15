@@ -1,0 +1,27 @@
+<div class="w-full h-full relative">
+    <div class="bg-[#196898] py-[10px] px-[15px]">
+        <div class="text-white text-sm leading-[22px] break-words font-medium">
+            <div>Chọn gói</div>
+        </div>
+    </div>
+    <div class="w-full">
+        <span class=" m-2 block font-medium">Gói dịch vụ</span>
+        <div class="border border-solid border-[#d9d9d9] rounded-[4px] relative w-[95%] m-2">
+            <mat-select class="w-full" disableOptionCentering
+                style="line-height: 32px; font-family: Lato, sans-serif; font-size: 14px;color: #000000a6;"
+                (selectionChange)="select_pack($event)" [(ngModel)]="pkg_code">
+                <mat-select-trigger>{{pkg_name}}</mat-select-trigger>
+                <mat-option *ngFor="let it of arrpayment|async" [value]="it.qrpaymentid" style="font-size: 14px;">
+                    <span class="block">{{it.packname}}</span>
+                    <span class="block"><b>Ngày hết hạn: </b> {{get_next_year(it.payment_date)|date:
+                        'dd/MM/yyy'}}</span>
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <button (click)="xac_nhan()" class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Xác nhận</button>
+    </div>
+    <button class="absolute top-0 right-0 h-[43px] w-[43px] text-white"><i class="fa fa-times" aria-hidden="true"
+            (click)="close_action()"></i></button>
+</div>

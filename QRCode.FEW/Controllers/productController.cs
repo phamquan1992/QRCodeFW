@@ -387,7 +387,7 @@ namespace QRCode.FEW.Controllers
                 product_it.des_startdate = product_up.des_startdate;
                 product_it.des_enddate = product_up.des_enddate;
                 product_it.additional = product_up.additional;
-                product_it.lastcreated_by = 0;
+                product_it.lastcreated_by = product_up.lastcreated_by;
                 product_it.lastcreated_date = DateTime.Now;
                 return _IproductService.Update(product_it);
             }

@@ -12,7 +12,7 @@
         <span class="text-red-600 text-xs italic"> {{placeholder_str}} không được để trống!</span>
     </div>
     <mat-autocomplete #dmAutocomplete="matAutocomplete" (opened)="autocompleteScroll()"
-        (closed)="close_event(ipauto.value)" [displayWith]="displayFn"
+        (closed)="close_event(ipauto)" [displayWith]="displayFn"
         (optionSelected)="select_it($event,ipauto.value)">
         <mat-option *ngFor="let dm of arr_item" [value]="dm">
             <small>{{dm.mota}}</small>

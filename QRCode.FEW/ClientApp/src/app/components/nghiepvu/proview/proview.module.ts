@@ -19,6 +19,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { SyncpackComponent } from './childview/gencode/syncpack/syncpack.component';
+import {MatSelectModule} from '@angular/material/select';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -38,6 +40,7 @@ export const MY_DATE_FORMAT = {
     DashboardComponent,
     GencodeComponent,
     ShowimgComponent,
+    SyncpackComponent,
     // CompaniesComponent,
     // AddcompanyComponent
   ],
@@ -46,7 +49,7 @@ export const MY_DATE_FORMAT = {
     ProviewRoutingModule, MatSidenavModule, MatListModule, MatTableModule,MatCheckboxModule,MatAutocompleteModule,
     MatSlideToggleModule,FormsModule,SharedModule,ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatNativeDateModule,MatSelectModule
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },

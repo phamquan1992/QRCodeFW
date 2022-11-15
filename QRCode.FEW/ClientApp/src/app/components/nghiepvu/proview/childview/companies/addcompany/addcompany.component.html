@@ -187,7 +187,7 @@
                 </span>
                 <input #input_huyen class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    placeholder="--Tỉnh, thành phố--" aria-label="State" [matAutocomplete]="huyenAutocomplete"
+                    placeholder="--Quận, huyện--" aria-label="State" [matAutocomplete]="huyenAutocomplete"
                     (keyup)="auto_huyen_chang(input_huyen)" [value]="val_huyen"
                     [ngClass]="{'border-red-600':!DataForm.controls['district'].valid}"
                     (focusout)="focusOutFunction('district')">

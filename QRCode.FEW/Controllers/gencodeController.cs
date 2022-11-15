@@ -40,6 +40,30 @@ namespace QRCode.FEW.Controllers
             data = await Task.FromResult(Listgencode(userid));
             return data;
         }
+        [HttpGet]
+        [Route("checkobj")]
+        public bool CheckObject(int id, string type)
+        {
+            bool result = false;
+            var list = _Iqr_gencodeService.GetAll();
+            if (list != null && list.Count() > 0)
+            {
+                result = list.Any(t => t.typecode == type && t.dataid == id);
+            }
+            return result;
+        }
+        [HttpGet]
+        [Route("getlist")]
+        public List<decimal> GetListID(string type, int userid)
+        {
+            List<decimal> list_id = new List<decimal>();
+            var list_gencode = _Iqr_gencodeService.GetAll().Where(t => t.created_by == userid && t.typecode == type);
+            if (list_gencode != null && list_gencode.Count() > 0)
+            {
+                list_id = list_gencode.Select(t => t.dataid).ToList();
+            }
+            return list_id;
+        }
         private List<gencodeview> Listgencode(int userid)
         {
             var list_payment = _Iqr_paymentService.GetAll().Where(t => t.created_by == userid).ToList();
@@ -67,7 +91,9 @@ namespace QRCode.FEW.Controllers
                                         status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
                                         qrgencodeid = b.qrgencodeid,
                                         pack_name = a.packname,
-                                        qr_code = b.code
+                                        qr_code = b.code,
+                                        qrpaymentid = (int)a.qrpaymentid
+
                                     }).ToList();
 
                 list_gen_enterprise = (from a in list_payment
@@ -87,7 +113,8 @@ namespace QRCode.FEW.Controllers
                                            status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
                                            qrgencodeid = b.qrgencodeid,
                                            pack_name = a.packname,
-                                           qr_code = b.code
+                                           qr_code = b.code,
+                                           qrpaymentid = (int)a.qrpaymentid
                                        }).ToList();
                 list_gen_product.AddRange(list_gen_enterprise);
             }
@@ -96,7 +123,7 @@ namespace QRCode.FEW.Controllers
 
                 throw;
             }
-            
+
             return list_gen_product;
         }
         [HttpGet]
@@ -153,6 +180,60 @@ namespace QRCode.FEW.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+        [HttpPut]
+        [Route("ChangeActive")]
+        public bool ChangeStatus([FromBody] List<gencode_status> data)
+        {
+            var obj_update = data.FirstOrDefault();
+            var list_id = data.Select(t => t.qrgencodeid).ToList();
+            var list = _Iqr_gencodeService.GetAll().Where(t => list_id.Contains(t.qrgencodeid)).ToList();
+            list.ForEach(t =>
+            {
+                t.status = obj_update.status;
+                t.lastcreated_by = obj_update.userid;
+                t.lastcreated_date = DateTime.Now;
+            });
+            return _Iqr_gencodeService.UpdateRange(list);
+        }
+        [HttpPut]
+        [Route("SyncPay")]
+        public bool SyncPay([FromBody] List<gencode_status> list)
+        {
+            var list_gen = _Iqr_gencodeService.GetAll();
+            List<qr_gencode> data = new List<qr_gencode>();
+            foreach (var item in list)
+            {
+                qr_gencode it = new qr_gencode();
+                it = list_gen.FirstOrDefault(t => t.qrgencodeid == item.qrgencodeid);
+                it.qrpaymentid = item.qrpaymentid;
+                it.lastcreated_by = item.userid;
+                it.lastcreated_date = DateTime.Now;
+                data.Add(it);
+            }
+            return _Iqr_gencodeService.UpdateRange(data);
+        }
+        [HttpGet]
+        [Route("CheckCount/{paymentid}")]
+        public bool Checkcount(int paymentid)
+        {
+            var pay_obj = _Iqr_paymentService.GetAll().FirstOrDefault(t => t.qrpaymentid == paymentid);
+            int soluong_ma = 0;
+            switch (pay_obj.packcode)
+            {
+                case "Pack1":
+                    soluong_ma = 5;
+                    break;
+                case "Pack2":
+                    soluong_ma = 10;
+                    break;
+                case "Pack3":
+                    soluong_ma = 20;
+                    break;
+            }
+
+            var count_gencode = _Iqr_gencodeService.GetAll().Where(t => t.qrpaymentid == paymentid && t.status == 1).Count();
+            return count_gencode < soluong_ma;
         }
     }
 }

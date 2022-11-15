@@ -3,9 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { map } from 'rxjs';
 import { location } from 'src/app/models/location';
+import { nguoidung } from 'src/app/models/nguoidung';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
+import { ObservableService } from 'src/app/services/observable.service';
 import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.component';
 import { CompaniesService } from '../companies.service';
 
@@ -38,6 +42,7 @@ export class CompanylistComponent implements OnInit {
   };
   name_filter = '';
   value_select = 'all';
+  user_info!: nguoidung;
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -48,10 +53,14 @@ export class CompanylistComponent implements OnInit {
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
-  constructor(private router: Router, private congtySrc: CompaniesService, private mesSrc: MessageService, private dialog: MatDialog) { }
+  constructor(private router: Router, private congtySrc: CompaniesService, private mesSrc: MessageService, private dialog: MatDialog,
+    private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
 
   ngOnInit(): void {
     this.get_data();
+    this.sharingSrc.getUserInfo().subscribe(t => {
+      this.user_info = t;
+    });
   }
   get_data() {
     this.dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
@@ -92,6 +101,29 @@ export class CompanylistComponent implements OnInit {
     });
   }
   showXoaDialog(act: string) {
+    if (act != '') {
+      this.gencodeSrc.check_obj(act, 'enterprise').subscribe(t => {
+        if (t) {
+          this.mesSrc.error('Đối tượng đã được tạo QR Code không thể xoá!');
+          return;
+        }
+      });
+    } else {
+      if(this.selection.selected.length==0){
+        this.mesSrc.error('Bạn chưa chọn bản ghi nào!');
+        return;
+      }
+      let arrID_select = this.selection.selected.map(t => t.qrenterpriseid);
+      this.gencodeSrc.get_list_id('enterprise', this.user_info.id).subscribe(t => {
+        arrID_select.forEach(element => {
+          let index_temp = t.indexOf(element);
+          if (index_temp > -1) {
+            this.mesSrc.error('Tồn tại dối tượng đã được tạo QR Code không thể xoá!');
+            return;
+          }
+        });
+      });
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -160,7 +192,7 @@ export class CompanylistComponent implements OnInit {
     return filterFunction;
   }
   showhide_product(trangthai: boolean) {
-    if(this.selection.selected.length==0){
+    if (this.selection.selected.length == 0) {
       this.mesSrc.error('Bạn chưa chọn bản ghi nào');
       return;
     }

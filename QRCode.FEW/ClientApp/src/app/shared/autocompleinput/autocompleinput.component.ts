@@ -38,8 +38,22 @@ export class AutocompleinputComponent implements OnInit {
   ngOnInit(): void {
     this.arr_item = this.data;
   }
-  close_event(gt: string) {
+  close_event(obj_input: HTMLInputElement) {
+    debugger;
     this.rotate_it = false;
+    let val = obj_input.value;
+    if (val != null && val != '')
+      this.isequ = true;
+    else {
+      this.val_out.emit('');
+      this.isequ = false;
+    }
+    this.arr_item = this.data.filter(option => option.mota.toLowerCase() == val.toLowerCase());
+    if (this.arr_item.length == 0) {
+      obj_input.value = '';
+      this.arr_item = this.data;
+      this.isequ = false;
+    }
   }
   // get isValid() { return this.isequ; }
   get isValid() {
@@ -99,8 +113,7 @@ export class AutocompleinputComponent implements OnInit {
     };
     this.arr_item = this.data;
   }
-  auto_change(obj_input: any) {
-    debugger;
+  auto_change(obj_input: HTMLInputElement) {
     let val = obj_input.value;
     if (val != null && val != '')
       this.isequ = true;
@@ -110,6 +123,11 @@ export class AutocompleinputComponent implements OnInit {
     }
 
     this.arr_item = this.data.filter(option => option.mota.toLowerCase().includes(val.toLowerCase()));
+    if (this.arr_item.length == 0) {
+      obj_input.value = '';
+      this.arr_item = this.data;
+    }
+
   }
   displayFn(selectedoption: any) {
     return selectedoption ? selectedoption.mota : undefined;

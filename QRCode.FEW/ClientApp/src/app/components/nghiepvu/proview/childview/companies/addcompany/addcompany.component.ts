@@ -97,7 +97,7 @@ export class AddcompanyComponent implements OnInit {
     this.DataForm.controls['email'].setValue(data_edit.email);
     this.DataForm.controls['fax'].setValue(data_edit.fax);
     this.DataForm.controls['logo'].setValue(data_edit.logo);
-    this.DataForm.controls['nation'].setValue(data_edit.nation);
+    this.DataForm.controls['nation'].setValue('Việt Nam');
     this.DataForm.controls['province'].setValue(data_edit.province);
     this.DataForm.controls['district'].setValue(data_edit.district);
     this.DataForm.controls['wards'].setValue(data_edit.wards);
@@ -204,7 +204,7 @@ export class AddcompanyComponent implements OnInit {
   }
   select_it_xa(evnt: any) {
     let gt = evnt.option.value.code;
-    this.DataForm.controls['sectors_code'].setValue(gt);
+    this.DataForm.controls['wards'].setValue(gt);
   }
   auto_tinh_change(obj_input: any) {
     let val = obj_input.value;
@@ -240,6 +240,9 @@ export class AddcompanyComponent implements OnInit {
     this.DataForm.controls['sectors_code'].setValue(gt);
   }
   UpdateData() {
+    if (this.DataForm.invalid) {
+      return;
+    }
     const myObj = JSON.parse(JSON.stringify(this.data_update));
     let arr_key = Object.keys(myObj);
     let arr_dynamic = {};

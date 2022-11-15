@@ -24,5 +24,12 @@ export interface gencodeview {
     exp_date: string;
     qrgencodeid: number;
     pack_name: string;
-    qr_code:string;
+    qr_code: string;
+    qrpaymentid:number;
+}
+export interface gencode_status {
+    qrgencodeid: number;
+    qrpaymentid:number;
+    status: number;
+    userid:number;
 }

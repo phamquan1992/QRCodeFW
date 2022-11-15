@@ -12,13 +12,17 @@
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
-                                    Tên QR Code
+                                    <span>Tên QR Code</span>
+                                    <span>
+                                        <span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                                    </span>
                                 </div>
                                 <div class="ant-row ant-form-item">
                                     <div class="ant-col -wrapper">
                                         <div class="">
                                             <span>
-                                                <input placeholder="Nhập tên QR Code" type="text" [(ngModel)]="name_qrcode"
+                                                <input placeholder="Nhập tên QR Code" type="text"
+                                                    [(ngModel)]="name_qrcode"
                                                     class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
                                             </span>
                                         </div>
@@ -29,7 +33,10 @@
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
-                                    Chọn gói dịch vụ
+                                    <span>Chọn gói dịch vụ</span>
+                                    <span>
+                                        <span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                                    </span>
                                 </div>
                                 <div class="ant-row ant-form-item">
                                     <div class="ant-col -wrapper">
@@ -45,8 +52,10 @@
                                                     <mat-option *ngFor="let it of filter_payment|async" [value]="it"
                                                         style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
                                                         class="relative">
-                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b> {{it.packname}}</span><br>
-                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b> {{it.payment_date|date:
+                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b>
+                                                            {{it.packname}}</span><br>
+                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b>
+                                                            {{it.payment_date|date:
                                                             'dd/MM/yyyy'}}</span>
                                                     </mat-option>
                                                     <mat-option *ngIf="(filter_payment | async)?.length == 0">
@@ -67,7 +76,10 @@
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
-                                    Sản phẩm
+                                    <span>Sản phẩm</span>
+                                    <span>
+                                        <span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                                    </span>
                                 </div>
                                 <div class="ant-row ant-form-item">
                                     <div class="ant-col -wrapper">
@@ -76,10 +88,11 @@
                                                 <input
                                                     class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
                                                     (keyup)="auto_change_product($event.target)"
-                                                    placeholder="Chọn sản phẩm"
-                                                    [matAutocomplete]="productAutocomplete" [value]="">
+                                                    placeholder="Chọn sản phẩm" [matAutocomplete]="productAutocomplete"
+                                                    [value]="">
                                                 <mat-autocomplete #productAutocomplete="matAutocomplete"
-                                                    [displayWith]="displayProduct" (optionSelected)="select_product($event)">
+                                                    [displayWith]="displayProduct"
+                                                    (optionSelected)="select_product($event)">
                                                     <mat-option *ngFor="let it of filter_product|async" [value]="it"
                                                         style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
                                                         class="relative">
