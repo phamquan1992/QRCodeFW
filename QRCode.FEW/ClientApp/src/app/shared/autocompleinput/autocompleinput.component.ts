@@ -51,9 +51,10 @@ export class AutocompleinputComponent implements OnInit {
     }
     this.arr_item = this.data.filter(option => option.mota.toLowerCase() == val.toLowerCase());
     if (this.arr_item.length == 0) {
-      val = val.substring(0, val.length - 1);
+      val = '';
       obj_input.value = val;      
       this.isequ = false;
+      this.arr_item = this.data;
     }
   }
   // get isValid() { return this.isequ; }
