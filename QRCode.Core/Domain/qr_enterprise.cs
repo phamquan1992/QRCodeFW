@@ -26,6 +26,8 @@ namespace QRCode.Core.Domain
         public virtual bool status { get; set; }
         public virtual string address { get; set; }
         public virtual string sectors_code { get; set; }
-
+        public virtual string url_background { get; set; }
+        public virtual string url_video { get; set; }
+        public virtual string url_img { get; set; }
     }
 }
