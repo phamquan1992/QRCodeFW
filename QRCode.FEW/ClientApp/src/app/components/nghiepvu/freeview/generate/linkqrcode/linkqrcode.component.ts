@@ -61,4 +61,8 @@ export class LinkqrcodeComponent implements OnInit {
       }
     );
   }
+  focusFunction(gt: any) {
+    let tem_val = gt.value;
+    gt.value=tem_val.trim();
+  }
 }

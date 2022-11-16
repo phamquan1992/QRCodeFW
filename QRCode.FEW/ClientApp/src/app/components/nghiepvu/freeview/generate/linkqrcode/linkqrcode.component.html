@@ -39,6 +39,7 @@
                                                 class="ant-form-item-children">
                                                 <input #noidung placeholder="https://..."
                                                     (keyup)="onchange_text(noidung)"
+                                                    (focusout)="focusFunction(noidung)"
                                                     class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
                                             </span>
                                         </div>

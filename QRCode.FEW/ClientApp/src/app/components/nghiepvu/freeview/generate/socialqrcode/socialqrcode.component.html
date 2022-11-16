@@ -20,9 +20,13 @@
                                         <div class="ant-form-item-control has-success flex w-full">
                                             <input placeholder="https://..." name="{{it.name}}"
                                                 (keyup)="onchange_text($event.target)"
+                                                (focusout)="focusFunction($event.target)"
                                                 class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
-                                            <i class="fa fa-trash mt-2 ml-2 cursor-pointer" *ngIf="it.name!='Website'" (click)="delete_link(it.name)"
-                                                aria-hidden="true"></i>
+                                            <i class="fa fa-trash mt-2 ml-2 cursor-pointer" *ngIf="it.name!='Website'"
+                                                (click)="delete_link(it.name)" aria-hidden="true"></i>
+                                        </div>
+                                        <div *ngIf="!it.required">
+                                            <span class="text-red-600 text-xs italic">Link không đúng định dạng</span>
                                         </div>
                                     </div>
                                 </div>

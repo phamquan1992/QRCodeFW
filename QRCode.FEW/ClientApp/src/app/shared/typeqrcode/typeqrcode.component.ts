@@ -4,6 +4,7 @@ import { image_obj } from 'src/app/models/image_obj';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { optioncs } from 'src/app/models/optioncs';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-typeqrcode',
@@ -12,7 +13,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 })
 export class TypeqrcodeComponent implements OnInit, OnChanges {
 
-  constructor(private datepipe: DatePipe, private storage: LocalStorageService) { }
+  constructor(private datepipe: DatePipe, private storage: LocalStorageService, private messSrc: MessageService) { }
   ngOnChanges(changes: SimpleChanges): void {
     this.change_val();
   }
@@ -287,12 +288,17 @@ export class TypeqrcodeComponent implements OnInit, OnChanges {
   }
   getFiles(event: any) {
     var newFileList = Array.from(event.target.files);
-    console.log(newFileList);
+    //console.log(newFileList);
     if (event.target.files.length > 0) {
+      let file_temp: File = event.target.files[0];
+      console.log(file_temp.type);
+      if (file_temp.type.indexOf('image') == -1) {
+        this.messSrc.error('File không phải định dạng ảnh');
+        return;
+      }
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       reader.onload = (event2: any) => { // called once readAsDataURL is completed
-        debugger;
         this.image = event2.target.result;
         let date_now = new Date();
         let _dem = 'IMG_TEMP' + this.datepipe.transform(date_now, 'yyyyMMddHHmmss');

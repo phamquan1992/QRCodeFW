@@ -28,7 +28,7 @@ export interface item_dropdown_cp {
 })
 export class AddcompanyComponent implements OnInit {
   DataForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl(''),
     taxcode: new FormControl(''),
     tel: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(11)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -41,6 +41,9 @@ export class AddcompanyComponent implements OnInit {
     occupation: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
     sectors_code: new FormControl('', Validators.required),
+    url_background: new FormControl(''),
+    url_video: new FormControl(''),
+    url_img: new FormControl(''),
   });
   constructor(private dialog: MatDialog, private companySrc: CompaniesService, private sharingSrc: ObservableService,
     private messSrc: MessageService, private route: ActivatedRoute, private router: Router,
@@ -56,6 +59,7 @@ export class AddcompanyComponent implements OnInit {
   src_daidien = '';
   src_bia = '';
   src_image: string[] = [];
+  src_image_any = '';
   src_video = '';
   str_st = '';
   rotate_it = false;
@@ -161,12 +165,16 @@ export class AddcompanyComponent implements OnInit {
           }
           if (gt == 'bia') {
             this.src_bia = res;
+            this.DataForm.controls['url_background'].setValue(res);
           }
           if (gt == 'thuvienanh') {
-            this.src_image.push(res);
+            // this.src_image.push(res);
+            this.src_image_any = res;
+            this.DataForm.controls['url_img'].setValue(res);
           }
           if (gt == 'video') {
-            this.src_video = '';
+            this.src_video = res;
+            this.DataForm.controls['url_video'].setValue(res);
           }
         }
       }
@@ -281,6 +289,9 @@ export class AddcompanyComponent implements OnInit {
     let gt = evnt.option.value.code;
     console.log(gt);
     this.DataForm.controls['sectors_code'].setValue(gt);
+  }
+  focusFunction(event: any, ten: string) {
+    this.DataForm.controls[ten].setValue(event.target.value.trim());
   }
   UpdateData() {
     if (this.DataForm.invalid) {

@@ -23,7 +23,7 @@
             bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 [ngClass]="{'border-red-600':!isValid  && (form.controls[values.name].dirty || form.controls[values.name].touched) && form.controls[values.name].errors?.['required']}"
                 [formControlName]="values.name" [required]="values.is_require" [id]="values.name"
-                (focus)="focusFunction($event,values.name)" name="{{values.name}}">
+                (focusout)="focusFunction($event,values.name)" name="{{values.name}}">
             <div *ngIf="!isValid  && (form.controls[values.name].dirty || form.controls[values.name].touched)">
                 <span *ngIf="form.controls[values.name].errors?.['required']"
                     class="text-red-600 text-xs italic">{{values.title}} không

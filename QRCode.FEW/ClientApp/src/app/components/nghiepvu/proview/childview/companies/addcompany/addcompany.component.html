@@ -36,20 +36,22 @@
                 </button>
                 <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_bia}}" alt="">
+                    <img src="{{src_bia}}" alt="" style="object-fit: contain;">
+                    <input type="hidden" [formControlName]="'url_background'" name="url_background" value="">
                 </div>
             </div>
         </div>
         <div class="flex flex-col relative my-2 col-span-2">
-            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Thư viện ảnh</label>
+            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh doanh nghiệp, cá nhân</label>
             <div class="flex flex-row">
                 <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
-                    (click)="showDialog('bia')" style="width: 100px; height: 100px;">
+                    (click)="showDialog('thuvienanh')" style="width: 100px; height: 100px;">
                     <img src="./assets/images/img_add.png" alt="">
                 </button>
                 <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_bia}}" alt="">
+                    <img src="{{src_image_any}}" alt="" style="object-fit: contain;">
+                    <input type="hidden" [formControlName]="'url_img'" name="url_img" value="">
                 </div>
             </div>
         </div>
@@ -58,11 +60,12 @@
             <div class="flex flex-row">
                 <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
                     (click)="showDialog('video')" style="width: 100px; height: 100px;">
-                    <img src="./assets/images/img_add.png" alt="">
+                    <img src="./assets/images/img_add.png" alt="" style="object-fit: contain;">
                 </button>
                 <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_video}}" alt="">
+                    <video style="max-height: 100%; max-width: 100%;" *ngIf="src_video!=''" src="{{src_video}}" alt="" controls></video>
+                    <input type="hidden" [formControlName]="'url_video'" name="url_video" value="">
                 </div>
             </div>
         </div>
@@ -74,6 +77,7 @@
             </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                (focusout)="focusFunction($event,'name')"
                 placeholder="Nhập tên điểm check in, cửa hàng, toà nhà, tài xế..." [formControlName]="'name'"
                 [ngClass]="{'border-red-600':!DataForm.controls['name'].valid && (DataForm.controls['name'].dirty || DataForm.controls['name'].touched) && DataForm.controls['name'].errors?.['required']}"
                 name="name" value="" required>
@@ -88,6 +92,7 @@
             <label for="taxcode" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Mã số thuế</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Mã số thuế"
+        (focusout)="focusFunction($event,'taxcode')"
                 [formControlName]="'taxcode'" name="taxcode" value="">
         </div>
         <div>
@@ -99,7 +104,8 @@
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" [ngClass]="{'border-red-600':((!DataForm.controls['tel'].valid) && (DataForm.controls['tel'].dirty || DataForm.controls['tel'].touched) && DataForm.controls['tel'].errors?.['required'])
             ||DataForm.controls['tel'].hasError('minlength') || DataForm.controls['tel'].hasError('maxlength')}"
-                placeholder="Số điện thoại doanh nghiệp" [formControlName]="'tel'" name="tel" value="" required>
+                (focusout)="focusFunction($event,'tel')" placeholder="Số điện thoại doanh nghiệp"
+                [formControlName]="'tel'" name="tel" value="" required>
             <div
                 *ngIf="!DataForm.controls['tel'].valid  && (DataForm.controls['tel'].dirty || DataForm.controls['tel'].touched)">
                 <span *ngIf="DataForm.controls['tel'].errors?.['required']" class="text-red-600 text-xs italic">Trường
@@ -115,6 +121,7 @@
             <label for="fax" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Fax</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Fax"
+        (focusout)="focusFunction($event,'fax')"
                 [formControlName]="'fax'" name="fax" value="">
         </div>
         <div>
@@ -301,6 +308,7 @@
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 placeholder="Nhập email tại đây" [formControlName]="'email'" name="email" value="" required
+                (focusout)="focusFunction($event,'email')"
                 [ngClass]="{'border-red-600':!DataForm.controls['email'].valid && (DataForm.controls['email'].dirty || DataForm.controls['email'].touched) && DataForm.controls['email'].errors?.['required']}">
             <div
                 *ngIf="!DataForm.controls['email'].valid  && (DataForm.controls['email'].dirty || DataForm.controls['email'].touched)">
@@ -317,8 +325,8 @@
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
                 placeholder="Nhập địa chỉ tại đây" [formControlName]="'address'" name="address" value="" required
-                [ngClass]="{'border-red-600':(!DataForm.controls['address'].valid && (DataForm.controls['address'].dirty || DataForm.controls['address'].touched) && DataForm.controls['address'].errors?.['required'])
-                ||DataForm.controls['address'].hasError('minlength') || DataForm.controls['tel'].hasError('maxlength')}">
+                (focusout)="focusFunction($event,'address')"
+                [ngClass]="{'border-red-600':(!DataForm.controls['address'].valid && (DataForm.controls['address'].dirty || DataForm.controls['address'].touched) && DataForm.controls['address'].errors?.['required'])}">
             <div
                 *ngIf="!DataForm.controls['address'].valid  && (DataForm.controls['address'].dirty || DataForm.controls['address'].touched)">
                 <span *ngIf="DataForm.controls['address'].errors?.['required']"
@@ -331,7 +339,7 @@
             <div class="flex">
                 <input type="text" class=" float-left w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    placeholder="{{it.key}} doanh nghiệp, cá nhân" [formControlName]="it.key">
+                    placeholder="{{it.key}} doanh nghiệp, cá nhân" [formControlName]="it.key"  (focusout)="focusFunction($event,it.key)">                   
                 <i class="fa fa-trash-o float-left pt-[11px] text-red-600 cursor-pointer" aria-hidden="true"
                     (click)="xoa_dynamic(it.key)"></i>
             </div>

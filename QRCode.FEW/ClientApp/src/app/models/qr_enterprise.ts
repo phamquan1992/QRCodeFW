@@ -20,7 +20,10 @@ export interface qr_enterprise {
     lastcreated_by: number;
     status: boolean;
     address: string;
-    sectors_code:string;
+    sectors_code: string;
+    url_background: string;
+    url_video: string;
+    url_img: string
 }
 export interface enterprisview {
     additional: string;

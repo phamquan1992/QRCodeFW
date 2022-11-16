@@ -63,6 +63,9 @@ namespace QRCode.FEW.Controllers
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
                 model.sectors_code = qr_model.sectors_code;
+                model.url_background = qr_model.url_background;
+                model.url_img = qr_model.url_img;
+                model.url_video = qr_model.url_video;
                 model.created_by = qr_model.created_by;
                 model.created_date = DateTime.Now;
                 return _Iqr_enterpriseService.CreateNew(model);
@@ -93,6 +96,9 @@ namespace QRCode.FEW.Controllers
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
                 model.sectors_code = qr_model.sectors_code;
+                model.url_background = qr_model.url_background;
+                model.url_img = qr_model.url_img;
+                model.url_video = qr_model.url_video;
                 model.lastcreated_by = qr_model.lastcreated_by;
                 model.lastcreated_date = DateTime.Now;
                 return _Iqr_enterpriseService.Update(model);

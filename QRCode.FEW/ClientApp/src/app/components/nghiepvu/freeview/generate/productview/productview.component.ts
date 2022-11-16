@@ -17,6 +17,7 @@ import { qr_gencode } from 'src/app/models/qr_gencode';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
+import { CommonService } from 'src/app/services/common.service';
 export interface item_value {
   value: string;
   is_select: boolean;
@@ -59,7 +60,8 @@ export class ProductviewComponent implements OnInit {
   code_tmp = '';
   str_url = '';
   constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService, private paymentSrc: PaynemtService,
-    private sharingSrc: ObservableService, private gencodeSrc: GencodeService, private mesSrc: MessageService, @Inject('BASE_URL') baseUrl: string) {
+    private sharingSrc: ObservableService, private gencodeSrc: GencodeService, private mesSrc: MessageService, @Inject('BASE_URL') baseUrl: string,
+    private commonSrc:CommonService) {
     this.str_url = baseUrl;
   }
 
@@ -282,11 +284,25 @@ export class ProductviewComponent implements OnInit {
   // }
   auto_change_ks(obj_input: any) {
     let val = obj_input.value;
-    this.filter_payment = this.arr_payment.pipe(map(ft => ft.filter(t => t.packname.toLowerCase().includes(val.toLowerCase()))));
+    this.filter_payment = this.arr_payment.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.packname, val))));
+    this.filter_payment.subscribe(t => {
+      if (t.length == 0) {
+        val = val.substring(0, val.length - 1);
+        obj_input.value = val;
+        this.filter_payment = this.arr_payment.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.packname, val))));
+      }
+    });
   }
   auto_change_product(obj_input: any) {
     let val = obj_input.value;
-    this.filter_product = this.arr_product_core.pipe(map(ft => ft.filter(t => t.name.toLowerCase().includes(val.toLowerCase()))));
+    this.filter_product = this.arr_product_core.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.name, val))));
+    this.filter_product.subscribe(t => {
+      if (t.length == 0) {
+        val = val.substring(0, val.length - 1);
+        obj_input.value = val;
+        this.filter_product = this.arr_product_core.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.name, val))));
+      }
+    });
   }
   add(event: MatChipInputEvent): void {
     console.log(event);
@@ -324,5 +340,8 @@ export class ProductviewComponent implements OnInit {
   check_select(gt: product) {
     const index = this.arr_chip_product.indexOf(gt);
     return index == -1 ? false : true;
+  }
+  focusFunction() {
+    this.name_qrcode = this.name_qrcode.trim();
   }
 }

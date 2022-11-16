@@ -12,6 +12,7 @@ import { ObservableService } from 'src/app/services/observable.service';
 import { qr_gencode } from 'src/app/models/qr_gencode';
 import { MessageService } from 'src/app/services/message.service';
 import { GencodeService } from 'src/app/services/gencode.service';
+import { CommonService } from 'src/app/services/common.service';
 
 export interface item_value_obj {
   value: string;
@@ -58,7 +59,7 @@ export class CompanyviewComponent implements OnInit {
   op_tion_temp: optioncs = new optioncs();
   constructor(private dialog: MatDialog, private datepipe: DatePipe, private companySrc: CompaniesService,
     private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string,
-    private gencodeSrc: GencodeService, private mesSrc: MessageService) {
+    private gencodeSrc: GencodeService, private mesSrc: MessageService,private commonSrc:CommonService) {
     this.str_url = baseUrl;
   }
 
@@ -224,11 +225,25 @@ export class CompanyviewComponent implements OnInit {
   }
   auto_change_obj(obj_input: any) {
     let val = obj_input.value;
-    this.filter_enterprise = this.list_enterprise.pipe(map(op => op.filter(t => t.name.toLowerCase().includes(val.toLowerCase()))));
+    this.filter_enterprise = this.list_enterprise.pipe(map(op => op.filter(t => this.commonSrc.likevalue(t.name, val))));
+    this.filter_enterprise.subscribe(t => {
+      if (t.length == 0) {
+        val = val.substring(0, val.length - 1);
+        obj_input.value = val;
+        this.filter_enterprise = this.list_enterprise.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.name, val))));
+      }
+    });
   }
   auto_change_ks(obj_input: any) {
     let val = obj_input.value;
-    this.filter_payment = this.arr_payment.pipe(map(op => op.filter(t => t.packname.toLowerCase().includes(val.toLowerCase()))));
+    this.filter_payment = this.arr_payment.pipe(map(op => op.filter(t => this.commonSrc.likevalue(t.packname, val))));
+    this.filter_payment.subscribe(t => {
+      if (t.length == 0) {
+        val = val.substring(0, val.length - 1);
+        obj_input.value = val;
+        this.filter_payment = this.arr_payment.pipe(map(op => op.filter(t => this.commonSrc.likevalue(t.packname, val))));
+      }
+    });
   }
   displayFn(selectedoption: any) {
     return selectedoption ? selectedoption.packname : undefined;
@@ -268,5 +283,8 @@ export class CompanyviewComponent implements OnInit {
     let tmp = canvas[0] as HTMLCanvasElement;
     const data = tmp.toDataURL();
     return data;
+  }
+  focusFunction() {
+    this.name_qrcode = this.name_qrcode.trim();
   }
 }

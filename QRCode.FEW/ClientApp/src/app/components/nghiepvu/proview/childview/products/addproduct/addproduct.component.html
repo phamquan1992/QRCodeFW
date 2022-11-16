@@ -85,7 +85,7 @@
                     <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                         [ngClass]="{'border border-solid border-[#d9d9d9] rounded-[7px]':src_video!='','border-0':src_video==''|| src_video==null}"
                         style="width: 180px; height: 100px;">
-                        <video *ngIf="src_video!=''" src="{{src_video}}" alt="" controls></video>
+                        <video style="max-height: 100%; max-width: 100%;" *ngIf="src_video!=''" src="{{src_video}}" alt="" controls></video>
                         <input type="hidden" [formControlName]="'url_video'">
                     </div>
                 </div>

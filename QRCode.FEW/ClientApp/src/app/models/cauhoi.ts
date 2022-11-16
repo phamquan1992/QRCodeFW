@@ -13,4 +13,5 @@ export interface element_value {
 export interface obj_value_form {
     name: string;
     value: string;
-  }
+    required: boolean;
+}

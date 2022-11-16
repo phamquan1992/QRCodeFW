@@ -100,8 +100,8 @@ export class CompanylistComponent implements OnInit {
       }
     });
   }
-  showXoaDialog(act: string) {
-    if (act != '') {
+  showXoaDialog(act: string) {   
+    if (act != '') {      
       this.gencodeSrc.check_obj(act, 'enterprise').subscribe(t => {
         if (t) {
           this.mesSrc.error('Đối tượng đã được tạo QR Code không thể xoá!');
@@ -109,7 +109,7 @@ export class CompanylistComponent implements OnInit {
         }
       });
     } else {
-      if(this.selection.selected.length==0){
+      if (this.selection.selected.length == 0) {
         this.mesSrc.error('Bạn chưa chọn bản ghi nào!');
         return;
       }

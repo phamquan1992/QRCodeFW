@@ -4,6 +4,8 @@ import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
 import { obj_value_form } from 'src/app/models/cauhoi';
+import { CommonService } from 'src/app/services/common.service';
+import { MessageService } from 'src/app/services/message.service';
 
 
 @Component({
@@ -26,17 +28,18 @@ export class SocialqrcodeComponent implements OnInit {
   op_tion: optioncs = new optioncs();
   status = '';
   now: Date = new Date();
-  constructor(private dialog: MatDialog, private datepipe: DatePipe) { }
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private commonSrc: CommonService, private messSrc: MessageService) { }
 
   ngOnInit(): void {
   }
   arr_link: obj_value_form[] = [
     {
-      name: 'Website', value: ''
+      name: 'Website', value: '', required: true
     }
   ];
   onchange_text(gt: any) {
-    this.update_data(gt.name, gt.value);
+    let is_check = this.commonSrc.isValidHttpUrl(gt.value);
+    this.update_data(gt.name, gt.value, is_check);
     this.get_data();
   }
 
@@ -55,19 +58,25 @@ export class SocialqrcodeComponent implements OnInit {
     // "VERSION:3.0\r\n" +    
     // "URL:https://www.google.com/\r\n"+
     // "URL:https://www.facebook.com/\r\n" +
-    // "END:LINK\r\n";
-    console.log(tem_gt);
+    // "END:LINK\r\n";    
     this.data = "MECARD:N:TQC,eQR;" + tem_gt;
   }
-  update_data(name: string, value: string) {
+  update_data(name: string, value: string, required: boolean) {
     let index_gt = this.arr_link.findIndex(t => t.name == name);
-    if (index_gt > -1)
-      this.arr_link[index_gt].value = value;
+    if (index_gt > -1) {
+      this.arr_link[index_gt].value = !required ? '' : value;
+      this.arr_link[index_gt].required = required;
+    }
   }
   xuat_qr(item: optioncs) {
     this.op_tion = item;
   }
   taiqr() {
+    let arr_err = this.arr_link.filter(t => !t.required);
+    if (arr_err.length > 0) {
+      this.messSrc.error('Link không đúng định dạng, không tải được QR Code');
+      return;
+    }
     this.now = new Date();
     this.status = 'download' + this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
   }
@@ -93,11 +102,15 @@ export class SocialqrcodeComponent implements OnInit {
   add_link(gt: string) {
     let index_any = this.arr_link.findIndex(t => t.name == gt);
     if (index_any == -1)
-      this.arr_link.push({ name: gt, value: '' });
+      this.arr_link.push({ name: gt, value: '', required: true });
   }
   delete_link(gt: string) {
     let index_any = this.arr_link.findIndex(t => t.name == gt);
     this.arr_link.splice(index_any, 1);
     this.get_data();
+  }
+  focusFunction(gt: any) {
+    let tem_val = gt.value;
+    gt.value = tem_val.trim();
   }
 }

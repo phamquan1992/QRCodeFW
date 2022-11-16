@@ -59,6 +59,18 @@ export class GencodeComponent implements OnInit {
   ngOnInit(): void {
     this.get_data();
     this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
+    this.paymentSrc.get_payment_list(Number(this.user_info.id)).subscribe(t => {
+      t.forEach(element => {
+        let it_tmp: cutom_it = {
+          stt: 0,
+          name: '',
+          mota: ''
+        };
+        it_tmp.mota = element.packname;
+        it_tmp.name = element.qrpaymentid.toString();
+        this.arr_filter_pack.push(it_tmp);
+      });
+    });
   }
   get_data() {
     this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
@@ -67,21 +79,9 @@ export class GencodeComponent implements OnInit {
       this.data.subscribe(it => {
         this.data_arr = it;
         this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
-      });
-      this.paymentSrc.get_payment_list(Number(t.id)).subscribe(t => {
-        t.forEach(element => {
-          let it_tmp: cutom_it = {
-            stt: 0,
-            name: '',
-            mota: ''
-          };
-          it_tmp.mota = element.packname;
-          it_tmp.name = element.qrpaymentid.toString();
-          this.arr_filter_pack.push(it_tmp);
-        });
+        this.dataSource.filterPredicate = this.createFilter();
       });
     });
-
   }
   masterToggle() {
     this.isAllSelected() ?
@@ -158,11 +158,11 @@ export class GencodeComponent implements OnInit {
             arr_gen.push(status_obj);
           });
           this.gencodeSrc.sync_pack(arr_gen).subscribe(t => {
-            if (t){
+            if (t) {
               this.messSrc.success("Bạn đã thực hiện thành công");
               this.selection.clear();
               this.get_data();
-            }           
+            }
             else
               this.messSrc.error("Có lỗi trong quá trình xử lý dữ liệu");
           });
