@@ -68,7 +68,7 @@ export class ObservableService {
   getAuthenState(): Observable<boolean> {
     let currUser = this.storage.getUserInfo();
     this.isAuthenticated = new BehaviorSubject<boolean>(currUser != undefined);
-    this.isAuthenticated.asObservable().subscribe(t=>console.log(t));
+    this.isAuthenticated.asObservable().subscribe(t=>console.log(' '));
     return this.isAuthenticated.asObservable();
   }
 

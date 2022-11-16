@@ -25,11 +25,14 @@ export class CompaniesService {
   get_object_cty(id: string) {
     return this.dataSrv.get('qr_enterprise/object/' + id) as Observable<qr_enterprise>;
   }
+  check_401() {
+    return this.dataSrv.get('qr_enterprise/Check401') as Observable<boolean>;
+  }
   update_company(cty_obj: qr_enterprise) {
     return this.dataSrv.put('qr_enterprise/Update', cty_obj);
   }
-  update_status(arr_cty: qr_enterprise[]){
-    return this.dataSrv.put('qr_enterprise/ChangeStatus',arr_cty);
+  update_status(arr_cty: qr_enterprise[]) {
+    return this.dataSrv.put('qr_enterprise/ChangeStatus', arr_cty);
   }
   add_company(cty_obj: qr_enterprise) {
     return this.dataSrv.post('qr_enterprise/Add', cty_obj);
@@ -40,7 +43,7 @@ export class CompaniesService {
   delete_arr(arr_id: number[]) {
     return this.dataSrv.delete_array('qr_enterprise/delete', arr_id);
   }
-  get_view_enterprise(id: string | number){
+  get_view_enterprise(id: string | number) {
     let pro_obj: Observable<qr_enterprise> = this.dataSrv.get('ViewData/enterprise/' + id) as Observable<qr_enterprise>;
     return pro_obj;
   }

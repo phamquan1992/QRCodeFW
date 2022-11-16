@@ -44,6 +44,7 @@ export class GencodeComponent implements OnInit {
   filter_gencode = {
     qr_name: '',
     qr_obj_name: '',
+    qr_tpye: '',
     pack_name: '',
     province: '',
     create_date_qr_start: '',
@@ -193,17 +194,44 @@ export class GencodeComponent implements OnInit {
     });
 
   }
+  pack_name_filter = '';
+  loaiQR_filter = '';
   applyFilter() {
-    let start_active = this.range_active.controls['start_active'].value;
-    let end_active = this.range_active.controls['end_active'].value;
+    let start_active = this.range_active.controls['start_active'].value || '';
+    let end_active = this.range_active.controls['end_active'].value || '';
+    let start_exp = this.range_exp.controls['start_exp'].value || '';
+    let end_exp = this.range_exp.controls['end_exp'].value || '';
 
-    console.log(start_active);
+    this.filter_gencode['qr_name'] = this.nameqr_filter;
+    this.filter_gencode['qr_obj_name'] = this.nameobj_filter;
+    this.filter_gencode['qr_tpye'] = this.loaiQR_filter;
+    this.filter_gencode['pack_name'] = this.pack_name_filter;
+    this.filter_gencode['create_date_qr_start'] = start_active;
+    this.filter_gencode['create_date_qr_end'] = end_active;
+    this.filter_gencode['exp_date_start'] = start_exp;
+    this.filter_gencode['exp_date_end'] = end_exp;
+    this.dataSource.filter = JSON.stringify(this.filter_gencode);
+    this.selection.clear();
   }
   reload_grid() {
-
+    this.filter_gencode['qr_name'] = '';
+    this.filter_gencode['qr_obj_name'] = '';
+    this.filter_gencode['qr_tpye'] = '';
+    this.filter_gencode['pack_name'] = '';
+    this.filter_gencode['create_date_qr_start'] = '';
+    this.filter_gencode['create_date_qr_end'] ='';
+    this.filter_gencode['exp_date_start'] ='';
+    this.filter_gencode['exp_date_end'] ='';
+    this.dataSource.filter = JSON.stringify(this.filter_gencode);
+    this.selection.clear();
   }
   setval_loaiQR(gt: any) {
-
+    console.log(gt);
+    this.loaiQR_filter = gt;
+  }
+  setval_packname(gt: any) {
+    console.log(gt);
+    this.pack_name_filter = gt;
   }
   input1_change(event: any) {
     console.log(event);

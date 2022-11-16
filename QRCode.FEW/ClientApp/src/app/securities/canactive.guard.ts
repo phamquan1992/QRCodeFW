@@ -2,6 +2,7 @@ import { HostListener, Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { CompaniesService } from '../components/nghiepvu/proview/childview/companies/companies.service';
 import { LoginComponent } from '../components/share/login/login.component';
 import { LocalStorageService } from '../services/local-storage.service';
 import { MessageService } from '../services/message.service';
@@ -11,10 +12,11 @@ import { ObservableService } from '../services/observable.service';
   providedIn: 'root'
 })
 export class CanactiveGuard implements CanActivate {
-  constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog, private _sharingService: ObservableService) { }
+  constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog, private _sharingService: ObservableService, private enterpriseSrc: CompaniesService) { }
   canActivate(
     route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     console.log(state1.url);
+    this.enterpriseSrc.check_401().subscribe(t => console.log(t));
     let user = this.storage.getUserInfo();
     if (user != undefined) {
       return true;

@@ -33,6 +33,12 @@ namespace QRCode.FEW.Controllers
             return data;
         }
         [HttpGet]
+        [Route("Check401")]
+        public bool Check401()
+        {
+            return true;
+        }
+        [HttpGet]
         [Route("object/{id}")]
         public async Task<qr_enterprise> GetObject(long id)
         {

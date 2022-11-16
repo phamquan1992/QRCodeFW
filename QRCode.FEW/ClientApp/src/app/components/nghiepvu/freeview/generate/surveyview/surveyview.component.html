@@ -8,7 +8,7 @@
             <div class="relative min-h-[1px] block box-border w-full md:w-[58.33333333%] float-left grow-0 shrink-0 basis-auto"
                 style="padding-left: 20px; padding-right: 20px;">
                 <div class="bg-white rounded-xl shadow-md mb-5 collapse-block transition-none p-2 md:p-6">
-                    <form class="ant-form ant-form-horizontal">
+                    <div class="ant-form ant-form-horizontal">
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
@@ -22,6 +22,7 @@
                                         <div class="ant-form-item-control">
                                             <span class="ant-form-item-children">
                                                 <input placeholder="Nhập tên QR Code" type="text"
+                                                    (focusout)="focusFunction()" [(ngModel)]="name_qrcode"
                                                     class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm">
                                             </span>
                                         </div>
@@ -38,17 +39,27 @@
                                     </span>
                                 </div>
                                 <div class="ant-row ant-form-item">
-                                    <div class="ant-col ant-form-item-control-wrapper">
-                                        <div class="ant-form-item-control relative">
-                                            <span class="ant-form-item-children">
-                                                <input class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                                (keyup)="auto_change($event.target)"
-                                                    placeholder="{{findDv(arr_value).length==0? 'Chọn gói dịch vụ':''}}"
+                                    <div class="ant-col -wrapper">
+                                        <div class=" relative">
+                                            <span>
+                                                <input
+                                                    class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change_ks($event.target)"
+                                                    placeholder="Chọn gói dịch vụ"
                                                     [matAutocomplete]="dichvuAutocomplete" [value]="">
-                                                <mat-autocomplete #dichvuAutocomplete="matAutocomplete">
-                                                    <mat-option *ngFor="let it of arr_value" [value]="it.value"
-                                                        style="height: 32px; font-size: 14px;" class="relative">
-                                                        <span>{{it.value}}</span>
+                                                <mat-autocomplete #dichvuAutocomplete="matAutocomplete"
+                                                    [displayWith]="displayFn" (optionSelected)="select_payment($event)">
+                                                    <mat-option *ngFor="let it of filter_payment|async" [value]="it"
+                                                        style="height: 50px; font-size: 14px; border-bottom: 1px solid #d9d9d9;line-height: 1.5rem;"
+                                                        class="relative">
+                                                        <span class="text-[13px]"><b>Gói dịch vụ:</b>
+                                                            {{it.packname}}</span><br>
+                                                        <span class="text-[13px]"><b>Ngày kích hoạt:</b>
+                                                            {{it.payment_date|date:
+                                                            'dd/MM/yyyy'}}</span>
+                                                    </mat-option>
+                                                    <mat-option *ngIf="(filter_payment | async)?.length == 0">
+                                                        <span>Không có dữ liệu hiển thị</span>
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <span
@@ -61,7 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="mb-5">
                             <div>
                                 <div class="mb-2 block text-black">
@@ -74,9 +85,9 @@
                                     <div class="ant-col ant-form-item-control-wrapper">
                                         <div class="ant-form-item-control relative">
                                             <span class="ant-form-item-children">
-                                                <input class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                                (keyup)="auto_change($event.target)"
-                                                    placeholder='Chọn khảo sát'
+                                                <input disabled
+                                                    class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
+                                                    (keyup)="auto_change($event.target)" placeholder='Chọn khảo sát'
                                                     [matAutocomplete]="khaosatAutocomplete" [value]="">
                                                 <mat-autocomplete #khaosatAutocomplete="matAutocomplete">
                                                     <mat-option *ngFor="let it of arr_value_ks" [value]="it.value"
@@ -95,7 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <app-typeqrcode [data]="data" (option_output)="xuat_qr($event)"></app-typeqrcode>
             </div>

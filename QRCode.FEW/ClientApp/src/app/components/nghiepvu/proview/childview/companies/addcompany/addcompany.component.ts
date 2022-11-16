@@ -112,8 +112,16 @@ export class AddcompanyComponent implements OnInit {
     this.DataForm.controls['sectors_code'].setValue(data_edit.sectors_code);
     this.DataForm.controls['occupation'].setValue(data_edit.occupation);
     this.DataForm.controls['address'].setValue(data_edit.address);
+    this.DataForm.controls['url_background'].setValue(data_edit.url_background);
+    this.DataForm.controls['url_video'].setValue(data_edit.url_video);
+    this.DataForm.controls['url_img'].setValue(data_edit.url_img);
+
     if (this.value_id != '0') {
       this.src_daidien = data_edit.logo;
+      this.src_bia = data_edit.url_background;
+      this.src_image_any = data_edit.url_img;
+      this.src_video = data_edit.url_video;
+
       this.companySrc.get_location(data_edit.province).subscribe(t => {
         this.array_huyen_tmp = t;
         this.array_huyen = this.array_huyen_tmp;
@@ -358,16 +366,10 @@ export class AddcompanyComponent implements OnInit {
         }
       );
   }
-  name_change() {
-
-  }
-  taxcode_change() {
-
-  }
   add_dynamic(name: string) {
     let index_dynamic = this.arr_dynamic.map(t => t.key).indexOf(name);
     if (index_dynamic == -1) {
-      this.DataForm.addControl(name, new FormControl(''));
+      this.DataForm.addControl(name, new FormControl('', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]));
       let gt_tem: item_dropdown_cp = { key: name, value: '' };
       this.arr_dynamic.push(gt_tem);
     } else {

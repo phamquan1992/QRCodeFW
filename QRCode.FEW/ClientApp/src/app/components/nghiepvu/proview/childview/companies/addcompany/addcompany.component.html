@@ -42,7 +42,8 @@
             </div>
         </div>
         <div class="flex flex-col relative my-2 col-span-2">
-            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh doanh nghiệp, cá nhân</label>
+            <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh doanh nghiệp, cá
+                nhân</label>
             <div class="flex flex-row">
                 <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
                     (click)="showDialog('thuvienanh')" style="width: 100px; height: 100px;">
@@ -64,7 +65,8 @@
                 </button>
                 <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
                     style="width: 100px; height: 100px;">
-                    <video style="max-height: 100%; max-width: 100%;" *ngIf="src_video!=''" src="{{src_video}}" alt="" controls></video>
+                    <video style="max-height: 100%; max-width: 100%;" *ngIf="src_video!=''" src="{{src_video}}" alt=""
+                        controls></video>
                     <input type="hidden" [formControlName]="'url_video'" name="url_video" value="">
                 </div>
             </div>
@@ -92,8 +94,7 @@
             <label for="taxcode" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Mã số thuế</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Mã số thuế"
-        (focusout)="focusFunction($event,'taxcode')"
-                [formControlName]="'taxcode'" name="taxcode" value="">
+                (focusout)="focusFunction($event,'taxcode')" [formControlName]="'taxcode'" name="taxcode" value="">
         </div>
         <div>
             <label for="tel" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
@@ -121,11 +122,14 @@
             <label for="fax" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Fax</label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Fax"
-        (focusout)="focusFunction($event,'fax')"
-                [formControlName]="'fax'" name="fax" value="">
+                (focusout)="focusFunction($event,'fax')" [formControlName]="'fax'" name="fax" value="">
         </div>
         <div>
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">Quốc gia</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">
+                <span>Quốc gia</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <div class="relative">
                 <span class="block absolute top-2 right-2 z-[999]" unselectable="unselectable"
                     style="user-select: none;">
@@ -335,15 +339,25 @@
             </div>
         </div>
         <div class="col-span-2" *ngFor="let it of arr_dynamic">
-            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">{{it.key}}</label>
+            <label for="first_name" class="block mb-2 text-sm font-bold text-[13px] font-[Roboto]">                
+                <span>{{it.key}}</span>
+                <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span>
+                </span>
+            </label>
             <div class="flex">
                 <input type="text" class=" float-left w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
                 bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    placeholder="{{it.key}} doanh nghiệp, cá nhân" [formControlName]="it.key"  (focusout)="focusFunction($event,it.key)">                   
+                    placeholder="{{it.key}} doanh nghiệp, cá nhân" [formControlName]="it.key"
+                    (focusout)="focusFunction($event,it.key)">
                 <i class="fa fa-trash-o float-left pt-[11px] text-red-600 cursor-pointer" aria-hidden="true"
                     (click)="xoa_dynamic(it.key)"></i>
             </div>
-
+            <div
+                *ngIf="!DataForm.controls[it.key].valid  && (DataForm.controls[it.key].dirty || DataForm.controls[it.key].touched)">
+                <span *ngIf="DataForm.controls[it.key].errors?.['required']" class="text-red-600 text-xs italic">Trường không được để trống!</span>
+                <span *ngIf="DataForm.controls[it.key].errors?.['pattern']" class="text-red-600 text-xs italic">Link
+                    không đúng định dạng!</span>
+            </div>
         </div>
         <div class="col-span-2">
             <ul class="inline-block">

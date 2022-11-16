@@ -3,6 +3,11 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { data_dialog_input, optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
+import { qr_payment } from 'src/app/models/qr_payment';
+import { map, Observable } from 'rxjs';
+import { CommonService } from 'src/app/services/common.service';
+import { ObservableService } from 'src/app/services/observable.service';
+import { PaynemtService } from 'src/app/services/paynemt.service';
 
 export interface item_value_ks {
   value: string;
@@ -25,19 +30,29 @@ export class SurveyviewComponent implements OnInit {
   shape = 'square' //"square" hoặc "circle"
   cornersDot_type = 'None';
   cornerSquareType = 'None';
-
+  name_qrcode='';
+  qrpaymentid = '';
+  surveyid='';
   status = '';
   is_any_select = false;
   arr_item: item_value_ks[] = [{ value: 'Dịch vụ 1', is_select: false }, { value: 'Dịch vụ 2', is_select: false }, { value: 'Dịch vụ 3', is_select: false }];
   arr_item_ks: item_value_ks[] = [{ value: 'Khảo sát 1', is_select: false }, { value: 'Khảo sát 2', is_select: false }, { value: 'Khảo sát 3', is_select: false }];
   arr_value: item_value_ks[] = [];
   arr_value_ks: item_value_ks[] = [];
-  constructor(private dialog: MatDialog, private datepipe: DatePipe) { }
+  arr_payment!: Observable<qr_payment[]>;
+  filter_payment!: Observable<qr_payment[]>;
+  constructor(private dialog: MatDialog, private datepipe: DatePipe,private commonSrc:CommonService,private sharingSrc: ObservableService,
+    private paymentSrc: PaynemtService) { }
 
   ngOnInit(): void {
     this.status = '';
     this.arr_value = this.arr_item;
     this.arr_value_ks = this.arr_item_ks;
+    this.sharingSrc.getUserInfo().subscribe(user => {
+      this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
+      this.filter_payment = this.arr_payment;
+      
+    });
   }
   now: Date = new Date();
   op_tion: optioncs = new optioncs();
@@ -98,6 +113,28 @@ export class SurveyviewComponent implements OnInit {
   }
   auto_change_ks(obj_input: any) {
     let val = obj_input.value;
-    this.arr_value_ks = this.arr_item_ks.filter(option => option.value.toLowerCase().includes(val.toLowerCase()));
+    this.filter_payment = this.arr_payment.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.packname, val))));
+    this.filter_payment.subscribe(t => {
+      if (t.length == 0) {
+        val = val.substring(0, val.length - 1);
+        obj_input.value = val;
+        this.filter_payment = this.arr_payment.pipe(map(ft => ft.filter(t => this.commonSrc.likevalue(t.packname, val))));
+      }
+    });
   }
+  focusFunction() {
+    debugger;
+    this.name_qrcode = this.name_qrcode.trim();
+  }
+  
+  displayFn(selectedoption: any) {
+    return selectedoption ? selectedoption.packname : undefined;
+  }
+  select_payment(evnt: any) {
+    let gt = evnt.option.value.qrpaymentid;
+    this.qrpaymentid = gt;
+    if (this.surveyid != null && this.qrpaymentid != null)
+      this.get_link_qr();
+  }
+  get_link_qr() {}
 }

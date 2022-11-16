@@ -59,6 +59,7 @@ export class ProductviewComponent implements OnInit {
   qrproductid = '';
   code_tmp = '';
   str_url = '';
+ 
   constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService, private paymentSrc: PaynemtService,
     private sharingSrc: ObservableService, private gencodeSrc: GencodeService, private mesSrc: MessageService, @Inject('BASE_URL') baseUrl: string,
     private commonSrc:CommonService) {
