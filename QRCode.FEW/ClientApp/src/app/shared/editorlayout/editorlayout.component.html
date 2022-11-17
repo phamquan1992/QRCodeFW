@@ -1,6 +1,10 @@
 <div [formGroup]="form" class="align-top h-auto w-full">
     <div class="relative flex mt-2">
-        <label for="" class="inline-block relative font-bold text-sm font-sans">{{values.title}}</label>
+        <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">
+            <span>{{values.title}}</span>
+            <span *ngIf="values.is_require"><span>(</span><span
+                    class="text-red-600 align-text-top">*</span><span>)</span> </span>
+        </label>
         <i [ngClass]="{'visible':values.is_delete,'invisible':!values.is_delete}" _ngcontent-sdj-c36=""
             (click)="delete_input(values.name)" class="absolute right-0 top-1 text-red-600 cursor-pointer" nz-icon=""
             nztheme="outline" nztype="close-circle"><svg viewBox="64 64 896 896" fill="currentColor" width="1em"
@@ -13,5 +17,6 @@
                 </path>
             </svg></i>
     </div>
-    <angular-editor id="test" [formControlName]="values.name" [config]="editorConfig"></angular-editor>
+    <div *ngIf="!isValid && (form.controls[values.name].dirty || form.controls[values.name].touched)"><span class="text-red-600 text-xs italic">Trường không được để trống</span></div>
+    <angular-editor id="test" [formControlName]="values.name" [config]="editorConfig"  [required]="values.is_require"></angular-editor>
 </div>

@@ -20,6 +20,7 @@ export class EditorlayoutComponent implements OnInit {
   ngOnInit(): void {
     this.form.controls[this.values.name].setValue(this.values.value_ip);
   }
+  get isValid() { return this.form.controls[this.values.name].valid; }
   delete_input(gt: string) {
     this.out_delete.emit(gt);
   }
