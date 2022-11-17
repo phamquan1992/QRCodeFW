@@ -11,6 +11,7 @@ namespace QRCode.Core.Domain2
         public string sodt { get; set; }
         public string email { get; set; }
         public string token { get; set; }
+        public bool active { get; set; }
     }
     public class MailRequest
     {
