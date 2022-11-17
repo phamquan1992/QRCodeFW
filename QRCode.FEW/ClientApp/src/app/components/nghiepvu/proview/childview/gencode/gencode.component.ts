@@ -211,7 +211,7 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['exp_date_start'] = start_exp;
     this.filter_gencode['exp_date_end'] = end_exp;
     this.dataSource.filter = JSON.stringify(this.filter_gencode);
-    this.selection.clear();
+    this.selection.clear();    
   }
   reload_grid() {
     this.filter_gencode['qr_name'] = '';
@@ -224,6 +224,14 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['exp_date_end'] ='';
     this.dataSource.filter = JSON.stringify(this.filter_gencode);
     this.selection.clear();
+    this.nameqr_filter='';
+    this.nameobj_filter='';
+    this.loaiQR_filter = '';
+    this.pack_name_filter = '';
+    this.range_active.controls['start_active'].setValue('');
+    this.range_active.controls['end_active'].setValue('');
+    this.range_active.controls['start_exp'].setValue('');
+    this.range_active.controls['end_exp'].setValue('');
   }
   setval_loaiQR(gt: any) {
     console.log(gt);
@@ -234,7 +242,7 @@ export class GencodeComponent implements OnInit {
     this.pack_name_filter = gt;
   }
   input1_change(event: any) {
-    console.log(event);
+    //console.log(event);
   }
   createFilter() {
     let filterFunction = function (data: any, filter: string): boolean {
@@ -253,15 +261,19 @@ export class GencodeComponent implements OnInit {
         if (isFilterSet) {
           for (const col in searchTerms) {
             if (col == 'create_date_qr_start' || col == 'create_date_qr_end') {
+              debugger
               const temp_date = new Date(searchTerms[col]);
+              
               let data_date = new Date(data['create_date_qr']);
               if (col == 'create_date_qr_start') {
-                if (temp_date >= data_date) {
+                temp_date.setHours(0,0,0);
+                if (temp_date <= data_date) {
                   found = true
                 }
               }
               if (col == 'create_date_qr_end') {
-                if (temp_date <= data_date) {
+                temp_date.setHours(23,59,59);
+                if (temp_date >= data_date) {
                   found = true
                 }
               }
@@ -319,5 +331,12 @@ export class GencodeComponent implements OnInit {
         this.messSrc.error(str_trangthai + " QR Code thất bại");
       }
     });
+  }
+  checkinput_date(gt:any){
+    let start_active = this.range_active.controls['start_active'].value;
+    console.log(gt.value);
+    const regexPattern = /^(([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4}$/gi;
+    const isValid = regexPattern.test(gt.value);
+    console.log(isValid);
   }
 }
