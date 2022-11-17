@@ -10,7 +10,7 @@
             </div>
             <div>
                 <label for="" class=" relative text-sm align-middle leading-[38px] mx-2 mr-1">Giá trị:</label><br>
-                <input  (focus)="focusFunction(giatri)" #giatri type="text" class="w-full text-ellipsis relative  py-1 px-[11px] leading-[1.5]  
+                <input  (focus)="focusFunction(giatri)" (focusout)="giatri.value=giatri.value.trim()" #giatri type="text" class="w-full text-ellipsis relative  py-1 px-[11px] leading-[1.5]  
                 focus:border focus:border-solid focus:border-[#196898]
                     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
             </div>

@@ -3,6 +3,7 @@ import { data_dialog_input, optioncs } from 'src/app/models/optioncs';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ContentdgComponent } from 'src/app/components/share/contentdg/contentdg.component';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-linkqrcode',
@@ -25,15 +26,30 @@ export class LinkqrcodeComponent implements OnInit {
   op_tion: optioncs = new optioncs();
   status = '';
   now: Date = new Date();
-  constructor(private dialog: MatDialog,private datepipe: DatePipe) { }
-
+  constructor(private dialog: MatDialog, private datepipe: DatePipe, private commonSrc: CommonService) { }
+  required = false;
   ngOnInit(): void {
+    this.required = true;
   }
+
   onchange_text(gt: any) {
-    this.data ="URL:"+ gt.value;
-    if (gt.value === '' || gt.value === null)
+    if (gt.value === '' || gt.value === null) {
       this.data = " ";
+      this.required = true;
+    }
+    else {
+      this.required = this.commonSrc.isValidHttpUrl(gt.value);
+      if (this.required) {
+        gt.value = gt.value.trim();
+        this.data = "URL:" + gt.value;
+      }
+      else {
+        this.data = " ";
+      }
+    }
+
   }
+
   xuat_qr(item: optioncs) {
     this.op_tion = item;
   }
@@ -63,6 +79,6 @@ export class LinkqrcodeComponent implements OnInit {
   }
   focusFunction(gt: any) {
     let tem_val = gt.value;
-    gt.value=tem_val.trim();
+    gt.value = tem_val.trim();
   }
 }

@@ -6,7 +6,7 @@
 <section class="bg-[#8080801c] px-[15px] mb-[15px]">
     <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter">
+        placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter" (focusout)="name_filter=name_filter.trim()">
     <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
         placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="value_select">
@@ -86,7 +86,8 @@
                     Ngày cập nhật</th>
                 <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    {{element.lastcreated_date==null?(element.created_date|date: 'dd/MM/yyyy hh:mm:ss'):(element.lastcreated_date|date: 'dd/MM/yyyy hh:mm:ss')}}  </td>
+                    {{element.lastcreated_date==null?(element.created_date|date: 'dd/MM/yyyy
+                    hh:mm:ss'):(element.lastcreated_date|date: 'dd/MM/yyyy hh:mm:ss')}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action">
@@ -100,7 +101,7 @@
                         [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
                     <i class="fa fa-link px-[4px] cursor-pointer text-blue-600 -rotate-[85deg]" aria-hidden="true"
                         routerLink="edit/{{element.qrproductid}}" [matTooltip]="'Chi tiết sản phẩm'"
-                        [matTooltipPosition]="'above'" style="font-size: 18px;"></i>                    
+                        [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-5"></tr>

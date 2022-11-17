@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { cutom_it } from 'src/app/models/category';
 import { nguoidung } from 'src/app/models/nguoidung';
@@ -211,7 +212,7 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['exp_date_start'] = start_exp;
     this.filter_gencode['exp_date_end'] = end_exp;
     this.dataSource.filter = JSON.stringify(this.filter_gencode);
-    this.selection.clear();    
+    this.selection.clear();
   }
   reload_grid() {
     this.filter_gencode['qr_name'] = '';
@@ -219,13 +220,13 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['qr_tpye'] = '';
     this.filter_gencode['pack_name'] = '';
     this.filter_gencode['create_date_qr_start'] = '';
-    this.filter_gencode['create_date_qr_end'] ='';
-    this.filter_gencode['exp_date_start'] ='';
-    this.filter_gencode['exp_date_end'] ='';
+    this.filter_gencode['create_date_qr_end'] = '';
+    this.filter_gencode['exp_date_start'] = '';
+    this.filter_gencode['exp_date_end'] = '';
     this.dataSource.filter = JSON.stringify(this.filter_gencode);
     this.selection.clear();
-    this.nameqr_filter='';
-    this.nameobj_filter='';
+    this.nameqr_filter = '';
+    this.nameobj_filter = '';
     this.loaiQR_filter = '';
     this.pack_name_filter = '';
     this.range_active.controls['start_active'].setValue('');
@@ -263,16 +264,16 @@ export class GencodeComponent implements OnInit {
             if (col == 'create_date_qr_start' || col == 'create_date_qr_end') {
               debugger
               const temp_date = new Date(searchTerms[col]);
-              
+
               let data_date = new Date(data['create_date_qr']);
               if (col == 'create_date_qr_start') {
-                temp_date.setHours(0,0,0);
+                temp_date.setHours(0, 0, 0);
                 if (temp_date <= data_date) {
                   found = true
                 }
               }
               if (col == 'create_date_qr_end') {
-                temp_date.setHours(23,59,59);
+                temp_date.setHours(23, 59, 59);
                 if (temp_date >= data_date) {
                   found = true
                 }
@@ -332,11 +333,11 @@ export class GencodeComponent implements OnInit {
       }
     });
   }
-  checkinput_date(gt:any){
-    let start_active = this.range_active.controls['start_active'].value;
+  checkinput_date(gt: any) {
     console.log(gt.value);
-    const regexPattern = /^(([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4}$/gi;
-    const isValid = regexPattern.test(gt.value);
-    console.log(isValid);
+    let isValid = moment(gt.value, 'DD/MM/YYYY', true).isValid()
+    if (!isValid) {
+      gt.value = null;
+    }
   }
 }

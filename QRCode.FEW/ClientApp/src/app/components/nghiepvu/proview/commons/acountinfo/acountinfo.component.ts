@@ -12,12 +12,13 @@ import { ObservableService } from 'src/app/services/observable.service';
 })
 export class AcountinfoComponent implements OnInit {
 
-  constructor(private router: Router, private messSrc: MessageService, private _sharingService: ObservableService,private localService:LocalStorageService) { }
+  constructor(private router: Router, private messSrc: MessageService, private _sharingService: ObservableService, private localService: LocalStorageService) { }
   nguoidung: nguoidung = {
     email: '',
     id: '',
     sodt: '',
-    token: ''
+    token: '',
+    active: false
   };
   ngOnInit(): void {
     this._sharingService.getUserInfo().subscribe(t => {

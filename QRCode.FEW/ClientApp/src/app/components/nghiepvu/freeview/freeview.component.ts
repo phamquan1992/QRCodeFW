@@ -21,7 +21,8 @@ export class FreeviewComponent implements OnInit, OnDestroy {
     email: '',
     id: '',
     sodt: '',
-    token: ''
+    token: '',
+    active: false,
   };
   currUser: Observable<nguoidung>;
 
@@ -61,8 +62,8 @@ export class FreeviewComponent implements OnInit, OnDestroy {
     // this.is_login = this._sharingService.getAuthenState();
     // this.router.navigate(['/qrcode-free']);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation="reload";
-    this.router.navigate(['./'],{relativeTo:this.route});
+    this.router.onSameUrlNavigation = "reload";
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
   showDialog(status: string) {
     const dialogConfig = new MatDialogConfig();

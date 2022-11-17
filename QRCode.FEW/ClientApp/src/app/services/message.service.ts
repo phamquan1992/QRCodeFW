@@ -35,7 +35,8 @@ export class MessageService {
       email: '',
       id: '',
       sodt: '',
-      token: ''
+      token: '',
+      active: false
     };
     if (error.status == 401) {
       this.warn('Đã hết phiên làm việc');

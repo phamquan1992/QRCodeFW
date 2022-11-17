@@ -21,9 +21,11 @@ namespace QRCode.FEW.Controllers
     {
         public IConfiguration _configuration;
         private readonly IuserdataService _IuserdataService;
-        public AuthenticationsController(IuserdataService userdataService, IConfiguration configuration)
+        private readonly Iqr_paymentService _Iqr_paymentService;
+        public AuthenticationsController(IuserdataService userdataService, Iqr_paymentService qr_paymentService, IConfiguration configuration)
         {
             _IuserdataService = userdataService;
+            _Iqr_paymentService = qr_paymentService;
             _configuration = configuration;
         }
         [HttpGet]
@@ -38,7 +40,8 @@ namespace QRCode.FEW.Controllers
                     email = nd.email,
                     id = nd.userid,
                     sodt = nd.sdt,
-                    token = ""
+                    token = "",
+                    active = Checkpay((int)nd.userid)
                 };
                 if (!nd.status)
                 {
@@ -65,6 +68,27 @@ namespace QRCode.FEW.Controllers
             {
                 return new NGUOIDUNG();
             }
+        }
+        public bool Checkpay(int userid)
+        {
+            bool check = false;
+            var list_pay = _Iqr_paymentService.GetAll();
+            if (list_pay != null && list_pay.Count() > 0)
+            {
+                var data = list_pay.ToList();
+                check = data.Any(t => t.userid == userid && t.payment_date != null && t.payment_date.Value <= DateTime.Now.Date && DateTime.Now.Date <= get_exptime(t.payment_date.Value));
+            }
+            return check;
+        }
+        private DateTime get_exptime(DateTime startdate)
+        {
+            DateTime tmp = startdate.AddYears(1);
+            return tmp;
+        }
+        public string GetIPAddress(string userAgent)
+        {
+            string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+            return IPAddress.Parse(externalIpString).ToString();
         }
     }
 }

@@ -52,6 +52,7 @@ export class ProductsComponent implements OnInit {
     this.filterProduct['status'] = '';
     this.name_filter = '';
     this.value_select = 'all';
+    console.log(JSON.stringify(this.filterProduct));
     this.dataSource.filter = JSON.stringify(this.filterProduct);
     this.selection.clear();
   }
@@ -82,15 +83,30 @@ export class ProductsComponent implements OnInit {
         }
       }
 
-      let nameSearch = () => {
-        let found = false;
+      let nameSearch = () => {   
         if (isFilterSet) {
+          let arr: boolean[] = [];
+          let found = false;
           for (const col in searchTerms) {
-            if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
-              found = true
+            if ((col === 'name' || col === 'code') && isFilterSet) {
+              let gttemp1 = data['name'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let gttemp2 = data['code'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              if (gttemp1 > -1 || gttemp2 > -1)
+                found = true;
+              else
+                found = false;
+            } else {
+              if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+                found = true;
+              } else {
+                found = false;
+              }
             }
+            arr.push(found);
           }
-          return found
+          let count_array = arr.findIndex(t => t == false);
+          arr=[];
+          return count_array == -1 ? true : false;
         } else {
           return true;
         }

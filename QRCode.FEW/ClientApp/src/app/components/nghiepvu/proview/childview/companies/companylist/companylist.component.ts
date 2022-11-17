@@ -100,8 +100,8 @@ export class CompanylistComponent implements OnInit {
       }
     });
   }
-  showXoaDialog(act: string) {   
-    if (act != '') {      
+  showXoaDialog(act: string) {
+    if (act != '') {
       this.gencodeSrc.check_obj(act, 'enterprise').subscribe(t => {
         if (t) {
           this.mesSrc.error('Đối tượng đã được tạo QR Code không thể xoá!');
@@ -175,14 +175,29 @@ export class CompanylistComponent implements OnInit {
       }
 
       let nameSearch = () => {
-        let found = false;
         if (isFilterSet) {
+          let arr: boolean[] = [];
+          let found = false;
           for (const col in searchTerms) {
-            if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
-              found = true
-            }
+            if ((col === 'name' || col === 'tel' || col === 'taxcode') && isFilterSet) {
+              let gttemp1 = data['name'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let gttemp2 = data['tel'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let gttemp3 = data['taxcode'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              if (gttemp1 > -1 || gttemp2 > -1 || gttemp3 > -1)
+                found = true;
+              else
+                found = false;
+            } else
+              if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+                found = true
+              } else {
+                found = false;
+              }
+            arr.push(found);
           }
-          return found
+          let count_array = arr.findIndex(t => t == false);
+          arr = [];
+          return count_array == -1 ? true : false;
         } else {
           return true;
         }

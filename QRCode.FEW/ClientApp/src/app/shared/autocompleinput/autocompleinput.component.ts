@@ -40,7 +40,6 @@ export class AutocompleinputComponent implements OnInit {
     this.arr_item = this.data;
   }
   close_event(obj_input: HTMLInputElement) {
-    debugger;
     this.rotate_it = false;
     let val = obj_input.value;
     if (val != null && val != '')

@@ -3,4 +3,5 @@ export interface nguoidung {
     id: string;
     sodt: string;
     token: string;
+    active:boolean;
 }

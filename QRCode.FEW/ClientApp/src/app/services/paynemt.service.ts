@@ -15,7 +15,10 @@ export class PaynemtService {
   add_payment(pqy_obj: qr_payment) {
     return this.dataSrv.post('qr_payment/Add', pqy_obj) as Observable<boolean>;
   }
-  active_payment(pqy_obj: qr_payment){
+  check_payment_user(userid: string) {
+    return this.dataSrv.get('qr_payment/CheckpayUser/'+userid) as Observable<boolean>;
+  }
+  active_payment(pqy_obj: qr_payment) {
     return this.dataSrv.post('qr_payment/Active', pqy_obj);
   }
   Getpack() {

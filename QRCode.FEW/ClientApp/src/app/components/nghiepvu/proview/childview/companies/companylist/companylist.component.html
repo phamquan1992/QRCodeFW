@@ -6,7 +6,7 @@
 <section class="bg-[#8080801c] px-[15px] mb-[15px]">
     <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên, số điện thoại hoặc mã số thuế" [(ngModel)]="name_filter">
+        placeholder="Tên, số điện thoại hoặc mã số thuế" [(ngModel)]="name_filter" (focusout)="name_filter=name_filter.trim()">
     <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="--Tỉnh thành--" [(ngModel)]="value_select">
         <option class="text-[13px] p-1 block" value="all">--Tỉnh thành--</option>

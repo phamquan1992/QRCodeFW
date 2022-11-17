@@ -7,19 +7,26 @@ import { LoginComponent } from '../components/share/login/login.component';
 import { LocalStorageService } from '../services/local-storage.service';
 import { MessageService } from '../services/message.service';
 import { ObservableService } from '../services/observable.service';
+import { PaynemtService } from '../services/paynemt.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanactiveGuard implements CanActivate {
-  constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog, private _sharingService: ObservableService, private enterpriseSrc: CompaniesService) { }
+  constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog,
+    private _sharingService: ObservableService, private enterpriseSrc: CompaniesService) { }
   canActivate(
     route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(state1.url);
-    this.enterpriseSrc.check_401().subscribe(t => console.log(t));
+    this.enterpriseSrc.check_401().subscribe(t => console.log(' '));
     let user = this.storage.getUserInfo();
     if (user != undefined) {
-      return true;
+      if (state1.url.indexOf('portal') > -1) {
+        if (!user.active) {
+          this.messSrc.warn('Bạn không có quyền hạn thực hiện chức năng này!');
+        }
+        return user.active;
+      } else
+        return true;
     }
     else {
       this.storage.removeTokenValue();

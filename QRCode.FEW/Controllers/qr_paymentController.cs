@@ -49,6 +49,19 @@ namespace QRCode.FEW.Controllers
             return check;
         }
         [HttpGet]
+        [Route("CheckpayUser/{userid}")]
+        public bool Checkpay(int userid)
+        {
+            bool check = false;
+            var list_pay = _Iqr_paymentService.GetAll();
+            if (list_pay != null && list_pay.Count() > 0)
+            {
+                var data = list_pay.ToList();
+                check = data.Any(t => t.userid == userid && t.payment_date != null && t.payment_date.Value <= DateTime.Now.Date && DateTime.Now.Date <= get_exptime(t.payment_date.Value));
+            }                
+            return check;
+        }
+        [HttpGet]
         [Route("GetListPay/{userid}")]
         public List<qr_payment> GetListbyUser(int userid)
         {
