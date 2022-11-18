@@ -42,3 +42,12 @@ export interface data_dialog_input {
     option: optioncs;
     status: boolean;
 }
+export interface userdata {
+    email: string;
+    sdt: string;
+    password: string;
+}
+export interface reset_obj {
+    userdata: userdata;
+    result: string;
+}

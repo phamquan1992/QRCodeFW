@@ -297,7 +297,7 @@
             </label>
             <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Nghề nghiệp"
-                (focusout)="focusFunction($event,'tel')"
+                (focusout)="focusFunction($event,'occupation')"
                 [ngClass]="{'border-red-600':!DataForm.controls['occupation'].valid && (DataForm.controls['occupation'].dirty || DataForm.controls['occupation'].touched) && DataForm.controls['occupation'].errors?.['required']}"
                 [formControlName]="'occupation'" name="occupation" value="" required>
             <div

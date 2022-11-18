@@ -21,7 +21,8 @@
                             <div class="ant-form-item-control has-success"><span class="ant-form-item-children">
                                     <input placeholder="Nhập email" type="email"
                                         class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                        style="width: 100%;" [formControlName]="'email'" name="email" required>
+                                        style="width: 100%;" [formControlName]="'email'" name="email" required
+                                        (focusout)="focusout_event($event,'email')">
                                     <div
                                         *ngIf="DataForm.controls['email'].invalid  && (DataForm.controls['email'].dirty || DataForm.controls['email'].touched)">
                                         <span *ngIf="DataForm.controls['email'].errors?.['required']"
@@ -41,9 +42,10 @@
                                 class="ant-form-item-required">Số điện thoại</label></div>
                         <div class="ant-col ant-form-item-control-wrapper">
                             <div class="ant-form-item-control has-success"><span class="ant-form-item-children">
-                                    <input placeholder="Nhập số điện thoại" type="text"
+                                    <input placeholder="Nhập số điện thoại" type="number"
                                         class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
-                                        style="width: 100%;" [formControlName]="'sdt'" required>
+                                        style="width: 100%;" [formControlName]="'sdt'" required
+                                        (focusout)="focusout_event($event,'sdt')">
                                     <div
                                         *ngIf="DataForm.controls['sdt'].invalid  && (DataForm.controls['sdt'].dirty || DataForm.controls['sdt'].touched)">
                                         <span *ngIf="DataForm.controls['sdt'].errors?.['required']"
@@ -105,7 +107,7 @@
                                     <div class="w-full flex justify-center">
                                         <button (click)="dang_ky()" type="button" class="btn-submit my-2 ant-btn ant-btn-primary
                                             w-full rounded-[6px] h-11  inline-block relative items-center 
-                                            whitespace-nowrap font-normal px-[15px] text-white" 
+                                            whitespace-nowrap font-normal px-[15px] text-white"
                                             [ngClass]="{'cursor-not-allowed bg-[#7addc6] border-[#7addc6]':DataForm.invalid,'cursor-pointer bg-[#00b289] border-[#00b289]':!DataForm.invalid}">
                                             <span>Đăng ký</span></button>
                                     </div>
@@ -116,7 +118,7 @@
                     </div>
                     <div class="note text-center">
                         Bạn đã có tài khoản?
-                        <a href="javascript:void(0)"
+                        <a (click)="dang_nhap()"
                             class="link text-[#00b289] underline underline-offset-2 cursor-pointer">Đăng nhập</a>
                     </div>
                 </form>

@@ -10,9 +10,9 @@
                 <div class="mb-6 ant-row ant-form-item" data-track-content="" data-content-name="phoneLogin"
                     data-content-region-name="generator_login" data-content-index="1">
                     <div class="ant-col ant-form-item-label"><label title="Số điện thoại"
-                            class="ant-form-item-required">Số điện thoại</label></div>
-                    <div class="ant-col ant-form-item-control-wrapper">
-                        <div class="ant-form-item-control has-success"><span class="ant-form-item-children">
+                            >Số điện thoại hoặc email</label></div>
+                    <div class="ant-col -wrapper">
+                        <div class=" has-success"><span class="ant-form-item-children">
                                 <input placeholder="Nhập số điện thoại" type="text" [(ngModel)]="user_name"
                                     class="ant-input box-border m-0 list-none relative inline-block w-full h-8 py-1 px-[11px] text-sm border border-solid border-[#d9d9d9] rounded-[4px] transition-all ease-in-out duration-300 hover:border-[#40a9ff] focus:border-[#40a9ff]">
                             </span>
@@ -22,10 +22,10 @@
                 </div>
                 <div class="mb-6 ant-row ant-form-item" data-track-content="" data-content-name="password"
                     data-content-region-name="generator_login" data-content-index="2">
-                    <div class="ant-col ant-form-item-label"><label title="Mật khẩu" class="ant-form-item-required">Mật
+                    <div class="ant-col ant-form-item-label"><label title="Mật khẩu" >Mật
                             khẩu</label></div>
-                    <div class="ant-col ant-form-item-control-wrapper">
-                        <div class="ant-form-item-control has-success">
+                    <div class="ant-col -wrapper">
+                        <div class=" has-success">
                             <span class="ant-form-item-children"><span
                                     class="ant-input-affix-wrapper ant-input-password relative">
                                     <input placeholder="Nhập mật khẩu" [type]="is_showpass?'text':'password'"
@@ -54,8 +54,8 @@
                     </div>
                 </div>
                 <div class="flex forgot-pass ant-row ant-form-item">
-                    <div class="ant-col ant-form-item-control-wrapper">
-                        <div class="ant-form-item-control">
+                    <div class="ant-col -wrapper">
+                        <div class="">
                             <span class="ant-form-item-children relative">
                                 <div class="flex justify-between">
                                     <label class="flex-grow remember ant-checkbox-wrapper
@@ -65,7 +65,7 @@
                                         <span class=" px-2">
                                             Nhớ tài khoản
                                         </span></label>
-                                    <a class="forgot-pass text-[#727e97] font-normal text-sm leading-[17px]">Quên mật
+                                    <a class="forgot-pass text-[#727e97] font-normal text-sm leading-[17px] cursor-pointer" (click)="showDialog_changepass()">Quên mật
                                         khẩu?</a>
                                 </div>
                             </span>

@@ -1,10 +1,12 @@
 import { E } from '@angular/cdk/keycodes';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MailRequest, mail_model, result_object } from 'src/app/models/optioncs';
 import { DataService } from 'src/app/services/data.service';
 import { MessageService } from 'src/app/services/message.service';
+import { ObservableService } from 'src/app/services/observable.service';
+import { LoginComponent } from '../login/login.component';
 export const passwordMatchingValidatior: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
   const confirmPassword = control.get('repassword');
@@ -19,7 +21,8 @@ export const passwordMatchingValidatior: ValidatorFn = (control: AbstractControl
 export class SigninComponent implements OnInit {
   DataForm!: FormGroup;
   url_str: string = '';
-  constructor(public dialogRef: MatDialogRef<SigninComponent>, private dataSrc: DataService, private mess: MessageService, @Inject('BASE_URL') baseUrl: string) {
+  constructor(public dialogRef: MatDialogRef<SigninComponent>, private dataSrc: DataService, private mess: MessageService, @Inject('BASE_URL') baseUrl: string,
+    private dialog: MatDialog, private _sharingService: ObservableService) {
     this.url_str = baseUrl;
   }
 
@@ -61,11 +64,31 @@ export class SigninComponent implements OnInit {
       if (kq.result == "Success") {
         this.mess.success('Bạn đã đăng ký thành công!');
         this.dialogRef.close();
-      } else {
+      } else if (kq.result == "AnyUser") {
+        this.mess.error('Đã tồn tại email hoặc số điện thoại trong hệ thống!');
+      }
+      else {
         this.mess.error('Có lỗi trong quá trình đăng ký!');
       }
 
     });
+  }
+  dang_nhap() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.maxWidth = "95%";
+    dialogConfig.panelClass = ['md:w-[900px]', 'md:h-[585px]', 'w-full', 'h-[95%]', 'magrin_pane'];
+    dialogConfig.disableClose = true;
+    this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
+      res => {
+        this._sharingService.getUserInfo();
+      }
+    );
+    this.onClose();
+  }
+  focusout_event(event: any, name: string) {
+    let sdt_xacnhan = this.DataForm.controls[name].setValue(event.target.value.trim());
   }
 }
 

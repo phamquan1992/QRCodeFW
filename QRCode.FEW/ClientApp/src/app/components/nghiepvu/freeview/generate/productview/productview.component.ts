@@ -59,10 +59,10 @@ export class ProductviewComponent implements OnInit {
   qrproductid = '';
   code_tmp = '';
   str_url = '';
- 
+
   constructor(private dialog: MatDialog, private datepipe: DatePipe, private productSrc: ProductsService, private paymentSrc: PaynemtService,
     private sharingSrc: ObservableService, private gencodeSrc: GencodeService, private mesSrc: MessageService, @Inject('BASE_URL') baseUrl: string,
-    private commonSrc:CommonService) {
+    private commonSrc: CommonService) {
     this.str_url = baseUrl;
   }
 
@@ -71,7 +71,7 @@ export class ProductviewComponent implements OnInit {
     this.sharingSrc.getUserInfo().subscribe(user => {
       this.arr_payment = this.paymentSrc.get_payment_list(user.id as unknown as number);
       this.filter_payment = this.arr_payment;
-      this.arr_product_core = this.productSrc.get_product_list().pipe(map(m => m.filter(t => t.status)));
+      this.arr_product_core = this.productSrc.get_product_list().pipe(map(m => m.filter(t => t.status && t.created_by === Number(user.id))));
       this.filter_product = this.arr_product_core;
     });
   }

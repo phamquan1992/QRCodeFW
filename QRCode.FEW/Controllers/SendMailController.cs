@@ -29,6 +29,17 @@ namespace QRCode.FEW.Controllers
         {
             try
             {
+                var listuser = _IuserdataService.GetAll().ToList();
+                bool checkuser = listuser.Any(t => t.email.ToUpper() == request.ToEmail.ToUpper() || t.sdt.ToUpper() == request.sdt.ToUpper());
+                if (checkuser)
+                {
+                    var resul_objet = new
+                    {
+                        result = "AnyUser"
+                    };
+                    return Ok(resul_objet);
+                }
+
                 await mailService.SendEmailAsync(request);
                 userdata user = new userdata();
                 user.created_date = DateTime.Now;
@@ -37,7 +48,7 @@ namespace QRCode.FEW.Controllers
                 user.sdt = request.sdt;
                 user.status = false;
                 bool kq = _IuserdataService.CreateNew(user);
-               
+
                 if (kq)
                 {
                     var resul_objet = new
@@ -135,6 +146,100 @@ namespace QRCode.FEW.Controllers
                 return base.Content(html, "text/html", Encoding.UTF8);
             }
 
+        }
+        [HttpPut]
+        [Route("ResetPass")]
+        public async Task<IActionResult> ResetPass([FromBody] MailRequest request)
+        {
+            try
+            {
+                var listuser = _IuserdataService.GetAll().ToList();
+                bool checkuser = listuser.Any(t => t.email.ToUpper() == request.ToEmail.ToUpper());
+                if (!checkuser)
+                {
+                    var resul_objet = new
+                    {
+                        result = "NotUser"
+                    };
+                    return Ok(resul_objet);
+                }
+                var obj_data1 = listuser.FirstOrDefault(t => t.email == request.ToEmail);
+                obj_data1.password = RandomString(6);
+                request.Body = "<div><h2>Bạn đã thay đổi mật khẩu tài khoản tại trang web của chúng tôi</h2></div>" +
+        "<div>Mật khẩu tạm thời là: " + obj_data1.password + "</div>" +
+        "<div>Vui lòng vào link dưới để xác nhận đăng ký</div><div><a href='" + request.sdt + "'>Bấm vào đây thay đổi mật khẩu mới</a><div>";
+                await mailService.SendEmailAsync(request);
+                bool kq = _IuserdataService.Update(obj_data1);
+                if (kq)
+                {
+                    var resul_objet = new
+                    {
+                        result = "Success"
+                    };
+                    return Ok(resul_objet);
+                }
+                else
+                {
+                    var resul_objet = new
+                    {
+                        result = "Error"
+                    };
+                    await Task.FromResult(_IuserdataService.GetAll().FirstOrDefault());
+                    return Ok(resul_objet);
+                }
+            }
+            catch (Exception ex)
+            {
+                var resul_objet = new
+                {
+                    result = "Error"
+                };
+                return Ok(resul_objet);
+            }
+
+        }
+        [HttpPut]
+        [Route("ChangePass")]
+        public async Task<IActionResult> Changepass([FromBody] user_reset model)
+        {            
+            var listuser = await Task.FromResult(_IuserdataService.GetAll().ToList());
+            var obj_data1 = listuser.FirstOrDefault(t => t.email == model.email && t.password == model.password_old);
+            if (obj_data1 == null)
+            {
+                var resul_objet1 = new
+                {
+                    result = "NullUser"
+                };
+                return Ok(resul_objet1);
+            }
+            else
+            {
+                obj_data1.password = model.password;
+                var kq = _IuserdataService.Update(obj_data1);
+                if (!kq)
+                {
+                    var resul_objet2 = new
+                    {
+                        result = "UpdateError"
+                    };
+                    return Ok(resul_objet2);
+                }
+                else
+                {
+                    var resul_objet3 = new
+                    {
+                        result = "Success"
+                    };
+                    return Ok(resul_objet3);
+                }
+            }
+        }
+        private string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

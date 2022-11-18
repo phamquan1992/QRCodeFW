@@ -20,11 +20,14 @@ namespace QRCode.FEW.Controllers
         private readonly Iqr_paymentService _Iqr_paymentService;
         private readonly IuserdataService _IuserdataService;
         private readonly Iqr_enterpriseService _Iqr_enterpriseService;
-        public qr_paymentController(Iqr_paymentService qr_paymentService, IuserdataService userdataService, Iqr_enterpriseService qr_enterpriseService)
+        private readonly IMailService mailService;
+        public qr_paymentController(Iqr_paymentService qr_paymentService, IuserdataService userdataService, Iqr_enterpriseService qr_enterpriseService,
+            IMailService _mailService)
         {
             _Iqr_paymentService = qr_paymentService;
             _IuserdataService = userdataService;
             _Iqr_enterpriseService = qr_enterpriseService;
+            mailService = _mailService;
         }
         [HttpGet]
         [Route("Getpack")]
@@ -58,7 +61,7 @@ namespace QRCode.FEW.Controllers
             {
                 var data = list_pay.ToList();
                 check = data.Any(t => t.userid == userid && t.payment_date != null && t.payment_date.Value <= DateTime.Now.Date && DateTime.Now.Date <= get_exptime(t.payment_date.Value));
-            }                
+            }
             return check;
         }
         [HttpGet]
@@ -116,6 +119,6 @@ namespace QRCode.FEW.Controllers
             {
                 return false;
             }
-        }
+        }        
     }
 }

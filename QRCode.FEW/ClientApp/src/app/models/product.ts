@@ -23,6 +23,8 @@ export interface product {
     lastcreated_by: number;
     additional: string;
     status: boolean;
+    created_by:number;
+    created_date:Date;
 }
 export interface productview {
     qrproductid: number;
@@ -48,4 +50,9 @@ export interface productview {
     additional: string;
     enterpriseid: number;
     list_ref: productview[];
+}
+export interface user_reset{
+    email:string;
+    password_old:string;
+    password:string;
 }

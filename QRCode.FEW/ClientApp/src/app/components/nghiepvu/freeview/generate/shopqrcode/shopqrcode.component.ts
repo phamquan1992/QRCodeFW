@@ -157,4 +157,21 @@ export class ShopqrcodeComponent implements OnInit {
     let gt_tem = gt.value.trim();
     gt.value = gt_tem;
   }
+  focusEmail(gt: any) {
+    let gt_tem = gt.value.trim();
+    gt.value = gt_tem;
+
+  }
+  get_isval(email: string) {
+    if (email == '') {
+      return true
+    } else {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
+  }
+
 }

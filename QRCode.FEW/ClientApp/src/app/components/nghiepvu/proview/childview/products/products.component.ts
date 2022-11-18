@@ -40,7 +40,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
     this.productSrc.get_product_list().pipe().subscribe(t => {
-      this.data_pr = t as product[];
+      this.data_pr = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
       this.dataSource.filterPredicate = this.createFilter();
       this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
@@ -83,7 +83,7 @@ export class ProductsComponent implements OnInit {
         }
       }
 
-      let nameSearch = () => {   
+      let nameSearch = () => {
         if (isFilterSet) {
           let arr: boolean[] = [];
           let found = false;
@@ -105,7 +105,7 @@ export class ProductsComponent implements OnInit {
             arr.push(found);
           }
           let count_array = arr.findIndex(t => t == false);
-          arr=[];
+          arr = [];
           return count_array == -1 ? true : false;
         } else {
           return true;
@@ -169,7 +169,7 @@ export class ProductsComponent implements OnInit {
   get_data() {
     this.dataSource = new MatTableDataSource<product>(data_product);
     this.productSrc.get_product_list().pipe().subscribe(t => {
-      this.data_pr = t as product[];
+      this.data_pr = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
       this.dataSource.filterPredicate = this.createFilter();
     });

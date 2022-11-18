@@ -12,10 +12,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ToastrModule } from 'ngx-toastr';
 import { CLIInterceptor } from './interceptor/httpInterceptor';
+import { ResetmailComponent } from './components/share/resetmail/resetmail.component';
 
 @NgModule({
   declarations: [
-    AppComponent,    
+    AppComponent,
+    ResetmailComponent,    
   ],
   imports: [
     BrowserModule,
