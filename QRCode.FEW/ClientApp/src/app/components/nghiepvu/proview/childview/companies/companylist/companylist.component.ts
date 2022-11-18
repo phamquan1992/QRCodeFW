@@ -57,16 +57,16 @@ export class CompanylistComponent implements OnInit {
     private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
 
   ngOnInit(): void {
-    this.get_data();
     this.sharingSrc.getUserInfo().subscribe(t => {
       this.user_info = t;
     });
+    this.get_data();
   }
   get_data() {
     this.dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
     this.congtySrc.get_location('00').subscribe(t => this.arr_tinh = t);
     this.congtySrc.get_list_cty().subscribe(t => {
-      this.data_company = t;
+      this.data_company = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
       this.dataSource.filterPredicate = this.createFilter();
     });

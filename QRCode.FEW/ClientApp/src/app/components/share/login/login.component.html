@@ -14,6 +14,7 @@
                     <div class="ant-col -wrapper">
                         <div class=" has-success"><span class="ant-form-item-children">
                                 <input placeholder="Nhập số điện thoại" type="text" [(ngModel)]="user_name"
+                                (focusout)="user_name=user_name.trim()"
                                     class="ant-input box-border m-0 list-none relative inline-block w-full h-8 py-1 px-[11px] text-sm border border-solid border-[#d9d9d9] rounded-[4px] transition-all ease-in-out duration-300 hover:border-[#40a9ff] focus:border-[#40a9ff]">
                             </span>
                             <!---->

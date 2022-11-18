@@ -39,11 +39,12 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
+    this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
     this.productSrc.get_product_list().pipe().subscribe(t => {
       this.data_pr = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
       this.dataSource.filterPredicate = this.createFilter();
-      this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
+    
     });
   }
   reload_grid() {

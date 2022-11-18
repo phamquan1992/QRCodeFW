@@ -8,18 +8,23 @@
 </div>
 <div class="ant-col -wrapper">
     <div class=" has-success"><span class="ant-form-item-children">
-            <input placeholder="Nhập email thay đổi mật khẩu" type="text" [(ngModel)]="user_name"
-                (focusout)="user_name=user_name.trim()"
+            <input placeholder="Nhập email thay đổi mật khẩu" type="text" [(ngModel)]="user_name" #name="ngModel"
+                required [email]="true" (focusout)="user_name=user_name.trim()"
                 class="ant-input box-border m-0 list-none relative inline-block w-full h-8 py-1 px-[11px] text-sm border border-solid border-[#d9d9d9] rounded-[4px] transition-all ease-in-out duration-300 hover:border-[#40a9ff] focus:border-[#40a9ff]">
         </span>
     </div>
-    <div *ngIf="!required">
-        <span class="text-red-600 text-xs italic">Sai định dạng email!</span>
+    <div *ngIf="name.invalid && (name.dirty || name.touched)">
+        <div *ngIf="name.errors?.['required']">
+            <span class="text-red-600 text-xs italic">Email không được để trống!</span>
+        </div>
+        <div *ngIf="name.errors?.['email']">
+            <span class="text-red-600 text-xs italic">Sai định dạng email!</span>
+        </div>
     </div>
     <div class="mt-4">
         <button type="button" class="w-full rounded-[6px] h-11 inline-block relative items-center whitespace-nowrap font-normal px-[15px]
-        cursor-pointer text-white" (click)="reset_pass()" [attr.disabled]="!required ? '' : null"
-            [ngClass]="{'cursor-not-allowed bg-[#4a7dc9] border-[#4a7dc9]':!required,'cursor-pointer bg-[#124b9f] border-[#124b9f]':required}"><span>Xác
+        cursor-pointer text-white" (click)="reset_pass()" [attr.disabled]="name.invalid ? '' : null"
+            [ngClass]="{'cursor-not-allowed bg-[#4a7dc9] border-[#4a7dc9]':name.invalid,'cursor-pointer bg-[#124b9f] border-[#124b9f]':!name.invalid}"><span>Xác
                 nhận</span>
         </button>
     </div>
