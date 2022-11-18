@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QRCode.Core.Domain;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -68,5 +69,17 @@ namespace QRCode.Core.Domain2
         public int qrpaymentid { get; set; }
         public int status { get; set; }
         public int userid { get; set; }
+    }
+    public class reset_obj
+    {
+        public user_reset userdata { get; set; }
+        public string result { get; set; }
+    }
+
+    public class user_reset
+    {
+        public string email { get; set; }
+        public string password_old { get; set; }
+        public string password { get; set; }
     }
 }
