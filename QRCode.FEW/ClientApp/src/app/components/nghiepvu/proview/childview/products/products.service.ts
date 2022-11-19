@@ -32,7 +32,6 @@ export class ProductsService {
     return this.dataSrv.delete('product/delete', id);
   }
   get_product(id: string | number) {
-    console.log(id);
     let pro_obj: Observable<product> = this.dataSrv.get('product/object/' + id) as Observable<product>;
     return pro_obj;
   }

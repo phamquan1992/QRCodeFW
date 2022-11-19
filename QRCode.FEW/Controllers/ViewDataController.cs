@@ -6,7 +6,9 @@ using QRCode.Services.ISerivce;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using UAParser;
 
 namespace QRCode.FEW.Controllers
 {
@@ -17,11 +19,37 @@ namespace QRCode.FEW.Controllers
         private readonly IproductService _IproductService;
         private readonly Iqr_enterpriseService _Iqr_enterpriseService;
         private readonly Iqr_gencodeService _Iqr_gencodeService;
-        public ViewDataController(IproductService productService, Iqr_enterpriseService qr_enterpriseService, Iqr_gencodeService qr_gencodeService)
+        private readonly Iqr_his_scanService _Iqr_his_scanService;
+        public ViewDataController(IproductService productService, Iqr_enterpriseService qr_enterpriseService, Iqr_gencodeService qr_gencodeService, Iqr_his_scanService qr_his_scanService)
         {
             _IproductService = productService;
             _Iqr_enterpriseService = qr_enterpriseService;
             _Iqr_gencodeService = qr_gencodeService;
+            _Iqr_his_scanService = qr_his_scanService;
+        }
+        private void InsertHisScan(string type, int dataid)
+        {
+            string userAgent = Request.Headers["User-Agent"].ToString();
+            var uaParser = Parser.GetDefault();
+            ClientInfo info = uaParser.Parse(userAgent);
+            var clientIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            if (clientIpAddress == "::1")
+            {
+                var gt = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+                clientIpAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList[2].ToString();
+            }
+
+            qr_his_scan scan_obj = new qr_his_scan();
+            scan_obj.typecode = type;
+            scan_obj.dataid = dataid;
+            scan_obj.application = info.UA.Family;
+            scan_obj.ip = clientIpAddress;
+            scan_obj.location = "";
+            scan_obj.osystem = info.OS.Family;
+            scan_obj.province = "";
+            scan_obj.tel = "";
+            scan_obj.time_scan = DateTime.Now;
+            _Iqr_his_scanService.CreateNew(scan_obj);
         }
         [HttpGet]
         [Route("product/{id}/{id2}")]
@@ -58,6 +86,7 @@ namespace QRCode.FEW.Controllers
                 product_view.url_img = product_it.url_img;
                 product_view.enterpriseid = product_it.enterpriseid;
                 product_view.list_ref = GetListProduct(product_it.enterpriseid, product_it.qrproductid);
+                InsertHisScan("product", (int)product_it.qrproductid);
             }
             return product_view;
         }
@@ -100,6 +129,7 @@ namespace QRCode.FEW.Controllers
                     obj_temp.qrenterpriseid = temp_data.qrenterpriseid;
                     obj_temp.tel = temp_data.tel;
                     obj_temp.list_ref = GetListProduct_byenterprise(gencode_obj.dataid);
+                    InsertHisScan("product", Convert.ToInt32(id));
                 }
             }
             return obj_temp;

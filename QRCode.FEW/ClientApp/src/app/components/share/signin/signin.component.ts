@@ -44,7 +44,6 @@ export class SigninComponent implements OnInit {
     if (this.DataForm.invalid) {
       return;
     }
-    console.log(this.DataForm.value);
     let mail_xacnhan = this.DataForm.controls['email'].value;
     let sdt_xacnhan = this.DataForm.controls['sdt'].value;
     let pass_xacnhan = this.DataForm.controls['password'].value;

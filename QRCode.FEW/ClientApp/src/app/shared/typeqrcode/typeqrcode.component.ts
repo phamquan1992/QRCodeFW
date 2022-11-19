@@ -289,10 +289,8 @@ export class TypeqrcodeComponent implements OnInit, OnChanges {
   }
   getFiles(event: any) {
     var newFileList = Array.from(event.target.files);
-    //console.log(newFileList);
     if (event.target.files.length > 0) {
       let file_temp: File = event.target.files[0];
-      console.log(file_temp.type);
       if (file_temp.type.indexOf('image') == -1) {
         this.messSrc.error('File không phải định dạng ảnh');
         return;

@@ -27,7 +27,7 @@ export class ProductinfoComponent implements OnInit {
   constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    debugger;
+   
     let id = this.route.snapshot.paramMap.get('id');
     let id2 = this.route.snapshot.paramMap.get('id2');
     let value_id = id == null ? '0' : id.toString();

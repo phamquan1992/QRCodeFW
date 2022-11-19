@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { catchError, map, Subject, tap } from 'rxjs';
+import { catchError, map, shareReplay, Subject, tap } from 'rxjs';
 import { ObservableService } from './observable.service';
 import { MessageService } from './message.service';
 
@@ -11,7 +11,7 @@ export class DataService {
   url_str!: string;
   private headers = new HttpHeaders();
   private token = '';
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sharingService: ObservableService,private mess: MessageService) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private sharingService: ObservableService, private mess: MessageService) {
     this.url_str = baseUrl + 'api/';
     this.sharingService.getTokenValue().subscribe(t => { this.token = `Bearer ${t}`; });
   }
@@ -28,13 +28,19 @@ export class DataService {
   get(uri: string) {
     this.getHearder();
     const link = this.url_str + uri;
-    return this.http.get(link, { headers: this.headers }).pipe(catchError(error => {
-      this.mess.handError(error);      
-      return error;
-    }));
+    return this.http.get(link, { headers: this.headers }).pipe(
+      map(
+        response => {
+          return response;
+        }),
+      shareReplay(),
+      catchError(error => {
+        this.mess.handError(error);
+        return error;
+      }));
   }
   post(uri: string, data?: any) {
-    debugger;
+
     this.getHearder();
     return this.http.post(this.url_str + uri, data, { headers: this.headers }).pipe(
       map(
@@ -46,14 +52,14 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        this.mess.handError(error);        
+        this.mess.handError(error);
         return error;
       })
     );
   }
   put(uri: string, data?: any) {
     this.getHearder();
-    debugger;
+
     return this.http.put(this.url_str + uri, data, { headers: this.headers }).pipe(
       map(
         response => {
@@ -64,7 +70,7 @@ export class DataService {
         this.Refeshrequired.next();
       }),
       catchError(error => {
-        this.mess.handError(error);        
+        this.mess.handError(error);
         return error;
       })
     );

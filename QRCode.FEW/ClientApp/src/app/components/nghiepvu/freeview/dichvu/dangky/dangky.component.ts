@@ -39,12 +39,10 @@ export class DangkyComponent implements OnInit {
       lastcreated_by: 0
     };
     this._sharingService.getUserInfo().subscribe(user => {
-      debugger;
       pay.userid = Number(user.id);
       pay.created_by = Number(user.id);
       pay.packcode = this.data.pack_code;
       pay.packname = this.data.pack_name;
-      console.log(JSON.stringify(pay));
       this.paymentSrc.add_payment(pay).subscribe(
         check => {
           if (check) {

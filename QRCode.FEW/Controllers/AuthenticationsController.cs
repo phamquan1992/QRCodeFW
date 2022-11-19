@@ -6,6 +6,7 @@ using QRCode.Core.Domain2;
 using QRCode.Services.ISerivce;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
@@ -87,6 +88,7 @@ namespace QRCode.FEW.Controllers
         }
         public string GetIPAddress(string userAgent)
         {
+            var ip = HttpContext.Connection.RemoteIpAddress.ToString();
             string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
             return IPAddress.Parse(externalIpString).ToString();
         }

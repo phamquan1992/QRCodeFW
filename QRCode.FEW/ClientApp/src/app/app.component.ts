@@ -28,9 +28,6 @@ export class AppComponent implements OnInit {
   drawer_click() {
     this.shownav = !this.shownav;
   }
-  onRouterLinkActive(event: any) {
-    console.log(event);
-  }
   dang_nhap() {
     //this.is_login = false;
     if (this.is_login === false)
@@ -52,7 +49,6 @@ export class AppComponent implements OnInit {
     if (status === 'login') {
       this.dialog.open(LoginComponent, dialogConfig).afterClosed().subscribe(
         res => {
-          console.log('aaaaa');
           this.is_login = true;
         }
       );

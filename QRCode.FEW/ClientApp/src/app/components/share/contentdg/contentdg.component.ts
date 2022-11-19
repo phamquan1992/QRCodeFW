@@ -33,7 +33,6 @@ export class ContentdgComponent implements OnInit {
     shape: 'square'
   };
   ngOnInit(): void {
-    console.log(this.data.status);
     this.status = '';
     this.op_tion = this.data.option;
     this.op_tion_temp = {

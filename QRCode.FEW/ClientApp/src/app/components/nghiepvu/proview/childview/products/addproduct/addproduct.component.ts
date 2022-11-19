@@ -94,7 +94,6 @@ export class AddproductComponent implements OnInit {
             this.data.forEach(element => {
                 element.value_ip = this.DataForm.controls[element.name].value;
                 if (element.name.indexOf('dynamic_') == -1) {
-                    console.log(element.value_ip);
                     myObj[element.name] = element.value_ip != null ? element.value_ip.toString().trim() : element.value_ip;
                 }
                 else {
@@ -125,7 +124,6 @@ export class AddproductComponent implements OnInit {
                     && element != 'status' && element != 'additional')
                     myObj[element] = null;
             });
-            // console.log(JSON.stringify(myObj));
             if (this.value_id != '0') {
                 myObj['created_by'] = this.user_info.id;
                 this.productSrc.update_product(myObj).subscribe(t => {

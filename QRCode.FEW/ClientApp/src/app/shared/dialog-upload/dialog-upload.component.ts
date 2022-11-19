@@ -23,10 +23,6 @@ export class DialogUploadComponent implements OnInit {
   }
   str_src = '';
   load_src_file(gt: any) {
-    // setTimeout(() => {
-    //   console.log(gt);
-    //   this.bt_click(gt);
-    // }, 3000);
     this.bt_click(gt);
   }
   bt_click(gt: any) {

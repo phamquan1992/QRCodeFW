@@ -212,7 +212,6 @@ export class AddcompanyComponent implements OnInit {
     });
   }
   select_it(evnt: any) {
-    console.log(evnt.option.value);
     let gt = evnt.option.value.code;
     this.DataForm.controls['province'].setValue(gt);
     this.set_gt(gt);
@@ -295,7 +294,6 @@ export class AddcompanyComponent implements OnInit {
   }
   select_it_sectors(evnt: any) {
     let gt = evnt.option.value.code;
-    console.log(gt);
     this.DataForm.controls['sectors_code'].setValue(gt);
   }
   focusFunction(event: any, ten: string) {
@@ -338,13 +336,10 @@ export class AddcompanyComponent implements OnInit {
         myObj['created_date'] = time_now;
       }
     });
-
-    console.log(arr_dynamic);
     if (Object.keys(arr_dynamic).length != 0) {
       myObj['additional'] = JSON.stringify(arr_dynamic);
     }
-    myObj['nation'] = 'Việt Nam'
-    console.log(myObj);
+    myObj['nation'] = 'Việt Nam';
     if (this.value_id != '0')
       this.companySrc.update_company(myObj).subscribe(t => {
         if (t) {

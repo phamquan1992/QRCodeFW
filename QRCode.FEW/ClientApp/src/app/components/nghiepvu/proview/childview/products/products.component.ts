@@ -53,7 +53,6 @@ export class ProductsComponent implements OnInit {
     this.filterProduct['status'] = '';
     this.name_filter = '';
     this.value_select = 'all';
-    console.log(JSON.stringify(this.filterProduct));
     this.dataSource.filter = JSON.stringify(this.filterProduct);
     this.selection.clear();
   }
@@ -127,7 +126,6 @@ export class ProductsComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
   createQR() {
-    console.log(this.selection.selected);
   }
   Import_sp() {
     this.showDialog('');

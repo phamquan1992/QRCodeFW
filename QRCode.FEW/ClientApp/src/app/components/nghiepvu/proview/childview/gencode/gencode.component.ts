@@ -235,15 +235,12 @@ export class GencodeComponent implements OnInit {
     this.range_active.controls['end_exp'].setValue('');
   }
   setval_loaiQR(gt: any) {
-    console.log(gt);
     this.loaiQR_filter = gt;
   }
   setval_packname(gt: any) {
-    console.log(gt);
     this.pack_name_filter = gt;
   }
   input1_change(event: any) {
-    //console.log(event);
   }
   createFilter() {
     let filterFunction = function (data: any, filter: string): boolean {
@@ -334,7 +331,6 @@ export class GencodeComponent implements OnInit {
     });
   }
   checkinput_date(gt: any) {
-    console.log(gt.value);
     let isValid = moment(gt.value, 'DD/MM/YYYY', true).isValid()
     if (!isValid) {
       gt.value = null;

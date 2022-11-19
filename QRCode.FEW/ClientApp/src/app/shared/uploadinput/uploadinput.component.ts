@@ -32,7 +32,6 @@ export class UploadinputComponent implements OnInit {
   }
   handleFileInput(gt: any) {
     this.fileToUpload = gt.files.item(0);
-    console.log(this.fileToUpload);
     this.uploadFile(this.fileToUpload);
   }
   str_img: any;

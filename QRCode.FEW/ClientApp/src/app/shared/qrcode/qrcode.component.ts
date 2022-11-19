@@ -53,7 +53,6 @@ export class QrcodeComponent implements OnInit, OnChanges {
         "errorCorrectionLevel": "H"
       },
     };
-    // console.log(JSON.stringify(this.config));
   }
   qrcode!: NgxQrcodeStylingComponent;
   public config: Options = {
@@ -82,8 +81,6 @@ export class QrcodeComponent implements OnInit, OnChanges {
   }
   onDownload(): void {
     this.qrcode.download(this._is_download + '.png').subscribe((res) => {
-      // TO DO something!
-      console.log('download:', res);
       this._is_download = '';
     });
   }
@@ -200,7 +197,6 @@ export class QrcodeComponent implements OnInit, OnChanges {
     // ctx?.fillRect(10, 10, 10, 10);
     //ctx?.fillRect(30, 10, 10, 10);
     const data = tmp.toDataURL();
-    console.log(data);
     return data;
   }
 }

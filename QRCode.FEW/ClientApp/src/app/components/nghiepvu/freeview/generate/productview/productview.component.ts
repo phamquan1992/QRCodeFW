@@ -258,7 +258,6 @@ export class ProductviewComponent implements OnInit {
       background_color: item.background_color,
       shape: item.shape
     };
-    console.log(item);
   }
   openOrClosePanel(evt: any, trigger: MatAutocompleteTrigger): void {
     evt.stopPropagation();
@@ -306,7 +305,6 @@ export class ProductviewComponent implements OnInit {
     });
   }
   add(event: MatChipInputEvent): void {
-    console.log(event);
     const value = (event.value || {}) as product;
     // Add our fruit
     if (value) {
@@ -328,7 +326,6 @@ export class ProductviewComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    console.log(event);
     let object_select = event.option.value as product;
     let idex_product = this.arr_chip_product.findIndex(t => t == object_select);
     if (idex_product == -1)

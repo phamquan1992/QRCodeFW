@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             }
         );
     }
-    async dang_nhap() {
+    dang_nhap() {
         this.dataSrv.get('Authentications/Login?user=' + this.user_name + '&&pass=' + this.pass_word).subscribe(
             t => {
                 let nd = t as nguoidung;

@@ -21,7 +21,6 @@ export class CauhoiComponent implements OnInit {
   iscols = false;
   @Input() form!: FormGroup;
   ngOnInit(): void {
-    console.log(JSON.stringify(this.cauhoi_in));
     this.iscols=true;
   }
   them_cautl() {

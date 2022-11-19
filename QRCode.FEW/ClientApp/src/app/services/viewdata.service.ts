@@ -12,7 +12,8 @@ export class ViewdataService {
 
   constructor(private dataSrv: DataService) { }
   get_view_product(id: string | number, id2: string | number) {
-    let pro_obj: Observable<productview> = this.dataSrv.get('ViewData/product/' + id + '/' + id2) as Observable<productview>;
+    var result=this.dataSrv.get('ViewData/product/' + id + '/' + id2);
+    let pro_obj: Observable<productview> =  result as Observable<productview>;
     return pro_obj;
   }
   get_view_enterprise(id: string | number) {

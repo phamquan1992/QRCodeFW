@@ -36,6 +36,7 @@ export class FreeviewComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.innerWidth = window.innerWidth;
+    
   }
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -43,9 +44,6 @@ export class FreeviewComponent implements OnInit, OnDestroy {
   }
   drawer_click() {
     this.shownav = !this.shownav;
-  }
-  onRouterLinkActive(event: any) {
-    console.log(event);
   }
   dang_nhap() {
     this.showDialog('login');

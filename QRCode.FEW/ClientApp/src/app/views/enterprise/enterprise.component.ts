@@ -42,7 +42,6 @@ export class EnterpriseComponent implements OnInit {
         const myObj = JSON.parse(t.additional);
         let arr_key = Object.keys(myObj);
         arr_key.forEach(element => {
-          console.log(element + ' - ' + myObj[element]);
           let it_m: view_link_web = {
             link: '',
             url_img: '',

@@ -53,7 +53,6 @@ export class ThongtinkhacComponent implements OnInit {
     return selectedoption ? selectedoption.value : undefined;
   }
   select_it(evnt: any) {
-    console.log(evnt.option.value);
     let gt = evnt.option.value;
     this.select_value.emit(gt);
   }

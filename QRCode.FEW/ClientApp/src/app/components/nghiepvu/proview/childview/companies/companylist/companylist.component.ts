@@ -149,7 +149,6 @@ export class CompanylistComponent implements OnInit {
     // this.filtercty['tel'] = '';
     // this.filtercty['taxcode'] = '';
     this.filtercty['province'] = this.value_select == 'all' ? '' : this.value_select;
-    console.log(JSON.stringify(this.filtercty));
     this.dataSource.filter = JSON.stringify(this.filtercty);
   }
   reload_grid() {
