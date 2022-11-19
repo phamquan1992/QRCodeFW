@@ -5,6 +5,7 @@ using QRCode.Core.Domain2;
 using QRCode.Services.ISerivce;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -156,6 +157,21 @@ namespace QRCode.FEW.Controllers
         private List<qr_enterprise> GetCongty()
         {
             return _Iqr_enterpriseService.GetAll().ToList();
+        }
+        private string GetLocation(string ip)
+        {
+            var res = "";
+            WebRequest request = WebRequest.Create("http://ipinfo.io/" + ip);
+            using (WebResponse response = request.GetResponse())
+            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+            {
+                string line;
+                while ((line = stream.ReadLine()) != null)
+                {
+                    res += line;
+                }
+            }
+            return res;
         }
     }
 }
