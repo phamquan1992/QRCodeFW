@@ -13,6 +13,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { ToastrModule } from 'ngx-toastr';
 import { CLIInterceptor } from './interceptor/httpInterceptor';
 import { ResetmailComponent } from './components/share/resetmail/resetmail.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ResetmailComponent } from './components/share/resetmail/resetmail.compo
     FormsModule,
     HttpClientModule,
     AngularEditorModule,
+    SharedModule,
     ToastrModule.forRoot()
   ],
   providers: [DatePipe],

@@ -86,8 +86,7 @@
                     Ngày cập nhật</th>
                 <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    {{element.lastcreated_date==null?(element.created_date|date: 'dd/MM/yyyy
-                    hh:mm:ss'):(element.lastcreated_date|date: 'dd/MM/yyyy hh:mm:ss')}} </td>
+                    {{element.lastcreated_date==null?(element.created_date|date: 'dd/MM/yyyy hh:mm:ss'):(element.lastcreated_date|date: 'dd/MM/yyyy hh:mm:ss')}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action">

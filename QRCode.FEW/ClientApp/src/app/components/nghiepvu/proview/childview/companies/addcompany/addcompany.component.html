@@ -15,14 +15,14 @@
                 </span>
             </label>
             <div class="flex flex-row">
-                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
-                    (click)="showDialog('daidien')" style="width: 100px; height: 100px;">
+                <button class="flex flex-wrap relative ant-btn-default" type="button" (click)="showDialog('daidien')"
+                    style="width: 100px; height: 100px;">
                     <img src="./assets/images/img_add.png" alt="">
                 </button>
-                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1 border rounded-[7px]"
+                <div class="flex flex-wrap justify-center relative ant-btn-default ml-1 border rounded-[7px]"
                     [ngClass]="{'border-solid border-[#d9d9d9]':src_daidien!='',' border-solid border-red-600':src_daidien=='' || src_daidien==null}"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_daidien}}" alt="" style="object-fit: contain;">
+                    <img src="{{src_daidien}}" alt="" style="object-fit: contain; max-width: 100%;max-height: 100%;">
                     <input type="hidden" [formControlName]="'logo'" name="logo" value="">
                 </div>
             </div>
@@ -34,13 +34,14 @@
         <div class="flex flex-col relative my-2">
             <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh bìa</label>
             <div class="flex flex-row">
-                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
-                    (click)="showDialog('bia')" style="width: 100px; height: 100px;">
+                <button class="flex flex-wrap relative ant-btn-default" type="button" (click)="showDialog('bia')"
+                    style="width: 100px; height: 100px;">
                     <img src="./assets/images/img_add.png" alt="">
                 </button>
-                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                <div class="flex flex-wrap justify-center relative ant-btn-default ml-1 border rounded-[7px]"
+                    [ngClass]="{'border-solid border-[#d9d9d9]':src_bia!='',' border-none':src_bia=='' || src_bia==null}"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_bia}}" alt="" style="object-fit: contain;">
+                    <img src="{{src_bia}}" alt="" style="object-fit: contain; max-width: 100%;max-height: 100%;">
                     <input type="hidden" [formControlName]="'url_background'" name="url_background" value="">
                 </div>
             </div>
@@ -49,13 +50,14 @@
             <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Ảnh doanh nghiệp, cá
                 nhân</label>
             <div class="flex flex-row">
-                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
-                    (click)="showDialog('thuvienanh')" style="width: 100px; height: 100px;">
+                <button class="flex flex-wrap relative ant-btn-default" type="button" (click)="showDialog('thuvienanh')"
+                    style="width: 100px; height: 100px;">
                     <img src="./assets/images/img_add.png" alt="">
                 </button>
-                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                <div class="flex flex-wrap justify-center relative ant-btn-default ml-1 border rounded-[7px]"
+                    [ngClass]="{'border-solid border-[#d9d9d9]':src_image_any!='',' border-none':src_image_any=='' || src_image_any==null}"
                     style="width: 100px; height: 100px;">
-                    <img src="{{src_image_any}}" alt="" style="object-fit: contain;">
+                    <img src="{{src_image_any}}" alt="" style="object-fit: contain; max-width: 100%;max-height: 100%;">
                     <input type="hidden" [formControlName]="'url_img'" name="url_img" value="">
                 </div>
             </div>
@@ -63,11 +65,12 @@
         <div class="flex flex-col relative my-2 col-span-2">
             <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">Video</label>
             <div class="flex flex-row">
-                <button class="add-file ant-btn flex flex-wrap relative ant-btn-default" type="button"
-                    (click)="showDialog('video')" style="width: 100px; height: 100px;">
+                <button class="flex flex-wrap relative ant-btn-default" type="button" (click)="showDialog('video')"
+                    style="width: 100px; height: 100px;">
                     <img src="./assets/images/img_add.png" alt="" style="object-fit: contain;">
                 </button>
-                <div class="add-file ant-btn flex flex-wrap relative ant-btn-default ml-1"
+                <div class="flex flex-wrap justify-center relative ant-btn-default ml-1 border rounded-[7px]"
+                    [ngClass]="{'border-solid border-[#d9d9d9]':src_video!='',' border-none':src_video=='' || src_video==null}"
                     style="width: 100px; height: 100px;">
                     <video style="max-height: 100%; max-width: 100%;" *ngIf="src_video!=''" src="{{src_video}}" alt=""
                         controls></video>
@@ -323,7 +326,8 @@
                 *ngIf="!DataForm.controls['email'].valid  && (DataForm.controls['email'].dirty || DataForm.controls['email'].touched)">
                 <span *ngIf="DataForm.controls['email'].errors?.['required']" class="text-red-600 text-xs italic">Trường
                     không được để trống!</span>
-                <span *ngIf="DataForm.controls['email'].errors?.['email']" class="text-red-600 text-xs italic">Email không đúng định dạng!</span>
+                <span *ngIf="DataForm.controls['email'].errors?.['email']" class="text-red-600 text-xs italic">Email
+                    không đúng định dạng!</span>
             </div>
         </div>
         <div class="col-span-2">

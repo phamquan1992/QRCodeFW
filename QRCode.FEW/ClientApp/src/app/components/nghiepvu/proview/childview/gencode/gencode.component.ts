@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { cutom_it } from 'src/app/models/category';
@@ -55,7 +56,7 @@ export class GencodeComponent implements OnInit {
   };
   user_info!: nguoidung;
   constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
-    private messSrc: MessageService) {
+    private messSrc: MessageService, private router: Router) {
     this.str_url = baseUrl;
   }
   ngOnInit(): void {
@@ -335,5 +336,11 @@ export class GencodeComponent implements OnInit {
     if (!isValid) {
       gt.value = null;
     }
+  }
+  show_his(typedata: string, url_str: string) {
+    let arr_str = url_str.split('/');
+    let id=arr_str[arr_str.length-1];
+    console.log(id);
+    this.router.navigate(['/portal/hisqr/' + typedata + '/' + id]);
   }
 }

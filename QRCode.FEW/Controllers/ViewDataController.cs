@@ -86,7 +86,8 @@ namespace QRCode.FEW.Controllers
                 product_view.url_img = product_it.url_img;
                 product_view.enterpriseid = product_it.enterpriseid;
                 product_view.list_ref = GetListProduct(product_it.enterpriseid, product_it.qrproductid);
-                InsertHisScan("product", (int)product_it.qrproductid);
+                if (id2 == "gen")
+                    InsertHisScan("product", (int)product_it.qrproductid);
             }
             return product_view;
         }
@@ -129,7 +130,7 @@ namespace QRCode.FEW.Controllers
                     obj_temp.qrenterpriseid = temp_data.qrenterpriseid;
                     obj_temp.tel = temp_data.tel;
                     obj_temp.list_ref = GetListProduct_byenterprise(gencode_obj.dataid);
-                    InsertHisScan("product", Convert.ToInt32(id));
+                    InsertHisScan("enterprise", Convert.ToInt32(id));
                 }
             }
             return obj_temp;
