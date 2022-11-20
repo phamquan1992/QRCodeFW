@@ -43,6 +43,7 @@ export class CompanylistComponent implements OnInit {
   name_filter = '';
   value_select = 'all';
   user_info!: nguoidung;
+  loading$: boolean = false;
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -57,6 +58,7 @@ export class CompanylistComponent implements OnInit {
     private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
 
   ngOnInit(): void {
+    this.loading$ = true;
     this.sharingSrc.getUserInfo().subscribe(t => {
       this.user_info = t;
     });
@@ -70,6 +72,7 @@ export class CompanylistComponent implements OnInit {
       this.dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
       this.dataSource.filterPredicate = this.createFilter();
     });
+    this.loading$ = false;
   }
   them_moi() {
     this.router.navigate(['portal/companies/add']);

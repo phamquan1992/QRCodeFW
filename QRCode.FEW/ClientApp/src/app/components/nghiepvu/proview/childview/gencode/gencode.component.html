@@ -1,3 +1,4 @@
+<app-loadingpage *ngIf="loading$"></app-loadingpage>
 <div class="layoutQ px-[1px] py-[15px]">
     <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
         Danh sách QR Code
@@ -27,9 +28,10 @@
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75]"
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
             <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
-                formControlName="start_active" (keyup)="input1_change($event)" (focusout)="checkinput_date($event.target)"/>
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" 
-                formControlName="end_active" (focusout)="checkinput_date($event.target)"/>
+                formControlName="start_active" (keyup)="input1_change($event)"
+                (focusout)="checkinput_date($event.target)" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_active"
+                (focusout)="checkinput_date($event.target)" />
         </mat-date-range-input>
         <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
         <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker.open()"></i>
@@ -39,9 +41,9 @@
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
             <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;"
-                formControlName="start_exp" (focusout)="checkinput_date($event.target)"/>
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;"
-                formControlName="end_exp" (focusout)="checkinput_date($event.target)"/>
+                formControlName="start_exp" (focusout)="checkinput_date($event.target)" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_exp"
+                (focusout)="checkinput_date($event.target)" />
         </mat-date-range-input>
         <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
         <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>
@@ -56,13 +58,14 @@
     </button>
 </section>
 <div class="px-[15px]">
-    <section>        
+    <section>
         <button (click)="showhide_gencode(false)"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Ẩn</button>
         <button (click)="showhide_gencode(true)"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Hiện</button>
         <button (click)="chon_dichvu()"
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Chuyển gói dịch vụ </button>
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Chuyển
+            gói dịch vụ </button>        
     </section>
     <section class="h-4/6 overflow-auto">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
@@ -210,12 +213,13 @@
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
                     <mat-slide-toggle [checked]="element.status_qr=='Kích hoạt'" (change)="active_status(element)">
                     </mat-slide-toggle>
-                    <i class="fa fa-history ml-2 text-red-600" style="font-size: 20px;" aria-hidden="true"
-                        (click)="show_his(element.qr_tpye,element.qrgencodeid)"></i>
+                    <i class="fa fa-history ml-2 text-red-600 cursor-pointer" style="font-size: 20px;"
+                        aria-hidden="true" (click)="show_his(element.qr_tpye,element.qrgencodeid)"></i>
                 </td>
             </ng-container>
             <tr class="mat-row" *matNoDataRow>
-                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5" [attr.colspan]="displayedColumns.length">
+                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5"
+                    [attr.colspan]="displayedColumns.length">
                     Không có dữ liệu
                 </td>
             </tr>

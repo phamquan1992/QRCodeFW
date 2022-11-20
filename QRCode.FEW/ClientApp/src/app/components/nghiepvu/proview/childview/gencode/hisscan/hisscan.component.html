@@ -1,9 +1,10 @@
+<app-loadingpage *ngIf="loading$"></app-loadingpage>
 <div class="layoutQ px-[1px] py-[15px]">
     <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
         Sản phẩm
     </h3>
 </div>
-<section class="bg-[#8080801c] px-[15px] mb-[15px]">
+<section class="bg-[#8080801c] px-[15px] mb-[15px] relative">
     <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
         placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter" (focusout)="name_filter=name_filter.trim()">
@@ -14,6 +15,9 @@
         <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
             style="display: inline-block; width: 25px;margin-left: 12px;">
     </button>
+    <button (click)="back_page()"
+        class="leading-[1.5] inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px] top-[3px] right-[11px] absolute">Quay
+        lại</button>
 </section>
 <div class="px-[15px]">
     <section class="mt-2">
@@ -22,7 +26,8 @@
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold"> Số điện thoại
                 </th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
                     style="padding: 4px;width:120px;">
                     {{element.tel}}
                 </td>
@@ -30,7 +35,8 @@
             <ng-container matColumnDef="location">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold">Vị trí</th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
                     style="padding: 4px; width: 200px;">
                     {{element.location}}
                 </td>
@@ -38,7 +44,8 @@
             <ng-container matColumnDef="province">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold">Tỉnh thành</th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
                     style="padding: 4px;">
                     {{element.province}}
                 </td>
@@ -46,7 +53,8 @@
             <ng-container matColumnDef="ip">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold ">IP</th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
                     style="padding: 4px;">
                     {{element.ip}}
                 </td>
@@ -54,7 +62,8 @@
             <ng-container matColumnDef="osystem">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold ">Hệ điều hành</th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
                     style="padding: 4px;">
                     {{element.osystem}}
                 </td>
@@ -62,7 +71,8 @@
             <ng-container matColumnDef="application">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold ">Ứng dụng</th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] font-[Roboto] text-[13px] text-center"
                     style="padding: 4px;">
                     {{element.application}}
                 </td>
@@ -72,12 +82,14 @@
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[100px] font-[Roboto]">
                     Thời gian</th>
                 <td mat-cell *matCellDef="let element"
-                    class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center" style="padding: 4px;  min-width: 200px">
+                    class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center"
+                    style="padding: 4px;  min-width: 200px">
                     {{element.time_scan|date: 'dd/MM/yyyy HH:mm:ss'}}
                 </td>
             </ng-container>
             <tr class="mat-row" *matNoDataRow>
-                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5" [attr.colspan]="displayedColumns.length">
+                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5"
+                    [attr.colspan]="displayedColumns.length">
                     Không có dữ liệu
                 </td>
             </tr>

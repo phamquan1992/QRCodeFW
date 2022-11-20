@@ -24,15 +24,17 @@ export class ProductinfoComponent implements OnInit {
   product$!: Observable<productview>;
   arr_dynamic: value_it[] = [];
   data1!: string;
+  loading$: boolean = false;
   constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-   
+
     let id = this.route.snapshot.paramMap.get('id');
     let id2 = this.route.snapshot.paramMap.get('id2');
     let value_id = id == null ? '0' : id.toString();
     let value_id2 = id2 == null ? 'all' : id2.toString();
     this.product$ = this.viewDataSrc.get_view_product(value_id, value_id2);
+    this.loading$ = true;
     this.product$.subscribe(t => {
       if (t.additional != null) {
         let arr_temp = JSON.parse(t.additional) as temp_object[];
@@ -41,6 +43,7 @@ export class ProductinfoComponent implements OnInit {
           this.arr_dynamic.push(it_temp);
         });
       }
+      this.loading$ = false;
     });
   }
   select_product(id: number) {

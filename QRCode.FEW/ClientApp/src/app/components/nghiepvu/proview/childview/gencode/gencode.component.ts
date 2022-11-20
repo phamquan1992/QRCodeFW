@@ -35,6 +35,7 @@ export class GencodeComponent implements OnInit {
   arr_filter_pack: cutom_it[] = [];
   nameqr_filter = '';
   nameobj_filter = '';
+  loading$: boolean = false;
   range_active = new FormGroup({
     start_active: new FormControl(null),
     end_active: new FormControl(null),
@@ -76,14 +77,18 @@ export class GencodeComponent implements OnInit {
     });
   }
   get_data() {
+    
     this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
     this.sharingSrc.getUserInfo().subscribe(t => {
       this.data = this.gencodeSrc.get_list(t.id);
+      this.loading$ = true;
       this.data.subscribe(it => {
         this.data_arr = it;
         this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
         this.dataSource.filterPredicate = this.createFilter();
+        this.loading$ = false;
       });
+      
     });
   }
   masterToggle() {
@@ -341,4 +346,5 @@ export class GencodeComponent implements OnInit {
     console.log(id);
     this.router.navigate(['/portal/hisqr/' + id]);
   }
+
 }

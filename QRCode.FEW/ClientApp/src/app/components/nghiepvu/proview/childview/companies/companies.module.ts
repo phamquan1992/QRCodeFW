@@ -10,6 +10,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CompanylistComponent } from './companylist/companylist.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTableModule,
     MatCheckboxModule,
     MatAutocompleteModule,FormsModule, ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    SharedModule
   ]
 })
 export class CompaniesModule { }

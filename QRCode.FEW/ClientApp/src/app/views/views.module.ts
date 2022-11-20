@@ -7,6 +7,7 @@ import { ProductinfoComponent, SafeHtmlPipe } from './productinfo/productinfo.co
 import { EnterpriseComponent } from './enterprise/enterprise.component';
 import { ChangepassComponent } from './changepass/changepass.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ViewsRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class ViewsModule { }

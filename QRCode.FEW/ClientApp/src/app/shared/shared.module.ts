@@ -18,6 +18,7 @@ import { ImportfileComponent } from './importfile/importfile.component';
 import { AlertdeleteComponent } from './alertdelete/alertdelete.component';
 import { MatIconModule } from '@angular/material/icon';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { LoadingpageComponent } from './loadingpage/loadingpage.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { NotfoundComponent } from './notfound/notfound.component';
     EditorlayoutComponent,
     ImportfileComponent,
     AlertdeleteComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    LoadingpageComponent
   ],
   imports: [
     CommonModule, ReactiveFormsModule, FormsModule,
@@ -43,6 +45,7 @@ import { NotfoundComponent } from './notfound/notfound.component';
     AddinputComponent,
     QrcodeComponent,
     TypeqrcodeComponent,
-    AutocompleinputComponent, UploadinputComponent, DialogUploadComponent, ThongtinkhacComponent, EditorlayoutComponent,ImportfileComponent,AlertdeleteComponent,NotfoundComponent]
+    AutocompleinputComponent, UploadinputComponent, DialogUploadComponent, ThongtinkhacComponent, EditorlayoutComponent,ImportfileComponent,AlertdeleteComponent,NotfoundComponent,
+    LoadingpageComponent]
 })
 export class SharedModule { }
