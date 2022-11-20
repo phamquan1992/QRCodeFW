@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using QRCode.Core.Domain;
 using QRCode.Core.Domain2;
 using QRCode.FEW.Extensions.Common;

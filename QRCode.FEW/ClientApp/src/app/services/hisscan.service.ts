@@ -10,6 +10,6 @@ export class HisscanService {
 
   constructor(private dataSrv: DataService) { }
   get_list(type: string, dataid: string) {
-    return this.dataSrv.get('qr_his_scan/list?typecode=' + type + '&dataid=' + dataid) as Observable<qr_his_scan[]>;
+    return this.dataSrv.get('qr_his_scan/list?&dataid=' + dataid) as Observable<qr_his_scan[]>;
   }
 }

@@ -210,9 +210,15 @@
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
                     <mat-slide-toggle [checked]="element.status_qr=='Kích hoạt'" (change)="active_status(element)">
                     </mat-slide-toggle>
-                    <i class="fa fa-history ml-2 text-red-600" style="font-size: 20px;" aria-hidden="true" (click)="show_his(element.qr_tpye,element.qr_obj_url)"></i>
+                    <i class="fa fa-history ml-2 text-red-600" style="font-size: 20px;" aria-hidden="true"
+                        (click)="show_his(element.qr_tpye,element.qrgencodeid)"></i>
                 </td>
             </ng-container>
+            <tr class="mat-row" *matNoDataRow>
+                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5" [attr.colspan]="displayedColumns.length">
+                    Không có dữ liệu
+                </td>
+            </tr>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="h-5"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;">

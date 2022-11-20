@@ -76,7 +76,11 @@
                     {{element.time_scan|date: 'dd/MM/yyyy HH:mm:ss'}}
                 </td>
             </ng-container>
-
+            <tr class="mat-row" *matNoDataRow>
+                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5" [attr.colspan]="displayedColumns.length">
+                    Không có dữ liệu
+                </td>
+            </tr>
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-5"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;">
             </tr>

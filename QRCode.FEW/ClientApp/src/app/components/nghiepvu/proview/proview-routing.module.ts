@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: 'companies', loadChildren: () => import('./childview/companies/companies.module').then(m => m.CompaniesModule) },
       { path: 'dashboard', canActivate: [CanactiveGuard], component: DashboardComponent },///:id/:id2
       { path: 'gencode', canActivate: [CanactiveGuard], component: GencodeComponent },
-      { path: 'hisqr/:type/:dataid', canActivate: [CanactiveGuard], component: HisscanComponent },
+      { path: 'hisqr/:dataid', canActivate: [CanactiveGuard], component: HisscanComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

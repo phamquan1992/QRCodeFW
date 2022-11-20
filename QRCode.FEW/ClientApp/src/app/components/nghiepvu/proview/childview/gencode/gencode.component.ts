@@ -337,10 +337,8 @@ export class GencodeComponent implements OnInit {
       gt.value = null;
     }
   }
-  show_his(typedata: string, url_str: string) {
-    let arr_str = url_str.split('/');
-    let id=arr_str[arr_str.length-1];
+  show_his(typedata: string, id: string) {
     console.log(id);
-    this.router.navigate(['/portal/hisqr/' + typedata + '/' + id]);
+    this.router.navigate(['/portal/hisqr/' + id]);
   }
 }

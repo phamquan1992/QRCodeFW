@@ -42,7 +42,7 @@ namespace QRCode.FEW.Controllers
 
             qr_his_scan scan_obj = new qr_his_scan();
             scan_obj.typecode = type;
-            scan_obj.dataid = dataid;
+            scan_obj.qrgencodeid = dataid;
             scan_obj.application = info.UA.Family;
             scan_obj.ip = clientIpAddress;
             scan_obj.location = "";
@@ -60,11 +60,13 @@ namespace QRCode.FEW.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 decimal id_product = 0;
+                int qrgencodeid = 0;
                 if (id2 == "gen")
                 {
                     var gencode_list = _Iqr_gencodeService.GetAll();
                     var gencode_obj = gencode_list.FirstOrDefault(t => t.code == id);
                     id_product = gencode_obj.dataid;
+                    qrgencodeid = gencode_obj.qrgencodeid;
                 }
                 else
                 {
@@ -87,8 +89,8 @@ namespace QRCode.FEW.Controllers
                 product_view.url_img = product_it.url_img;
                 product_view.enterpriseid = product_it.enterpriseid;
                 product_view.list_ref = GetListProduct(product_it.enterpriseid, product_it.qrproductid);
-                if (id2 == "gen")
-                    InsertHisScan("product", (int)product_it.qrproductid);
+                if (qrgencodeid != 0)
+                    InsertHisScan("product", qrgencodeid);
             }
             return product_view;
         }
@@ -131,7 +133,7 @@ namespace QRCode.FEW.Controllers
                     obj_temp.qrenterpriseid = temp_data.qrenterpriseid;
                     obj_temp.tel = temp_data.tel;
                     obj_temp.list_ref = GetListProduct_byenterprise(gencode_obj.dataid);
-                    InsertHisScan("enterprise", Convert.ToInt32(id));
+                    InsertHisScan("enterprise", Convert.ToInt32(gencode_obj.qrgencodeid));
                 }
             }
             return obj_temp;
@@ -172,6 +174,96 @@ namespace QRCode.FEW.Controllers
                 }
             }
             return res;
+        }
+        private bool checkIpprivate(string ip)
+        {
+            var arr_ip = ip.Split('.');
+            string ip1 = arr_ip[0];
+            int ip2 = Convert.ToInt32(arr_ip[1]);
+            int ip3 = Convert.ToInt32(arr_ip[2]);
+            int ip4 = Convert.ToInt32(arr_ip[3]);
+            bool check = false;
+            if (ip1 == "10")
+            {
+                if (ip2 >= 0 && ip2 <= 255)
+                {
+                    if (ip3 >= 0 && ip3 <= 255)
+                    {
+                        if (ip4 >= 0 && ip4 <= 255)
+                        {
+                            check = true;
+                        }
+                        else
+                        {
+                            check = false;
+                        }
+                    }
+                    else
+                    {
+                        check = false;
+                    }
+                }
+                else
+                {
+                    check = false;
+                }
+            }
+            else if (ip1 == "172")
+            {
+                if (ip2 >= 16 && ip2 <= 31)
+                {
+                    if (ip3 >= 0 && ip3 <= 255)
+                    {
+                        if (ip4 >= 0 && ip4 <= 255)
+                        {
+                            check = true;
+                        }
+                        else
+                        {
+                            check = false;
+                        }
+                    }
+                    else
+                    {
+                        check = false;
+                    }
+                }
+                else
+                {
+                    check = false;
+                }
+            }
+            else if (ip1 == "192")
+            {
+
+                if (ip2 == 168)
+                {
+                    if (ip3 >= 0 && ip3 <= 255)
+                    {
+                        if (ip4 >= 0 && ip4 <= 255)
+                        {
+                            check = true;
+                        }
+                        else
+                        {
+                            check = false;
+                        }
+                    }
+                    else
+                    {
+                        check = false;
+                    }
+                }
+                else
+                {
+                    check = false;
+                }
+            }
+            else
+            {
+                check = false;
+            }
+            return check;
         }
     }
 }

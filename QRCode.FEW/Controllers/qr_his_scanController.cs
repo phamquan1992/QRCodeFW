@@ -20,10 +20,10 @@ namespace QRCode.FEW.Controllers
         }
         [HttpGet]
         [Route("list")]
-        public List<qr_his_scan> Get(string typecode, int dataid)
+        public List<qr_his_scan> Get(int dataid)
         {
             List<qr_his_scan> data = new List<qr_his_scan>();
-            var list = _Iqr_his_scanService.GetAll().Where(t => t.typecode == typecode && t.dataid == dataid);
+            var list = _Iqr_his_scanService.GetAll().Where(t => t.qrgencodeid == dataid);
             if (list != null && list.Count() != 0)
             {
                 data = list.ToList();
