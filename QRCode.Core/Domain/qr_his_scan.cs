@@ -15,6 +15,6 @@ namespace QRCode.Core.Domain
         public virtual string application { get; set; }
         public virtual DateTime time_scan { get; set; }
         public virtual string typecode { get; set; }
-        public virtual int dataid { get; set; }
+        public virtual int qrgencodeid { get; set; }
     }
 }

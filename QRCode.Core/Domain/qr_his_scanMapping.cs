@@ -19,7 +19,7 @@ namespace QRCode.Core.Domain
             Map(x => x.tel).Nullable();
             Map(x => x.time_scan).Nullable();
             Map(x => x.typecode).Nullable();
-            Map(x => x.dataid).Nullable();
+            Map(x => x.qrgencodeid).Nullable();
         }
     }
 }
