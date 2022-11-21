@@ -125,7 +125,8 @@ export class AddproductComponent implements OnInit {
                     myObj[element] = null;
             });
             if (this.value_id != '0') {
-                myObj['created_by'] = this.user_info.id;
+                myObj['lastcreated_by'] = this.user_info.id;
+                
                 this.productSrc.update_product(myObj).subscribe(t => {
                     if (t) {
                         this.mesSrc.success('Bạn đã thực hiện thành công!');
@@ -136,7 +137,7 @@ export class AddproductComponent implements OnInit {
                 });
             }
             else {
-                myObj['lastcreated_by'] = this.user_info.id;
+                myObj['created_by'] = this.user_info.id;
                 this.productSrc.add_product(myObj).subscribe(
                     t => {
                         if (t) {

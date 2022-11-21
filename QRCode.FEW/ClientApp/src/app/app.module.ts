@@ -14,11 +14,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { CLIInterceptor } from './interceptor/httpInterceptor';
 import { ResetmailComponent } from './components/share/resetmail/resetmail.component';
 import { SharedModule } from './shared/shared.module';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomMatPaginatorIntl } from './interceptor/CustomPaginatorConfiguration';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ResetmailComponent,    
+    ResetmailComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,11 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     ToastrModule.forRoot()
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomMatPaginatorIntl
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

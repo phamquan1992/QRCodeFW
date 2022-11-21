@@ -77,7 +77,7 @@ export class GencodeComponent implements OnInit {
     });
   }
   get_data() {
-    
+
     this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
     this.sharingSrc.getUserInfo().subscribe(t => {
       this.data = this.gencodeSrc.get_list(t.id);
@@ -88,7 +88,7 @@ export class GencodeComponent implements OnInit {
         this.dataSource.filterPredicate = this.createFilter();
         this.loading$ = false;
       });
-      
+
     });
   }
   masterToggle() {
@@ -261,8 +261,9 @@ export class GencodeComponent implements OnInit {
       }
 
       let nameSearch = () => {
-        let found = false;
         if (isFilterSet) {
+          let arr: boolean[] = [];
+          let found = false;
           for (const col in searchTerms) {
             if (col == 'create_date_qr_start' || col == 'create_date_qr_end') {
               debugger
@@ -300,9 +301,11 @@ export class GencodeComponent implements OnInit {
                 found = true
               }
             }
-
+            arr.push(found);
           }
-          return found
+          let count_array = arr.findIndex(t => t == false);
+          arr = [];
+          return count_array == -1 ? true : false;
         } else {
           return true;
         }

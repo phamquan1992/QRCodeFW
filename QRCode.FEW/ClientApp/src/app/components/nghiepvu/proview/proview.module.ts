@@ -23,6 +23,8 @@ import { SyncpackComponent } from './childview/gencode/syncpack/syncpack.compone
 import {MatSelectModule} from '@angular/material/select';
 import { HisscanComponent } from './childview/gencode/hisscan/hisscan.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+import { StylePaginatorDirective } from 'src/app/interceptor/paginatorStyleDirective';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -46,14 +48,15 @@ export const MY_DATE_FORMAT = {
     HisscanComponent,
     // CompaniesComponent,
     // AddcompanyComponent
+    StylePaginatorDirective
   ],
   imports: [
     CommonModule,
     ProviewRoutingModule, MatSidenavModule, MatListModule, MatTableModule,MatCheckboxModule,MatAutocompleteModule,
     MatSlideToggleModule,FormsModule,SharedModule,ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule,MatSelectModule,MatTooltipModule
-  ],
+    MatNativeDateModule,MatSelectModule,MatTooltipModule,MatPaginatorModule
+  ],  
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },
     {
@@ -62,6 +65,7 @@ export const MY_DATE_FORMAT = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    
   ]
 })
 export class ProviewModule { }
