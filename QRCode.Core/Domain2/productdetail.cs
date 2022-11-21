@@ -82,4 +82,15 @@ namespace QRCode.Core.Domain2
         public string password_old { get; set; }
         public string password { get; set; }
     }
+    public class payment_view
+    {
+        public int qrpaymentid { get; set; }
+        public string packcode { get; set; }
+        public string packname { get; set; }
+        public int userid { get; set; }
+        public string email { get; set; }
+        public string phone { get; set; }
+        public DateTime? created_date { get; set; }
+        public DateTime? payment_date { get; set; }
+    }
 }
