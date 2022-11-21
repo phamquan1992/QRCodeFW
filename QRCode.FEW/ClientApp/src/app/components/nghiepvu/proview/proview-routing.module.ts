@@ -5,6 +5,7 @@ import { CompaniesComponent } from './childview/companies/companies.component';
 import { DashboardComponent } from './childview/dashboard/dashboard.component';
 import { GencodeComponent } from './childview/gencode/gencode.component';
 import { HisscanComponent } from './childview/gencode/hisscan/hisscan.component';
+import { PaymentComponent } from './childview/payment/payment.component';
 import { ProviewComponent } from './proview.component';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'dashboard', canActivate: [CanactiveGuard], component: DashboardComponent },///:id/:id2
       { path: 'gencode', canActivate: [CanactiveGuard], component: GencodeComponent },
       { path: 'hisqr/:dataid', canActivate: [CanactiveGuard], component: HisscanComponent },
+      { path: 'payment', canActivate: [CanactiveGuard], component: PaymentComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

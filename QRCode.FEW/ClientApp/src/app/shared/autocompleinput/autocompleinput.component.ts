@@ -32,6 +32,9 @@ export class AutocompleinputComponent implements OnInit {
     this._value_input = gt;
     if (gt != null && gt != '')
       this.isequ = true;
+    else { 
+      this.arr_item = this.data;
+    }
   }
   constructor(private commonSrc: CommonService) {
   }
@@ -51,7 +54,7 @@ export class AutocompleinputComponent implements OnInit {
     this.arr_item = this.data.filter(option => option.mota.toLowerCase() == val.toLowerCase());
     if (this.arr_item.length == 0) {
       val = '';
-      obj_input.value = val;      
+      obj_input.value = val;
       this.isequ = false;
       this.arr_item = this.data;
     }

@@ -1,0 +1,22 @@
+<div class="w-full h-full relative">
+    <div class="bg-[#196898] py-[10px] px-[15px]">
+        <div class="text-white text-sm leading-[22px] break-words font-medium">
+            <div>Chọn ngày kích hoạt</div>
+        </div>
+    </div>
+    <div class="w-full">
+        <div class="border border-solid border-[#d9d9d9] rounded-[4px] relative w-[95%] m-3">
+            <input #ngaychon matInput [matDatepicker]="picker" class="bg-white py-1 leading-[1.75] w-full text-center"
+             [(ngModel)]="ngay_select" (keyup)="number_change($event)"  (focusout)="checkinput_date($event.target)">
+            <mat-datepicker #picker></mat-datepicker>
+            <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker.open()"></i>
+        </div>
+    </div>
+    <div class="flex justify-center">
+        <button (click)="xac_nhan(ngaychon)"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Xác
+            nhận</button>
+    </div>
+    <button class="absolute top-0 right-0 h-[43px] w-[43px] text-white"><i class="fa fa-times" aria-hidden="true"
+            (click)="close_action()"></i></button>
+</div>

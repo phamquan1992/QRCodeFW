@@ -1,112 +1,118 @@
 <app-loadingpage *ngIf="loading$"></app-loadingpage>
 <div class="layoutQ px-[1px] py-[15px]">
     <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
-        Lịch sử tương tác
+        Danh sách gói dịch vụ đã mua
     </h3>
 </div>
 <section class="bg-[#8080801c] px-[15px] mb-[15px] relative flex">
-    <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+    <div class="w-[336px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
         <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="Ngày tương tác" style="width: 100%; font-size: 13px;"
-                formControlName="start_exp" (focusout)="checkinput_date($event.target)" />
-            <input matEndDate placeholder="" style="width: 100%; font-size: 13px;" formControlName="end_exp"
-                (focusout)="checkinput_date($event.target)" />
+            <input matStartDate placeholder="Ngày mua: Từ ngày" style="width: 100%; font-size: 13px;"
+                formControlName="start_exp" (focusout)="checkinput_date($event.target)"
+                (keyup)="number_change($event,'start_exp')" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_exp"
+                (focusout)="checkinput_date($event.target)" (keyup)="number_change($event,'end_exp')" />
         </mat-date-range-input>
         <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
         <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>
     </div>
+    <div class="w-[336px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+        <mat-date-range-input [rangePicker]="picker" [formGroup]="active_range"
+            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
+            style="display:inline-block;width:100%;text-align: center;opacity: 1;">
+            <input matStartDate placeholder="Ngày kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
+                formControlName="start_active" (focusout)="checkinput_date($event.target)"
+                (keyup)="number_change($event,'start_active')" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_active"
+                (focusout)="checkinput_date($event.target)" (keyup)="number_change($event,'end_active')" />
+        </mat-date-range-input>
+        <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
+        <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker.open()"></i>
+    </div>
     <button (click)="applyFilter()"
-        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mt-[3px]">Tìm
+        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]] mt-[3px]">Tìm
         kiếm</button>
     <button (click)="reload_grid()">
         <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
             style="display: inline-block; width: 25px;margin-left: 12px;">
-    </button>    
+    </button>
 </section>
 <div class="px-[15px]">
     <section class="mt-2">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
-            <!-- Checkbox Column -->
-            <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef class="border border-solid border-[#1310101f] w-[80px]">
-                    <mat-checkbox (change)="$event ? masterToggle() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()">
-                    </mat-checkbox>
-                </th>
-                <td mat-cell *matCellDef="let row" class="border border-solid border-[#0000001f] text-center"
-                    (click)="selection.toggle(row)">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                        [checked]="selection.isSelected(row)">
-                    </mat-checkbox>
-                </td>
-            </ng-container>
             <!-- Name Column -->
             <ng-container matColumnDef="email">
                 <th mat-header-cell *matHeaderCellDef
-                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto] w-[500px]">
-                    Email
-                </th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] text-center"
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]">
+                    Email </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center text-[13px] font-[Roboto]"
                     style="padding: 4px;">
-                    <span class="font-bold text-sm">{{element.email}}</span>                   
+                    {{element.email}}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="phone">
                 <th mat-header-cell *matHeaderCellDef
-                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]"> Địa
-                    chỉ </th>
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]"> Số
+                    điện thoại</th>
                 <td mat-cell *matCellDef="let element"
-                    class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
+                    class="border border-solid border-[#0000001f] break-all text-center text-[13px]"
+                    style="padding: 4px;">
                     {{element.phone}} </td>
             </ng-container>
             <ng-container matColumnDef="packname">
                 <th mat-header-cell *matHeaderCellDef
-                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]"> Địa
-                    chỉ </th>
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]"> Tên
+                    gói</th>
                 <td mat-cell *matCellDef="let element"
-                    class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
+                    class="border border-solid border-[#0000001f] break-all text-center text-[13px] font-[Roboto]"
+                    style="padding: 4px;">
                     {{element.packname}} </td>
             </ng-container>
-            
 
             <ng-container matColumnDef="created_date">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto] w-[150px]">
-                    Ngày mua gói dịch vụ </th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f]"
+                    Ngày mua </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center text-[13px] font-[Roboto]"
                     style="padding: 4px;">
-                    {{element.created_date|date: 'dd/MM/yyyy hh:mm:ss'}} 
+                    {{element.created_date|date: 'dd/MM/yyyy'}}
                 </td>
             </ng-container>
             <ng-container matColumnDef="payment_date">
                 <th mat-header-cell *matHeaderCellDef
-                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto] w-[150px]">
-                    Ngày kích hoạt gói </th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f]"
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto] w-[150px] text-center">
+                    Ngày kích hoạt </th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center text-[13px] font-[Roboto]"
                     style="padding: 4px;">
-                    {{element.payment_date|date: 'dd/MM/yyyy hh:mm:ss'}} 
+                    {{element.payment_date|date: 'dd/MM/yyyy'}}
                 </td>
             </ng-container>
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[100px] font-[Roboto]">
                     Hành động</th>
-                <!-- <td mat-cell *matCellDef="let element"
+                <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true"
+                    <!-- <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true"
                         (click)="showXoaDialog(element.qrenterpriseid)" [matTooltip]="'Xoá doanh nghiệp, cá nhân'"
                         [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
                     <i class="fa fa-link px-[4px] cursor-pointer text-blue-600 -rotate-[85deg]" aria-hidden="true"
                         (click)="sua_congty(element.qrenterpriseid)" [matTooltip]="'Chi tiết doanh nghiệp, cá nhân'"
-                        [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
-                </td> -->
+                        [matTooltipPosition]="'above'" style="font-size: 18px;"></i> -->
+                    <i class="fa fa-check px-[4px] cursor-pointer text-blue-500" aria-hidden="true"
+                        *ngIf="!element.payment_date" [matTooltip]="'Kích hoạt'" [matTooltipPosition]="'above'"
+                        (click)="select_ngay(element)"></i>
+                </td>
             </ng-container>
             <tr class="mat-row" *matNoDataRow>
-                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5" [attr.colspan]="displayedColumns.length">
+                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5"
+                    [attr.colspan]="displayedColumns.length">
                     Không có dữ liệu
                 </td>
             </tr>

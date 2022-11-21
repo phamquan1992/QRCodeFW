@@ -10,6 +10,16 @@ export interface qr_payment {
     lastcreated_date: Date;
     lastcreated_by: number;
 }
+export interface payment_view{
+    qrpaymentid: number;
+    packcode: string;
+    packname: string;
+    userid: number;
+    email:string;
+    phone:string;
+    created_date: Date;
+    payment_date: Date;
+}
 export interface package_objet {
     packcode: string;
     packname: string;

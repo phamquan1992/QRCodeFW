@@ -30,6 +30,38 @@ namespace QRCode.FEW.Controllers
             mailService = _mailService;
         }
         [HttpGet]
+        [Route("GetAll")]
+        public async Task<List<payment_view>> GetAll()
+        {
+            List<payment_view> data = new List<payment_view>();
+            data = await Task.FromResult(GetData());
+            return data;
+        }
+        private List<payment_view> GetData()
+        {
+            List<payment_view> data = new List<payment_view>();
+            var list = _Iqr_paymentService.GetAll();
+            if (list != null && list.Count() != 0)
+            {
+                var listuser = _IuserdataService.GetAll();
+                var querry = list.ToList();
+                data = (from a in list
+                        join b in listuser on a.created_by equals b.userid
+                        select new payment_view
+                        {
+                            created_date = a.created_date,
+                            email = b.email,
+                            packcode = a.packcode,
+                            packname = a.packname,
+                            payment_date = a.payment_date,
+                            phone = b.sdt,
+                            qrpaymentid = (int)a.qrpaymentid,
+                            userid = a.userid
+                        }).ToList();
+            }
+            return data;
+        }
+        [HttpGet]
         [Route("Getpack")]
         public List<package_objet> GetPackage_Objets()
         {
@@ -110,7 +142,7 @@ namespace QRCode.FEW.Controllers
             {
                 qr_payment obj = new qr_payment();
                 obj = _Iqr_paymentService.GetAll().FirstOrDefault(t => t.qrpaymentid == model.qrpaymentid);
-                obj.payment_date = DateTime.Now;
+                obj.payment_date = model.payment_date.Value.Date;
                 obj.lastcreated_by = model.lastcreated_by;
                 obj.lastcreated_date = DateTime.Now;
                 return _Iqr_paymentService.Update(obj);
@@ -119,6 +151,6 @@ namespace QRCode.FEW.Controllers
             {
                 return false;
             }
-        }        
+        }
     }
 }

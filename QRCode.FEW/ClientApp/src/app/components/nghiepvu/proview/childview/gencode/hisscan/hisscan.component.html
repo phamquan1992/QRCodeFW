@@ -8,14 +8,14 @@
     <!-- <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
         placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter" (focusout)="name_filter=name_filter.trim()"> -->
-    <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+    <div class="w-[336px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
         <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="Ngày tương tác" style="width: 100%; font-size: 13px;"
-                formControlName="start_exp" (focusout)="checkinput_date($event.target)" />
-            <input matEndDate placeholder="" style="width: 100%; font-size: 13px;" formControlName="end_exp"
-                (focusout)="checkinput_date($event.target)" />
+            <input matStartDate placeholder="Ngày tương tác: Từ ngày" style="width: 100%; font-size: 13px;"
+                formControlName="start_exp" (focusout)="checkinput_date($event.target)" (keyup)="number_change($event,'start_exp')"/>
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_exp"
+                (focusout)="checkinput_date($event.target)" (keyup)="number_change($event,'end_exp')"/>
         </mat-date-range-input>
         <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
         <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>

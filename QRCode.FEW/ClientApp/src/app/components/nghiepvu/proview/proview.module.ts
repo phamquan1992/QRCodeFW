@@ -26,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/interceptor/paginatorStyleDirective';
 import { PaymentComponent } from './childview/payment/payment.component';
+import { SelectngayComponent } from './childview/payment/selectngay/selectngay.component';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -50,7 +51,8 @@ export const MY_DATE_FORMAT = {
     // CompaniesComponent,
     // AddcompanyComponent
     StylePaginatorDirective,
-    PaymentComponent
+    PaymentComponent,
+    SelectngayComponent
   ],
   imports: [
     CommonModule,
