@@ -182,19 +182,27 @@ export class CompanylistComponent implements OnInit {
           let found = false;
           for (const col in searchTerms) {
             if ((col === 'name' || col === 'tel' || col === 'taxcode') && isFilterSet) {
-              let gttemp1 = data['name'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
-              let gttemp2 = data['tel'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
-              let gttemp3 = data['taxcode'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              console.log(data['taxcode']);
+              let filter_name = data['name'] || '';
+              let filter_tel = data['tel'] || '';
+              let filter_taxcode = data['taxcode'] || '';
+
+              let gttemp1 = filter_name.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let gttemp2 = filter_tel.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let gttemp3 = filter_taxcode.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+
               if (gttemp1 > -1 || gttemp2 > -1 || gttemp3 > -1)
                 found = true;
               else
                 found = false;
-            } else
-              if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+            } else {
+              let filter_str = data[col] || '';
+              if (filter_str.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
                 found = true
               } else {
                 found = false;
               }
+            }
             arr.push(found);
           }
           let count_array = arr.findIndex(t => t == false);

@@ -131,9 +131,7 @@
                                 (click)="select_img(it.name)">
                             <div *ngIf="img_select===it.name" class="overlay absolute flex justify-center items-center circle
                             bg-[#00000066] top-0 left-0 w-full h-full rounded-full">
-                                <img class="w-[16px] h-[16px]"
-                                    src="./assets/images/select_mau.svg"
-                                    alt="">
+                                <img class="w-[16px] h-[16px]" src="./assets/images/select_mau.svg" alt="">
                             </div>
                         </li>
                     </ul>
@@ -200,7 +198,7 @@
         <ul class="list-qrcode-logo flex justify-start items-center mb-5">
             <li *ngFor="let it of option_icon"
                 class="flex justify-center items-center mr-2 relative cursor-pointer w-[40px] h-[40px] border border-solid border-[#d6d6e0] rounded-md py-[6px]">
-                <img src="{{it.link_img}}" alt=""  (click)="action_select_ic(it.name)">
+                <img src="{{it.link_img}}" alt="" (click)="action_select_ic(it.name)" style="width: 38px; height: 38px; object-fit: cover;">
                 <img data-v-7be58c2e="" data-v-030d3430="" (click)="action_remove_ic(it.name)"
                     src="./assets/images/ic-remove.png" alt=""
                     class="logo-close-icon cursor-pointer w-[14px] h-[14px] -top-[6px] -right-[6px] absolute"

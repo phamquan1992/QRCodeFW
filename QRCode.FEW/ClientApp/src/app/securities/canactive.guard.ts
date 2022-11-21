@@ -16,10 +16,10 @@ export class CanactiveGuard implements CanActivate {
   constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog,
     private _sharingService: ObservableService, private enterpriseSrc: CompaniesService) { }
   canActivate(
-    route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.enterpriseSrc.check_401().subscribe(t => console.log(' '));
+    route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {  
     let user = this.storage.getUserInfo();
     if (user != undefined) {
+      this.enterpriseSrc.check_401().subscribe(t => console.log(' '));
       if (state1.url.indexOf('portal') > -1) {
         if (!user.active) {
           this.messSrc.warn('Bạn không có quyền hạn thực hiện chức năng này!');

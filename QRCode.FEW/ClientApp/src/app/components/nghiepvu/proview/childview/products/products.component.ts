@@ -44,7 +44,7 @@ export class ProductsComponent implements OnInit {
       this.data_pr = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
       this.dataSource.filterPredicate = this.createFilter();
-    
+
     });
   }
   reload_grid() {
@@ -89,14 +89,17 @@ export class ProductsComponent implements OnInit {
           let found = false;
           for (const col in searchTerms) {
             if ((col === 'name' || col === 'code') && isFilterSet) {
-              let gttemp1 = data['name'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
-              let gttemp2 = data['code'].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let filter_name = data['name'] || '';
+              let filter_code = data['code'] || '';
+              let gttemp1 = filter_name.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
+              let gttemp2 = filter_code.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase());
               if (gttemp1 > -1 || gttemp2 > -1)
                 found = true;
               else
                 found = false;
             } else {
-              if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+              let filter_col = data[col] || '';
+              if (filter_col.toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
                 found = true;
               } else {
                 found = false;

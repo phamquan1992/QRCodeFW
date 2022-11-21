@@ -25,6 +25,7 @@ import { HisscanComponent } from './childview/gencode/hisscan/hisscan.component'
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/interceptor/paginatorStyleDirective';
+import { PaymentComponent } from './childview/payment/payment.component';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -48,7 +49,8 @@ export const MY_DATE_FORMAT = {
     HisscanComponent,
     // CompaniesComponent,
     // AddcompanyComponent
-    StylePaginatorDirective
+    StylePaginatorDirective,
+    PaymentComponent
   ],
   imports: [
     CommonModule,
