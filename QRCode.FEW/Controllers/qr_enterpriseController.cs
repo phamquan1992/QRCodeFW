@@ -60,7 +60,7 @@ namespace QRCode.FEW.Controllers
                 model.district = qr_model.district;
                 model.email = qr_model.email;
                 model.fax = qr_model.fax;
-                model.logo = qr_model.logo;
+                model.logo = setImg("", qr_model.logo);
                 model.name = qr_model.name;
                 model.nation = qr_model.nation;
                 model.occupation = qr_model.occupation;
@@ -69,9 +69,9 @@ namespace QRCode.FEW.Controllers
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
                 model.sectors_code = qr_model.sectors_code;
-                model.url_background = qr_model.url_background;
-                model.url_img = qr_model.url_img;
-                model.url_video = qr_model.url_video;
+                model.url_background = setImg("", qr_model.url_background);
+                model.url_img = setImg("", qr_model.url_img);
+                model.url_video = setImg("", qr_model.url_video);
                 model.created_by = qr_model.created_by;
                 model.created_date = DateTime.Now;
                 return _Iqr_enterpriseService.CreateNew(model);
@@ -93,7 +93,7 @@ namespace QRCode.FEW.Controllers
                 model.district = qr_model.district;
                 model.email = qr_model.email;
                 model.fax = qr_model.fax;
-                model.logo = qr_model.logo;
+                model.logo = setImg(model.logo, qr_model.logo);
                 model.name = qr_model.name;
                 model.nation = qr_model.nation;
                 model.occupation = qr_model.occupation;
@@ -102,9 +102,9 @@ namespace QRCode.FEW.Controllers
                 model.tel = qr_model.tel;
                 model.wards = qr_model.wards;
                 model.sectors_code = qr_model.sectors_code;
-                model.url_background = qr_model.url_background;
-                model.url_img = qr_model.url_img;
-                model.url_video = qr_model.url_video;
+                model.url_background = setImg(model.url_background, qr_model.url_background);
+                model.url_img = setImg(model.url_img, qr_model.url_img);
+                model.url_video = setImg(model.url_video, qr_model.url_video);
                 model.lastcreated_by = qr_model.lastcreated_by;
                 model.lastcreated_date = DateTime.Now;
                 return _Iqr_enterpriseService.Update(model);
@@ -113,6 +113,14 @@ namespace QRCode.FEW.Controllers
             {
                 return false;
             }
+        }
+        private string setImg(string imgOld, string inputSrc)
+        {
+            Helper helper = new Helper();
+            string gt = helper.CopyFileImg(imgOld, inputSrc, FORDERConstant.enterprise_tmp, FORDERConstant.enterprise);
+            if (string.IsNullOrEmpty(gt))
+                return imgOld;
+            return gt;
         }
         [HttpDelete]
         [Route("Delete")]
@@ -160,11 +168,15 @@ namespace QRCode.FEW.Controllers
                 Helper helper = new Helper();
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-                var folderName = helper.path_file("enterprise");
+                var folderName = helper.path_file(FORDERConstant.enterprise_tmp);
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var filearr = fileName.Split('.');
+                    string duoifile = filearr[filearr.Length - 1];
+                    string tenfile = FORDERConstant.enterprise_tmp + DateTime.Now.ToString("yyyyMMddHHmmss");
+                    fileName = tenfile + "." + duoifile;
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
                     dbPath = dbPath.Replace("\\", "/");

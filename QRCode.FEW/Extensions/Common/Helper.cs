@@ -35,5 +35,53 @@ namespace QRCode.FEW.Extensions.Common
             };
             return list_pack;
         }
+        public string CopyFileImg(string fileold, string fileFrom, string forder_from, string forder_copy)
+        {
+            if (fileold == fileFrom)
+            {
+                return fileold;
+            }
+            else
+            {
+                try
+                {
+
+                    if (string.IsNullOrEmpty(fileFrom))
+                    {
+                        return fileFrom;
+                    }
+                    else
+                    {
+                        string str_from = path_file(forder_from).Replace("\\","/");
+                        string str_to = path_file(forder_copy).Replace("\\", "/");
+
+                        string fileTo = replacelink(fileFrom, forder_from, forder_copy);
+
+                        string link_from = replacelink(fileFrom, "./assets/qr_image/"+  forder_from, str_from);
+                        string link_to = replacelink(fileTo, "./assets/qr_image/"+ forder_copy, str_to);
+
+                        bool fileexist = File.Exists(link_to);
+                        if (!fileexist)
+                            System.IO.File.Copy(link_from, link_to);
+                        return fileTo;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return fileold;
+                }
+            }
+        }
+        public string replacelink(string inputtxt, string ipold, string ipnew)
+        {
+            return inputtxt.Replace(ipold, ipnew);
+        }
+    }
+    public class FORDERConstant
+    {
+        public const string Product_tmp = "products_tmp";
+        public const string Product = "products";
+        public const string enterprise = "enterprise";
+        public const string enterprise_tmp = "enterprise_tmp";
     }
 }

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class productController : ControllerBase
@@ -169,7 +169,7 @@ namespace QRCode.FEW.Controllers
                 nhom = "macdinh",
                 Title = "Doanh nghiệp",
                 type = "dropdown",
-                value_ip = product_it.enterpriseid.ToString()
+                value_ip = product_it.enterpriseid == 0? "": product_it.enterpriseid.ToString()
             };
             data.Add(enterprise_sp);
             productdetail img_daidien = new productdetail
@@ -370,13 +370,13 @@ namespace QRCode.FEW.Controllers
                 product_it.name = product_up.name;
                 product_it.code = product_up.code;
                 product_it.category = product_up.category;
-                product_it.url_img = product_up.url_img;
-                product_it.url_video = product_up.url_video;
-                product_it.url_iso = product_up.url_iso;
-                product_it.url_barcode = product_up.url_barcode;
+                product_it.url_img = setImg(product_it.url_img, product_up.url_img);
+                product_it.url_video = setImg(product_it.url_video, product_up.url_video);
+                product_it.url_iso = setImg(product_it.url_iso, product_up.url_iso);
+                product_it.url_barcode = setImg(product_it.url_barcode, product_up.url_barcode);
                 product_it.price = product_up.price;
                 product_it.slogan = product_up.slogan;
-                product_it.logo = product_up.logo;
+                product_it.logo = setImg(product_it.logo, product_up.logo);
                 product_it.des_story = product_up.des_story;
                 product_it.des_pack = product_up.des_pack;
                 product_it.des_element = product_up.des_element;
@@ -408,17 +408,18 @@ namespace QRCode.FEW.Controllers
         {
             try
             {
+
                 product product_it = new product();
                 product_it.name = product_up.name;
                 product_it.code = product_up.code;
                 product_it.category = product_up.category;
-                product_it.url_img = product_up.url_img;
-                product_it.url_video = product_up.url_video;
-                product_it.url_iso = product_up.url_iso;
-                product_it.url_barcode = product_up.url_barcode;
+                product_it.url_img = setImg("", product_up.url_img);
+                product_it.url_video = setImg("", product_up.url_video);
+                product_it.url_iso = setImg("", product_up.url_iso);
+                product_it.url_barcode = setImg("", product_up.url_barcode);
                 product_it.price = product_up.price;
                 product_it.slogan = product_up.slogan;
-                product_it.logo = product_up.logo;
+                product_it.logo = setImg("", product_up.logo);
                 product_it.des_story = product_up.des_story;
                 product_it.des_pack = product_up.des_pack;
                 product_it.des_element = product_up.des_element;
@@ -437,6 +438,14 @@ namespace QRCode.FEW.Controllers
             {
                 return false;
             }
+        }
+        private string setImg(string imgOld, string inputSrc)
+        {
+            Helper helper = new Helper();
+            string gt = helper.CopyFileImg(imgOld, inputSrc, FORDERConstant.Product_tmp, FORDERConstant.Product);
+            if (string.IsNullOrEmpty(gt))
+                return imgOld;
+            return gt;
         }
         [HttpDelete]
         [Route("Delete")]
@@ -488,11 +497,15 @@ namespace QRCode.FEW.Controllers
                 Helper helper = new Helper();
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
-                var folderName = helper.path_file("products");
+                var folderName = helper.path_file(FORDERConstant.Product_tmp);
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var filearr = fileName.Split('.');
+                    string duoifile = filearr[filearr.Length - 1];
+                    string tenfile = FORDERConstant.Product + DateTime.Now.ToString("yyyyMMddHHmmss");
+                    fileName = tenfile + "." + duoifile;
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
                     dbPath = dbPath.Replace("\\", "/");
