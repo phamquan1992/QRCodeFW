@@ -48,7 +48,7 @@ export class GencodeComponent implements OnInit {
     qr_name: '',
     qr_obj_name: '',
     qr_tpye: '',
-    pack_name: '',
+    qrpaymentid: '',
     province: '',
     create_date_qr_start: '',
     create_date_qr_end: '',
@@ -203,6 +203,9 @@ export class GencodeComponent implements OnInit {
   }
   pack_name_filter = '';
   loaiQR_filter = '';
+
+  loaiQR_filter_str = '';
+  pack_name_filter_str = '';
   applyFilter() {
     let start_active = this.range_active.controls['start_active'].value || '';
     let end_active = this.range_active.controls['end_active'].value || '';
@@ -212,7 +215,7 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['qr_name'] = this.nameqr_filter;
     this.filter_gencode['qr_obj_name'] = this.nameobj_filter;
     this.filter_gencode['qr_tpye'] = this.loaiQR_filter;
-    this.filter_gencode['pack_name'] = this.pack_name_filter;
+    this.filter_gencode['qrpaymentid'] = this.pack_name_filter;
     this.filter_gencode['create_date_qr_start'] = start_active;
     this.filter_gencode['create_date_qr_end'] = end_active;
     this.filter_gencode['exp_date_start'] = start_exp;
@@ -224,7 +227,7 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['qr_name'] = '';
     this.filter_gencode['qr_obj_name'] = '';
     this.filter_gencode['qr_tpye'] = '';
-    this.filter_gencode['pack_name'] = '';
+    this.filter_gencode['qrpaymentid'] = '';
     this.filter_gencode['create_date_qr_start'] = '';
     this.filter_gencode['create_date_qr_end'] = '';
     this.filter_gencode['exp_date_start'] = '';
@@ -235,16 +238,28 @@ export class GencodeComponent implements OnInit {
     this.nameobj_filter = '';
     this.loaiQR_filter = '';
     this.pack_name_filter = '';
+    this.str_loaiQR = '';
+    this.str_pack = '';
     this.range_active.controls['start_active'].setValue('');
     this.range_active.controls['end_active'].setValue('');
-    this.range_active.controls['start_exp'].setValue('');
-    this.range_active.controls['end_exp'].setValue('');
+    this.range_exp.controls['start_exp'].setValue('');
+    this.range_exp.controls['end_exp'].setValue('');
   }
+  str_pack = '';
+  str_loaiQR = '';
   setval_loaiQR(gt: any) {
     this.loaiQR_filter = gt;
+    if (gt != '' && gt != null)
+      this.str_loaiQR = this.arr_filter_loaiQR.filter(t => t.name == gt)[0].mota;
+    else
+      this.str_loaiQR = '';
   }
   setval_packname(gt: any) {
     this.pack_name_filter = gt;
+    if (gt != '' && gt != null)
+      this.str_pack = this.arr_filter_pack.filter(t => t.name == gt)[0].mota;
+    else
+      this.str_pack = '';
   }
   input1_change(event: any) {
   }
@@ -253,9 +268,11 @@ export class GencodeComponent implements OnInit {
       let searchTerms = JSON.parse(filter);
       let isFilterSet = false;
       for (const col in searchTerms) {
+
         if (searchTerms[col].toString() !== '') {
           isFilterSet = true;
         } else {
+
           delete searchTerms[col];
         }
       }
@@ -266,39 +283,49 @@ export class GencodeComponent implements OnInit {
           let found = false;
           for (const col in searchTerms) {
             if (col == 'create_date_qr_start' || col == 'create_date_qr_end') {
-              debugger
               const temp_date = new Date(searchTerms[col]);
-
               let data_date = new Date(data['create_date_qr']);
               if (col == 'create_date_qr_start') {
                 temp_date.setHours(0, 0, 0);
                 if (temp_date <= data_date) {
                   found = true
+                }else {
+                  found = false;
                 }
               }
               if (col == 'create_date_qr_end') {
                 temp_date.setHours(23, 59, 59);
                 if (temp_date >= data_date) {
                   found = true
+                }else {
+                  found = false;
                 }
               }
             } else if (col == 'exp_date_start' || col == 'exp_date_end') {
               const temp_date = new Date(searchTerms[col]);
               let data_date = new Date(data['exp_date']);
               if (col == 'exp_date_start') {
-                if (temp_date >= data_date) {
+                temp_date.setHours(0, 0, 0);
+                if (temp_date <= data_date) {
                   found = true
+                } else {
+                  found = false;
                 }
               }
               if (col == 'exp_date_end') {
-                if (temp_date <= data_date) {
+                temp_date.setHours(23, 59, 59);
+                if (temp_date >= data_date) {
                   found = true
+                } else {
+                  found = false;
                 }
               }
             }
             else {
               if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
                 found = true
+              } else {
+                found = false;
               }
             }
             arr.push(found);
@@ -349,5 +376,17 @@ export class GencodeComponent implements OnInit {
     console.log(id);
     this.router.navigate(['/portal/hisqr/' + id]);
   }
+  number_change(event: Event, name: string) {
+    var inputData = (<HTMLInputElement>event.target).value;
 
+    //replace more than one dot
+    var extractedFte = inputData.replace(/[^0-9.]/g, '').replace('.', '')
+      .replace(/\./g, '').replace('x', '.');
+
+    //Extract nuber Values
+    extractedFte = extractedFte.replace(/^(\d+)\d*$/, "$1");
+
+    //Reasign to same control
+    (<HTMLInputElement>event.target).value = extractedFte;
+  }
 }

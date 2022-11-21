@@ -8,19 +8,19 @@
     <div class="w-[250px] mr-[6px]">
         <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
         bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên QR Code"
-            [(ngModel)]="nameqr_filter">
+            [(ngModel)]="nameqr_filter" (focusout)="nameqr_filter=nameqr_filter.trim()">
     </div>
     <div class="w-[250px] mr-[6px]">
         <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên đối tượng"
-            [(ngModel)]="nameobj_filter">
+            [(ngModel)]="nameobj_filter" (focusout)="nameobj_filter=nameobj_filter.trim()">
     </div>
     <div class="w-[250px] inline-block mr-[6px]">
-        <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_loaiQR"
+        <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_loaiQR" [value_input]="str_loaiQR"
             [placeholder_str]="'Loại QR Code'"></app-autocompleinput>
     </div>
     <div class="w-[250px] inline-block mr-[6px]">
-        <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_pack"
+        <app-autocompleinput (val_out)="setval_packname($event)" [data]="arr_filter_pack" [value_input]="str_pack"
             [placeholder_str]="'Gói dịch vụ'" class="w-[250px]"></app-autocompleinput>
     </div>
     <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
@@ -28,10 +28,10 @@
             class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75]"
             style="display:inline-block;width:100%;text-align: center;opacity: 1;">
             <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
-                formControlName="start_active" (keyup)="input1_change($event)"
+                formControlName="start_active" (keyup)="number_change($event,'start_active')"
                 (focusout)="checkinput_date($event.target)" />
             <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_active"
-                (focusout)="checkinput_date($event.target)" />
+                (focusout)="checkinput_date($event.target)"(keyup)="number_change($event,'end_active')" />
         </mat-date-range-input>
         <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
         <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker.open()"></i>
