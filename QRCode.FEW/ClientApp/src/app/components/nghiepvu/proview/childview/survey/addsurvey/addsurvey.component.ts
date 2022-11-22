@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { cauhoi } from 'src/app/models/cauhoi';
 
 @Component({
@@ -10,10 +10,8 @@ import { cauhoi } from 'src/app/models/cauhoi';
 export class AddsurveyComponent implements OnInit {
   arr_cauhoi: cauhoi[] = [];
   DataForm: FormGroup = new FormGroup({});
-  constructor() { 
-    this.arr_cauhoi = [
+  constructor() {
 
-    ];
   }
 
   ngOnInit(): void {
@@ -21,17 +19,19 @@ export class AddsurveyComponent implements OnInit {
   show_menu = false;
   them_cauhoi(type_ip: string) {
     let max_val = this.arr_cauhoi.length == 0 ? 1 : Math.max(...this.arr_cauhoi.map(t => t.visible_index)) + 1;
-    let tmpIit = {
+    let key_cauhoi = 'cau' + max_val;
+    let tmpIit: cauhoi = {
       noidung: '',
       dapan: { key: '', value: '' },
       element: [{ key: 'dapan1', value: '' }],
-      name: '',
+      name: key_cauhoi,
       type: type_ip,
       visible_index: max_val
     };
     if (type_ip == 'dropdown' || type_ip == 'luachon' || type_ip == 'images') {
       tmpIit.element.push({ key: 'dapan2', value: '' });
     }
+    this.DataForm.addControl(key_cauhoi, new FormControl(tmpIit, null));
     this.arr_cauhoi.push(tmpIit);
     this.show_menu = false;
   }
@@ -58,11 +58,14 @@ export class AddsurveyComponent implements OnInit {
   }
   move_index(vt: number, act: string) {
     let cur_id = this.arr_cauhoi.findIndex(t => t.visible_index == vt);
+    console.log(vt);
     if (act == 'up') {
       if (vt != 1) {
         this.arr_cauhoi[cur_id].visible_index = vt - 1;
+        this.arr_cauhoi[cur_id].name = 'cau' + (vt - 1);
         let cur_pre = this.arr_cauhoi.findIndex(t => t.visible_index == vt - 1);
         this.arr_cauhoi[cur_pre].visible_index = vt;
+        this.arr_cauhoi[cur_pre].name = 'cau' + vt;
       }
     }
     if (act == 'down') {
@@ -70,9 +73,14 @@ export class AddsurveyComponent implements OnInit {
         let id_tem = vt + 1
         let cur_next = this.arr_cauhoi.findIndex(t => t.visible_index == id_tem);
         this.arr_cauhoi[cur_id].visible_index = id_tem;
+        this.arr_cauhoi[cur_id].name = 'cau' + id_tem;
         this.arr_cauhoi[cur_next].visible_index = vt;
+        this.arr_cauhoi[cur_next].name = 'cau' + vt;
       }
     }
     this.arr_cauhoi = this.arr_cauhoi.sort((a, b) => (a.visible_index > b.visible_index) ? 1 : -1);
+  }
+  save_cauhoi() {
+    console.log(JSON.stringify(this.arr_cauhoi));
   }
 }

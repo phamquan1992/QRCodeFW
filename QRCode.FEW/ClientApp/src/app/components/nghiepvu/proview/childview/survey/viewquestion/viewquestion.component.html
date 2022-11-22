@@ -5,7 +5,8 @@
         <i class="fa fa-question-circle mr-[21px]" aria-hidden="true"></i>
     </div>
     <div class="py-5 px-3" [ngSwitch]="cauhoi_in.type">
-        <span class="block text-center w-full font-semibold text-sm font-[Roboto]">{{cauhoi_in.noidung}}</span>
+        <span
+            class="block text-center w-full font-semibold text-sm font-[Roboto] break-words">{{cauhoi_in.noidung}}</span>
         <div *ngSwitchCase="'luachon'">
             <div class="my-[10px] items-center justify-center" *ngFor="let it of cauhoi_in.element">
                 <div class="inline-block relative w-[13px] h-[13px]">
@@ -37,16 +38,16 @@
             <i class="fa fa-angle-down absolute top-[11px] right-1" aria-hidden="true"></i>
         </div>
         <div *ngSwitchCase="'images'">
-            <div class="flex flex-wrap">
+            <div class="flex flex-wrap mt-2">
                 <div *ngFor="let it of cauhoi_in.element" class="flex flex-col w-[30%] mx-[10%]">
                     <div class="box-border border">
-                        <img height="90" style="width: 90px; height: 90px;" width="90"
-                        src="./assets/images/stran.png" alt="">
+                        <img height="90" style="width: 90px; height: 90px;" width="90" src="./assets/images/stran.png"
+                            alt="">
                     </div>
-                    
                     <input type="checkbox" name="" id="" class="my-[10px]">
+                    <span class="text-center text-xs break-words">{{it.value}}</span>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </div>

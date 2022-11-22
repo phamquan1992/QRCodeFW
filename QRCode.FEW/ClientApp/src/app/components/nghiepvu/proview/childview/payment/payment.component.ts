@@ -55,7 +55,7 @@ export class PaymentComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.filterPredicate = this.createFilter();
       this.loading$ = false;
-    });
+    });   
   }
   applyFilter() {
     let start_create = this.range_exp.controls['start_exp'].value || '';
