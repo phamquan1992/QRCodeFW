@@ -33,7 +33,8 @@ namespace QRCode.FEW.Controllers
         [Route("Login")]
         public NGUOIDUNG Login(string user, string pass)
         {
-            var nd = _IuserdataService.GetAll().FirstOrDefault(t => (t.sdt == user || t.email == user) && t.password == pass);
+            var listuser = _IuserdataService.GetAll().ToList();
+            var nd = listuser.FirstOrDefault(t => (t.sdt.ToUpper() == user.ToUpper() || t.email.ToUpper() == user.ToUpper()) && t.password == pass);
             if (nd != null && nd.userid != 0)
             {
                 NGUOIDUNG nguoidung = new NGUOIDUNG
