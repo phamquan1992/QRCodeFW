@@ -274,7 +274,7 @@ export class CompanyviewComponent implements OnInit {
     let time_gen = this.datepipe.transform(this.now, 'yyyyMMddHHmmss');
     let id_str = time_gen + dataid + paymentid;
     this.code_tmp = 'E' + id_str;
-    let url = this.str_url + 'views/' + typecode + '/' + id_str;
+    let url = this.str_url + 'views/' + typecode + '/' + this.code_tmp;
     this.data = url;
   }
   convert_img_qrcode() {
