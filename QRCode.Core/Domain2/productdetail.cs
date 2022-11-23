@@ -93,4 +93,24 @@ namespace QRCode.Core.Domain2
         public DateTime? created_date { get; set; }
         public DateTime? payment_date { get; set; }
     }
+    public class element_value
+    {
+        public string key { get; set; }
+        public string value { get; set; }
+        public string mota { get; set; }
+    }
+    public class cauhoi
+    {
+        public string name { get; set; }
+        public int visible_index { get; set; }
+        public string noidung { get; set; }
+        public string type { get; set; }
+        public element_value[] element { get; set; }
+        public element_value dapan { get; set; }
+    }
+    public class survey_view
+    {
+        public qr_survey object_edit { get; set; }
+        public List<cauhoi> list_cauhoi { get; set; }
+    }
 }
