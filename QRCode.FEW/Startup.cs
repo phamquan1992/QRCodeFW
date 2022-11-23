@@ -49,6 +49,7 @@ namespace QRCode.FEW
             services.AddScoped<Iqr_gencodeRepository, qr_gencodeRepository>();
             services.AddScoped<IsectorsRepository, sectorsRepository>();
             services.AddScoped<Iqr_his_scanRepository, qr_his_scanRepository>();
+            services.AddScoped<Iqr_surveyRepository, qr_surveyRepository>();
             #endregion
             #region Services
             services.AddScoped<IproductService, productService>();
@@ -60,6 +61,7 @@ namespace QRCode.FEW
             services.AddScoped<Iqr_gencodeService, qr_gencodeService>();
             services.AddScoped<IsectorsService, sectorsService>();
             services.AddScoped<Iqr_his_scanService, qr_his_scanService>();
+            services.AddScoped<Iqr_surveyService, qr_surveyService>();
             #endregion
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
