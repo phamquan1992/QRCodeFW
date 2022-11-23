@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { SurveyRoutingModule } from './survey-routing.module';
 import { SurveyComponent } from './survey.component';
 import { CauhoiComponent } from './cauhoi/cauhoi.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ViewquestionComponent } from './viewquestion/viewquestion.component';
 import { ShowquestionComponent } from './showquestion/showquestion.component';
 import { AddsurveyComponent } from './addsurvey/addsurvey.component';
@@ -16,6 +15,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -44,7 +44,8 @@ export const MY_DATE_FORMAT = {
     MatNativeDateModule,
     MatTableModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    FormsModule
   ],
   providers:[
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },

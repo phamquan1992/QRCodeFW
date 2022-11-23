@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { invalid } from 'moment';
 import { cauhoi } from 'src/app/models/cauhoi';
+import { nguoidung } from 'src/app/models/nguoidung';
+import { qr_survey } from 'src/app/models/qr_survey';
+import { MessageService } from 'src/app/services/message.service';
+import { ObservableService } from 'src/app/services/observable.service';
+import { SurveyService } from 'src/app/services/survey.service';
 
 @Component({
   selector: 'app-addsurvey',
@@ -10,11 +16,16 @@ import { cauhoi } from 'src/app/models/cauhoi';
 export class AddsurveyComponent implements OnInit {
   arr_cauhoi: cauhoi[] = [];
   DataForm: FormGroup = new FormGroup({});
-  constructor() {
+  ten_khao_sat = '';
+  user_info!: nguoidung;
+  constructor(private sharingSrv: ObservableService, private surveySrv: SurveyService, private messSrv: MessageService) {
 
   }
 
   ngOnInit(): void {
+    this.sharingSrv.getUserInfo().subscribe(t => {
+      this.user_info = t;
+    });
   }
   show_menu = false;
   them_cauhoi(type_ip: string) {
@@ -80,7 +91,39 @@ export class AddsurveyComponent implements OnInit {
     }
     this.arr_cauhoi = this.arr_cauhoi.sort((a, b) => (a.visible_index > b.visible_index) ? 1 : -1);
   }
+  get invalid_cauhoi() {
+    let count_arr = this.arr_cauhoi.filter(t => t.noidung === '' || (t.noidung !== "" && t.type !== 'text' && t.type != 'textarea' && t.element.filter(v => v.value === '').length != 0));
+    if (this.ten_khao_sat === '' || count_arr.length !== 0) {
+      return false;
+    } else
+      return true;
+  }
   save_cauhoi() {
     console.log(JSON.stringify(this.arr_cauhoi));
+    let count_arr = this.arr_cauhoi.filter(t => t.noidung === '' || (t.noidung !== "" && t.type !== 'text' && t.type != 'textarea' && t.element.filter(v => v.value === '').length != 0));
+    if (this.ten_khao_sat === '' || count_arr.length != 0) {
+      this.messSrv.error("Bạn chưa nhập đầy đủ thông tin!");
+      return;
+    }
+    // let obj_new: qr_survey = {
+    //   qrsurveyid: 0,
+    //   name: this.ten_khao_sat,
+    //   code: '',
+    //   status: true,
+    //   additional: JSON.stringify(this.arr_cauhoi),
+    //   start_date: new Date(),
+    //   end_date: new Date(),
+    //   created_date: new Date(),
+    //   created_by: Number(this.user_info.id),
+    //   lastcreated_date: new Date(),
+    //   lastcreated_by: 0
+    // };
+    // this.surveySrv.add_survey(obj_new).subscribe(t => {
+    //   if(t){
+    //     this.messSrv.success("Bạn đã thực hiện thành công!");
+    //   }else{
+    //     this.messSrv.error("Có lỗi trong quá trình xử lý dữ liệu!");
+    //   }
+    // });
   }
 }

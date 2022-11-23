@@ -43,13 +43,30 @@ export class CauhoiComponent implements OnInit {
   }
   change_noidung(nd: any) {
     this.cauhoi_in.noidung = nd.value;
+    this.is_valid_nd = this.cauhoi_in.noidung == "" ? false : true;
   }
   change_traloi(event: any, str_key: string) {
     let gt_index = this.cauhoi_in.element.findIndex(t => t.key == str_key);
     this.cauhoi_in.element[gt_index].value = event.target.value;
   }
+  is_valid_nd = true;
   focusout_nd(nd: any) {
     this.cauhoi_in.noidung = nd.value.trim();
+    this.is_valid_nd = this.cauhoi_in.noidung == "" ? false : true;
+  }
+  arr_err: string[] = [];
+  focusout_traloi(event: any, name: string) {
+    let gt = event.target.value.trim();
+    event.target.value = gt;
+    if (event.target.value === "")
+      this.arr_err.push(name);
+    else {
+      let index_item = this.arr_err.indexOf(name);
+      this.arr_err.splice(index_item, 1);
+    }
+  }
+  is_valid_traloi(name: string) {
+    return this.arr_err.indexOf(name) != -1;
   }
   // showDialog(gt: string) {
   //   let data_show: data_upload = {

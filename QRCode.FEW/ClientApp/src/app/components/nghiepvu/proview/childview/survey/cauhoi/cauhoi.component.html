@@ -8,6 +8,11 @@
         <input type="text" #title value="{{cauhoi_in.noidung}}" (keyup)="change_noidung(title)"
             (focusout)="focusout_nd(title)" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
+        <div *ngIf="!is_valid_nd">
+            <span class="text-red-600 text-xs italic">
+                Câu hỏi không được để trống!
+            </span>
+        </div>
         <div [ngSwitch]="cauhoi_in.type">
             <div *ngSwitchCase="'luachon'">
                 <div *ngFor="let it of cauhoi_in.element; let i = index">
@@ -16,11 +21,16 @@
                     <div class="relative">
                         <input type="text" [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
                             bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]"
-                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)">
+                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)" (focusout)="focusout_traloi($event,it.key)">
                         <div [ngClass]="{'hidden':i<=1,'block':i>1}">
                             <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
                                 aria-hidden="true" (click)="delete_cautl(it.key)"></i>
                         </div>
+                    </div>
+                    <div *ngIf="is_valid_traloi(it.key)">
+                        <span class="text-red-600 text-xs italic">
+                            Câu trả lời không được để trống!
+                        </span>
                     </div>
                 </div>
                 <button (click)="them_cautl()" class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] 
@@ -34,11 +44,16 @@
                     <div class="relative">
                         <input type="text" [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
                             bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]"
-                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)">
+                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)" (focusout)="focusout_traloi($event,it.key)">
                         <div [ngClass]="{'hidden':i<=1,'block':i>1}">
                             <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
                                 aria-hidden="true" (click)="delete_cautl(it.key)"></i>
                         </div>
+                    </div>
+                    <div *ngIf="!is_valid_traloi(it.key)">
+                        <span class="text-red-600 text-xs italic">
+                            Câu trả lời không được để trống!
+                        </span>
                     </div>
                 </div>
                 <button (click)="them_cautl()" class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] 
@@ -56,13 +71,19 @@
                     <div class="grow relative h-auto align-top box-border mt-1">
                         <label for="" class="block text-sm font-bold text-[13px] font-[Roboto]"> Nhập mô tả</label>
                         <div class="relative">
-                            <input type="text" value="" [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
+                            <input type="text" value=""
+                                [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
                             bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]"
                                 (keyup)="change_traloi($event,it.key)">
                             <div [ngClass]="{'hidden':i<=1,'block':i>1}">
                                 <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
                                     aria-hidden="true" (click)="delete_cautl(it.key)"></i>
                             </div>
+                        </div>
+                        <div *ngIf="!is_valid_traloi(it.key)">
+                            <span class="text-red-600 text-xs italic">
+                                Mô tả không được để trống!
+                            </span>
                         </div>
                     </div>
 
