@@ -83,5 +83,7 @@ namespace QRCode.FEW.Extensions.Common
         public const string Product = "products";
         public const string enterprise = "enterprise";
         public const string enterprise_tmp = "enterprise_tmp";
+        public const string survey = "survey";
+        public const string survey_tmp = "survey_tmp";
     }
 }

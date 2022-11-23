@@ -56,7 +56,8 @@ export class SigninComponent implements OnInit {
       body: "<div><h2>Bạn đã đăng ký tài khoản tại trang web của chúng tôi</h2></div><div>Số điện thoại: " + sdt_xacnhan + "</div><div>Mật khẩu: " + pass_xacnhan + "</div><div>Vui lòng vào link dưới để xác nhận đăng ký</div><div><a href='" + url_xacnhan + "'>Bấm vào đây để kích hoạt tài khoản</a><div>",
     };
     let kq: result_object = {
-      result: ''
+      result: '',
+      error: ''
     };
     this.dataSrc.post('SendMail/Send', mail_objet).subscribe(t => {
       kq = t as result_object;

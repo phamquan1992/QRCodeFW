@@ -1,18 +1,52 @@
 <div class="border-t border-solid border-[#e8e8e8]">
     <ul class="leading-[46px] whitespace-nowrap border-b border-solid border-[#e8e8e8] shadow-none
     box-border bg-white outline-0">
-        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">Thêm mới khảo sát
+        <li class="relative top-[1px] inline-block align-bottom px-5 text-[14px] text-[#000000a6]">{{str_title}}
         </li>
     </ul>
 </div>
 <div class="bg-[#f0f2f5]">
     <div class="flex flex-row mx-5">
         <div class="w-2/3 mr-5 mt-5">
-            <div class="bg-white w-full mb-5 p-4 shadow-lg">
-                <label for="" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">Tên khảo sát</label>
-                <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                    [(ngModel)]="ten_khao_sat" (focusout)="ten_khao_sat=ten_khao_sat.trim()">
+            <div class="bg-white w-full mb-5 p-4 shadow-lg grid grid-cols-4 gap-2">
+                <div class="col-span-2">
+                    <label for="" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">
+                        <span>Tên khảo sát</span>
+                        <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span> </span>
+                    </label>
+                    <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                        [(ngModel)]="ten_khao_sat" (focusout)="invaild_tenkhaosat()" (keyup)="khaosat_keyup()">
+                    <div *ngIf="!isvalid_khaosat">
+                        <span class="text-red-600 text-xs italic">
+                            Tên khảo sát không được để trống!
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <label for="" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">Ngày bắt đầu</label>
+                    <div class="w-full text-ellipsis relative inline-block leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
+                        <input #ngaychon matInput [matDatepicker]="picker" class="bg-white text-center w-full h-full"
+                            [(ngModel)]="ngay_bd" (keyup)="number_change($event)"
+                            (focusout)="checkinput_date($event.target)">
+                        <mat-datepicker #picker></mat-datepicker>
+                        <i class="fa fa-angle-down absolute top-[3px] right-0 p-2" aria-hidden="true"
+                            (click)="picker.open()"></i>
+                    </div>
+                </div>
+                <div>
+                    <label for="" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">Ngày kết thúc</label>
+                    <div class="w-full text-ellipsis relative inline-block leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
+                        <input #ngaychon matInput [matDatepicker]="picker2" class="bg-white text-center w-full h-full"
+                            [(ngModel)]="ngay_kt" (keyup)="number_change($event)"
+                            (focusout)="checkinput_date($event.target)">
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <i class="fa fa-angle-down absolute top-[3px] right-0 p-2" aria-hidden="true"
+                            (click)="picker2.open()"></i>
+                    </div>
+                </div>
             </div>
             <form class="bg-white  shadow-lg min-h-[600px]" [formGroup]="DataForm">
                 <div class="bg-[#124b9f] h-10 text-center items-center justify-center flex">
@@ -62,9 +96,13 @@
     </div>
 </div>
 <div class="flex justify-center bg-[#f0f2f5]">
-    <button (click)="save_cauhoi()" class="w-32 mt-3 leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px]
-     text-white text-[13px] mr-[5px] my-[5px]" [attr.disabled]="invalid_cauhoi ? '' : null"
-        [ngClass]="{'bg-[#839dc4]': invalid_cauhoi,'bg-[#124b9f]': !invalid_cauhoi}">
+    <button (click)="save_cauhoi()" class="w-32 mt-3 leading-[1.5] relative inline-block font-normal text-center h-8 px-[15px]
+     text-white text-[13px] mr-[5px] my-[5px]" [attr.disabled]="!invalid_cauhoi ? '' : null"
+        [ngClass]="{'bg-[#839dc4] cursor-not-allowed': !invalid_cauhoi,'bg-[#124b9f] cursor-pointer': invalid_cauhoi}">
         Lưu lại
     </button>
+    <button (click)="back_home()" class="w-32 mt-3 leading-[1.5] relative inline-block font-normal text-center h-8 px-[15px] bg-[#124b9f] cursor-pointer
+    text-white text-[13px] mr-[5px] my-[5px]">
+       Quay lại
+   </button>
 </div>

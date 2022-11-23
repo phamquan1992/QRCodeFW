@@ -9,6 +9,7 @@ const routes: Routes = [{
   children: [
     { path: 'list', component: SurveylistComponent },
     { path: 'add', component: AddsurveyComponent },
+    { path: 'edit/:id', component: AddsurveyComponent },
     { path: '', redirectTo: 'list', pathMatch: 'full' }
   ]
 }];

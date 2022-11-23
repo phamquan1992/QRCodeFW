@@ -46,7 +46,8 @@ export class ResetmailComponent implements OnInit {
       body: '',
     };
     let kq: result_object = {
-      result: ''
+      result: '',
+      error: ''
     };
     this.dataSrc.put('SendMail/ResetPass', mail_objet).subscribe(t => {
       kq = t as result_object;

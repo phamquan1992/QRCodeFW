@@ -1,3 +1,4 @@
+<app-loadingpage *ngIf="loading$"></app-loadingpage>
 <div class="layoutQ px-[1px] py-[15px]">
     <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
         Khảo sát
@@ -15,28 +16,25 @@
 <section class="bg-[#8080801c] px-[15px]">
     <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên khảo sát...">
-    <div class="inline-block relative">
-        <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-            placeholder="---Nhóm khảo sát---">
-        <i class="fa fa-angle-down absolute right-3 top-3" aria-hidden="true"></i>
-    </div>
+        placeholder="Tên khảo sát..." [(ngModel)]="ten_filter">
     <div class="inline-block relative">
         <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
             placeholder="---Trạng thái---">
         <i class="fa fa-angle-down absolute right-3 top-3" aria-hidden="true"></i>
     </div>
-    <div class="w-[222px] text-ellipsis relative inline-block leading-[1.5] 
-    bg-white border border-solid border-[#d9d9d9] text-[13px] mr-1">
-        <mat-date-range-input [rangePicker]="picker"
-            style="display:inline-block;width:220px;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="Ngày tạo: Từ ngày" style="width: 100%; font-size: 13px; top: 4px;"
-                (click)="picker.open()" />
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" (click)="picker.open()" />
+    <div class="w-[336px] relative leading-[1.5]  text-[13px] mr-1 inline-block">
+        <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
+            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.5] "
+            style="display:inline-block;width:100%;text-align: center;opacity: 1;">
+            <input matStartDate placeholder="Ngày tạo: Từ ngày" style="width: 100%; font-size: 13px;"
+                formControlName="start_exp" (focusout)="checkinput_date($event.target)"
+                (keyup)="number_change($event,'start_exp')" />
+            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_exp"
+                (focusout)="checkinput_date($event.target)" (keyup)="number_change($event,'end_exp')" />
         </mat-date-range-input>
-        <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
+        <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
+        <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>
     </div>
     <button
         class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
@@ -51,9 +49,6 @@
         <button (click)="add_action()"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Thêm
             mới</button>
-        <button
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Tạo
-            nhóm</button>
     </section>
     <section>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
@@ -73,51 +68,87 @@
                 </td>
             </ng-container>
 
-            <!-- Position Column -->
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]"> Tên
                     khảo sát </th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f]"
-                    style="padding: 4px;"> {{element.name}} </td>
+                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] font-[Roboto]"
+                    style="padding: 4px;"> {{element.object_edit.name}} </td>
             </ng-container>
 
-            <!-- Name Column -->
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef
                     class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto]">
                     Trạng thái
                 </th>
-                <td mat-cell *matCellDef="let element" class="border border-solid border-[#0000001f] text-center"
-                    style="padding: 4px;" [ngSwitch]="element.status">
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center font-[Roboto]" style="padding: 4px;"
+                    [ngSwitch]="element.object_edit.status">
                     <span class="text-sm font-[Roboto]" *ngSwitchCase="false">Bị chặn</span>
                     <span class="text-sm font-[Roboto]" *ngSwitchCase="true">Kích hoạt</span>
                 </td>
             </ng-container>
 
-            <!-- Weight Column -->
+            <ng-container matColumnDef="count_question">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold font-[Roboto] w-[100px]">
+                    Số câu hỏi</th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] text-center font-[Roboto]" style="padding: 4px;">
+                    {{element.list_cauhoi.length}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="userdate">
                 <th mat-header-cell *matHeaderCellDef
-                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[300px] font-[Roboto]">
-                    Ngày cập nhật</th>
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[150px] font-[Roboto]">
+                    Ngày tạo</th>
                 <td mat-cell *matCellDef="let element"
-                    class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    {{element.userdate}} </td>
+                    class="border border-solid border-[#0000001f] break-all text-center font-[Roboto]"
+                    style="padding: 4px;">
+                    {{element.object_edit.created_date|date: 'dd/MM/yyyy HH:mm:ss'}} </td>
             </ng-container>
+
+            <ng-container matColumnDef="start_date">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[120px] font-[Roboto]">
+                    Ngày bắt đầu</th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] break-all text-center font-[Roboto]"
+                    style="padding: 4px;">
+                    {{element.object_edit.start_date|date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="end_date">
+                <th mat-header-cell *matHeaderCellDef
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[120px] font-[Roboto]">
+                    Ngày kết thúc</th>
+                <td mat-cell *matCellDef="let element"
+                    class="border border-solid border-[#0000001f] break-all text-center font-[Roboto]"
+                    style="padding: 4px;">
+                    {{element.object_edit.end_date|date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef
-                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[300px] font-[Roboto]">
+                    class="border border-solid border-[#0000001f] text-[#000000d9] text-sm font-bold w-[120px] font-[Roboto]">
                     Hành động</th>
                 <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true" [matTooltip]="'Xoá khảo sát'" [matTooltipPosition]="'above'"></i>
-                    <i class="fa fa-link px-[4px] cursor-pointer text-blue-600" aria-hidden="true" [matTooltip]="'Chi tiết khảo sát'" [matTooltipPosition]="'above'"></i>
-                    <i class="fa fa-share-square-o px-[4px] cursor-pointer text-orange-600" aria-hidden="true" [matTooltip]="'Gắn QR Code'" [matTooltipPosition]="'above'"></i>
+                    <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true"
+                        [matTooltip]="'Xoá khảo sát'" [matTooltipPosition]="'above'"></i>
+                    <i class="fa fa-link px-[4px] cursor-pointer text-blue-600" aria-hidden="true"
+                        [matTooltip]="'Chi tiết khảo sát'" [matTooltipPosition]="'above'"
+                        (click)="show_info(element.object_edit.qrsurveyid)"></i>
+                    <i class="fa fa-share-square-o px-[4px] cursor-pointer text-orange-600" aria-hidden="true"
+                        [matTooltip]="'Gắn QR Code'" [matTooltipPosition]="'above'"></i>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-5"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="show_info(row.object_edit.qrsurveyid)">
             </tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20,50,100]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
     </section>
 </div>

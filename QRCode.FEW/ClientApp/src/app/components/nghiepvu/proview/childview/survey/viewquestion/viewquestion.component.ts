@@ -10,13 +10,13 @@ export class ViewquestionComponent implements OnInit {
 
   constructor() { }
   @Input()
-  cauhoi_in: cauhoi={
+  cauhoi_in: cauhoi = {
     name: '',
     visible_index: 0,
     noidung: 'Test',
     type: 'textarea',
     element: [],
-    dapan: { key: '', value: '' }
+    dapan: { key: '', value: '', mota: '' }
   };
   ngOnInit(): void {
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { qr_survey } from '../models/qr_survey';
+import { reset_obj, result_object } from '../models/optioncs';
+import { qr_survey, survey_view } from '../models/qr_survey';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -10,12 +11,18 @@ export class SurveyService {
 
   constructor(private dataSrc: DataService) { }
   add_survey(data: qr_survey) {
-    return this.dataSrc.post('qr_survey/AddNew', data) as Observable<boolean>;
+    return this.dataSrc.post('qr_survey/AddNew', data) as Observable<result_object>;
   }
   update_survey(data: qr_survey) {
-    return this.dataSrc.put('qr_survey/Update', data) as Observable<boolean>;
+    return this.dataSrc.put('qr_survey/Update', data) as Observable<result_object>;
   }
   active_survey(data: qr_survey) {
     return this.dataSrc.put('qr_survey/KichHoat', data) as Observable<boolean>;
+  }
+  get_object(id: string) {
+    return this.dataSrc.get('qr_survey/GetObject/' + id) as Observable<survey_view>;
+  }
+  get_list(id: string) {
+    return this.dataSrc.get('qr_survey/list/' + id) as Observable<survey_view[]>;
   }
 }

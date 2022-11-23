@@ -2,8 +2,9 @@
     width: calc(50% - 4px);
 }
 ::ng-deep .mat-date-range-input-container{
-    padding-top: 1px;
-    padding-bottom: 4px;
+    width: 100%;
+    justify-content: center;
+    padding-bottom: 2px;
 }
 ::ng-deep .mat-date-range-input-container span{
     opacity: 1 !important;
@@ -36,4 +37,9 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
 }
 ::ng-deep .mat-checkbox-frame{
     border: 1px solid #bdb1b1 !important; 
+}
+
+::ng-deep .mat-date-range-input-start-wrapper {
+    flex-grow: 1;
+    ;
 }

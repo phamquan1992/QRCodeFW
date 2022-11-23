@@ -8,14 +8,16 @@ import { ViewquestionComponent } from './viewquestion/viewquestion.component';
 import { ShowquestionComponent } from './showquestion/showquestion.component';
 import { AddsurveyComponent } from './addsurvey/addsurvey.component';
 import { SurveylistComponent } from './surveylist/surveylist.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 export const MY_DATE_FORMAT = {
   parse: {
     dateInput: 'DD/MM/YYYY',
@@ -45,9 +47,11 @@ export const MY_DATE_FORMAT = {
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
-    FormsModule
+    FormsModule,
+    SharedModule,
+    MatPaginatorModule
   ],
-  providers:[
+  providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },
     {
       provide: DateAdapter,

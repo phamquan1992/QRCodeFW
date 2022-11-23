@@ -45,6 +45,8 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\assets\qr_image\enterprise\" />
     <Folder Include="ClientApp\src\assets\qr_image\gencode\" />
+    <Folder Include="ClientApp\src\assets\qr_image\survey\" />
+    <Folder Include="ClientApp\src\assets\qr_image\survey_tmp\" />
     <Folder Include="ClientApp\src\assets\qr_image\products\" />
     <Folder Include="logs\" />
   </ItemGroup>

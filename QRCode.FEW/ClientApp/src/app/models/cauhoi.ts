@@ -8,7 +8,8 @@ export interface cauhoi {
 }
 export interface element_value {
     key: string;
-    value: string
+    value: string,
+    mota: string
 }
 export interface obj_value_form {
     name: string;

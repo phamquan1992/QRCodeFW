@@ -4,7 +4,10 @@
         <span class="font-[Roboto] text-sm text-white">Câu {{cauhoi_in.visible_index}}</span>
     </div>
     <div class="p-3">
-        <label for="" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">Câu hỏi</label>
+        <label for="" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">
+            <span>Câu hỏi</span>
+            <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span> </span>
+        </label>
         <input type="text" #title value="{{cauhoi_in.noidung}}" (keyup)="change_noidung(title)"
             (focusout)="focusout_nd(title)" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
         bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]">
@@ -16,12 +19,15 @@
         <div [ngSwitch]="cauhoi_in.type">
             <div *ngSwitchCase="'luachon'">
                 <div *ngFor="let it of cauhoi_in.element; let i = index">
-                    <label for="first_name" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">Nhập câu trả
-                        lời</label>
+                    <label for="first_name" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">
+                        <span>Nhập câu trả lời</span>
+                        <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span> </span>
+                    </label>
                     <div class="relative">
                         <input type="text" [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
                             bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]"
-                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)" (focusout)="focusout_traloi($event,it.key)">
+                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)"
+                            (focusout)="focusout_traloi($event,it.key)">
                         <div [ngClass]="{'hidden':i<=1,'block':i>1}">
                             <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
                                 aria-hidden="true" (click)="delete_cautl(it.key)"></i>
@@ -39,18 +45,21 @@
             </div>
             <div *ngSwitchCase="'dropdown'">
                 <div *ngFor="let it of cauhoi_in.element; let i = index">
-                    <label for="first_name" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">Nhập câu trả
-                        lời</label>
+                    <label for="first_name" class="block mb-1 text-sm font-bold text-[13px] font-[Roboto]">
+                        <span>Nhập câu trả lời</span>
+                        <span><span>(</span><span class="text-red-600 align-text-top">*</span><span>)</span> </span>
+                    </label>
                     <div class="relative">
                         <input type="text" [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
                             bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]"
-                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)" (focusout)="focusout_traloi($event,it.key)">
+                            value="{{it.value}}" placeholder="Câu trả lời" (keyup)="change_traloi($event,it.key)"
+                            (focusout)="focusout_traloi($event,it.key)">
                         <div [ngClass]="{'hidden':i<=1,'block':i>1}">
                             <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
                                 aria-hidden="true" (click)="delete_cautl(it.key)"></i>
                         </div>
                     </div>
-                    <div *ngIf="!is_valid_traloi(it.key)">
+                    <div *ngIf="is_valid_traloi(it.key)">
                         <span class="text-red-600 text-xs italic">
                             Câu trả lời không được để trống!
                         </span>
@@ -61,28 +70,33 @@
                         aria-hidden="true"></i> Thêm câu trả lời</button>
             </div>
             <div *ngSwitchCase="'images'">
+                <!-- <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput (change)="uploadFile($event)"
+                    style="display: none;" /> -->
                 <div *ngFor="let it of cauhoi_in.element; let i = index" class="flex flex-row mt-1">
-                    <div class="flex flex-col max-w-[75px] mr-2">
-                        <div class="text-[#124b9f] border border-dashed border-[#124b9f] w-[60px] h-[60px] rounded-[2px] relative flex
-                            items-center justify-center cursor-pointer">
+                    <div class="flex flex-col max-w-[75px] mr-2" (click)="showDialog(it.key)">
+                        <div class="text-[#124b9f] border border-dashed w-[60px] h-[60px] rounded-[2px] relative flex
+                            items-center justify-center cursor-pointer" [style.backgroundImage]="'url('+ it.value+')'"
+                            style="background-size: cover" [ngClass]="{'border-[#124b9f]':!is_valid_traloi(it.key),'border-red-600':is_valid_traloi(it.key)}">
                             <span class="text-[13px] font-[Roboto]">Tải ảnh</span>
                         </div>
                     </div>
                     <div class="grow relative h-auto align-top box-border mt-1">
-                        <label for="" class="block text-sm font-bold text-[13px] font-[Roboto]"> Nhập mô tả</label>
+                        <label for="" class="block text-sm font-bold text-[13px] font-[Roboto]">
+                            <span>Nhập mô tả</span>
+                        </label>
                         <div class="relative">
                             <input type="text" value=""
                                 [ngClass]="{'w-[calc(100%_-_16px)] mr-[16px]':i>1,'w-full':i<=1}" class="text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#124b9f]
                             bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]"
-                                (keyup)="change_traloi($event,it.key)">
+                                [value]="it.mota" (keyup)="change_traloi_img($event,it.key)">
                             <div [ngClass]="{'hidden':i<=1,'block':i>1}">
                                 <i class="fa fa-trash float-left absolute right-0 top-[11px] text-red-600 cursor-pointer"
                                     aria-hidden="true" (click)="delete_cautl(it.key)"></i>
                             </div>
                         </div>
-                        <div *ngIf="!is_valid_traloi(it.key)">
+                        <div *ngIf="is_valid_traloi(it.key)">
                             <span class="text-red-600 text-xs italic">
-                                Mô tả không được để trống!
+                                Ảnh không được để trống!
                             </span>
                         </div>
                     </div>

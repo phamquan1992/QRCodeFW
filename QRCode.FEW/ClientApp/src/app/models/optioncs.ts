@@ -25,6 +25,7 @@ export interface MailRequest {
 }
 export interface result_object {
     result: string;
+    error:string;
 }
 export interface data_upload {
     type_file: string;

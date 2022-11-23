@@ -41,11 +41,12 @@
             <div class="flex flex-wrap mt-2">
                 <div *ngFor="let it of cauhoi_in.element" class="flex flex-col w-[30%] mx-[10%]">
                     <div class="box-border border">
-                        <img height="90" style="width: 90px; height: 90px;" width="90" src="./assets/images/stran.png"
+                        <img height="90" style="width: 90px; height: 90px;" width="90"
+                        [src]="it.value==''?'./assets/images/stran.png':it.value"
                             alt="">
                     </div>
                     <input type="checkbox" name="" id="" class="my-[10px]">
-                    <span class="text-center text-xs break-words">{{it.value}}</span>
+                    <span class="text-center text-xs break-words">{{it.mota}}</span>
                 </div>
             </div>
         </div>

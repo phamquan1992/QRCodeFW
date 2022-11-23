@@ -34,17 +34,19 @@ export class ProductsComponent implements OnInit {
   value_select = 'all';
   name_filter = '';
   user_info!: nguoidung;
+  loading$ = false;
   constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService, private router: Router,
     private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
     this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
+    this.loading$ = true;
     this.productSrc.get_product_list().pipe().subscribe(t => {
       this.data_pr = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
       this.dataSource.filterPredicate = this.createFilter();
-
+      this.loading$ = false;
     });
   }
   reload_grid() {
