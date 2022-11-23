@@ -15,6 +15,7 @@ namespace QRCode.Repositories.IRepository
         Iqr_gencodeRepository qr_gencodeRepository { get; }
         IsectorsRepository sectorsRepository { get; }
         Iqr_his_scanRepository qr_his_scanRepository { get; }
+        Iqr_surveyRepository qr_surveyRepository { get; }
         void Commit();
         void Rollback();
     }
