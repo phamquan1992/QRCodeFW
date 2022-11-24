@@ -21,9 +21,11 @@ namespace QRCode.FEW.Controllers
     public class qr_surveyController : ControllerBase
     {
         private readonly Iqr_surveyService _Iqr_surveyService;
-        public qr_surveyController(Iqr_surveyService qr_surveyService)
+        private readonly Iqr_survey_dtlService _Iqr_survey_dtlService;
+        public qr_surveyController(Iqr_surveyService qr_surveyService, Iqr_survey_dtlService qr_survey_dtlService)
         {
             _Iqr_surveyService = qr_surveyService;
+            _Iqr_survey_dtlService = qr_survey_dtlService;
         }
         [HttpPost]
         [Route("AddNew")]
@@ -260,6 +262,102 @@ namespace QRCode.FEW.Controllers
             var array = JArray.Parse(data);
             list_cauhoi = array.ToObject<List<cauhoi>>();
             return list_cauhoi;
+        }
+        [HttpPost]
+        [Route("answer")]
+        public async Task<IActionResult> answer([FromBody] qr_survey_dtl obj_view)
+        {
+            try
+            {
+                var list = await Task.FromResult(_Iqr_survey_dtlService.GetAll());
+                if (list != null && list.Count() > 0)
+                {
+                    var survey = _Iqr_surveyService.GetAll().FirstOrDefault(t => t.qrsurveyid == obj_view.qrsurveyid);
+                    if (survey == null)
+                    {
+                        var resul_objet = new
+                        {
+                            result = "ErrorSurvey"
+                        };
+                        return Ok(resul_objet);
+                    }
+                    else
+                    {
+                        if (!survey.start_date.HasValue || !survey.end_date.HasValue)
+                        {
+                            var resul_objet = new
+                            {
+                                result = "ErrorActive"
+                            };
+                            return Ok(resul_objet);
+                        }
+                    }
+                    DateTime ngay_bd = survey.start_date.Value.Date;
+                    DateTime ngay_kt = survey.end_date.Value.Date.AddDays(1).AddSeconds(-1);
+                    if (ngay_kt.Date < DateTime.Now.Date)
+                    {
+                        var resul_objet = new
+                        {
+                            result = "EndSurvey"
+                        };
+                        return Ok(resul_objet);
+                    }
+                    if (ngay_bd.Date > DateTime.Now.Date)
+                    {
+                        var resul_objet = new
+                        {
+                            result = "NotStart"
+                        };
+                        return Ok(resul_objet);
+                    }
+                    var data_dtl = list.ToList();
+                    bool check_any = data_dtl.Any(t => t.qrsurveyid == obj_view.qrsurveyid && t.userid == obj_view.userid
+                                    && t.created_date.Value.Date >= ngay_bd.Date && t.created_date.Value.Date <= ngay_kt.Date);
+                    if (check_any)
+                    {
+                        var resul_objet = new
+                        {
+                            result = "ErrorAny"
+                        };
+                        return Ok(resul_objet);
+                    }
+                }
+
+                qr_survey_dtl data = new qr_survey_dtl();
+                data.additional = obj_view.additional;
+                data.created_by = obj_view.userid;
+                data.created_date = DateTime.Now;
+                data.qrsurveyid = obj_view.qrsurveyid;
+                data.userid = obj_view.userid;
+                var kq = await Task.FromResult(_Iqr_survey_dtlService.CreateNew(data));
+                if (kq)
+                {
+                    var resul_objet = new
+                    {
+                        result = "Success"
+                    };
+                    return Ok(resul_objet);
+                }
+                else
+                {
+                    var resul_objet = new
+                    {
+                        result = "ErrorIns"
+                    };
+                    return Ok(resul_objet);
+                }
+            }
+            catch (Exception ex)
+            {
+                var resul_objet = new
+                {
+                    result = "ErrorEx",
+                    error = ex.Message
+                };
+                return Ok(resul_objet);
+            }
+
+
         }
     }
 }

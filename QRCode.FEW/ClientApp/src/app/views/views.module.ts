@@ -11,6 +11,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ViewSurveyComponent } from './view-survey/view-survey.component';
 import { ViewcauhoiComponent } from './view-survey/viewcauhoi/viewcauhoi.component';
 import { MatSelectModule } from '@angular/material/select';
+import { EndsurveyComponent } from './view-survey/endsurvey/endsurvey.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
     ChangepassComponent,
     ViewSurveyComponent,
     ViewcauhoiComponent,
+    EndsurveyComponent,
   ],
   imports: [
     CommonModule,

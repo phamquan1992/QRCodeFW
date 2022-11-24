@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { reset_obj, result_object } from '../models/optioncs';
 import { qr_survey, survey_view } from '../models/qr_survey';
+import { qr_survey_dtl } from '../models/qr_survey_dtl';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -24,5 +25,11 @@ export class SurveyService {
   }
   get_list(id: string) {
     return this.dataSrc.get('qr_survey/list/' + id) as Observable<survey_view[]>;
+  }
+  add_detail(data:qr_survey_dtl){
+    return this.dataSrc.post('qr_survey/answer', data) as Observable<result_object>;
+  }
+  check_survey(id: string) {
+    return this.dataSrc.get('qr_survey/CheckSurvey/' + id) as Observable<string>;
   }
 }

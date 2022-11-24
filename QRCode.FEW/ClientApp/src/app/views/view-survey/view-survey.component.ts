@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { LoginComponent } from 'src/app/components/share/login/login.component';
 import { cauhoi } from 'src/app/models/cauhoi';
 import { nguoidung } from 'src/app/models/nguoidung';
+import { result_object } from 'src/app/models/optioncs';
+import { qr_survey } from 'src/app/models/qr_survey';
+import { qr_survey_dtl } from 'src/app/models/qr_survey_dtl';
+import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { SurveyService } from 'src/app/services/survey.service';
 import { ViewdataService } from 'src/app/services/viewdata.service';
@@ -16,11 +20,13 @@ import { ViewdataService } from 'src/app/services/viewdata.service';
 })
 export class ViewSurveyComponent implements OnInit {
 
-  constructor(private viewSrv: ViewdataService, private route: ActivatedRoute, private sharingSrc: ObservableService, private dialog: MatDialog) { }
+  constructor(private viewSrv: ViewdataService, private route: ActivatedRoute, private sharingSrc: ObservableService, private dialog: MatDialog, private surveySrv: SurveyService, private messSrv: MessageService, private router: Router) { }
   array_cauhoi: cauhoi[] = [];
   value_id = '';
   titile_ks = '';
   user_info!: nguoidung;
+  survey_id_tmp = 0;
+
   ngOnInit(): void {
     console.log(this.route);
     this.sharingSrc.getUserInfo().pipe(
@@ -34,13 +40,32 @@ export class ViewSurveyComponent implements OnInit {
   get_data() {
     let id = this.route.snapshot.paramMap.get('id');
     this.value_id = id == null ? '0' : id.toString();
+    this.surveySrv.check_survey(this.value_id).subscribe(t => {
+      if (t !== 'Success') {
+        this.router.navigate(['end/' + t]);
+      }
+    });
     this.viewSrv.get_object(this.value_id).subscribe(t => {
       this.array_cauhoi = t.list_cauhoi;
       this.titile_ks = t.object_edit.name;
+      this.survey_id_tmp = t.object_edit.qrsurveyid;
     });
   }
   gui_traloi() {
-    console.log(JSON.stringify(this.array_cauhoi));
+    let detail_sur: qr_survey_dtl = {
+      qrsurveydtlid: 0,
+      qrsurveyid: this.survey_id_tmp,
+      userid: Number(this.user_info.id),
+      additional: JSON.stringify(this.array_cauhoi),
+      created_date: new Date(),
+      created_by: Number(this.user_info.id)
+    };
+    this.surveySrv.add_detail(detail_sur).subscribe(t => {
+      if (t.result == 'ErrorEx') {
+        console.log(t.error);
+      }
+      this.router.navigate(['end/' + t.result]);
+    });
   }
   dang_nhap() {
     const dialogConfig = new MatDialogConfig();

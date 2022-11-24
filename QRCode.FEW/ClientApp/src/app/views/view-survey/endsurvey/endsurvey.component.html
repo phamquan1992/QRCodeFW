@@ -1,0 +1,10 @@
+<div class="mt-8" [ngSwitch]="value_id">
+    <span class="block w-full" *ngSwitchCase="'ErrorSurvey'">Khảo sát không tồn tại</span>
+    <span class="block w-full" *ngSwitchCase="'ErrorActive'">Khảo sát chưa kích hoạt</span>
+    <span class="block w-full" *ngSwitchCase="'EndSurvey'">Thời gian khảo sát đã kết thúc</span>
+    <span class="block w-full" *ngSwitchCase="'NotStart'">Thời gian khảo sát chưa bắt đầu</span>
+    <span class="block w-full" *ngSwitchCase="'ErrorAny'">Bạn đã thực hiện khảo sát</span>
+    <span class="block w-full" *ngSwitchCase="'Success'">Cám ơn bạn đã tham gia khảo sát</span>
+    <span class="block w-full" *ngSwitchCase="'ErrorIns'">Khảo sát thất bại</span>
+    <span class="block w-full" *ngSwitchCase="'ErrorEx'">Có lỗi ngoài luồng xảy ra</span>
+</div>
