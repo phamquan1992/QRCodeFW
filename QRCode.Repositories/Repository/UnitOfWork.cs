@@ -19,12 +19,14 @@ namespace QRCode.Repositories.Repository
         public IsectorsRepository sectorsRepository { get; }
         public Iqr_surveyRepository qr_surveyRepository { get; }
         public Iqr_his_scanRepository qr_his_scanRepository { get; }
+        public Iqr_survey_dtlRepository qr_survey_dtlRepository { get; }
         private readonly ISessionFactory _sessionFactory;
         private readonly ITransaction _transaction;
         public ISession Session { get; private set; }
         public UnitOfWork(ISessionFactory sessionFactory, IproductRepository productRepository, IlocationRepository locationRepository, IcategoryRepository categoryRepository,
             Iqr_enterpriseRepository qr_enterpriseRepository, IuserdataRepository userdataRepository, Iqr_paymentRepository qr_paymentRepository, Iqr_gencodeRepository qr_gencodeRepository,
-            IsectorsRepository sectorsRepository, Iqr_his_scanRepository qr_his_scanRepository, Iqr_surveyRepository qr_surveyRepository)
+            IsectorsRepository sectorsRepository, Iqr_his_scanRepository qr_his_scanRepository, Iqr_surveyRepository qr_surveyRepository,
+            Iqr_survey_dtlRepository qr_survey_dtlRepository)
         {
             this._sessionFactory = sessionFactory;
             this.Session = _sessionFactory.OpenSession();
@@ -45,6 +47,7 @@ namespace QRCode.Repositories.Repository
             this.sectorsRepository = sectorsRepository;
             this.qr_his_scanRepository = qr_his_scanRepository;
             this.qr_surveyRepository = qr_surveyRepository;
+            this.qr_survey_dtlRepository = qr_survey_dtlRepository;
         }
         public void Dispose()
         {
