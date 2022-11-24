@@ -1,7 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
@@ -55,6 +56,7 @@ export class GencodeComponent implements OnInit {
     exp_date_start: '',
     exp_date_end: ''
   };
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   user_info!: nguoidung;
   constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
     private messSrc: MessageService, private router: Router) {
@@ -86,6 +88,7 @@ export class GencodeComponent implements OnInit {
         this.data_arr = it;
         this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
         this.dataSource.filterPredicate = this.createFilter();
+        this.dataSource.paginator = this.paginator;
         this.loading$ = false;
       });
 
@@ -221,6 +224,7 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['exp_date_start'] = start_exp;
     this.filter_gencode['exp_date_end'] = end_exp;
     this.dataSource.filter = JSON.stringify(this.filter_gencode);
+    this.dataSource.paginator = this.paginator;
     this.selection.clear();
   }
   reload_grid() {
@@ -233,6 +237,7 @@ export class GencodeComponent implements OnInit {
     this.filter_gencode['exp_date_start'] = '';
     this.filter_gencode['exp_date_end'] = '';
     this.dataSource.filter = JSON.stringify(this.filter_gencode);
+    this.dataSource.paginator = this.paginator;
     this.selection.clear();
     this.nameqr_filter = '';
     this.nameobj_filter = '';

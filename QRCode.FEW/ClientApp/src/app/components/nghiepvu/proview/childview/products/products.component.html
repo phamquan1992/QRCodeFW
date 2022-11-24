@@ -87,7 +87,8 @@
                     Ngày cập nhật</th>
                 <td mat-cell *matCellDef="let element"
                     class="border border-solid border-[#0000001f] break-all text-center" style="padding: 4px;">
-                    {{element.lastcreated_date==null?(element.created_date|date: 'dd/MM/yyyy HH:mm:ss'):(element.lastcreated_date|date: 'dd/MM/yyyy HH:mm:ss')}} </td>
+                    {{element.lastcreated_date==null?(element.created_date|date: 'dd/MM/yyyy
+                    HH:mm:ss'):(element.lastcreated_date|date: 'dd/MM/yyyy HH:mm:ss')}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action">
@@ -105,7 +106,8 @@
                 </td>
             </ng-container>
             <tr class="mat-row" *matNoDataRow>
-                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5" [attr.colspan]="displayedColumns.length">
+                <td class="border border-solid border-[#0000001f] break-all font-[Roboto] text-[13px] text-center p-5"
+                    [attr.colspan]="displayedColumns.length">
                     Không có dữ liệu
                 </td>
             </tr>
@@ -113,5 +115,8 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="doublerow(row.qrproductid)">
             </tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[10, 20,50,100,200]" showFirstLastButtons [pageSize]="20"
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
     </section>
 </div>

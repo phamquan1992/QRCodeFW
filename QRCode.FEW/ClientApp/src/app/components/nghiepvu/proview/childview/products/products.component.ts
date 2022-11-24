@@ -1,7 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { S } from '@angular/cdk/keycodes';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
@@ -37,7 +38,7 @@ export class ProductsComponent implements OnInit {
   loading$ = false;
   constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService, private router: Router,
     private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
     this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
@@ -46,6 +47,7 @@ export class ProductsComponent implements OnInit {
       this.data_pr = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<product>(this.data_pr);
       this.dataSource.filterPredicate = this.createFilter();
+      this.dataSource.paginator = this.paginator;
       this.loading$ = false;
     });
   }
@@ -56,14 +58,15 @@ export class ProductsComponent implements OnInit {
     this.name_filter = '';
     this.value_select = 'all';
     this.dataSource.filter = JSON.stringify(this.filterProduct);
+    this.dataSource.paginator = this.paginator;
     this.selection.clear();
   }
   applyFilter() {
     this.filterProduct['name'] = this.name_filter;
     this.filterProduct['code'] = this.name_filter;
     this.filterProduct['status'] = this.value_select == 'all' ? '' : this.value_select;
-
     this.dataSource.filter = JSON.stringify(this.filterProduct);
+    this.dataSource.paginator = this.paginator;
   }
   customFilterPredicate() {
     const myFilterPredicate = (data: product, filter: string): boolean => {

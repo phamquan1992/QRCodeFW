@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AddproductComponent } from './addproduct/addproduct.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FormsModule,
     SharedModule,
     AngularEditorModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule
   ]
 })
 export class ProductsModule { }

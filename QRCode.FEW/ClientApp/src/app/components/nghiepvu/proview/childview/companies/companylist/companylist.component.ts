@@ -1,6 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
@@ -34,6 +35,7 @@ export class CompanylistComponent implements OnInit {
   displayedColumns: string[] = ['select', 'name', 'DiaChi', 'TrangThai', 'ngaysua', 'action'];
   dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
   selection = new SelectionModel<qr_enterprise>(true, []);
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   filtercty = {
     name: '',
     tel: '',
@@ -71,6 +73,7 @@ export class CompanylistComponent implements OnInit {
       this.data_company = t.filter(t => t.created_by === Number(this.user_info.id));
       this.dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
       this.dataSource.filterPredicate = this.createFilter();
+      this.dataSource.paginator = this.paginator;
     });
     this.loading$ = false;
   }
@@ -153,6 +156,7 @@ export class CompanylistComponent implements OnInit {
     // this.filtercty['taxcode'] = '';
     this.filtercty['province'] = this.value_select == 'all' ? '' : this.value_select;
     this.dataSource.filter = JSON.stringify(this.filtercty);
+    this.dataSource.paginator = this.paginator;
   }
   reload_grid() {
     this.filtercty['name'] = '';
@@ -162,6 +166,7 @@ export class CompanylistComponent implements OnInit {
     this.name_filter = '';
     this.value_select = 'all';
     this.dataSource.filter = JSON.stringify(this.filtercty);
+    this.dataSource.paginator = this.paginator;
     this.selection.clear();
   }
   createFilter() {

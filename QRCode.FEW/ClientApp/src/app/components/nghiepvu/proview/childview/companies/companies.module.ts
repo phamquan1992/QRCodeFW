@@ -11,7 +11,7 @@ import { CompanylistComponent } from './companylist/companylist.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [    
@@ -26,7 +26,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatCheckboxModule,
     MatAutocompleteModule,FormsModule, ReactiveFormsModule,
     MatTooltipModule,
-    SharedModule
+    SharedModule,
+    MatPaginatorModule
   ]
 })
 export class CompaniesModule { }
