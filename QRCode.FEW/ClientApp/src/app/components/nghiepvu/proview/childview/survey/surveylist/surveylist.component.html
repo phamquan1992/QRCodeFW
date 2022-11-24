@@ -16,12 +16,10 @@
 <section class="bg-[#8080801c] px-[15px]">
     <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
     bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên khảo sát..." [(ngModel)]="ten_filter">
-    <div class="inline-block relative">
-        <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-            placeholder="---Trạng thái---">
-        <i class="fa fa-angle-down absolute right-3 top-3" aria-hidden="true"></i>
+        placeholder="Tên khảo sát..." [(ngModel)]="ten_filter">   
+    <div class="w-[250px] inline-block mr-[6px]">
+        <app-autocompleinput (val_out)="setval_status($event)" [data]="arr_filter_status" [value_input]="str_status"
+            [placeholder_str]="'Trạng thái'" class="w-[250px]"></app-autocompleinput>
     </div>
     <div class="w-[336px] relative leading-[1.5]  text-[13px] mr-1 inline-block">
         <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
@@ -36,10 +34,10 @@
         <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
         <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>
     </div>
-    <button
+    <button (click)="applyFilter()"
         class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
         kiếm</button>
-    <button>
+    <button (click)="reload_grid()">
         <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
             style="display: inline-block; width: 25px;margin-left: 12px;">
     </button>

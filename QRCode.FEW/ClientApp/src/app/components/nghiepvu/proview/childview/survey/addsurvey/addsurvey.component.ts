@@ -25,7 +25,7 @@ export class AddsurveyComponent implements OnInit {
   ngay_kt = '';
   value_id = '';
   objec_edit!: qr_survey;
-  str_title='Thêm mới khảo sát';
+  str_title = 'Thêm mới khảo sát';
   constructor(private sharingSrv: ObservableService, private surveySrv: SurveyService, private messSrv: MessageService, private router: Router, private route: ActivatedRoute) {
 
   }
@@ -37,12 +37,12 @@ export class AddsurveyComponent implements OnInit {
     let id = this.route.snapshot.paramMap.get('id');
     this.value_id = id == null ? '0' : id.toString();
     if (this.value_id !== '0') {
-      this.str_title='Cập nhật khảo sát';
+      this.str_title = 'Cập nhật khảo sát';
       this.surveySrv.get_object(this.value_id).subscribe(t => {
         this.objec_edit = t.object_edit;
         this.ten_khao_sat = t.object_edit.name;
-        this.ngay_bd = t.object_edit.start_date.toString();
-        this.ngay_kt = t.object_edit.end_date.toString();
+        this.ngay_bd = t.object_edit.start_date != null ? t.object_edit.start_date.toString() : '';
+        this.ngay_kt = t.object_edit.end_date != null ? t.object_edit.end_date.toString() : '';
         this.arr_cauhoi = t.list_cauhoi;
       });
     }
@@ -112,8 +112,9 @@ export class AddsurveyComponent implements OnInit {
     this.arr_cauhoi = this.arr_cauhoi.sort((a, b) => (a.visible_index > b.visible_index) ? 1 : -1);
   }
   get invalid_cauhoi() {
+    let cout_cauhoi = this.arr_cauhoi.length;
     let count_arr = this.arr_cauhoi.filter(t => t.noidung === '' || (t.noidung !== "" && t.type !== 'text' && t.type != 'textarea' && t.element.filter(v => v.value === '').length != 0));
-    if (this.ten_khao_sat === '' || count_arr.length !== 0) {
+    if (this.ten_khao_sat === '' || count_arr.length !== 0 || cout_cauhoi == 0) {
       return false;
     } else
       return true;
@@ -226,7 +227,7 @@ export class AddsurveyComponent implements OnInit {
       gt.value = null;
     }
   }
-  back_home(){
+  back_home() {
     this.router.navigate(['/portal/survey/list']);
   }
 }

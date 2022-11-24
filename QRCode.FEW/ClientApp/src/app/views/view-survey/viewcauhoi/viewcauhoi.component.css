@@ -1,0 +1,11 @@
+::ng-deep .mat-select-panel{
+    position: absolute;
+    top: 26px;
+    left: 15px;
+    min-width: calc(100%) !important;
+    border-radius: 0px !important;
+}
+::ng-deep .mat-select-value-text{
+    margin-left: 10px;
+    font-size: 13px;
+}

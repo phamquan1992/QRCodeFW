@@ -28,7 +28,8 @@ export class TypeqrcodeComponent implements OnInit, OnChanges {
     id: '',
     sodt: '',
     token: '',
-    active: false
+    active: false,
+    isadmin: false
   };
   openfile() {
     this.file.nativeElement.click();

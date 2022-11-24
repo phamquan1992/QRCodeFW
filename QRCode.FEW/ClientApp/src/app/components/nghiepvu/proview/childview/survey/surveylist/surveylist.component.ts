@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { cutom_it } from 'src/app/models/category';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { survey_view } from 'src/app/models/qr_survey';
 import { ObservableService } from 'src/app/services/observable.service';
@@ -30,6 +31,10 @@ export class SurveylistComponent implements OnInit {
   displayedColumns = ['select', 'name', 'status', 'count_question', 'userdate', 'start_date', 'end_date', 'action'];
   loading$ = false;
   user_info!: nguoidung;
+  arr_filter_status: cutom_it[] = [
+    { stt: 1, mota: 'Kích hoạt', name: 'true' },
+    { stt: 2, mota: 'Huỷ kích hoạt', name: 'false' }
+  ];
   range_exp = new FormGroup({
     start_exp: new FormControl(null),
     end_exp: new FormControl(null),
@@ -37,8 +42,8 @@ export class SurveylistComponent implements OnInit {
   filter_survey = {
     create_date_start: '',
     create_date_end: '',
-    name_filter: '',
-    status_filter: ''
+    name: '',
+    status: ''
   };
   ten_filter = '';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -63,10 +68,19 @@ export class SurveylistComponent implements OnInit {
     let end_create = this.range_exp.controls['end_exp'].value || '';
     this.filter_survey['create_date_start'] = start_create;
     this.filter_survey['create_date_end'] = end_create;
-    this.filter_survey['status_filter'] = start_create;
-    this.filter_survey['name_filter'] = this.ten_filter.trim();
+    this.filter_survey['status'] = this.status_name_filter;
+    this.filter_survey['name'] = this.ten_filter.trim();
     this.dataSource.filter = JSON.stringify(this.filter_survey);
     this.dataSource.paginator = this.paginator;
+  }
+  status_name_filter = '';
+  str_status = '';
+  setval_status(gt: any) {
+    this.status_name_filter = gt;
+    if (gt != '' && gt != null)
+      this.str_status = this.arr_filter_status.filter(t => t.name == gt)[0].mota;
+    else
+      this.str_status = '';
   }
   reload_grid() {
     this.ten_filter = '';
@@ -74,8 +88,10 @@ export class SurveylistComponent implements OnInit {
     this.range_exp.controls['end_exp'].setValue('');
     this.filter_survey['create_date_start'] = '';
     this.filter_survey['create_date_end'] = '';
-    this.filter_survey['status_filter'] = '';
-    this.filter_survey['name_filter'] = '';
+    this.filter_survey['status'] = '';
+    this.filter_survey['name'] = '';
+    this.str_status = '';
+    this.status_name_filter = '';
     this.dataSource.filter = JSON.stringify(this.filter_survey);
     this.dataSource.paginator = this.paginator;
   }
@@ -133,7 +149,7 @@ export class SurveylistComponent implements OnInit {
           for (const col in searchTerms) {
             if (col == 'create_date_start' || col == 'create_date_end') {
               const temp_date = new Date(searchTerms[col]);
-              let data_date = new Date(data['created_date']);
+              let data_date = new Date(data.object_edit['created_date']);
               debugger;
               if (col == 'create_date_start') {
                 temp_date.setHours(0, 0, 0);
@@ -153,7 +169,7 @@ export class SurveylistComponent implements OnInit {
               }
             }
             else {
-              if (data[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
+              if (data.object_edit[col].toString().toLowerCase().indexOf(searchTerms[col].trim().toLowerCase()) != -1 && isFilterSet) {
                 found = true
               } else {
                 found = false;

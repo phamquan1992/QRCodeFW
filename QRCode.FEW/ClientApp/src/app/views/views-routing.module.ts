@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChangepassComponent } from './changepass/changepass.component';
 import { EnterpriseComponent } from './enterprise/enterprise.component';
 import { ProductinfoComponent } from './productinfo/productinfo.component';
+import { ViewSurveyComponent } from './view-survey/view-survey.component';
 import { ViewsComponent } from './views.component';
 
 const routes: Routes = [{
@@ -10,6 +11,7 @@ const routes: Routes = [{
     { path: 'product/:id/:id2', component: ProductinfoComponent },
     { path: 'enterprise/:id', component: EnterpriseComponent },
     { path: 'changepass/:email', component: ChangepassComponent },
+    { path: 'survey/:id', component: ViewSurveyComponent },
     { path: '', redirectTo: 'product', pathMatch: 'full' }
   ]
 }];

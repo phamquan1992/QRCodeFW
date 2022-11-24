@@ -1,6 +1,6 @@
 <div class="h-full flex-row box-border flex flex-auto bg-[#f0f2f5] min-h-0">
     <app-sidenav [drawer_status]="showNav" (ten_form)="showtenform($event)"></app-sidenav>
-    <div [ngClass]="{'ml-[80px]':!showNav,'ml-[240px]':showNav,'w-[calc(100%_-_240px)]':showNav,'w-[calc(100%_-_80px)]':!showNav}"
+    <div [ngClass]="{'ml-[80px]':!showNav,'ml-[240px]':showNav,'w-[(100%_-_240px)]':showNav,'w-[calc(100%_-_80px)]':!showNav}"
         class="transition-all duration-200 h-screen w-full">
         <div [ngClass]="{'ml-[80px]':!showNav,'ml-[240px]':showNav,'w-[calc(100%_-_240px)]':showNav,'w-[calc(100%_-_80px)]':!showNav}"
             class="bg-gradient-to-r from-[#0c3d8e] to-[#2594a1] fixed left-0 z-[3] h-[45px] leading-[45px] w-full transition-all duration-200">

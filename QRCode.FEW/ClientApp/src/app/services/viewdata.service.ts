@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { result_object, userdata } from '../models/optioncs';
 import { productview, user_reset } from '../models/product';
 import { enterprisview } from '../models/qr_enterprise';
+import { survey_view } from '../models/qr_survey';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -27,5 +28,8 @@ export class ViewdataService {
   change_password(data: user_reset) {
     let pro_obj: Observable<result_object> = this.dataSrv.put('SendMail/ChangePass', data) as Observable<result_object>;
     return pro_obj;
+  }
+  get_object(id: string) {
+    return this.dataSrv.get('qr_survey/GetObject/' + id) as Observable<survey_view>;
   }
 }

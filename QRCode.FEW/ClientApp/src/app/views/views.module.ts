@@ -6,8 +6,11 @@ import { ViewsComponent } from './views.component';
 import { ProductinfoComponent, SafeHtmlPipe } from './productinfo/productinfo.component';
 import { EnterpriseComponent } from './enterprise/enterprise.component';
 import { ChangepassComponent } from './changepass/changepass.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { ViewSurveyComponent } from './view-survey/view-survey.component';
+import { ViewcauhoiComponent } from './view-survey/viewcauhoi/viewcauhoi.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -15,13 +18,15 @@ import { SharedModule } from '../shared/shared.module';
     ProductinfoComponent,
     EnterpriseComponent,
     SafeHtmlPipe,
-    ChangepassComponent
+    ChangepassComponent,
+    ViewSurveyComponent,
+    ViewcauhoiComponent,
   ],
   imports: [
     CommonModule,
     ViewsRoutingModule,
-    ReactiveFormsModule,
-    SharedModule
+    ReactiveFormsModule, FormsModule,
+    SharedModule,MatSelectModule
   ]
 })
 export class ViewsModule { }

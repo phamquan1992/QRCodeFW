@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using QRCode.Core.Domain;
 using QRCode.Core.Domain2;
 using QRCode.Services.ISerivce;
@@ -21,12 +22,15 @@ namespace QRCode.FEW.Controllers
         private readonly Iqr_enterpriseService _Iqr_enterpriseService;
         private readonly Iqr_gencodeService _Iqr_gencodeService;
         private readonly Iqr_his_scanService _Iqr_his_scanService;
-        public ViewDataController(IproductService productService, Iqr_enterpriseService qr_enterpriseService, Iqr_gencodeService qr_gencodeService, Iqr_his_scanService qr_his_scanService)
+        private readonly Iqr_surveyService _Iqr_surveyService;
+        public ViewDataController(IproductService productService, Iqr_enterpriseService qr_enterpriseService, 
+            Iqr_gencodeService qr_gencodeService, Iqr_his_scanService qr_his_scanService, Iqr_surveyService qr_surveyService)
         {
             _IproductService = productService;
             _Iqr_enterpriseService = qr_enterpriseService;
             _Iqr_gencodeService = qr_gencodeService;
             _Iqr_his_scanService = qr_his_scanService;
+            _Iqr_surveyService = qr_surveyService;
         }
         private void InsertHisScan(string type, int dataid)
         {
@@ -264,6 +268,21 @@ namespace QRCode.FEW.Controllers
                 check = false;
             }
             return check;
+        }
+        [HttpGet]
+        [Route("GetObject/{id}")]
+        public async Task<survey_view> GetOject(int id)
+        {
+            int qrgencodeid = 0;
+            var list_cauhoi = new List<cauhoi>();
+            var objec_edit = await Task.FromResult(_Iqr_surveyService.GetAll().FirstOrDefault(t => t.qrsurveyid == id));
+            survey_view object_view = new survey_view();
+            object_view.object_edit = objec_edit;
+            var array = JArray.Parse(objec_edit.additional);
+            list_cauhoi = array.ToObject<List<cauhoi>>();
+            object_view.list_cauhoi = list_cauhoi;
+            //InsertHisScan("survey", id);
+            return object_view;
         }
     }
 }

@@ -18,7 +18,8 @@ export class AcountinfoComponent implements OnInit {
     id: '',
     sodt: '',
     token: '',
-    active: false
+    active: false,
+    isadmin:false
   };
   ngOnInit(): void {
     this._sharingService.getUserInfo().subscribe(t => {

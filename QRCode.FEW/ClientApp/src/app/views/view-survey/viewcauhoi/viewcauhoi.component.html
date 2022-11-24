@@ -1,0 +1,59 @@
+<div class="my-5 mx-[25px] bg-[#f5f5f5] shadow-[0_1px_4px_#00000040] rounded-[13px]">
+    <div class="bg-[#124b9f] flex  text-white h-[41px] rounded-t-[13px] items-center justify-center">
+        <span class="leading-[21px] not-italic grow text-center text-sm font-[Roboto]">Câu
+            {{cauhoi_in.visible_index}}</span>
+        <i class="fa fa-question-circle mr-[21px]" aria-hidden="true"></i>
+    </div>
+    <div class="py-5 px-3" [ngSwitch]="cauhoi_in.type">
+        <span
+            class="block text-center md:text-left w-full font-semibold text-sm font-[Roboto] break-words">{{cauhoi_in.noidung}}</span>
+        <div *ngSwitchCase="'luachon'">
+            <div class="my-[10px] items-center justify-center" *ngFor="let it of cauhoi_in.element"
+                (click)="select_item(it)">
+                <div class="inline-block relative w-[13px] h-[13px]">
+                    <input type="checkbox" name="" id="" class="absolute top-[2px]" [checked]="cauhoi_in.dapan===it">
+                </div>
+                <div class="inline-block">
+                    <span class="text-[13px] font-[Roboto] leading-4 px-1 font-bold">{{it.value}}</span>
+                </div>
+            </div>
+        </div>
+        <div *ngSwitchCase="'text'">
+            <div class="my-[10px] items-center justify-center">
+                <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+                    placeholder="Nhập câu trả lời" [(ngModel)]="cauhoi_in.dapan.key">
+            </div>
+        </div>
+        <div *ngSwitchCase="'textarea'">
+            <div class="my-[10px] items-center justify-center">
+                <textarea name="" id="" rows="10" class="w-full text-ellipsis relative inline-block py-1 px-[11px] focus:border focus:border-solid focus:border-[#196898]
+                bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-16 text-[13px] outline-none"
+                    placeholder="Nhập câu trả lời" [(ngModel)]="cauhoi_in.dapan.key"></textarea>
+            </div>
+        </div>
+        <div *ngSwitchCase="'dropdown'"
+            class="flex justify-center border border-solid border-[#d9d9d9] rounded-[4px] relative w-full bg-white">
+            <mat-select class="w-full" disableOptionCentering
+                style="line-height: 32px; font-family: Lato, sans-serif; font-size: 16px;color: #000000a6;"
+                [(ngModel)]="cauhoi_in.dapan.key" (selectionChange)="maSelect($event.value)">
+                <mat-option *ngFor="let it of cauhoi_in.element" [value]="it.key" class="text-sm font-[Roboto]">
+                    {{it.value}}
+                </mat-option>
+            </mat-select>
+            <!-- <input type="hidden" [(ngModel)]="pkg_code"> -->
+        </div>
+        <div *ngSwitchCase="'images'" class="mt-5">
+            <div class="grid grid-cols-2 mt-2">
+                <div *ngFor="let it of cauhoi_in.element" class="flex flex-col w-[100%]" (click)="select_item(it)">
+                    <div class="flex justify-center">
+                        <img class="w-[90px] h-[90px] object-cover md:w-[300px] md:h-[300px] md:px-2"
+                            [src]="it.value==''?'./assets/images/stran.png':it.value" alt="">
+                    </div>
+                    <input type="checkbox" name="" id="" class="my-[10px]" [checked]="cauhoi_in.dapan===it">
+                    <span class="text-center text-xs break-words">{{it.mota}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

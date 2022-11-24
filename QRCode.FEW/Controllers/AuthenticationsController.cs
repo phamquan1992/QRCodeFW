@@ -43,7 +43,8 @@ namespace QRCode.FEW.Controllers
                     id = nd.userid,
                     sodt = nd.sdt,
                     token = "",
-                    active = Checkpay((int)nd.userid)
+                    active = Checkpay((int)nd.userid),
+                    isadmin = nd.isadmin
                 };
                 if (!nd.status)
                 {

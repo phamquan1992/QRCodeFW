@@ -6,14 +6,14 @@
     </span>
     <input #ipauto class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
     bg-white border border-solid  my-[3px] mr-[6px] ml-0 h-8 text-[13px]" (keyup)="auto_change(ipauto)"
-        placeholder="{{placeholder_str}}" aria-label="State" [matAutocomplete]="dmAutocomplete" [value]="_value_input"
+        (focusout)="ipauto.value =ipauto.value.trim()" placeholder="{{placeholder_str}}" aria-label="State"
+        [matAutocomplete]="dmAutocomplete" [value]="_value_input"
         [ngClass]="{'border-red-600':!isValid,'border-[#d9d9d9]':isValid}">
     <div *ngIf="!isValid">
         <span class="text-red-600 text-xs italic"> {{placeholder_str}} không được để trống!</span>
     </div>
-    <mat-autocomplete #dmAutocomplete="matAutocomplete" (opened)="autocompleteScroll()"
-        (closed)="close_event(ipauto)" [displayWith]="displayFn"
-        (optionSelected)="select_it($event,ipauto.value)">
+    <mat-autocomplete #dmAutocomplete="matAutocomplete" (opened)="autocompleteScroll()" (closed)="close_event(ipauto)"
+        [displayWith]="displayFn" (optionSelected)="select_it($event,ipauto.value)">
         <mat-option *ngFor="let dm of arr_item" [value]="dm">
             <small>{{dm.mota}}</small>
         </mat-option>

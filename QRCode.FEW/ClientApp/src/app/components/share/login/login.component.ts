@@ -70,6 +70,10 @@ export class LoginComponent implements OnInit {
                     this._sharingService.setTokenValue(nd.token);
                     if (this.data == 'dichvu')
                         this.router.navigate(['qrcode-free/dich-vu']);
+                    else if (this.data == 'views/survey'){
+                        this.onClose();
+                        return;
+                    }                       
                     else
                         this.router.navigate(['/qrcode-free']);
                     this.onClose();

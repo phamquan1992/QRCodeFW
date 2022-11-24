@@ -4,4 +4,5 @@ export interface nguoidung {
     sodt: string;
     token: string;
     active:boolean;
+    isadmin:boolean;
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using QRCode.Core.Domain;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class qr_surveyController : ControllerBase

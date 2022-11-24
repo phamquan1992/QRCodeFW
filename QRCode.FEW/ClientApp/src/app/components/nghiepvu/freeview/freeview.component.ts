@@ -23,6 +23,7 @@ export class FreeviewComponent implements OnInit, OnDestroy {
     sodt: '',
     token: '',
     active: false,
+    isadmin:false
   };
   currUser: Observable<nguoidung>;
 
