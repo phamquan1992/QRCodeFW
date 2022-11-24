@@ -46,6 +46,7 @@
                                                     class=" text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
                                                     (keyup)="auto_change_ks($event.target)"
                                                     placeholder="Chọn gói dịch vụ"
+                                                    (focusout)="focus_input($event.target,'payment')"
                                                     [matAutocomplete]="dichvuAutocomplete" [value]="">
                                                 <mat-autocomplete #dichvuAutocomplete="matAutocomplete"
                                                     [displayWith]="displayFn" (optionSelected)="select_payment($event)">
@@ -85,14 +86,19 @@
                                     <div class="ant-col ant-form-item-control-wrapper">
                                         <div class="ant-form-item-control relative">
                                             <span class="ant-form-item-children">
-                                                <input disabled
+                                                <input
                                                     class="ant-input text-ellipsis box-border m-0 relative inline-block w-full h-8 p-2 md:py-[4px] md:px-[11px] leading-[1.5] bg-white border border-solid border-[#d9d9d9] rounded outline-none focus:border-[#40a9ff] text-sm"
                                                     (keyup)="auto_change($event.target)" placeholder='Chọn khảo sát'
+                                                    (focusout)="focus_input($event.target,'survey')"
                                                     [matAutocomplete]="khaosatAutocomplete" [value]="">
-                                                <mat-autocomplete #khaosatAutocomplete="matAutocomplete">
-                                                    <mat-option *ngFor="let it of arr_value_ks" [value]="it.value"
+                                                <mat-autocomplete #khaosatAutocomplete="matAutocomplete" [displayWith]="displayKhaoSat"
+                                                (optionSelected)="select_survey($event)">
+                                                    <mat-option *ngFor="let it of filter_survey|async" [value]="it"
                                                         style="height: 32px; font-size: 14px;" class="relative">
-                                                        <span>{{it.value}}</span>
+                                                        <span>{{it.name}}</span>
+                                                    </mat-option>
+                                                    <mat-option *ngIf="(filter_survey | async)?.length == 0">
+                                                        <span>Không có dữ liệu hiển thị</span>
                                                     </mat-option>
                                                 </mat-autocomplete>
                                                 <span
@@ -117,7 +123,9 @@
                     <div class="mb-5">
                         <div class="relative">
                             <div class="flex justify-center">
-                                <app-qrcode [op_tion]="op_tion" [is_download]="status">
+                                <app-qrcode [op_tion]="op_tion" [is_download]="status" id="qrcontset" class="hidden">
+                                </app-qrcode>
+                                <app-qrcode [op_tion]="op_tion_temp" [is_download]="'false'">
                                 </app-qrcode>
                             </div>
                         </div>

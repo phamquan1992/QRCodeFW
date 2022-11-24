@@ -401,5 +401,17 @@ namespace QRCode.FEW.Controllers
 
 
         }
+        [HttpGet]
+        [Route("Getsurveys/{id}")]
+        public List<qr_survey> GetQr_Surveys(int id)
+        {
+            List<qr_survey> list = new List<qr_survey>();
+            var data = _Iqr_surveyService.GetAll().Where(t => t.created_by == id);
+            if (data != null && data.Count() > 0)
+            {
+                list = data.ToList();
+            }
+            return list;
+        }
     }
 }

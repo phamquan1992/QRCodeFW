@@ -23,7 +23,7 @@ namespace QRCode.FEW.Controllers
         private readonly Iqr_gencodeService _Iqr_gencodeService;
         private readonly Iqr_his_scanService _Iqr_his_scanService;
         private readonly Iqr_surveyService _Iqr_surveyService;
-        public ViewDataController(IproductService productService, Iqr_enterpriseService qr_enterpriseService, 
+        public ViewDataController(IproductService productService, Iqr_enterpriseService qr_enterpriseService,
             Iqr_gencodeService qr_gencodeService, Iqr_his_scanService qr_his_scanService, Iqr_surveyService qr_surveyService)
         {
             _IproductService = productService;
@@ -271,17 +271,24 @@ namespace QRCode.FEW.Controllers
         }
         [HttpGet]
         [Route("GetObject/{id}")]
-        public async Task<survey_view> GetOject(int id)
+        public async Task<survey_view> GetOject(string id)
         {
-            int qrgencodeid = 0;
-            var list_cauhoi = new List<cauhoi>();
-            var objec_edit = await Task.FromResult(_Iqr_surveyService.GetAll().FirstOrDefault(t => t.qrsurveyid == id));
             survey_view object_view = new survey_view();
-            object_view.object_edit = objec_edit;
-            var array = JArray.Parse(objec_edit.additional);
-            list_cauhoi = array.ToObject<List<cauhoi>>();
-            object_view.list_cauhoi = list_cauhoi;
-            //InsertHisScan("survey", id);
+            if (!string.IsNullOrEmpty(id))
+            {
+                var gencode_list = _Iqr_gencodeService.GetAll();
+                var gencode_obj = gencode_list.FirstOrDefault(t => t.code == id);
+                var temp_data = await Task.FromResult(_Iqr_surveyService.GetAll().FirstOrDefault(t => t.qrsurveyid == gencode_obj.dataid));
+                if (temp_data != null)
+                {
+                    var list_cauhoi = new List<cauhoi>();
+                    object_view.object_edit = temp_data;
+                    var array = JArray.Parse(temp_data.additional);
+                    list_cauhoi = array.ToObject<List<cauhoi>>();
+                    object_view.list_cauhoi = list_cauhoi;
+                    InsertHisScan("survey", (int)gencode_obj.dataid);
+                }
+            }
             return object_view;
         }
     }

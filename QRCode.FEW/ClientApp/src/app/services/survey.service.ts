@@ -32,4 +32,7 @@ export class SurveyService {
   check_survey(id: string) {
     return this.dataSrc.get('qr_survey/CheckSurvey/' + id) as Observable<string>;
   }
+  get_list_ks(id: string) {
+    return this.dataSrc.get('qr_survey/Getsurveys/' + id) as Observable<qr_survey[]>;
+  }
 }

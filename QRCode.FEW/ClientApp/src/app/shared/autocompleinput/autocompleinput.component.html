@@ -17,5 +17,8 @@
         <mat-option *ngFor="let dm of arr_item" [value]="dm">
             <small>{{dm.mota}}</small>
         </mat-option>
+        <mat-option *ngIf="arr_item?.length ===0">
+            <span>Không có dữ liệu hiển thị</span>
+        </mat-option>
     </mat-autocomplete>
 </div>

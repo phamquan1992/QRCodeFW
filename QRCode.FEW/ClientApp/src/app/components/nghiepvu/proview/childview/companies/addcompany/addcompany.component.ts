@@ -382,7 +382,8 @@ export class AddcompanyComponent implements OnInit {
     this.arr_dynamic.splice(index_dynamic, 1);
   }
   focusOutFunction(obj_input: any, name: string) {
-
+    let gt = obj_input.value.trim();
+    obj_input.value = gt;
   }
   close_select(obj_input: any, name: string) {
     let val = obj_input.value.trim();

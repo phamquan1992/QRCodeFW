@@ -180,6 +180,9 @@
                     <mat-option *ngFor="let it of arr_tinh" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
+                    <mat-option *ngIf="arr_tinh?.length ===0">
+                        <span>Không có dữ liệu hiển thị</span>
+                    </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['province'].valid">
                     <span *ngIf="DataForm.controls['province'].errors?.['required']"
@@ -213,6 +216,9 @@
                     (optionSelected)="select_it_huyen($event)" (closed)="close_select(input_huyen,'district')">
                     <mat-option *ngFor="let it of array_huyen" [value]="it">
                         <span>{{it.name}}</span>
+                    </mat-option>
+                    <mat-option *ngIf="array_huyen?.length ===0">
+                        <span>Không có dữ liệu hiển thị</span>
                     </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['district'].valid">
@@ -248,6 +254,9 @@
                     <mat-option *ngFor="let it of array_xa" [value]="it">
                         <span>{{it.name}}</span>
                     </mat-option>
+                    <mat-option *ngIf="array_xa?.length ===0">
+                        <span>Không có dữ liệu hiển thị</span>
+                    </mat-option>
                 </mat-autocomplete>
                 <div *ngIf="!DataForm.controls['wards'].valid">
                     <span *ngIf="DataForm.controls['wards'].errors?.['required']" class="text-red-600 text-xs italic">
@@ -280,6 +289,9 @@
                     (optionSelected)="select_it_sectors($event)" (closed)="close_select(input_sector,'sectors_code')">
                     <mat-option *ngFor="let it of array_sectors" [value]="it">
                         <span>{{it.name}}</span>
+                    </mat-option>
+                    <mat-option *ngIf="array_xa?.length ===0">
+                        <span>Không có dữ liệu hiển thị</span>
                     </mat-option>
                 </mat-autocomplete>
                 <input type="hidden" [formControlName]="'sectors_code'" name="sectors_code" value="">

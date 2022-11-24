@@ -40,6 +40,11 @@ export class CommonService {
     let gt_tem2 = this.convertnotdau(str_second);
     return gt_temp1.includes(gt_tem2);
   }
+  equalvalue(str_first: string, str_second: string) {
+    let gt_temp1 = this.convertnotdau(str_first);
+    let gt_tem2 = this.convertnotdau(str_second);
+    return gt_temp1 === gt_tem2;
+  }
   isValidHttpUrl(gt: string) {
     let url;
     try {
