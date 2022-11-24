@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using QRCode.Core.Domain;
 using QRCode.Core.Domain2;
 using QRCode.FEW.Extensions.Common;
@@ -20,14 +21,16 @@ namespace QRCode.FEW.Controllers
         private readonly Iqr_paymentService _Iqr_paymentService;
         private readonly IuserdataService _IuserdataService;
         private readonly Iqr_enterpriseService _Iqr_enterpriseService;
-        private readonly IMailService mailService;
+        private readonly IMailService _mailService;
+        private readonly MailSettings _mailSettings;
         public qr_paymentController(Iqr_paymentService qr_paymentService, IuserdataService userdataService, Iqr_enterpriseService qr_enterpriseService,
-            IMailService _mailService)
+            IMailService mailService, IOptions<MailSettings> mailSettings)
         {
             _Iqr_paymentService = qr_paymentService;
             _IuserdataService = userdataService;
             _Iqr_enterpriseService = qr_enterpriseService;
-            mailService = _mailService;
+            _mailService = mailService;
+            _mailSettings = mailSettings.Value;
         }
         [HttpGet]
         [Route("GetAll")]
@@ -116,7 +119,7 @@ namespace QRCode.FEW.Controllers
         }
         [HttpPost]
         [Route("Add")]
-        public bool Add([FromBody] qr_payment model)
+        public async Task<bool> Add([FromBody] qr_payment model)
         {
             try
             {
@@ -127,12 +130,58 @@ namespace QRCode.FEW.Controllers
                 obj.packcode = model.packcode;
                 obj.packname = GetPackage_Objets().FirstOrDefault(t => t.packcode == model.packcode).packname;
                 obj.qrenterpriseid = model.qrenterpriseid;
-                return _Iqr_paymentService.CreateNew(obj);
+                bool gt_kh = await send_kh(model);
+                if (gt_kh)
+                {
+                    bool gt_admin = await send_admin(model);
+                    if (gt_admin)
+                    {
+                        return _Iqr_paymentService.CreateNew(obj);
+                    }
+                }
+                return false;
             }
             catch (Exception ex)
             {
                 return false;
             }
+        }
+
+        private async Task<bool> send_kh(qr_payment moded)
+        {
+            var userdata = _IuserdataService.GetAll().FirstOrDefault(t => t.userid == moded.userid);
+            string sub = "Thông báo xác nhận mua gói dịch vụ";
+            string body = "<div><h2>Bạn đã xác nhận thanh toán gói dịch vụ QR Code của website chúng tôi</h2></div><div>Gói dịch vụ: " + moded.packname + "</div><div>Số điện thoại tài khoản: " + userdata.sdt + "</div><div>Email tài khoản: " + userdata.email + "</div><div>Vui lòng liên hệ với quản trị để xác nhận</div>";
+            bool kq = await sendmaild(userdata.email, sub, body);
+            return kq;
+        }
+        private async Task<bool> send_admin(qr_payment moded)
+        {
+            var userdata = _IuserdataService.GetAll().FirstOrDefault(t => t.userid == moded.userid);
+            string sub = "Thông báo mua gói dịch vụ";
+            string body = "<div><h2>Khách hàng đã xác nhận thanh toán gói dịch vụ</h2></div><div>Email: " + userdata.email + "</div><div>Số điện thoại: " + userdata.sdt + "</div><div>Gói dịch vụ: " + moded.packname + "</div><div>";
+            bool kq = await sendmaild(_mailSettings.Mail, sub, body);
+            return kq;
+        }
+
+
+        private async Task<bool> sendmaild(string mailnhan, string sub, string body)
+        {
+            try
+            {
+                MailRequest request = new MailRequest();
+                request.ToEmail = mailnhan;//_mailSettings.Mail;
+                request.Subject = sub;
+                request.Body = body;
+                await _mailService.SendEmailAsync(request);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+
         }
         [HttpPut]
         [Route("Active")]

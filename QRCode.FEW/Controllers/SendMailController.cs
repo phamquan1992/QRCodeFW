@@ -72,6 +72,7 @@ namespace QRCode.FEW.Controllers
             {
                 var resul_objet = new
                 {
+                    error = ex.Message,
                     result = "Error"
                 };
                 return Ok(resul_objet);
@@ -201,7 +202,7 @@ namespace QRCode.FEW.Controllers
         [HttpPut]
         [Route("ChangePass")]
         public async Task<IActionResult> Changepass([FromBody] user_reset model)
-        {            
+        {
             var listuser = await Task.FromResult(_IuserdataService.GetAll().ToList());
             var obj_data1 = listuser.FirstOrDefault(t => t.email == model.email && t.password == model.password_old);
             if (obj_data1 == null)

@@ -16,7 +16,7 @@ export interface dangky_obj {
   styleUrls: ['./dangky.component.css']
 })
 export class DangkyComponent implements OnInit {
-
+  loading$ = false;
   check_gt: any;
   constructor(public dialogRef: MatDialogRef<DangkyComponent>, private paymentSrc: PaynemtService, private messSrc: MessageService, private _sharingService: ObservableService, @Inject(MAT_DIALOG_DATA) public data: dangky_obj) { }
 
@@ -38,6 +38,7 @@ export class DangkyComponent implements OnInit {
       lastcreated_date: new Date(),
       lastcreated_by: 0
     };
+    this.loading$ = true;
     this._sharingService.getUserInfo().subscribe(user => {
       pay.userid = Number(user.id);
       pay.created_by = Number(user.id);
@@ -45,6 +46,7 @@ export class DangkyComponent implements OnInit {
       pay.packname = this.data.pack_name;
       this.paymentSrc.add_payment(pay).subscribe(
         check => {
+          this.loading$ = false;
           if (check) {
             this.messSrc.success('Bạn đã đăng ký thành công!');
             this.onClose();

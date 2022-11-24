@@ -21,6 +21,7 @@ export const passwordMatchingValidatior: ValidatorFn = (control: AbstractControl
 export class SigninComponent implements OnInit {
   DataForm!: FormGroup;
   url_str: string = '';
+  loading$ = false;
   constructor(public dialogRef: MatDialogRef<SigninComponent>, private dataSrc: DataService, private mess: MessageService, @Inject('BASE_URL') baseUrl: string,
     private dialog: MatDialog, private _sharingService: ObservableService) {
     this.url_str = baseUrl;
@@ -44,6 +45,7 @@ export class SigninComponent implements OnInit {
     if (this.DataForm.invalid) {
       return;
     }
+    this.loading$ = true;
     let mail_xacnhan = this.DataForm.controls['email'].value;
     let sdt_xacnhan = this.DataForm.controls['sdt'].value;
     let pass_xacnhan = this.DataForm.controls['password'].value;
@@ -60,6 +62,7 @@ export class SigninComponent implements OnInit {
       error: ''
     };
     this.dataSrc.post('SendMail/Send', mail_objet).subscribe(t => {
+      this.loading$ = false;
       kq = t as result_object;
       if (kq.result == "Success") {
         this.mess.success('Bạn đã đăng ký thành công!');
@@ -68,6 +71,7 @@ export class SigninComponent implements OnInit {
         this.mess.error('Đã tồn tại email hoặc số điện thoại trong hệ thống!');
       }
       else {
+        console.log(kq.error);
         this.mess.error('Có lỗi trong quá trình đăng ký!');
       }
 

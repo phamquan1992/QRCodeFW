@@ -141,6 +141,7 @@ export class DichvuComponent implements OnInit {
   xacnhan_thanhtoan(gt: string) {
 
   }
+   
   maSelect(value: any) {
     this.pkg_code = value;
     if (this.pkg_code != '' && this.pkg_time != '') {

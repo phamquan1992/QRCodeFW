@@ -8,6 +8,7 @@ import { LoginComponent } from '../../share/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { DangkyComponent } from './dichvu/dangky/dangky.component';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -22,7 +23,8 @@ import { MatSelectModule } from '@angular/material/select';
     CommonModule,
     FreeviewRoutingModule,
     FormsModule,
-    MatSelectModule
+    MatSelectModule,
+    SharedModule
   ]
 })
 export class FreeviewModule { }
