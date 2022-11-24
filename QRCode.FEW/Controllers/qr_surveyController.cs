@@ -263,6 +263,48 @@ namespace QRCode.FEW.Controllers
             list_cauhoi = array.ToObject<List<cauhoi>>();
             return list_cauhoi;
         }
+        [HttpGet]
+        [Route("CheckSurvey/{id}")]
+        public string Checksurvey(int id)
+        {
+            string result = "Success";
+            var list = _Iqr_surveyService.GetAll();
+            if (list != null && list.Count() > 0)
+            {
+                var survey = _Iqr_surveyService.GetAll().FirstOrDefault(t => t.qrsurveyid == id);
+                if (survey == null)
+                {
+                    result = "ErrorSurvey";
+                }
+                else
+                {
+                    if (!survey.start_date.HasValue || !survey.end_date.HasValue)
+                    {
+                        result = "ErrorActive";
+                    }
+                    else
+                    {
+                        DateTime ngay_bd = survey.start_date.Value.Date;
+                        DateTime ngay_kt = survey.end_date.Value.Date.AddDays(1).AddSeconds(-1);
+                        if (ngay_kt.Date < DateTime.Now.Date)
+                        {
+                            result = "EndSurvey";
+                            return result;
+                        }
+                        else if (ngay_bd.Date > DateTime.Now.Date)
+                        {
+                            result = "NotStart";
+                            return result;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                result = "ErrorSurvey";
+            }
+            return result;
+        }
         [HttpPost]
         [Route("answer")]
         public async Task<IActionResult> answer([FromBody] qr_survey_dtl obj_view)
