@@ -16,6 +16,7 @@ namespace QRCode.Core.Domain
             Map(x => x.password).Not.Nullable();
             Map(x => x.sdt).Not.Nullable();
             Map(x => x.status).Nullable();
+            Map(x => x.isadmin).Nullable();
         }
     }
 }
