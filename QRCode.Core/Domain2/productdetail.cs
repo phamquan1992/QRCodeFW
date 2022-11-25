@@ -113,4 +113,12 @@ namespace QRCode.Core.Domain2
         public qr_survey object_edit { get; set; }
         public List<cauhoi> list_cauhoi { get; set; }
     }
+    public class count_obj
+    {
+        public decimal count_product { get; set; }
+        public decimal count_survey { get; set; }
+        public decimal count_enterprise { get; set; }
+        public decimal count_payment { get; set; }
+        public decimal count_gencode { get; set; }
+    }
 }

@@ -17,5 +17,6 @@ namespace QRCode.Core.Domain
         public virtual int created_by { get; set; }
         public virtual DateTime? lastcreated_date { get; set; }
         public virtual int lastcreated_by { get; set; }
+        public virtual int cout_answer { get; set; }
     }
 }
