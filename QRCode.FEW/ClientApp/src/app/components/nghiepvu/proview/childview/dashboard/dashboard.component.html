@@ -1,6 +1,7 @@
+<app-loadingpage *ngIf="loading$"></app-loadingpage>
 <div class="flex flex-wrap pt-[50px] pb-[20px] px-5">
     <div class="bg-[#f3f7f9] mb-5 mr-[30px] flex items-center" *ngFor="let item of arr_thongke">
-        <div routerLink="{{item.url_router}}"
+        <div routerLink="{{item.url_router}}" (click)="sync_form()"
             class="{{item.bg_color}} h-[147.61px] w-[250px] shadow-md rounded-[16px] flex flex-row justify-between cursor-pointer">
             <div class="flex grow pl-4 fle justify-center flex-col">
                 <div class="font-sans not-italic font-medium text-xl leading-[23px] uppercase text-white mb-4">

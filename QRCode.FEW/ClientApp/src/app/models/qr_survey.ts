@@ -12,6 +12,7 @@ export interface qr_survey {
     created_by: number;
     lastcreated_date: Date;
     lastcreated_by: number;
+    cout_answer:number
 }
 export interface survey_view {
     object_edit: qr_survey;

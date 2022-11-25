@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { gencodeview, gencode_status, qr_gencode } from '../models/qr_gencode';
+import { count_obj, gencodeview, gencode_status, qr_gencode } from '../models/qr_gencode';
 import { DataService } from './data.service';
 import { ObservableService } from './observable.service';
 
@@ -31,4 +31,8 @@ export class GencodeService {
   sync_pack(sync_data: gencode_status[]) {
     return this.dataSrv.put('gencode/SyncPay', sync_data) as Observable<boolean>;
   }
+  count_object(id: string) {
+    return this.dataSrv.get('gencode/CountObject/' + id) as Observable<count_obj>;
+  }
+  
 }

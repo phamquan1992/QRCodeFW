@@ -33,3 +33,10 @@ export interface gencode_status {
     status: number;
     userid:number;
 }
+export interface count_obj{
+    count_enterprise:number;
+    count_gencode:number;
+    count_payment:number;
+    count_product:number;
+    count_survey:number;
+}

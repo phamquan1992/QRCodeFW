@@ -247,6 +247,22 @@ namespace QRCode.FEW.Controllers
         }
         private List<survey_view> get_list(List<qr_survey> data)
         {
+            data = (from a in data
+                    select new qr_survey
+                    {
+                        additional = a.additional,
+                        code = a.code,
+                        cout_answer = _Iqr_survey_dtlService.FilterBySurveyID(a.qrsurveyid).Count(),
+                        created_by = a.created_by,
+                        created_date = a.created_date,
+                        end_date = a.end_date,
+                        lastcreated_by = a.lastcreated_by,
+                        lastcreated_date = a.lastcreated_date,
+                        name = a.name,
+                        qrsurveyid = a.qrsurveyid,
+                        start_date = a.start_date,
+                        status = a.status
+                    }).ToList();
             List<survey_view> listview = new List<survey_view>();
             listview = (from a in data
                         select new survey_view
@@ -406,10 +422,27 @@ namespace QRCode.FEW.Controllers
         public List<qr_survey> GetQr_Surveys(int id)
         {
             List<qr_survey> list = new List<qr_survey>();
-            var data = _Iqr_surveyService.GetAll().Where(t => t.created_by == id);
+            var data = _Iqr_surveyService.FilterBy(id);
             if (data != null && data.Count() > 0)
             {
                 list = data.ToList();
+                list = (from a in list
+                        select new qr_survey
+                        {
+                            additional = a.additional,
+                            code = a.code,
+                            cout_answer = _Iqr_survey_dtlService.FilterBySurveyID(a.qrsurveyid).Count(),
+                            created_by = a.created_by,
+                            created_date = a.created_date,
+                            end_date = a.end_date,
+                            lastcreated_by = a.lastcreated_by,
+                            lastcreated_date = a.lastcreated_date,
+                            name = a.name,
+                            qrsurveyid = a.qrsurveyid,
+                            start_date = a.start_date,
+                            status = a.status
+                        }).ToList();
+
             }
             return list;
         }

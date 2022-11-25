@@ -156,7 +156,8 @@ export class AddsurveyComponent implements OnInit {
         created_date: new Date(),
         created_by: Number(this.user_info.id),
         lastcreated_date: new Date(),
-        lastcreated_by: 0
+        lastcreated_by: 0,
+        cout_answer: 0
       };
       let kq: result_object = {
         result: '',
@@ -191,7 +192,8 @@ export class AddsurveyComponent implements OnInit {
         created_date: new Date(),
         created_by: Number(this.user_info.id),
         lastcreated_date: new Date(),
-        lastcreated_by: 0
+        lastcreated_by: 0,
+        cout_answer: 0
       };
       this.surveySrv.update_survey(obj_update).subscribe(t => {
         kq = t as result_object;

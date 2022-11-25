@@ -28,7 +28,7 @@ export class SurveylistComponent implements OnInit, AfterViewInit {
   data_survey: survey_view[] = [];
   dataSource = new MatTableDataSource<survey_view>(this.data_survey);
   selection = new SelectionModel<survey_view>(true, []);
-  displayedColumns = ['select', 'name', 'status', 'count_question', 'userdate', 'start_date', 'end_date', 'action'];
+  displayedColumns = ['select', 'name', 'status', 'count_question','cout_answer', 'userdate', 'start_date', 'end_date', 'action'];
   loading$ = false;
   user_info!: nguoidung;
   arr_filter_status: cutom_it[] = [
@@ -76,6 +76,7 @@ export class SurveylistComponent implements OnInit, AfterViewInit {
     this.loading$ = true;
     this.surveySrv.get_list(this.user_info.id).subscribe(v => {
       this.data_survey = v;
+      console.log(v);
       this.dataSource = new MatTableDataSource<survey_view>(this.data_survey);
       this.dataSource.paginator = this.paginator;
       this.dataSource.filterPredicate = this.createFilter();

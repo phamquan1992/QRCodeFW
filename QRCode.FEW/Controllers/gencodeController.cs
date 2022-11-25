@@ -258,5 +258,22 @@ namespace QRCode.FEW.Controllers
             var count_gencode = _Iqr_gencodeService.GetAll().Where(t => t.qrpaymentid == paymentid && t.status == 1).Count();
             return count_gencode < soluong_ma;
         }
+        [HttpGet]
+        [Route("CountObject/{id}")]
+        public count_obj CountObj(int id)
+        {
+            var product = _IproductService.GetAll().Where(t => t.created_by == id).Count();
+            var enterprise = _Iqr_enterpriseService.GetAll().Where(t => t.created_by == id).Count();
+            var payment = _Iqr_paymentService.GetAll().Where(t => t.created_by == id).Count();
+            var gencode = _Iqr_gencodeService.GetAll().Where(t => t.created_by == id).Count();
+            var survey = _Iqr_surveyService.GetAll().Where(t => t.created_by == id).Count();
+            count_obj _obj = new count_obj();
+            _obj.count_enterprise = enterprise;
+            _obj.count_gencode = gencode;
+            _obj.count_payment = payment;
+            _obj.count_product = product;
+            _obj.count_survey = survey;
+            return _obj;
+        }
     }
 }
