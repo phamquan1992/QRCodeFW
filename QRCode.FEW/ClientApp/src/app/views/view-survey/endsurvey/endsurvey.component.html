@@ -1,10 +1,50 @@
-<div class="mt-8" [ngSwitch]="value_id">
-    <span class="block w-full" *ngSwitchCase="'ErrorSurvey'">Khảo sát không tồn tại</span>
-    <span class="block w-full" *ngSwitchCase="'ErrorActive'">Khảo sát chưa kích hoạt</span>
-    <span class="block w-full" *ngSwitchCase="'EndSurvey'">Thời gian khảo sát đã kết thúc</span>
-    <span class="block w-full" *ngSwitchCase="'NotStart'">Thời gian khảo sát chưa bắt đầu</span>
-    <span class="block w-full" *ngSwitchCase="'ErrorAny'">Bạn đã thực hiện khảo sát</span>
-    <span class="block w-full" *ngSwitchCase="'Success'">Cám ơn bạn đã tham gia khảo sát</span>
-    <span class="block w-full" *ngSwitchCase="'ErrorIns'">Khảo sát thất bại</span>
-    <span class="block w-full" *ngSwitchCase="'ErrorEx'">Có lỗi ngoài luồng xảy ra</span>
+<div wire:loading
+    class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-[15000] overflow-hidden  opacity-75
+    md:flex md:flex-col md:items-center md:justify-center"
+    [ngSwitch]="value_id" [ngClass]="{'bg-[#355a9f]':value_id=='Success','bg-red-700':value_id!='Success'}">
+    <div *ngSwitchCase="'ErrorSurvey'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Khảo sát không tồn tại</p>
+    </div>
+    <div *ngSwitchCase="'ErrorActive'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Khảo sát chưa kích hoạt</p>
+    </div>
+    <div *ngSwitchCase="'EndSurvey'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Thời gian khảo sát đã kết thúc</p>
+    </div>
+    <div *ngSwitchCase="'NotStart'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Thời gian khảo sát chưa bắt đầu</p>
+    </div>
+    <div *ngSwitchCase="'ErrorAny'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Bạn đã thực hiện khảo sát này rồi</p>
+    </div>
+    <div *ngSwitchCase="'Success'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-check-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thành công</h2>
+        <p class="text-center text-white">Cám ơn bạn đã tham gia khảo sát</p>
+    </div>
+    <div *ngSwitchCase="'ErrorIns'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Có lỗi trong quá trình lưu khảo sát</p>
+    </div>
+    <div *ngSwitchCase="'ErrorEx'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thất bại</h2>
+        <p class="text-center text-white">Có lỗi ngoài luồng xảy ra</p>
+    </div>
+    <div *ngSwitchCase="'IDNull'" class="text-center md:mt-0 mt-28">
+        <i class="fa fa-times-circle text-white" aria-hidden="true" style="font-size: 100px;"></i>
+        <h2 class="text-center text-white text-xl font-semibold">Khảo sát thành công</h2>
+        <p class="text-center text-white">QR không hợp lệ</p>
+    </div>
 </div>

@@ -17,3 +17,7 @@ export interface survey_view {
     object_edit: qr_survey;
     list_cauhoi: cauhoi[];
 }
+export interface result_survey {
+    result: survey_view,
+    error: string
+}

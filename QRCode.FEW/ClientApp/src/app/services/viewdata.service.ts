@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { result_object, userdata } from '../models/optioncs';
 import { productview, user_reset } from '../models/product';
 import { enterprisview } from '../models/qr_enterprise';
-import { survey_view } from '../models/qr_survey';
+import { result_survey, survey_view } from '../models/qr_survey';
 import { DataService } from './data.service';
 
 @Injectable({
@@ -30,6 +30,6 @@ export class ViewdataService {
     return pro_obj;
   }
   get_object(id: string) {
-    return this.dataSrv.get('qr_survey/GetObject/' + id) as Observable<survey_view>;
+    return this.dataSrv.get('ViewData/GetObject/' + id) as Observable<result_survey>;
   }
 }

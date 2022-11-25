@@ -20,15 +20,17 @@ namespace QRCode.FEW.Controllers
         private readonly Iqr_gencodeService _Iqr_gencodeService;
         private readonly Iqr_enterpriseService _Iqr_enterpriseService;
         private readonly Iqr_paymentService _Iqr_paymentService;
+        private readonly Iqr_surveyService _Iqr_surveyService;
         private readonly IproductService _IproductService;
 
         public gencodeController(Iqr_gencodeService qr_gencodeService, Iqr_enterpriseService qr_enterpriseService,
-            Iqr_paymentService qr_paymentService, IproductService productService)
+            Iqr_paymentService qr_paymentService, IproductService productService, Iqr_surveyService qr_surveyService)
         {
             _Iqr_gencodeService = qr_gencodeService;
             _Iqr_enterpriseService = qr_enterpriseService;
             _Iqr_paymentService = qr_paymentService;
             _IproductService = productService;
+            _Iqr_surveyService = qr_surveyService;
         }
         [HttpGet]
         [Route("list/{userid}")]
@@ -67,9 +69,11 @@ namespace QRCode.FEW.Controllers
             var list_payment = _Iqr_paymentService.GetAll().Where(t => t.created_by == userid).ToList();
             var list_enterprise = _Iqr_enterpriseService.GetAll().Where(t => t.created_by == userid);
             var list_product = _IproductService.GetAll().Where(t => t.created_by == userid);
+            var list_survey = _Iqr_surveyService.GetAll().Where(t => t.created_by == userid);
             var list_gencode = _Iqr_gencodeService.GetAll().Where(t => t.created_by == userid);
             var list_gen_product = new List<gencodeview>();
             var list_gen_enterprise = new List<gencodeview>();
+            var list_gen_survey = new List<gencodeview>();
             try
             {
                 list_gen_product = (from a in list_payment
@@ -115,6 +119,27 @@ namespace QRCode.FEW.Controllers
                                            qrpaymentid = (int)a.qrpaymentid
                                        }).ToList();
                 list_gen_product.AddRange(list_gen_enterprise);
+                list_gen_survey = (from a in list_payment
+                                   from b in list_gencode
+                                   from c in list_survey
+                                   where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrsurveyid
+                                   select new gencodeview
+                                   {
+                                       create_date_qr = b.created_date.Value,
+                                       exp_date = a.created_date.Value.AddYears(1),
+                                       qr_img = b.image,
+                                       qr_name = b.name,
+                                       qr_obj_name = c.name,
+                                       qr_obj_url = "/portal/companies/edit/" + b.dataid,
+                                       qr_tpye = b.typecode,
+                                       status_pack = a.created_date.Value.AddYears(1) >= DateTime.Now.Date ? "Chưa hết hạn" : "Hết hạn",
+                                       status_qr = b.status == 1 ? "Kích hoạt" : "Huỷ kích hoạt",
+                                       qrgencodeid = b.qrgencodeid,
+                                       pack_name = a.packname,
+                                       qr_code = b.code,
+                                       qrpaymentid = (int)a.qrpaymentid
+                                   }).ToList();
+                list_gen_product.AddRange(list_gen_survey);
             }
             catch (Exception ex)
             {

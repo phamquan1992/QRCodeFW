@@ -1,30 +1,30 @@
 <app-loadingpage *ngIf="loading$"></app-loadingpage>
-<div class="layoutQ px-[1px] py-[15px]">
-    <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
-        Sản phẩm
-    </h3>
-</div>
-<section class="bg-[#8080801c] px-[15px] mb-[15px]">
-    <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter" (focusout)="name_filter=name_filter.trim()">
-    <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
-    bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-        placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="value_select">
-        <option class="text-[13px]" value="all">Trạng thái sản phẩm</option>
-        <option class="text-[13px]" value="true">Kích hoạt</option>
-        <option class="text-[13px]" value="false">Huỷ kích hoạt</option>
-    </select>
-    <button (click)="applyFilter()"
-        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
-        kiếm</button>
-    <button (click)="reload_grid()">
-        <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
-            style="display: inline-block; width: 25px;margin-left: 12px;">
-    </button>
-</section>
-<div class="px-[15px]">
-    <section>
+<div #header>
+    <div class="layoutQ px-[1px] py-[15px]">
+        <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
+            Sản phẩm
+        </h3>
+    </div>
+    <section class="bg-[#8080801c] px-[15px] mb-[15px]">
+        <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+            placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="name_filter" (focusout)="name_filter=name_filter.trim()">
+        <select class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] outline-none
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+            placeholder="Tên hoặc mã sản phẩm" [(ngModel)]="value_select">
+            <option class="text-[13px]" value="all">Trạng thái sản phẩm</option>
+            <option class="text-[13px]" value="true">Kích hoạt</option>
+            <option class="text-[13px]" value="false">Huỷ kích hoạt</option>
+        </select>
+        <button (click)="applyFilter()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px]">Tìm
+            kiếm</button>
+        <button (click)="reload_grid()">
+            <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
+                style="display: inline-block; width: 25px;margin-left: 12px;">
+        </button>
+    </section>
+    <section class="px-[15px]">
         <!-- <button (click)="Import_sp()"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Import
             sản phẩm</button> -->
@@ -41,7 +41,11 @@
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Tạo
             QR Code</button> -->
     </section>
-    <section class="mt-2">
+</div>
+
+<div class="px-[15px]">
+    
+    <section class="overflow-auto" #table_content>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef class="border border-solid border-[#0000001f] w-[33px]">
@@ -111,12 +115,12 @@
                     Không có dữ liệu
                 </td>
             </tr>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="h-5"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="h-5"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="doublerow(row.qrproductid)">
             </tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 20,50,100,200]" showFirstLastButtons [pageSize]="20"
+        </table>        
+    </section>
+    <mat-paginator [pageSizeOptions]="[10, 20,50,100,200]" showFirstLastButtons [pageSize]="20"
             aria-label="Select page of periodic elements">
         </mat-paginator>
-    </section>
 </div>

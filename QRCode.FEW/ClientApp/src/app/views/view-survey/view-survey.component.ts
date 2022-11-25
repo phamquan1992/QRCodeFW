@@ -28,7 +28,6 @@ export class ViewSurveyComponent implements OnInit {
   survey_id_tmp = 0;
 
   ngOnInit(): void {
-    console.log(this.route);
     this.sharingSrc.getUserInfo().pipe(
       map(obj => obj == null)
     );
@@ -40,15 +39,22 @@ export class ViewSurveyComponent implements OnInit {
   get_data() {
     let id = this.route.snapshot.paramMap.get('id');
     this.value_id = id == null ? '0' : id.toString();
-    this.surveySrv.check_survey(this.value_id).subscribe(t => {
-      if (t !== 'Success') {
-        this.router.navigate(['end/' + t]);
-      }
-    });
+
     this.viewSrv.get_object(this.value_id).subscribe(t => {
-      this.array_cauhoi = t.list_cauhoi;
-      this.titile_ks = t.object_edit.name;
-      this.survey_id_tmp = t.object_edit.qrsurveyid;
+      if(t.error!=='Success'){
+        this.router.navigate(['/views/end/' + t.error]);
+      }else{
+        this.array_cauhoi = t.result.list_cauhoi;
+        this.titile_ks = t.result.object_edit.name;
+        this.survey_id_tmp = t.result.object_edit.qrsurveyid;
+      }
+     
+      
+      // this.surveySrv.check_survey(this.survey_id_tmp.toString()).subscribe(t => {
+      //   if (t !== 'Success') {
+      //     this.router.navigate(['end/' + t]);
+      //   }
+      // });
     });
   }
   gui_traloi() {
@@ -64,7 +70,7 @@ export class ViewSurveyComponent implements OnInit {
       if (t.result == 'ErrorEx') {
         console.log(t.error);
       }
-      this.router.navigate(['end/' + t.result]);
+      this.router.navigate(['/views/end/' + t.result]);
     });
   }
   dang_nhap() {

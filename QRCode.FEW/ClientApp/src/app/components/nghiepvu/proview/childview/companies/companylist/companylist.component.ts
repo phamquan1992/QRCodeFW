@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,12 +29,13 @@ export interface congty {
   templateUrl: './companylist.component.html',
   styleUrls: ['./companylist.component.css']
 })
-export class CompanylistComponent implements OnInit {
+export class CompanylistComponent implements OnInit, AfterViewInit {
   arr_tinh!: location[];
   data_company: qr_enterprise[] = [];
   displayedColumns: string[] = ['select', 'name', 'DiaChi', 'TrangThai', 'ngaysua', 'action'];
   dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);
   selection = new SelectionModel<qr_enterprise>(true, []);
+  innerHeight = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   filtercty = {
     name: '',
@@ -46,6 +47,7 @@ export class CompanylistComponent implements OnInit {
   value_select = 'all';
   user_info!: nguoidung;
   loading$: boolean = false;
+  h_col = 0;
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -57,14 +59,33 @@ export class CompanylistComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
   constructor(private router: Router, private congtySrc: CompaniesService, private mesSrc: MessageService, private dialog: MatDialog,
-    private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
+    private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef) { }
 
   ngOnInit(): void {
+    this.innerHeight = window.innerHeight;
+    this.h_col = (window.innerHeight - 280);
     this.loading$ = true;
     this.sharingSrc.getUserInfo().subscribe(t => {
       this.user_info = t;
     });
     this.get_data();
+  }
+  ngAfterViewInit(): void {
+    this.set_heigthtable();
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerHeight = window.innerHeight;
+  }
+  @ViewChild('header') elementView!: ElementRef;
+  @ViewChild('table_content') tableView!: ElementRef;
+  set_heigthtable() {
+    let h_heder = this.elementView.nativeElement.offsetHeight;
+    const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
+    let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
+    console.log(innerHeight);
+    var height = `${h_tmp}px`;
+    this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
   get_data() {
     this.dataSource = new MatTableDataSource<qr_enterprise>(this.data_company);

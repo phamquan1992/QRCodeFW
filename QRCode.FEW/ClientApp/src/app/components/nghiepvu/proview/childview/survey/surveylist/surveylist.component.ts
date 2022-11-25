@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,9 +22,9 @@ export interface survey {
   templateUrl: './surveylist.component.html',
   styleUrls: ['./surveylist.component.css']
 })
-export class SurveylistComponent implements OnInit {
+export class SurveylistComponent implements OnInit, AfterViewInit {
 
-  constructor(private router: Router, private surveySrv: SurveyService, private sharingSrv: ObservableService) { }
+  constructor(private router: Router, private surveySrv: SurveyService, private sharingSrv: ObservableService, private renderer: Renderer2, private el: ElementRef) { }
   data_survey: survey_view[] = [];
   dataSource = new MatTableDataSource<survey_view>(this.data_survey);
   selection = new SelectionModel<survey_view>(true, []);
@@ -46,12 +46,31 @@ export class SurveylistComponent implements OnInit {
     status: ''
   };
   ten_filter = '';
+  innerHeight = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit(): void {
     this.sharingSrv.getUserInfo().subscribe(t => {
       this.user_info = t;
       this.get_data();
     });
+    this.innerHeight = window.innerHeight;
+  }
+  ngAfterViewInit(): void {
+    this.set_heigthtable();
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerHeight = window.innerHeight;
+  }
+  @ViewChild('header') elementView!: ElementRef;
+  @ViewChild('table_content') tableView!: ElementRef;
+  set_heigthtable() {
+    let h_heder = this.elementView.nativeElement.offsetHeight;
+    const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
+    let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
+    console.log(innerHeight);
+    var height = `${h_tmp}px`;
+    this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
   get_data() {
     this.loading$ = true;

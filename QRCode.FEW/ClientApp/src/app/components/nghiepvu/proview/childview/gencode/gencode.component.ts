@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -22,7 +22,7 @@ import { SyncpackComponent } from './syncpack/syncpack.component';
   templateUrl: './gencode.component.html',
   styleUrls: ['./gencode.component.css']
 })
-export class GencodeComponent implements OnInit {
+export class GencodeComponent implements OnInit, AfterViewInit {
   data!: Observable<gencodeview[]>;
   data_arr: gencodeview[] = [];
   dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
@@ -56,13 +56,31 @@ export class GencodeComponent implements OnInit {
     exp_date_start: '',
     exp_date_end: ''
   };
+  innerHeight = 0;
+  h_col = 0;
+  h_heder = 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   user_info!: nguoidung;
   constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
-    private messSrc: MessageService, private router: Router) {
+    private messSrc: MessageService, private router: Router, private renderer: Renderer2, private el: ElementRef,) {
     this.str_url = baseUrl;
   }
+
+  ngAfterViewInit(): void {
+    this.set_heigthtable();
+  }
+  @ViewChild('header') elementView!: ElementRef;
+  @ViewChild('table_content') tableView!: ElementRef;
+  set_heigthtable() {
+    this.h_heder = this.elementView.nativeElement.offsetHeight;
+    const btnElement = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
+    let h_tmp = this.innerHeight - (this.h_heder + btnElement.clientHeight + 45 + 56);
+    console.log(this.innerHeight);
+    var height = `${h_tmp}px`;
+    this.renderer.setStyle(this.tableView.nativeElement, "height", height);
+  }
   ngOnInit(): void {
+    this.innerHeight = window.innerHeight;
     this.get_data();
     this.sharingSrc.getUserInfo().subscribe(t => this.user_info = t);
     this.paymentSrc.get_payment_list(Number(this.user_info.id)).subscribe(t => {
@@ -78,6 +96,12 @@ export class GencodeComponent implements OnInit {
       });
     });
   }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerHeight = window.innerHeight;
+    this.h_col = (window.innerHeight - 280);
+  }
+
   get_data() {
 
     this.dataSource = new MatTableDataSource<gencodeview>(this.data_arr);
@@ -294,7 +318,7 @@ export class GencodeComponent implements OnInit {
                 temp_date.setHours(0, 0, 0);
                 if (temp_date <= data_date) {
                   found = true
-                }else {
+                } else {
                   found = false;
                 }
               }
@@ -302,7 +326,7 @@ export class GencodeComponent implements OnInit {
                 temp_date.setHours(23, 59, 59);
                 if (temp_date >= data_date) {
                   found = true
-                }else {
+                } else {
                   found = false;
                 }
               }

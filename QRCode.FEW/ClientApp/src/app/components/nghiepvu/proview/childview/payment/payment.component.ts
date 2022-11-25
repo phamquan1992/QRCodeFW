@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,9 +17,11 @@ import { SelectngayComponent } from './selectngay/selectngay.component';
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css']
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit,AfterViewInit {
 
-  constructor(private paymentSrc: PaynemtService, private messSrc: MessageService, private sharingSrc: ObservableService, private dialog: MatDialog) { }
+  constructor(private paymentSrc: PaynemtService, private messSrc: MessageService, private sharingSrc: ObservableService, private dialog: MatDialog,
+    private renderer: Renderer2, private el: ElementRef,) { }
+  
   arr_payment: payment_view[] = [];
   loading$: boolean = false;
   user_info!: nguoidung;
@@ -41,11 +43,30 @@ export class PaymentComponent implements OnInit {
     payment_date_start: '',
     payment_date_end: ''
   };
+  innerHeight=0;
   ngOnInit(): void {
+    this.innerHeight = window.innerHeight;
     this.get_data();
     this.sharingSrc.getUserInfo().subscribe(t => {
       this.user_info = t;
     });
+  }
+  ngAfterViewInit(): void {
+    this.set_heigthtable();
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerHeight = window.innerHeight;
+  }
+  @ViewChild('header') elementView!: ElementRef;
+  @ViewChild('table_content') tableView!: ElementRef;
+  set_heigthtable() {
+    let h_heder = this.elementView.nativeElement.offsetHeight;
+    const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
+    let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
+    console.log(innerHeight);
+    var height = `${h_tmp}px`;
+    this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
   get_data() {
     this.loading$ = true;

@@ -1,64 +1,65 @@
 <app-loadingpage *ngIf="loading$"></app-loadingpage>
-<div class="layoutQ px-[1px] py-[15px]">
-    <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
-        Danh sách QR Code
-    </h3>
-</div>
-<section class="bg-[#8080801c] px-[15px] mb-[15px] flex">
-    <div class="w-[250px] mr-[6px]">
-        <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-        bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên QR Code"
-            [(ngModel)]="nameqr_filter" (focusout)="nameqr_filter=nameqr_filter.trim()">
+<div #header>
+    <div class="layoutQ px-[1px] py-[15px]">
+        <h3 class="headerQ mr-[15px] ml-[10px] mb-0 font-semibold text-[1.75rem] leading-[1.2] text-[#000000d9]">
+            Danh sách QR Code
+        </h3>
     </div>
-    <div class="w-[250px] mr-[6px]">
-        <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-    bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên đối tượng"
-            [(ngModel)]="nameobj_filter" (focusout)="nameobj_filter=nameobj_filter.trim()">
-    </div>
-    <div class="w-[250px] inline-block mr-[6px]">
-        <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_loaiQR" [value_input]="str_loaiQR"
-            [placeholder_str]="'Loại QR Code'"></app-autocompleinput>
-    </div>
-    <div class="w-[250px] inline-block mr-[6px]">
-        <app-autocompleinput (val_out)="setval_packname($event)" [data]="arr_filter_pack" [value_input]="str_pack"
-            [placeholder_str]="'Gói dịch vụ'" class="w-[250px]"></app-autocompleinput>
-    </div>
-    <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
-        <mat-date-range-input [rangePicker]="picker" [formGroup]="range_active"
-            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75]"
-            style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
-                formControlName="start_active" (keyup)="number_change($event,'start_active')"
-                (focusout)="checkinput_date($event.target)" />
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_active"
-                (focusout)="checkinput_date($event.target)" (keyup)="number_change($event,'end_active')" />
-        </mat-date-range-input>
-        <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
-        <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker.open()"></i>
-    </div>
-    <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
-        <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
-            class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
-            style="display:inline-block;width:100%;text-align: center;opacity: 1;">
-            <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;"
-                formControlName="start_exp" (focusout)="checkinput_date($event.target)" />
-            <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_exp"
-                (focusout)="checkinput_date($event.target)" />
-        </mat-date-range-input>
-        <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
-        <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>
-    </div>
+    <section class="bg-[#8080801c] mb-[15px] px-[10px] flex">
+        <div class="w-[250px] mr-[6px]">
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+            bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên QR Code"
+                [(ngModel)]="nameqr_filter" (focusout)="nameqr_filter=nameqr_filter.trim()">
+        </div>
+        <div class="w-[250px] mr-[6px]">
+            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
+        bg-white border border-solid border-[#d9d9d9] my-[3px] ml-0 h-8 text-[13px]" placeholder="Tên đối tượng"
+                [(ngModel)]="nameobj_filter" (focusout)="nameobj_filter=nameobj_filter.trim()">
+        </div>
+        <div class="w-[250px] inline-block mr-[6px]">
+            <app-autocompleinput (val_out)="setval_loaiQR($event)" [data]="arr_filter_loaiQR" [value_input]="str_loaiQR"
+                [placeholder_str]="'Loại QR Code'"></app-autocompleinput>
+        </div>
+        <div class="w-[250px] inline-block mr-[6px]">
+            <app-autocompleinput (val_out)="setval_packname($event)" [data]="arr_filter_pack" [value_input]="str_pack"
+                [placeholder_str]="'Gói dịch vụ'" class="w-[250px]"></app-autocompleinput>
+        </div>
+        <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+            <mat-date-range-input [rangePicker]="picker" [formGroup]="range_active"
+                class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75]"
+                style="display:inline-block;width:100%;text-align: center;opacity: 1;">
+                <input matStartDate placeholder="Kích hoạt: Từ ngày" style="width: 100%; font-size: 13px;"
+                    formControlName="start_active" (keyup)="number_change($event,'start_active')"
+                    (focusout)="checkinput_date($event.target)" />
+                <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;"
+                    formControlName="end_active" (focusout)="checkinput_date($event.target)"
+                    (keyup)="number_change($event,'end_active')" />
+            </mat-date-range-input>
+            <mat-date-range-picker #picker style="display:inline-block"></mat-date-range-picker>
+            <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker.open()"></i>
+        </div>
+        <div class="w-[250px] text-ellipsis relative leading-[1.5]  text-[13px] mr-1">
+            <mat-date-range-input [rangePicker]="picker2" [formGroup]="range_exp"
+                class="border border-solid border-[#d9d9d9] my-[3px] bg-white py-1 leading-[1.75] "
+                style="display:inline-block;width:100%;text-align: center;opacity: 1;">
+                <input matStartDate placeholder="HSD: Từ ngày" style="width: 100%; font-size: 13px;"
+                    formControlName="start_exp" (focusout)="checkinput_date($event.target)" />
+                <input matEndDate placeholder="Đến ngày" style="width: 100%; font-size: 13px;" formControlName="end_exp"
+                    (focusout)="checkinput_date($event.target)" />
+            </mat-date-range-input>
+            <mat-date-range-picker #picker2 style="display:inline-block"></mat-date-range-picker>
+            <i class="fa fa-angle-down absolute top-[5px] right-0 p-2" aria-hidden="true" (click)="picker2.open()"></i>
+        </div>
 
-    <button (click)="applyFilter()"
-        class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] w-[100px] my-[3px]">Tìm
-        kiếm</button>
-    <button (click)="reload_grid()">
-        <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
-            style="display: inline-block; width: 25px;margin-left: 12px;">
-    </button>
-</section>
-<div class="px-[15px]">
-    <section>
+        <button (click)="applyFilter()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] w-[100px] my-[3px]">Tìm
+            kiếm</button>
+        <button (click)="reload_grid()">
+            <img _ngcontent-rua-c10="" src="/assets/images/search_reset.png"
+                style="display: inline-block; width: 25px;margin-left: 12px;">
+        </button>
+    </section>
+    <section class="px-[15px]">
         <button (click)="showhide_gencode(false)"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Ẩn</button>
         <button (click)="showhide_gencode(true)"
@@ -67,7 +68,10 @@
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Chuyển
             gói dịch vụ </button>
     </section>
-    <section class="h-4/6 overflow-auto">
+</div>
+
+<div class="px-[15px]">
+    <section class="overflow-auto" #table_content>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
@@ -224,12 +228,13 @@
                 </td>
             </tr>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="h-5"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="h-5" #tr_header></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;">
             </tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[10, 20,50,100,200]" showFirstLastButtons [pageSize]="20"
-            aria-label="Select page of periodic elements">
-        </mat-paginator>
+
     </section>
+    <mat-paginator [pageSizeOptions]="[10, 20,50,100,200]" showFirstLastButtons [pageSize]="20"
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>

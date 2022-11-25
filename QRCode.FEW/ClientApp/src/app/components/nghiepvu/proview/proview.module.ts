@@ -23,7 +23,7 @@ import { SyncpackComponent } from './childview/gencode/syncpack/syncpack.compone
 import {MatSelectModule} from '@angular/material/select';
 import { HisscanComponent } from './childview/gencode/hisscan/hisscan.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { StylePaginatorDirective } from 'src/app/interceptor/paginatorStyleDirective';
 import { PaymentComponent } from './childview/payment/payment.component';
 import { SelectngayComponent } from './childview/payment/selectngay/selectngay.component';
@@ -48,11 +48,10 @@ export const MY_DATE_FORMAT = {
     ShowimgComponent,
     SyncpackComponent,
     HisscanComponent,
-    // CompaniesComponent,
-    // AddcompanyComponent
     StylePaginatorDirective,
     PaymentComponent,
-    SelectngayComponent
+    SelectngayComponent,
+    
   ],
   imports: [
     CommonModule,

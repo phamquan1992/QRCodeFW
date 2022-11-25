@@ -91,7 +91,7 @@ export class SurveyviewComponent implements OnInit {
       qrpaymentid: 0
     };
     gencode_obj.code = this.code_tmp;
-    gencode_obj.typecode = "product";
+    gencode_obj.typecode = "survey";
     gencode_obj.dataid = Number(this.qrsurveyid);
     gencode_obj.qrpaymentid = Number(this.qrpaymentid);
     gencode_obj.name = this.name_qrcode;

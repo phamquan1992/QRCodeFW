@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { S } from '@angular/cdk/keycodes';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +22,7 @@ const data_product: product[] = [];
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, AfterViewInit {
   data_pr: product[] = [];
   displayedColumns: string[] = ['select', 'name', 'status', 'lastcreated_date', 'action'];
   dataSource = new MatTableDataSource<product>(data_product);
@@ -36,8 +36,9 @@ export class ProductsComponent implements OnInit {
   name_filter = '';
   user_info!: nguoidung;
   loading$ = false;
+  innerHeight = 0;
   constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService, private router: Router,
-    private gencodeSrc: GencodeService, private sharingSrc: ObservableService) { }
+    private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef) { }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
@@ -50,6 +51,24 @@ export class ProductsComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.loading$ = false;
     });
+    this.innerHeight = window.innerHeight;
+  }
+  ngAfterViewInit(): void {
+    this.set_heigthtable();
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerHeight = window.innerHeight;
+  }
+  @ViewChild('header') elementView!: ElementRef;
+  @ViewChild('table_content') tableView!: ElementRef;
+  set_heigthtable() {
+    let h_heder = this.elementView.nativeElement.offsetHeight;
+    const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
+    let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
+    console.log(innerHeight);
+    var height = `${h_tmp}px`;
+    this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
   reload_grid() {
     this.filterProduct['name'] = '';
