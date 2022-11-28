@@ -377,7 +377,7 @@ export class ImportfileComponent implements OnInit {
         email: '',
         fax: '',
         logo: '',
-        nation: '',
+        nation: 'Việt Nam',
         province: '',
         district: '',
         wards: '',
@@ -401,7 +401,7 @@ export class ImportfileComponent implements OnInit {
     }
     arr_prise.map(t => {
       let gt1 = this.check_obj_enterprise(t);
-      t.err_str = gt1;
+      t.err_str = gt1;     
     });
     let check_valid = arr_prise.filter(t => t.err_str);
     if (check_valid.length > 0) {
