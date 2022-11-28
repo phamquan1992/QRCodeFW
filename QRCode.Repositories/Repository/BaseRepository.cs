@@ -188,9 +188,9 @@ namespace QRCode.Repositories.Repository
             }
             catch (Exception ex)
             {
-                var obj = (T)Activator.CreateInstance(typeof(T));
+                //var obj = (T)Activator.CreateInstance(typeof(T));
 
-                return obj;
+                return null;
             }
 
         }
