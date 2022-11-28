@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class productController : ControllerBase

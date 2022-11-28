@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class qr_enterpriseController : ControllerBase
@@ -206,7 +206,7 @@ namespace QRCode.FEW.Controllers
         {
             foreach (var item in info_Locations)
             {
-                if (!string.IsNullOrEmpty(item.province) && !string.IsNullOrEmpty(item.district) && !string.IsNullOrEmpty(item.wards))
+                if(!string.IsNullOrEmpty(item.province) && !string.IsNullOrEmpty(item.district) && !string.IsNullOrEmpty(item.wards))
                 {
                     var tinh = _IlocationService.Getbyma(item.province);
                     var huyen = _IlocationService.Getbyma(item.district);
@@ -226,7 +226,7 @@ namespace QRCode.FEW.Controllers
                 if (!string.IsNullOrEmpty(item.sectors_code))
                 {
                     var sectors = _IsectorsService.Getbyma(item.sectors_code);
-                    if (sectors == null)
+                    if(sectors==null)
                         item.err_str = item.err_str + "Mã ngành không hợp lệ";
                 }
             }
