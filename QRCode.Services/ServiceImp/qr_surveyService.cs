@@ -53,5 +53,9 @@ namespace QRCode.Services.ServiceImp
                 return false;
             }
         }
+        public IQueryable<qr_survey> FilterBy(int id)
+        {
+            return _unitOfWork.qr_surveyRepository.FilterBy(t => t.created_by == id);
+        }
     }
 }

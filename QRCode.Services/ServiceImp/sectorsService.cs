@@ -55,5 +55,9 @@ namespace QRCode.Services.ServiceImp
                 return false;
             }
         }
+        public sectors Getbyma(string ma)
+        {
+            return _unitOfWork.sectorsRepository.FindBy(t => t.code == ma);
+        }
     }
 }

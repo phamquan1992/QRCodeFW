@@ -9,5 +9,6 @@ namespace QRCode.Services.ISerivce
         bool CreateNew(sectors obj);
         bool Update(sectors obj);
         bool Delete(sectors obj);
+        sectors Getbyma(string ma);
     }
 }

@@ -19,6 +19,10 @@ namespace QRCode.Services.ServiceImp
         {
             return _unitOfWork.locationRepository.GetAll();
         }
+        public location Getbyma(string ma)
+        {
+            return _unitOfWork.locationRepository.FindBy(t => t.code == ma);
+        }
         public bool CreateNew(location obj)
         {
             try

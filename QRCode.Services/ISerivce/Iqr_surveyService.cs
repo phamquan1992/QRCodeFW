@@ -9,5 +9,6 @@ namespace QRCode.Services.ISerivce
         bool CreateNew(qr_survey obj);
         bool Update(qr_survey obj);
         bool Delete(qr_survey obj);
+        IQueryable<qr_survey> FilterBy(int id);
     }
 }

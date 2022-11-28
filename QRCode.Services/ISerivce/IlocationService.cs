@@ -12,5 +12,6 @@ namespace QRCode.Services.ISerivce
         bool CreateNew(location obj);
         bool Update(location obj);
         bool Delete(location obj);
+        location Getbyma(string ma);
     }
 }
