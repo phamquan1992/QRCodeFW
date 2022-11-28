@@ -181,7 +181,18 @@ namespace QRCode.Repositories.Repository
 
         public T FindBy(Expression<Func<T, bool>> expression)
         {
-            return FilterBy(expression).Single();
+            try
+            {
+                var data = FilterBy(expression).Single();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                var obj = (T)Activator.CreateInstance(typeof(T));
+
+                return obj;
+            }
+
         }
 
         public T FindBy(int id)
@@ -191,7 +202,17 @@ namespace QRCode.Repositories.Repository
 
         public IQueryable<T> FilterBy(Expression<Func<T, bool>> expression)
         {
-            return GetAll().Where(expression).AsQueryable();
+            IQueryable<T> data = (new List<T>()).AsQueryable();
+            try
+            {
+                data = GetAll().Where(expression).AsQueryable();
+                bool check = data.Any();
+            }
+            catch (Exception)
+            {
+                data = (new List<T>()).AsQueryable();
+            }
+            return data;
         }
     }
 }
