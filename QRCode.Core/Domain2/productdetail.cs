@@ -121,4 +121,32 @@ namespace QRCode.Core.Domain2
         public decimal count_payment { get; set; }
         public decimal count_gencode { get; set; }
     }
+    public class info_location
+    {
+        public string ma_tinh { get; set; }
+        public string ma_huyen { get; set; }
+        public string ma_xa { get; set; }
+        public bool is_req { get; set; }
+    }
+    public class qr_enterprise_excel
+    {
+        public string name { get; set; }
+        public string taxcode { get; set; }
+        public string tel { get; set; }
+        public string email { get; set; }
+        public string fax { get; set; }
+        public string logo { get; set; }
+        public string nation { get; set; }
+        public string province { get; set; }
+        public string district { get; set; }
+        public string wards { get; set; }
+        public string occupation { get; set; }
+        public string additional { get; set; }
+        public string address { get; set; }
+        public string sectors_code { get; set; }
+        public string url_background { get; set; }
+        public string url_video { get; set; }
+        public string url_img { get; set; }
+        public string err_str { get; set; }
+    }
 }
