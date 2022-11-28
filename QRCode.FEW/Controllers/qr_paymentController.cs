@@ -61,7 +61,7 @@ namespace QRCode.FEW.Controllers
                             qrpaymentid = (int)a.qrpaymentid,
                             userid = a.userid
                         }).ToList();
-                data = data.OrderBy(t => t.created_date).ToList();
+                data = data.OrderByDescending(t => t.created_date).ToList();
             }
             return data;
         }
