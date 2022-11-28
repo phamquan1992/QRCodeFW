@@ -12,6 +12,7 @@ import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.component';
+import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { CompaniesService } from '../companies.service';
 
 export interface congty {
@@ -265,5 +266,21 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
   doublerow(id: number) {
     let link = '/portal/companies/edit/' + id;
     this.router.navigate([link]);
+  }
+  Import_enterprise() {
+    this.showDialog();
+  }
+  showDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "710px";
+    // dialogConfig.height="400px";
+    dialogConfig.panelClass = ["pd_dialog_none", "z-[3000]"];
+    dialogConfig.data = 'enterprise';
+    this.dialog.open(ImportfileComponent, dialogConfig).afterClosed().subscribe(
+      res => {
+      }
+    );
   }
 }

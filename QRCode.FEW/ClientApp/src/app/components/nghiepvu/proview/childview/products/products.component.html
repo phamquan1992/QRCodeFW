@@ -25,9 +25,12 @@
         </button>
     </section>
     <section class="px-[15px]">
-        <!-- <button (click)="Import_sp()"
+        <button (click)="Import_sp()"
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Import
-            sản phẩm</button> -->
+            sản phẩm</button>
+            <button (click)="Export_sp()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Export
+            sản phẩm</button>
         <button
             class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]"
             routerLink="./add">Thêm mới</button>
@@ -46,7 +49,7 @@
 <div class="px-[15px]">
     
     <section class="overflow-auto" #table_content>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
+        <table id="excel-table" mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef class="border border-solid border-[#0000001f] w-[33px]">
                     <mat-checkbox (change)="$event ? masterToggle() : null"

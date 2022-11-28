@@ -4,10 +4,41 @@
             <div>{{title}}</div>
         </div>
     </div>
-    <div class="w-full">
-        <button class="absolute top-0 right-0 h-[42px] w-[42px] text-white">Chọn file</button>
-        <button class="absolute top-0 right-0 h-[42px] w-[42px] text-white">Tải file mẫu</button>
+    <div class="px-4 grid grid-cols-6">
+        <div>
+            <input #fileinput type="file" (change)="onFileChange($event)" multiple="false" style="display: none;" />
+            <button
+                class="my-3 w-full leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px]"
+                (click)="fileinput.click()">Chọn file excel</button>
+        </div>
+        <div class="col-span-4 px-[10px]">
+            <div class="float-left w-[416px]">
+                <div class="mt-[4px] text-center"><span class="text-xs">Bạn chưa có file mẫu?</span></div>
+                <div class="border-t border-dashed border-[#196898] h-[1px]"></div>
+            </div>
+            <div class="float-left mt-5">
+                <i><svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="right" class="text-[#196898]"
+                        aria-hidden="true">
+                        <path
+                            d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z">
+                        </path>
+                    </svg>
+                </i>
+            </div>
+        </div>
+        <div>
+            <button (click)="download_template()"
+                class="my-3 w-full leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px]">Tải
+                file mẫu</button>
+        </div>
+
     </div>
-    <button class="absolute top-0 right-0 h-[42px] w-[42px] text-white"><i class="fa fa-times" aria-hidden="true"
-        ></i></button>
+    <div class="border-t border-solid border-[#e8e8e8] text-right">
+        <button (click)="close_popup('')"
+            class="leading-[1.5] inline-block font-normal text-center cursor-pointer h-8 px-[15px] border border-solid border-[#196898] bg-white text-[#196898] text-[13px] my-[10px]">Huỷ</button>
+        <button (click)="Import_data()"
+            class="leading-[1.5] inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mx-[10px] my-[10px]">Import</button>
+    </div>
+    <button class="absolute top-0 right-0 h-[42px] w-[42px] text-white" (click)="close_popup('')"><i class="fa fa-times"
+            aria-hidden="true"></i></button>
 </div>

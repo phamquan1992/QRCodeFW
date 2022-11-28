@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QRCode.Core.Domain;
+using QRCode.Core.Domain2;
 using QRCode.FEW.Extensions.Common;
 using QRCode.Services.ISerivce;
 using System;
@@ -13,17 +14,19 @@ using System.Threading.Tasks;
 
 namespace QRCode.FEW.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class qr_enterpriseController : ControllerBase
     {
         private readonly Iqr_enterpriseService _Iqr_enterpriseService;
         private readonly IlocationService _IlocationService;
-        public qr_enterpriseController(Iqr_enterpriseService qr_enterpriseService, IlocationService locationService)
+        private readonly IsectorsService _IsectorsService;
+        public qr_enterpriseController(Iqr_enterpriseService qr_enterpriseService, IlocationService locationService, IsectorsService _IsectorsService)
         {
             _Iqr_enterpriseService = qr_enterpriseService;
             _IlocationService = locationService;
+            this._IsectorsService = _IsectorsService;
         }
         [HttpGet]
         [Route("list")]
@@ -196,6 +199,39 @@ namespace QRCode.FEW.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+        [HttpGet]
+        [Route("GetInfoLocation")]
+        public List<qr_enterprise_excel> GetInfo_Locations([FromBody] List<qr_enterprise_excel> info_Locations)
+        {
+            foreach (var item in info_Locations)
+            {
+                if (!string.IsNullOrEmpty(item.province) && !string.IsNullOrEmpty(item.district) && !string.IsNullOrEmpty(item.wards))
+                {
+                    var tinh = _IlocationService.Getbyma(item.province);
+                    var huyen = _IlocationService.Getbyma(item.district);
+                    var xa = _IlocationService.Getbyma(item.wards);
+                    if (tinh == null || huyen == null || xa == null)
+                    {
+                        item.err_str = item.err_str + "Mã tỉnh, huyện, xã không hợp lệ";
+                    }
+                    else
+                    {
+                        if (tinh.code != huyen.parent || huyen.code != xa.parent)
+                        {
+                            item.err_str = item.err_str + "Mã tỉnh, huyện, xã không hợp lệ";
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(item.sectors_code))
+                {
+                    var sectors = _IsectorsService.Getbyma(item.sectors_code);
+                    if (sectors == null)
+                        item.err_str = item.err_str + "Mã ngành không hợp lệ";
+                }
+            }
+            return info_Locations;
+
         }
     }
 }

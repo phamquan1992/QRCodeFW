@@ -14,6 +14,7 @@ import { ObservableService } from 'src/app/services/observable.service';
 import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.component';
 import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { ProductsService } from './products.service';
+import * as XLSX from 'xlsx';
 
 const data_product: product[] = [];
 
@@ -155,14 +156,16 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   createQR() {
   }
   Import_sp() {
-    this.showDialog('');
+    this.showDialog();
   }
-  showDialog(gt: string) {
+  showDialog() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
+    dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "520px";
-    dialogConfig.panelClass = "pd_dialog_none";
+    dialogConfig.width = "710px";
+    // dialogConfig.height="400px";
+    dialogConfig.panelClass = ["pd_dialog_none", "z-[3000]"];
+    dialogConfig.data = 'product';
     this.dialog.open(ImportfileComponent, dialogConfig).afterClosed().subscribe(
       res => {
       }
@@ -265,5 +268,16 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   doublerow(id: number) {
     let link = '/portal/products/edit/' + id;
     this.router.navigate([link]);
+  }
+  fileName = 'ExcelSheet.xlsx';
+  Export_sp() {
+    let element = document.getElementById('excel-table');
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data_pr);
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
   }
 }

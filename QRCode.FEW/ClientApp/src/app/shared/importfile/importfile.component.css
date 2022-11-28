@@ -2,3 +2,6 @@
     padding: 0px;
     border-radius: 0px;
 }
+::ng-deep .cdk-overlay-container {
+    z-index: 5000;
+}

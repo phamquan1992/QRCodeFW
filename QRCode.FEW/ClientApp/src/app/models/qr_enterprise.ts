@@ -36,3 +36,23 @@ export interface enterprisview {
     tel: string;
     list_ref: productview[]
 }
+export interface qr_enterprise_excel {
+    name: string;
+    taxcode: string;
+    tel: string;
+    email: string;
+    fax: string;
+    logo: string;
+    nation: string;
+    province: string;
+    district: string;
+    wards: string;
+    occupation: string;
+    additional: string;
+    address: string;
+    sectors_code: string;
+    url_background: string;
+    url_video: string;
+    url_img: string;
+    err_str:string;
+}
