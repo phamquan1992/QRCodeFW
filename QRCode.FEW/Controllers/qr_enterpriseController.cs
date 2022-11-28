@@ -200,7 +200,7 @@ namespace QRCode.FEW.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetInfoLocation")]
         public List<qr_enterprise_excel> GetInfo_Locations([FromBody] List<qr_enterprise_excel> info_Locations)
         {

@@ -55,4 +55,15 @@ export interface qr_enterprise_excel {
     url_video: string;
     url_img: string;
     err_str:string;
+    Website:string;
+    Facebook:string;
+    Shopee:string;
+    Zalo:string;
+    Instagram:string;
+    Tiktok:string;
+    Tiki:string;
+    Youtube:string;
+    Linkedin:string;
+    Lazada:string;
+    Sendo:string;
 }

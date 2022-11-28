@@ -17,8 +17,8 @@
                 <div class="border-t border-dashed border-[#196898] h-[1px]"></div>
             </div>
             <div class="float-left mt-5">
-                <i><svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="right" class="text-[#196898]"
-                        aria-hidden="true">
+                <i><svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="right"
+                        class="text-[#196898]" aria-hidden="true">
                         <path
                             d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z">
                         </path>
@@ -34,6 +34,10 @@
 
     </div>
     <div class="border-t border-solid border-[#e8e8e8] text-right">
+        <button (click)="Export_error()" [ngClass]="{'inline-block':show_bt_error,'hidden':!show_bt_error}"
+            class="leading-[1.5] font-normal text-center cursor-pointer h-8 px-[15px] bg-red-600 text-white text-[13px] mx-[10px] my-[10px] float-left">Xuất
+            file lỗi
+        </button>
         <button (click)="close_popup('')"
             class="leading-[1.5] inline-block font-normal text-center cursor-pointer h-8 px-[15px] border border-solid border-[#196898] bg-white text-[#196898] text-[13px] my-[10px]">Huỷ</button>
         <button (click)="Import_data()"
@@ -41,4 +45,48 @@
     </div>
     <button class="absolute top-0 right-0 h-[42px] w-[42px] text-white" (click)="close_popup('')"><i class="fa fa-times"
             aria-hidden="true"></i></button>
+
+    <table id="table_err_product" style="display: none;" mat-table [dataSource]="arr_product_data"
+        *ngIf="arr_product_data.length>0  && arr_product_header.length>0 && displayedColumns2.length>0">
+        <ng-container [matColumnDef]="col.name" *ngFor="let col of arr_product_header">
+            <th mat-header-cell *matHeaderCellDef>
+                {{col.mota}}
+            </th>
+            <td mat-cell *matCellDef="let element">
+                {{element[col.name]}}
+            </td>
+        </ng-container>
+        <ng-container [matColumnDef]="'err_str'">
+            <th mat-header-cell *matHeaderCellDef>
+                Mô tả lỗi
+            </th>
+            <td mat-cell *matCellDef="let element">
+                {{element['err_str']}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+    </table>
+    <table id="table_err_enter" style="display: none;" mat-table [dataSource]="arr_enterprise_data"
+        *ngIf="arr_des_enterprise.length>0">
+        <ng-container [matColumnDef]="col.name" *ngFor="let col of arr_des_enterprise">
+            <th mat-header-cell *matHeaderCellDef>
+                {{col.value}}
+            </th>
+            <td mat-cell *matCellDef="let element">
+                {{element[col.name]}}
+            </td>
+        </ng-container>
+        <ng-container [matColumnDef]="'err_str'">
+            <th mat-header-cell *matHeaderCellDef>
+                Mô tả lỗi
+            </th>
+            <td mat-cell *matCellDef="let element">
+                {{element['err_str']}}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </div>

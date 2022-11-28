@@ -3,7 +3,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { category } from 'src/app/models/category';
 import { Inputcustom } from 'src/app/models/Inputcustom';
 import { product } from 'src/app/models/product';
-import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { qr_enterprise, qr_enterprise_excel } from 'src/app/models/qr_enterprise';
 import { DataService } from 'src/app/services/data.service';
 type AOA = any[][];
 
@@ -61,7 +61,9 @@ export class ProductsService {
     let pro_obj: Observable<product> = this.dataSrv.get('ViewData/product/' + id) as Observable<product>;
     return pro_obj;
   }
-
+  check_data(pro_obj: qr_enterprise_excel[]){
+    return this.dataSrv.post('qr_enterprise/GetInfoLocation', pro_obj)  as Observable<qr_enterprise_excel[]>;
+  }
 
   arr_mota = [
     { name: 'code', value: 'Mã sản phẩm', require: false },

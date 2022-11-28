@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CompaniesService } from 'src/app/components/nghiepvu/proview/childview/companies/companies.service';
 import { ProductsService } from 'src/app/components/nghiepvu/proview/childview/products/products.service';
@@ -21,12 +21,12 @@ export interface item_tmp {
 @Component({
   selector: 'app-importfile',
   templateUrl: './importfile.component.html',
-  styleUrls: ['./importfile.component.css']
+  styleUrls: ['./importfile.component.css'],
 })
 export class ImportfileComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ImportfileComponent>, private productSrv: ProductsService, @Inject(MAT_DIALOG_DATA) public type_import: string,
-    private messSrv: MessageService, private commonSrv: CommonService, private producSrc: ProductsService, private companySrc: CompaniesService,
+  constructor(public dialogRef: MatDialogRef<ImportfileComponent>, @Inject(MAT_DIALOG_DATA) public type_import: string,
+    private messSrv: MessageService, private commonSrv: CommonService, private productSrv: ProductsService, private companySrc: CompaniesService,
     private sectorSrc: SectorsService) { }
 
   title = 'Import tài liệu';
@@ -36,18 +36,48 @@ export class ImportfileComponent implements OnInit {
   arr_enterprise_data: qr_enterprise_excel[] = [];
   arr_categogy: category[] = [];
   arr_doanhnghiep: qr_enterprise[] = [];
+  show_bt_error = false;
   arr_tinh: location[] = [];
+  arr_des_enterprise = [
+    { name: 'name', value: 'Tên doanh nghiệp, cá nhân(*)', require: true },
+    { name: 'taxcode', value: 'Mã số thuế', require: false },
+    { name: 'tel', value: 'Điện thoại liên hệ(*)', require: true },
+    { name: 'fax', value: 'Fax', require: false },
+    { name: 'province', value: 'Tỉnh, thành phố(*)', require: true },
+    { name: 'district', value: 'Quận, huyện(*)', require: true },
+    { name: 'wards', value: 'Xã, phường(*)', require: true },
+    { name: 'sectors_code', value: 'Nhóm ngành(*)', require: true },
+    { name: 'occupation', value: 'Nghề nghiệp(*)', require: true },
+    { name: 'url_background', value: 'Ảnh bìa', require: false },
+    { name: 'url_video', value: 'Video', require: false },
+    { name: 'url_img', value: 'Ảnh doanh nghiệp, cá nhân', require: false },
+    { name: 'logo', value: 'Ảnh đại diện(*)', require: false },
+    { name: 'email', value: 'Email(*)', require: true },
+    { name: 'Website', value: 'Website', require: false },
+    { name: 'Facebook', value: 'Facebook', require: false },
+    { name: 'Shopee', value: 'Shopee', require: false },
+    { name: 'Zalo', value: 'Zalo', require: false },
+    { name: 'Instagram', value: 'Instagram', require: false },
+    { name: 'Tiktok', value: 'Tiktok', require: false },
+    { name: 'Tiki', value: 'Tiki', require: false },
+    { name: 'Youtube', value: 'Youtube', require: false },
+    { name: 'Linkedin', value: 'Linkedin', require: false },
+    { name: 'Lazada', value: 'Lazada', require: false },
+    { name: 'Sendo', value: 'Sendo', require: false },
+  ];
+  displayedColumns: string[] = this.arr_des_enterprise.map((col) => col.name);
   ngOnInit(): void {
+    this.show_bt_error = false;
     if (this.type_import === 'product') {
       this.title = "Import sản phẩm"
     }
     if (this.type_import === 'enterprise') {
       this.title = "Import doanh nghiệp cá nhân"
     }
-    this.producSrc.get_category().subscribe(t => {
+    this.productSrv.get_category().subscribe(t => {
       this.arr_categogy = t;
     });
-    this.producSrc.get_list_company().subscribe(t => {
+    this.productSrv.get_list_company().subscribe(t => {
       this.arr_doanhnghiep = t;
     });
     this.companySrc.get_location('00').subscribe(t => {
@@ -61,7 +91,13 @@ export class ImportfileComponent implements OnInit {
   onFileChange(evt: any) {
     /* wire up file reader */
     const target: DataTransfer = <DataTransfer>evt.target;
-    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    if (target.files.length > 1) {
+      this.messSrv.error("Không thể chọn nhiều file import");
+      return;
+    }
+    if (target.files.length === 0) {
+      return;
+    }
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
       /* read workbook */
@@ -87,6 +123,26 @@ export class ImportfileComponent implements OnInit {
     if (this.type_import == 'product') {
 
     }
+  }
+  Export_error() {
+    let element = document.getElementById('table_err_product');
+    if (this.type_import === 'enterprise') {
+      element = document.getElementById('table_err_enter');
+    }
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+    /* generate workbook and add the worksheet */
+    var range = XLSX.utils.decode_range(ws['!ref'] as string);
+    for (var C = range.s.r; C <= range.e.c; ++C) {
+      var address = XLSX.utils.encode_col(C) + '1'; // <-- first row, column number C
+      console.log(address);
+      if (!ws[address]) continue;
+      ws[address].v = ws[address].v.toUpperCase();      
+    }
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
   }
   get_array_product() {
     let arr1: item_tmp[] = [];
@@ -165,6 +221,8 @@ export class ImportfileComponent implements OnInit {
     }
     return arr_product;
   }
+  arr_product_header: item_tmp[] = [];
+  displayedColumns2: string[] = [];
   get_array_product_v2() {
     let arr1: item_tmp[] = [];
     let demrow = 0;
@@ -185,9 +243,12 @@ export class ImportfileComponent implements OnInit {
         arr1.push(it_tmp);
       }
     }
-
     arr1 = arr1.filter(t => t.mota != '');
     let arr_row_header = arr1.filter(t => t.row_index == 1);
+    this.arr_product_header = arr1.filter(t => t.row_index == 1);
+    console.log(this.arr_product_header);
+    this.displayedColumns2 = this.arr_product_header.map((col) => col.name);
+    this.displayedColumns2.push('err_str');
     let arr_row_value = arr1.filter(t => t.row_index > 1);
     let length_ = Math.max(...arr_row_value.map(t => t.row_index));
     let arr_product: product_excel[] = [];
@@ -231,18 +292,19 @@ export class ImportfileComponent implements OnInit {
       let gt1 = this.check_obj_product(t);
       t.err_str = gt1;
     });
+    this.arr_product_data = arr_product;
+    
     let check_valid = arr_product.filter(t => t.err_str);
     if (check_valid.length > 0) {
+      this.show_bt_error = true;
       this.messSrv.error("File excel không hợp lệ");
       return;
     }
-    this.arr_product_data = arr_product;
-    console.log(arr_product);
+
   }
   arr_mota_product = this.productSrv.arr_mota;
   check_obj_product(obj_check: product_excel) {
     const ObjJson = JSON.parse(JSON.stringify(obj_check));
-    // let arr_prop_req = this.arr_mota_product.filter(t => t.require);
     let arr_prop_req = this.arr_mota_product;
     let str_err = '';
     arr_prop_req.forEach(element => {
@@ -290,7 +352,6 @@ export class ImportfileComponent implements OnInit {
     let str_err = '';
     arr_prop_req.forEach(element => {
       let gt_check = ObjJson[element.name];
-      console.log(element.require);
       if (element.require) {
         if (gt_check == '') {
           str_err = str_err + element.value + ' không được để trống' + ";";
@@ -311,7 +372,6 @@ export class ImportfileComponent implements OnInit {
         }
       } else {
         if (gt_check != '') {
-          console.log(element.name);
           if (element.name === 'Website' || element.name === 'Facebook' || element.name === 'Shopee' || element.name === 'Zalo' || element.name === 'Instagram'
             || element.name === 'Tiktok' || element.name === 'Tiki' || element.name === 'Youtube' || element.name === 'Linkedin' || element.name === 'Lazada' || element.name === 'Lazada') {
             let isUrl = this.commonSrv.isValidHttpUrl(gt_check);
@@ -341,6 +401,7 @@ export class ImportfileComponent implements OnInit {
         );
     };
   }
+  arr_exprot: any[] = [];
   get_array_enterprise() {
     let arr1: item_tmp[] = [];
     let demrow = 0;
@@ -388,7 +449,18 @@ export class ImportfileComponent implements OnInit {
         url_background: '',
         url_video: '',
         url_img: '',
-        err_str: ''
+        err_str: '',
+        Facebook: '',
+        Instagram: '',
+        Lazada: '',
+        Linkedin: '',
+        Sendo: '',
+        Shopee: '',
+        Tiki: '',
+        Tiktok: '',
+        Website: '',
+        Youtube: '',
+        Zalo: ''
       };
       const Objprise = JSON.parse(JSON.stringify(item_prise));
       row_itep.forEach(element => {
@@ -401,15 +473,26 @@ export class ImportfileComponent implements OnInit {
     }
     arr_prise.map(t => {
       let gt1 = this.check_obj_enterprise(t);
-      t.err_str = gt1;     
+      t.err_str = gt1;
     });
-    let check_valid = arr_prise.filter(t => t.err_str);
-    if (check_valid.length > 0) {
-      this.messSrv.error("File excel không hợp lệ");
-    }
-    this.arr_enterprise_data = arr_prise;
-    console.log(arr_prise);
+    this.displayedColumns.push('err_str');
+    this.productSrv.check_data(arr_prise).subscribe(t => {
+
+      arr_prise.map(v => {
+        let gt_tm3 = t.findIndex(m => m.name == v.name);
+        v.err_str = t[gt_tm3].err_str;
+      });
+      console.log(arr_prise);
+      this.arr_enterprise_data = arr_prise;
+      this.arr_exprot = Object.values(arr_prise);
+      let check_valid = arr_prise.filter(t => t.err_str);
+      if (check_valid.length > 0) {
+        this.show_bt_error = true;
+        this.messSrv.error("File excel không hợp lệ");
+      }
+    });
   }
+
   download_template() {
     let file_name = '';
     if (this.type_import == 'product') {
@@ -429,31 +512,6 @@ export class ImportfileComponent implements OnInit {
   close_popup(gt: any) {
     this.dialogRef.close(gt);
   }
-  arr_des_enterprise = [
-    { name: 'name', value: 'Tên doanh nghiệp, cá nhân(*)', require: true },
-    { name: 'taxcode', value: 'Mã số thuế', require: false },
-    { name: 'tel', value: 'Điện thoại liên hệ(*)', require: true },
-    { name: 'fax', value: 'Fax', require: false },
-    { name: 'province', value: 'Tỉnh, thành phố(*)', require: true },
-    { name: 'district', value: 'Quận, huyện(*)', require: true },
-    { name: 'wards', value: 'Xã, phường(*)', require: true },
-    { name: 'sectors_code', value: 'Nhóm ngành(*)', require: true },
-    { name: 'occupation', value: 'Nghề nghiệp(*)', require: true },
-    { name: 'url_background', value: 'Ảnh bìa', require: false },
-    { name: 'url_video', value: 'Video', require: false },
-    { name: 'url_img', value: 'Ảnh doanh nghiệp, cá nhân', require: false },
-    { name: 'logo', value: 'Ảnh đại diện(*)', require: false },
-    { name: 'email', value: 'Email(*)', require: true },
-    { name: 'Website', value: 'Website', require: false },
-    { name: 'Facebook', value: 'Facebook', require: false },
-    { name: 'Shopee', value: 'Shopee', require: false },
-    { name: 'Zalo', value: 'Zalo', require: false },
-    { name: 'Instagram', value: 'Instagram', require: false },
-    { name: 'Tiktok', value: 'Tiktok', require: false },
-    { name: 'Tiki', value: 'Tiki', require: false },
-    { name: 'Youtube', value: 'Youtube', require: false },
-    { name: 'Linkedin', value: 'Linkedin', require: false },
-    { name: 'Lazada', value: 'Lazada', require: false },
-    { name: 'Sendo', value: 'Sendo', require: false },
-  ];
+  
+
 }

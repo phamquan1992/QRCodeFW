@@ -19,6 +19,8 @@ import { AlertdeleteComponent } from './alertdelete/alertdelete.component';
 import { MatIconModule } from '@angular/material/icon';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { LoadingpageComponent } from './loadingpage/loadingpage.component';
+import { KeysPipe } from '../securities/keys.pipe';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -34,12 +36,13 @@ import { LoadingpageComponent } from './loadingpage/loadingpage.component';
     ImportfileComponent,
     AlertdeleteComponent,
     NotfoundComponent,
-    LoadingpageComponent
+    LoadingpageComponent,
+    KeysPipe
   ],
   imports: [
     CommonModule, ReactiveFormsModule, FormsModule,
     NgxQrcodeStylingModule, MatAutocompleteModule, MatDialogModule, AngularEditorModule,
-    MatIconModule
+    MatIconModule,MatTableModule
   ], exports: [
     CustominputComponent,
     AddinputComponent,
