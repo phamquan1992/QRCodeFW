@@ -14,5 +14,6 @@ namespace QRCode.Services.ISerivce
         bool UpdateRange(List<product> obj);
         bool Delete(product obj);
         bool DeleteRange(List<product> obj);
+        bool AddRange(List<product> obj);
     }
 }

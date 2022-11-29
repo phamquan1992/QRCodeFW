@@ -10,6 +10,7 @@ namespace QRCode.Services.ISerivce
     {
         IQueryable<qr_enterprise> GetAll();
         bool CreateNew(qr_enterprise obj);
+        bool AddRange(List<qr_enterprise> obj);
         bool Update(qr_enterprise obj);
         bool UpdateRange(List<qr_enterprise> obj);
         bool Delete(qr_enterprise obj);

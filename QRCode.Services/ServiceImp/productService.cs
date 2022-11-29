@@ -31,6 +31,18 @@ namespace QRCode.Services.ServiceImp
                 return false;
             }
         }
+        public bool AddRange(List<product> obj)
+        {
+            try
+            {
+                return _unitOfWork.productRepository.AddRange(obj);
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public bool Update(product obj)
         {
             try

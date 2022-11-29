@@ -31,6 +31,18 @@ namespace QRCode.Services.ServiceImp
                 return false;
             }
         }
+        public bool AddRange(List<qr_enterprise> obj)
+        {
+            try
+            {
+                return _unitOfWork.qr_enterpriseRepository.AddRange(obj);
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public bool Update(qr_enterprise obj)
         {
             try
