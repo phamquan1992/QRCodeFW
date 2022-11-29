@@ -15,8 +15,8 @@
     </div>
     <section class="bg-[#8080801c] px-[15px]">
         <input type="text" class="w-[250px] text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] 
-        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" placeholder="Tên khảo sát..."
-            [(ngModel)]="ten_filter">
+        bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
+            placeholder="Tên khảo sát..." [(ngModel)]="ten_filter">
         <div class="w-[250px] inline-block mr-[6px]">
             <app-autocompleinput (val_out)="setval_status($event)" [data]="arr_filter_status" [value_input]="str_status"
                 [placeholder_str]="'Trạng thái'" class="w-[250px]"></app-autocompleinput>
@@ -44,8 +44,10 @@
     </section>
     <section class="px-[15px]">
         <button (click)="add_action()"
-            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Thêm
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Thêm
             mới</button>
+        <button (click)="Export_khaosat()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] my-[5px]">Export</button>
     </section>
 </div>
 

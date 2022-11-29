@@ -25,6 +25,7 @@ export interface product {
     status: boolean;
     created_by: number;
     created_date: Date;
+    enterpriseid:number;
 }
 export interface productview {
     qrproductid: number;

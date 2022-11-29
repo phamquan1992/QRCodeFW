@@ -1,4 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,12 +9,19 @@ import { map } from 'rxjs';
 import { location } from 'src/app/models/location';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { ExportExcelService } from 'src/app/services/export-excel.service';
 import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.component';
 import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { CompaniesService } from '../companies.service';
+export interface enterprise_export {
+  thongtin_chung: string;
+  dia_chi: string;
+  trang_thai: string;
+  ngay_capnhat: string;
+}
 
 export interface congty {
   img_src: string;
@@ -60,7 +68,8 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
   constructor(private router: Router, private congtySrc: CompaniesService, private mesSrc: MessageService, private dialog: MatDialog,
-    private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef) { }
+    private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef,
+    private datepipe: DatePipe, private exportSrv: ExportExcelService) { }
 
   ngOnInit(): void {
     this.innerHeight = window.innerHeight;
@@ -77,6 +86,7 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
+    this.set_heigthtable();
   }
   @ViewChild('header') elementView!: ElementRef;
   @ViewChild('table_content') tableView!: ElementRef;
@@ -84,7 +94,6 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
     let h_heder = this.elementView.nativeElement.offsetHeight;
     const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
     let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
-    console.log(innerHeight);
     var height = `${h_tmp}px`;
     this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
@@ -280,7 +289,32 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
     dialogConfig.data = 'enterprise';
     this.dialog.open(ImportfileComponent, dialogConfig).afterClosed().subscribe(
       res => {
+        if (res == "Success") {
+          this.get_data();
+        }
       }
     );
+  }
+  arr_header: string[] = ['Thông tin chung', 'Địa chỉ', 'Trạng thái', 'Ngày cập nhật'];
+  Export_enterprise() {
+    let arr_export: enterprise_export[] = [];
+    console.log(this.data_company);
+    this.data_company.forEach((row: qr_enterprise) => {
+      let gt_tmp: enterprise_export = {
+        thongtin_chung: row.name + "\r\n" + "MST: " + row.taxcode + '\r\n' + "Số điện thoại: " + row.tel,
+        dia_chi: row.address||'',
+        trang_thai: row.status ? 'Kích hoạt' : 'Huỷ kích hoạt',
+        ngay_capnhat: row.lastcreated_date == null ? this.datepipe.transform(row.created_date, 'dd/MM/yyyy') as string : this.datepipe.transform(row.lastcreated_date, 'dd/MM/yyyy') as string
+      };
+      arr_export.push(gt_tmp);
+    });
+
+    let reportData = {
+      title: 'Danh sách doanh nghiệp, cá nhân',
+      data: arr_export,
+      headers: this.arr_header,
+    };
+
+    this.exportSrv.exportExcel(reportData);
   }
 }

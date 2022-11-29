@@ -84,6 +84,44 @@ namespace QRCode.FEW.Controllers
                 return false;
             }
         }
+        [HttpPost]
+        [Route("import")]
+        public bool import([FromBody] List<qr_enterprise> list)
+        {
+            try
+            {
+                List<qr_enterprise> data = new List<qr_enterprise>();
+                foreach (var item in list)
+                {
+                    qr_enterprise model = new qr_enterprise();
+                    model.additional = item.additional;
+                    model.address = item.address;
+                    model.district = item.district;
+                    model.email = item.email;
+                    model.fax = item.fax;
+                    model.logo = item.logo;
+                    model.name = item.name;
+                    model.nation = item.nation;
+                    model.occupation = item.occupation;
+                    model.province = item.province;
+                    model.taxcode = item.taxcode;
+                    model.tel = item.tel;
+                    model.wards = item.wards;
+                    model.sectors_code = item.sectors_code;
+                    model.url_background = item.url_background;
+                    model.url_img = item.url_img;
+                    model.url_video = item.url_video;
+                    model.created_by = item.created_by;
+                    model.created_date = DateTime.Now;
+                    data.Add(model);
+                }
+                return _Iqr_enterpriseService.AddRange(data);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         [HttpPut]
         [Route("update")]
         public bool Update([FromBody] qr_enterprise qr_model)
@@ -206,7 +244,7 @@ namespace QRCode.FEW.Controllers
         {
             foreach (var item in info_Locations)
             {
-                if(!string.IsNullOrEmpty(item.province) && !string.IsNullOrEmpty(item.district) && !string.IsNullOrEmpty(item.wards))
+                if (!string.IsNullOrEmpty(item.province) && !string.IsNullOrEmpty(item.district) && !string.IsNullOrEmpty(item.wards))
                 {
                     var tinh = _IlocationService.Getbyma(item.province);
                     var huyen = _IlocationService.Getbyma(item.district);
@@ -226,7 +264,7 @@ namespace QRCode.FEW.Controllers
                 if (!string.IsNullOrEmpty(item.sectors_code))
                 {
                     var sectors = _IsectorsService.Getbyma(item.sectors_code);
-                    if(sectors==null)
+                    if (sectors == null)
                         item.err_str = item.err_str + "Mã ngành không hợp lệ";
                 }
             }

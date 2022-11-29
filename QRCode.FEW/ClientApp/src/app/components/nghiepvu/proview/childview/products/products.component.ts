@@ -15,8 +15,16 @@ import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.com
 import { ImportfileComponent } from 'src/app/shared/importfile/importfile.component';
 import { ProductsService } from './products.service';
 import * as XLSX from 'xlsx';
+import { ExportExcelService } from 'src/app/services/export-excel.service';
+import { DatePipe } from '@angular/common';
 
 const data_product: product[] = [];
+export interface product_export {
+  code: string;
+  name: string;
+  status: string;
+  ngay_capnhat: string;
+}
 
 @Component({
   selector: 'app-products',
@@ -39,7 +47,8 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   loading$ = false;
   innerHeight = 0;
   constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService, private router: Router,
-    private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef) { }
+    private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef,
+    public exportSrv: ExportExcelService, private datepipe: DatePipe) { }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
@@ -60,6 +69,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
+    this.set_heigthtable();
   }
   @ViewChild('header') elementView!: ElementRef;
   @ViewChild('table_content') tableView!: ElementRef;
@@ -67,7 +77,6 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     let h_heder = this.elementView.nativeElement.offsetHeight;
     const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
     let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
-    console.log(innerHeight);
     var height = `${h_tmp}px`;
     this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
@@ -168,6 +177,9 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     dialogConfig.data = 'product';
     this.dialog.open(ImportfileComponent, dialogConfig).afterClosed().subscribe(
       res => {
+        if (res == "Success") {
+          this.get_data();
+        }
       }
     );
   }
@@ -269,15 +281,27 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     let link = '/portal/products/edit/' + id;
     this.router.navigate([link]);
   }
-  fileName = 'ExcelSheet.xlsx';
-  Export_sp() {
-    let element = document.getElementById('excel-table');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    /* save to file */
-    XLSX.writeFile(wb, this.fileName);
+  arr_header: string[] = ['Mã sản phẩm', 'Tên sản phẩm', 'Trạng thái', 'Ngày cập nhật'];
+  Export_sp() {
+    let arr_export: product_export[] = [];
+    this.data_pr.forEach((row: product) => {
+      let gt_tmp: product_export = {
+        code: row.code,
+        name: row.name,
+        status: row.status ? 'Kích hoạt' : 'Huỷ kích hoạt',
+        ngay_capnhat: row.lastcreated_date == null ? this.datepipe.transform(row.created_date, 'dd/MM/yyyy') as string : this.datepipe.transform(row.lastcreated_date, 'dd/MM/yyyy') as string
+      };
+      arr_export.push(gt_tmp);
+    });
+
+    let reportData = {
+      title: 'Danh sách sản phẩm',
+      data: arr_export,
+      // headers: Object.keys(this.data_pr[0]),
+      headers: this.arr_header,
+    };
+
+    this.exportSrv.exportExcel(reportData);
   }
 }

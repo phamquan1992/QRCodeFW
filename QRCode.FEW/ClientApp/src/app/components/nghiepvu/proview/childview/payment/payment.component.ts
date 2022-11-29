@@ -57,6 +57,7 @@ export class PaymentComponent implements OnInit,AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
+    this.set_heigthtable();
   }
   @ViewChild('header') elementView!: ElementRef;
   @ViewChild('table_content') tableView!: ElementRef;
@@ -64,7 +65,6 @@ export class PaymentComponent implements OnInit,AfterViewInit {
     let h_heder = this.elementView.nativeElement.offsetHeight;
     const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
     let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
-    console.log(innerHeight);
     var height = `${h_tmp}px`;
     this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }

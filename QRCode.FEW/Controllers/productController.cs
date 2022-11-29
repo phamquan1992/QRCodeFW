@@ -169,7 +169,7 @@ namespace QRCode.FEW.Controllers
                 nhom = "macdinh",
                 Title = "Doanh nghiệp",
                 type = "dropdown",
-                value_ip = product_it.enterpriseid == 0? "": product_it.enterpriseid.ToString()
+                value_ip = product_it.enterpriseid == 0 ? "" : product_it.enterpriseid.ToString()
             };
             data.Add(enterprise_sp);
             productdetail img_daidien = new productdetail
@@ -433,6 +433,47 @@ namespace QRCode.FEW.Controllers
                 product_it.created_by = product_up.created_by;
                 product_it.created_date = DateTime.Now;
                 return _IproductService.CreateNew(product_it);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        [HttpPost]
+        [Route("Import")]
+        public bool Import([FromBody] List<product> list)
+        {
+            try
+            {
+                List<product> data = new List<product>();
+                foreach (var item in list)
+                {
+                    product product_it = new product();
+                    product_it.name = item.name;
+                    product_it.code = item.code;
+                    product_it.category = item.category;
+                    product_it.url_img = item.url_img;
+                    product_it.url_video = item.url_video;
+                    product_it.url_iso = item.url_iso;
+                    product_it.url_barcode = item.url_barcode;
+                    product_it.price = item.price;
+                    product_it.slogan = item.slogan;
+                    product_it.logo = item.logo;
+                    product_it.des_story = item.des_story;
+                    product_it.des_pack = item.des_pack;
+                    product_it.des_element = item.des_element;
+                    product_it.des_uses = item.des_uses;
+                    product_it.des_guide = item.des_guide;
+                    product_it.des_preserve = item.des_preserve;
+                    product_it.des_startdate = item.des_startdate;
+                    product_it.des_enddate = item.des_enddate;
+                    product_it.additional = item.additional;
+                    product_it.enterpriseid = item.enterpriseid;
+                    product_it.created_by = item.created_by;
+                    product_it.created_date = DateTime.Now;
+                    data.Add(product_it);
+                }
+                return _IproductService.AddRange(list);
             }
             catch (Exception ex)
             {

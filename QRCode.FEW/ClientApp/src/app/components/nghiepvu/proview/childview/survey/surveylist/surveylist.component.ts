@@ -1,4 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,6 +9,7 @@ import * as moment from 'moment';
 import { cutom_it } from 'src/app/models/category';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { survey_view } from 'src/app/models/qr_survey';
+import { ExportExcelService } from 'src/app/services/export-excel.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { SurveyService } from 'src/app/services/survey.service';
 export interface survey {
@@ -15,7 +17,15 @@ export interface survey {
   status: boolean;
   userdate: string;
 }
-
+export interface survey_export {
+  name: string;
+  trang_thai: string;
+  so_cauhoi: number;
+  so_traloi: number;
+  ngay_tao: string;
+  ngay_bd: string;
+  ngay_kt: string
+}
 
 @Component({
   selector: 'app-surveylist',
@@ -24,11 +34,12 @@ export interface survey {
 })
 export class SurveylistComponent implements OnInit, AfterViewInit {
 
-  constructor(private router: Router, private surveySrv: SurveyService, private sharingSrv: ObservableService, private renderer: Renderer2, private el: ElementRef) { }
+  constructor(private router: Router, private surveySrv: SurveyService, private sharingSrv: ObservableService, private renderer: Renderer2, private el: ElementRef
+    , private datepipe: DatePipe, private exportSrv: ExportExcelService) { }
   data_survey: survey_view[] = [];
   dataSource = new MatTableDataSource<survey_view>(this.data_survey);
   selection = new SelectionModel<survey_view>(true, []);
-  displayedColumns = ['select', 'name', 'status', 'count_question','cout_answer', 'userdate', 'start_date', 'end_date', 'action'];
+  displayedColumns = ['select', 'name', 'status', 'count_question', 'cout_answer', 'userdate', 'start_date', 'end_date', 'action'];
   loading$ = false;
   user_info!: nguoidung;
   arr_filter_status: cutom_it[] = [
@@ -61,6 +72,7 @@ export class SurveylistComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
+    this.set_heigthtable();
   }
   @ViewChild('header') elementView!: ElementRef;
   @ViewChild('table_content') tableView!: ElementRef;
@@ -68,7 +80,6 @@ export class SurveylistComponent implements OnInit, AfterViewInit {
     let h_heder = this.elementView.nativeElement.offsetHeight;
     const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
     let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
-    console.log(innerHeight);
     var height = `${h_tmp}px`;
     this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
@@ -207,5 +218,29 @@ export class SurveylistComponent implements OnInit, AfterViewInit {
       return nameSearch();
     }
     return filterFunction;
+  }
+  arr_header: string[] = ['Tên khảo sát', 'Trạng thái','Số câu hỏi','Số người trả lời','Ngày tạo', 'Ngày bắt đầu','Ngày kết thúc'];
+  Export_khaosat() {
+    let arr_export: survey_export[] = [];
+    this.data_survey.forEach((row: survey_view) => {
+      let gt_tmp: survey_export = {
+        name: row.object_edit.name,
+        trang_thai: row.object_edit.status ? 'Kích hoạt' : 'Huỷ kích hoạt',
+        so_cauhoi: row.list_cauhoi.length,
+        so_traloi: row.object_edit.cout_answer,
+        ngay_tao: row.object_edit.created_date == null ? '' : this.datepipe.transform(row.object_edit.created_date, 'dd/MM/yyyy HH:mm:ss') as string,
+        ngay_bd: row.object_edit.start_date == null ? '' : this.datepipe.transform(row.object_edit.start_date, 'dd/MM/yyyy') as string,
+        ngay_kt: row.object_edit.end_date == null ? '' : this.datepipe.transform(row.object_edit.end_date, 'dd/MM/yyyy') as string,
+      };
+      arr_export.push(gt_tmp);
+    });
+
+    let reportData = {
+      title: 'Danh sách khảo sát',
+      data: arr_export,
+      headers: this.arr_header,
+    };
+
+    this.exportSrv.exportExcel(reportData);
   }
 }

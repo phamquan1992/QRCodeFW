@@ -3,13 +3,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CompaniesService } from 'src/app/components/nghiepvu/proview/childview/companies/companies.service';
 import { ProductsService } from 'src/app/components/nghiepvu/proview/childview/products/products.service';
 import { category } from 'src/app/models/category';
-import { product_excel } from 'src/app/models/product';
+import { product, product_excel } from 'src/app/models/product';
 import { qr_enterprise, qr_enterprise_excel } from 'src/app/models/qr_enterprise';
 import { CommonService } from 'src/app/services/common.service';
 import { MessageService } from 'src/app/services/message.service';
 import { SectorsService } from 'src/app/services/sectors.service';
 import { location } from 'src/app/models/location';
 import * as XLSX from 'xlsx';
+import { nguoidung } from 'src/app/models/nguoidung';
+import { ObservableService } from 'src/app/services/observable.service';
+import { temp_object, value_it } from 'src/app/models/optioncs';
 type AOA = any[][];
 export interface item_tmp {
   index: number;
@@ -27,7 +30,7 @@ export class ImportfileComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ImportfileComponent>, @Inject(MAT_DIALOG_DATA) public type_import: string,
     private messSrv: MessageService, private commonSrv: CommonService, private productSrv: ProductsService, private companySrc: CompaniesService,
-    private sectorSrc: SectorsService) { }
+    private sectorSrc: SectorsService, private sharringSrv: ObservableService) { }
 
   title = 'Import tài liệu';
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
@@ -53,6 +56,7 @@ export class ImportfileComponent implements OnInit {
     { name: 'url_img', value: 'Ảnh doanh nghiệp, cá nhân', require: false },
     { name: 'logo', value: 'Ảnh đại diện(*)', require: false },
     { name: 'email', value: 'Email(*)', require: true },
+    { name: 'address', value: 'Địa chỉ(*)', require: true },
     { name: 'Website', value: 'Website', require: false },
     { name: 'Facebook', value: 'Facebook', require: false },
     { name: 'Shopee', value: 'Shopee', require: false },
@@ -65,6 +69,7 @@ export class ImportfileComponent implements OnInit {
     { name: 'Lazada', value: 'Lazada', require: false },
     { name: 'Sendo', value: 'Sendo', require: false },
   ];
+  user_info!: nguoidung;
   displayedColumns: string[] = this.arr_des_enterprise.map((col) => col.name);
   ngOnInit(): void {
     this.show_bt_error = false;
@@ -83,6 +88,7 @@ export class ImportfileComponent implements OnInit {
     this.companySrc.get_location('00').subscribe(t => {
       this.arr_tinh = t;
     });
+    this.sharringSrv.getUserInfo().subscribe(t => this.user_info = t);
   }
   data: AOA = [
     [1, 2],
@@ -110,8 +116,6 @@ export class ImportfileComponent implements OnInit {
 
       /* save data */
       this.data = <AOA>XLSX.utils.sheet_to_json(ws, { header: 1 });
-      //console.log(this.get_array_product());
-      //
       if (this.type_import == 'product')
         this.get_array_product_v2();
       if (this.type_import == 'enterprise')
@@ -121,7 +125,90 @@ export class ImportfileComponent implements OnInit {
   }
   Import_data() {
     if (this.type_import == 'product') {
-
+      let arr_product_save: product[] = [];
+      this.arr_product_data.forEach((item: product_excel) => {
+        let dnindex = this.arr_doanhnghiep.findIndex(t => t.name.trim().toLowerCase() == item.enterprise.trim().toLowerCase());
+        let dn_id = dnindex == -1 ? 0 : this.arr_doanhnghiep[dnindex].qrenterpriseid;
+        let _tmp: product = {
+          qrproductid: 0,
+          name: item.name,
+          code: item.code,
+          category: item.category,
+          price: Number(item.price),
+          slogan: item.slogan,
+          logo: item.logo,
+          url_img: item.url_iso,
+          url_iso: item.url_iso,
+          url_barcode: item.url_barcode,
+          des_story: item.des_story,
+          des_manufactur: item.des_manufactur,
+          des_pack: item.des_pack,
+          des_element: item.des_element,
+          des_uses: item.des_uses,
+          des_guide: item.des_guide,
+          des_preserve: item.des_preserve,
+          des_startdate: item.des_startdate,
+          des_enddate: item.des_enddate,
+          url_video: item.url_video,
+          lastcreated_date: new Date(),
+          lastcreated_by: 0,
+          additional: item.additional,
+          status: false,
+          created_by: Number(this.user_info.id),
+          created_date: new Date(),
+          enterpriseid: dn_id
+        };
+        arr_product_save.push(_tmp)
+      });
+      console.log(JSON.stringify(arr_product_save));
+      this.productSrv.Import(arr_product_save).subscribe(t => {
+        if (t) {
+          this.messSrv.success('Import dữ liệu thành công!');
+          this.dialogRef.close("Success");
+        } else {
+          this.messSrv.error('Có lỗi trong quá trình lưu dữ liệu!');
+        }
+      });
+    }
+    if (this.type_import == 'enterprise') {
+      let arr_enterprise_save: qr_enterprise[] = [];
+      this.arr_enterprise_data.forEach((item: qr_enterprise_excel) => {
+        let _tmp: qr_enterprise = {
+          qrenterpriseid: 0,
+          name: item.name,
+          taxcode: item.taxcode,
+          tel: item.tel,
+          email: item.email,
+          fax: item.fax,
+          logo: item.logo,
+          nation: 'Việt Nam',
+          province: item.province,
+          district: item.district,
+          wards: item.wards,
+          occupation: item.occupation,
+          additional: item.additional,
+          created_date: new Date(),
+          created_by: Number(this.user_info.id),
+          lastcreated_date: new Date(),
+          lastcreated_by: 0,
+          status: false,
+          address: item.address,
+          sectors_code: item.sectors_code,
+          url_background: item.url_background,
+          url_video: item.url_video,
+          url_img: item.url_img
+        };
+        arr_enterprise_save.push(_tmp);
+      });
+      console.log(JSON.stringify(arr_enterprise_save));
+      this.companySrc.import(arr_enterprise_save).subscribe(t => {
+        if (t) {
+          this.messSrv.success('Import dữ liệu thành công!');
+          this.dialogRef.close("Success");
+        } else {
+          this.messSrv.error('Có lỗi trong quá trình lưu dữ liệu!');
+        }
+      });
     }
   }
   Export_error() {
@@ -130,14 +217,6 @@ export class ImportfileComponent implements OnInit {
       element = document.getElementById('table_err_enter');
     }
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-    /* generate workbook and add the worksheet */
-    var range = XLSX.utils.decode_range(ws['!ref'] as string);
-    for (var C = range.s.r; C <= range.e.c; ++C) {
-      var address = XLSX.utils.encode_col(C) + '1'; // <-- first row, column number C
-      console.log(address);
-      if (!ws[address]) continue;
-      ws[address].v = ws[address].v.toUpperCase();      
-    }
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
@@ -246,7 +325,6 @@ export class ImportfileComponent implements OnInit {
     arr1 = arr1.filter(t => t.mota != '');
     let arr_row_header = arr1.filter(t => t.row_index == 1);
     this.arr_product_header = arr1.filter(t => t.row_index == 1);
-    console.log(this.arr_product_header);
     this.displayedColumns2 = this.arr_product_header.map((col) => col.name);
     this.displayedColumns2.push('err_str');
     let arr_row_value = arr1.filter(t => t.row_index > 1);
@@ -279,13 +357,27 @@ export class ImportfileComponent implements OnInit {
         err_str: ''
       };
 
+      let arr_dynamic2: temp_object[] = [];
       const Objprise = JSON.parse(JSON.stringify(item_prise));
       row_itep.forEach(element => {
         let idex_result = arr_row_header.findIndex(t => t.index == element.index);
         if (idex_result != -1) {
           Objprise[arr_row_header[idex_result].name] = element.mota;
+          if (arr_row_header[idex_result].name.indexOf('dynamic_') != -1) {
+            let index_dynamic = arr_mota.findIndex(t => t.name.toLowerCase() == arr_row_header[idex_result].name.toLowerCase());
+            let tm_value: value_it = {
+              title: arr_mota[index_dynamic].value,
+              value: element.mota
+            };
+            let tmp_obj: temp_object = {
+              key: arr_row_header[idex_result].name,
+              values: tm_value
+            };
+            arr_dynamic2.push(tmp_obj);
+          }
         }
       });
+      Objprise['additional'] = JSON.stringify(arr_dynamic2);
       arr_product.push(Objprise);
     }
     arr_product.map(t => {
@@ -293,7 +385,7 @@ export class ImportfileComponent implements OnInit {
       t.err_str = gt1;
     });
     this.arr_product_data = arr_product;
-    
+    console.log(JSON.stringify(this.arr_product_data));
     let check_valid = arr_product.filter(t => t.err_str);
     if (check_valid.length > 0) {
       this.show_bt_error = true;
@@ -320,7 +412,7 @@ export class ImportfileComponent implements OnInit {
             }
           }
           if (element.name === 'category') {
-            let index_cat = this.arr_categogy.findIndex(t => t.name.toLowerCase() === gt_check.toLowerCase());
+            let index_cat = this.arr_categogy.findIndex(t => t.code.toLowerCase() === gt_check.toLowerCase());
             if (index_cat === -1) {
               str_err = str_err + element.value + ' không tồn tại' + ";";
             }
@@ -369,6 +461,19 @@ export class ImportfileComponent implements OnInit {
               str_err = str_err + element.value + ' không đúng định dạng' + ";";
             }
           }
+          if (element.name === 'tel') {
+            let isnum = /^\d+$/.test(gt_check);
+            if (!isnum) {
+              str_err = str_err + element.value + ' có chứa ký tự không phải là số' + ";";
+            } else {
+              if (gt_check.length > 12) {
+                str_err = str_err + element.value + ' có tối đa 12 ký tự' + ";";
+              }
+              else if (gt_check.length < 9) {
+                str_err = str_err + element.value + ' có tối thiểu 9 ký tự' + ";";
+              }
+            }
+          }
         }
       } else {
         if (gt_check != '') {
@@ -383,6 +488,12 @@ export class ImportfileComponent implements OnInit {
             let check_email = this.get_isval(gt_check);
             if (!check_email) {
               str_err = str_err + element.value + ' không đúng định dạng' + ";";
+            }
+          }
+          if (element.name === 'taxcode') {
+            let isnum = /^\d+$/.test(gt_check);
+            if (!isnum) {
+              str_err = str_err + element.value + ' có chứa ký tự không phải là số' + ";";
             }
           }
         }
@@ -463,10 +574,29 @@ export class ImportfileComponent implements OnInit {
         Zalo: ''
       };
       const Objprise = JSON.parse(JSON.stringify(item_prise));
+      let arr_dynamic = {};
       row_itep.forEach(element => {
         let idex_result = arr_row_header.findIndex(t => t.index == element.index);
         if (idex_result != -1) {
           Objprise[arr_row_header[idex_result].name] = element.mota;
+          let name_key = arr_row_header[idex_result].name;
+          if (name_key === 'Facebook' || name_key === 'Instagram' || name_key === 'Lazada' || name_key === 'Linkedin' || name_key === 'Sendo' || name_key === 'Shopee'
+            || name_key === 'Tiki' || name_key === 'Tiktok' || name_key === 'Website' || name_key === 'Youtube' || name_key === 'Zalo') {
+            if (Object.keys(arr_dynamic).length === 0) {
+              let obj_dynamic = {
+                [name_key]: element.mota
+              };
+              arr_dynamic = obj_dynamic;
+            }
+            else {
+              const obj_dy = JSON.parse(JSON.stringify(arr_dynamic));
+              obj_dy[name_key] = element.mota;
+              arr_dynamic = obj_dy;
+            }
+          }
+        }
+        if (Object.keys(arr_dynamic).length != 0) {
+          Objprise['additional'] = JSON.stringify(arr_dynamic);
         }
       });
       arr_prise.push(Objprise);
@@ -476,13 +606,12 @@ export class ImportfileComponent implements OnInit {
       t.err_str = gt1;
     });
     this.displayedColumns.push('err_str');
+    console.log(JSON.stringify(arr_prise));
     this.productSrv.check_data(arr_prise).subscribe(t => {
-
       arr_prise.map(v => {
         let gt_tm3 = t.findIndex(m => m.name == v.name);
         v.err_str = t[gt_tm3].err_str;
       });
-      console.log(arr_prise);
       this.arr_enterprise_data = arr_prise;
       this.arr_exprot = Object.values(arr_prise);
       let check_valid = arr_prise.filter(t => t.err_str);
@@ -512,6 +641,6 @@ export class ImportfileComponent implements OnInit {
   close_popup(gt: any) {
     this.dialogRef.close(gt);
   }
-  
+
 
 }

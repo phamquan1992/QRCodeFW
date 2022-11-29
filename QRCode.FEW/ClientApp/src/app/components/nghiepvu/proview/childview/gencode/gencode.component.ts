@@ -75,7 +75,6 @@ export class GencodeComponent implements OnInit, AfterViewInit {
     this.h_heder = this.elementView.nativeElement.offsetHeight;
     const btnElement = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
     let h_tmp = this.innerHeight - (this.h_heder + btnElement.clientHeight + 45 + 56);
-    console.log(this.innerHeight);
     var height = `${h_tmp}px`;
     this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
@@ -99,7 +98,7 @@ export class GencodeComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.innerHeight = window.innerHeight;
-    this.h_col = (window.innerHeight - 280);
+    this.set_heigthtable();
   }
 
   get_data() {

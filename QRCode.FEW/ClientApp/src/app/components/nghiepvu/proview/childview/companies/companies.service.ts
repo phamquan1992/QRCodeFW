@@ -37,6 +37,9 @@ export class CompaniesService {
   add_company(cty_obj: qr_enterprise) {
     return this.dataSrv.post('qr_enterprise/Add', cty_obj);
   }
+  import(list: qr_enterprise[]) {
+    return this.dataSrv.post('qr_enterprise/import', list) as Observable<boolean>;
+  }
   delete_obj(id: string) {
     return this.dataSrv.delete('qr_enterprise/delete', id);
   }

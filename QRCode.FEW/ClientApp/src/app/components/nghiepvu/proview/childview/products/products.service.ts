@@ -51,6 +51,9 @@ export class ProductsService {
   add_product(pro_obj: product) {
     return this.dataSrv.post('product/Add', pro_obj);
   }
+  Import(list: product[]) {
+    return this.dataSrv.post('product/Import', list) as Observable<boolean>;
+  }
   get_category() {
     return this.dataSrv.get('product/category') as Observable<category[]>;
   }
@@ -61,8 +64,8 @@ export class ProductsService {
     let pro_obj: Observable<product> = this.dataSrv.get('ViewData/product/' + id) as Observable<product>;
     return pro_obj;
   }
-  check_data(pro_obj: qr_enterprise_excel[]){
-    return this.dataSrv.post('qr_enterprise/GetInfoLocation', pro_obj)  as Observable<qr_enterprise_excel[]>;
+  check_data(pro_obj: qr_enterprise_excel[]) {
+    return this.dataSrv.post('qr_enterprise/GetInfoLocation', pro_obj) as Observable<qr_enterprise_excel[]>;
   }
 
   arr_mota = [
