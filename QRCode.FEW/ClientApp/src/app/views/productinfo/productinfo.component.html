@@ -74,10 +74,10 @@
                     <div *ngFor="let it of data.list_ref"
                         class="border border-solid border-[#e6e6e6] flex justify-center flex-col">
                         <img src="{{it.url_img}}" alt="" style="height: 144px;object-fit: cover;"
-                            (click)="select_product(it.qrproductid)">
+                            (click)="select_product(it.qrproductid.toString())">
                         <div class="p-2">
                             <p class="inline-block overflow-hidden text-ellipsis mb-2 w-full text-sm cursor-pointer"
-                                routerLink="/views/product/{{it.qrproductid}}" (click)="select_product(it.qrproductid)">
+                                routerLink="/views/product/{{it.qrproductid}}" (click)="select_product(it.qrproductid.toString())">
                                 {{it.name}}</p>
                             <span class="inline-block w-full text-sm font-bold text-[#f59e0b]">{{it.price|number}}
                                 đ</span>

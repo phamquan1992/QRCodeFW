@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { cutom_it } from 'src/app/models/category';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { survey_view } from 'src/app/models/qr_survey';
+import { CommonService } from 'src/app/services/common.service';
 import { ExportExcelService } from 'src/app/services/export-excel.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { SurveyService } from 'src/app/services/survey.service';
@@ -35,7 +36,7 @@ export interface survey_export {
 export class SurveylistComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private surveySrv: SurveyService, private sharingSrv: ObservableService, private renderer: Renderer2, private el: ElementRef
-    , private datepipe: DatePipe, private exportSrv: ExportExcelService) { }
+    , private datepipe: DatePipe, private exportSrv: ExportExcelService,private commonSrv:CommonService) { }
   data_survey: survey_view[] = [];
   dataSource = new MatTableDataSource<survey_view>(this.data_survey);
   selection = new SelectionModel<survey_view>(true, []);
@@ -158,8 +159,9 @@ export class SurveylistComponent implements OnInit, AfterViewInit {
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
-  show_info(id: number) {
-    this.router.navigate(['portal/survey/edit/' + id]);
+  show_info(id: string) {
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['portal/survey/edit/' + gt_tmp]);
   }
   createFilter() {
     let filterFunction = function (data: any, filter: string): boolean {

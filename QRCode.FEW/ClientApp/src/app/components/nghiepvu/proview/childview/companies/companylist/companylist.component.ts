@@ -9,8 +9,10 @@ import { map } from 'rxjs';
 import { location } from 'src/app/models/location';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
+import { CommonService } from 'src/app/services/common.service';
 import { ExportExcelService } from 'src/app/services/export-excel.service';
 import { GencodeService } from 'src/app/services/gencode.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { AlertdeleteComponent } from 'src/app/shared/alertdelete/alertdelete.component';
@@ -69,7 +71,7 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
   }
   constructor(private router: Router, private congtySrc: CompaniesService, private mesSrc: MessageService, private dialog: MatDialog,
     private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef,
-    private datepipe: DatePipe, private exportSrv: ExportExcelService) { }
+    private datepipe: DatePipe, private exportSrv: ExportExcelService, private localSrv: LocalStorageService, private commonSrv: CommonService) { }
 
   ngOnInit(): void {
     this.innerHeight = window.innerHeight;
@@ -112,7 +114,8 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
     this.router.navigate(['portal/companies/add']);
   }
   sua_congty(id: string) {
-    this.router.navigate(['portal/companies/edit/' + id]);
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['portal/companies/edit/' + gt_tmp]);
   }
   xoa_congty(id: string) {
     this.congtySrc.delete_obj(id).subscribe(t => {
@@ -272,9 +275,11 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
       }
     );
   }
-  doublerow(id: number) {
-    let link = '/portal/companies/edit/' + id;
-    this.router.navigate([link]);
+  doublerow(id: string) {
+    // let link = '/portal/companies/edit/' + id;
+    // this.router.navigate([link]);
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['portal/companies/edit/' + gt_tmp]);
   }
   Import_enterprise() {
     this.showDialog();
@@ -302,7 +307,7 @@ export class CompanylistComponent implements OnInit, AfterViewInit {
     this.data_company.forEach((row: qr_enterprise) => {
       let gt_tmp: enterprise_export = {
         thongtin_chung: row.name + "\r\n" + "MST: " + row.taxcode + '\r\n' + "Số điện thoại: " + row.tel,
-        dia_chi: row.address||'',
+        dia_chi: row.address || '',
         trang_thai: row.status ? 'Kích hoạt' : 'Huỷ kích hoạt',
         ngay_capnhat: row.lastcreated_date == null ? this.datepipe.transform(row.created_date, 'dd/MM/yyyy') as string : this.datepipe.transform(row.lastcreated_date, 'dd/MM/yyyy') as string
       };

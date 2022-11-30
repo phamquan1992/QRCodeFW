@@ -58,7 +58,8 @@ export class LocalStorageService {
     return this.stringStorage.get(key) || '';
   }
 
-  public removeUserValue(): void {;
+  public removeUserValue(): void {
+    ;
     return this.storage.remove(this.UI);
   }
   public removeTokenValue(): void {
@@ -87,5 +88,31 @@ export class LocalStorageService {
 
   public clear(): void {
     return this.storage.clear();
+  }
+  encryptUsingAES256(data: any) {
+    let _key = CryptoJS.enc.Utf8.parse(this.SK);
+    let _iv = CryptoJS.enc.Utf8.parse(this.SK);
+    let encrypted = CryptoJS.AES.encrypt(
+      JSON.stringify(data), _key, {
+      keySize: 16,
+      iv: _iv,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    let gt_tmp = encrypted.toString();
+    return gt_tmp;
+  }
+  decryptUsingAES256(data: any) {
+    let _key = CryptoJS.enc.Utf8.parse(this.SK);
+    let _iv = CryptoJS.enc.Utf8.parse(this.SK);
+
+    let gt_tmp = CryptoJS.AES.decrypt(
+      data, _key, {
+      keySize: 16,
+      iv: _iv,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    }).toString(CryptoJS.enc.Utf8);
+    return gt_tmp;
   }
 }

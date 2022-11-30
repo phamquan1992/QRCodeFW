@@ -108,7 +108,7 @@
                         (click)="showXoaDialog(element.qrproductid)" [matTooltip]="'Xoá sản phẩm'"
                         [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
                     <i class="fa fa-link px-[4px] cursor-pointer text-blue-600 -rotate-[85deg]" aria-hidden="true"
-                        routerLink="edit/{{element.qrproductid}}" [matTooltip]="'Chi tiết sản phẩm'"
+                         [matTooltip]="'Chi tiết sản phẩm'" (click)="doublerow(element.qrproductid)"
                         [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
                 </td>
             </ng-container>

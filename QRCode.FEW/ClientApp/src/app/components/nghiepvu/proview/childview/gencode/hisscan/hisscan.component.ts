@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { HisscanService } from 'src/app/services/hisscan.service';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import * as moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class HisscanComponent implements OnInit {
 
-  constructor(private hisSrc: HisscanService, private route: ActivatedRoute, private router: Router,) { }
+  constructor(private hisSrc: HisscanService, private route: ActivatedRoute, private router: Router, private renderer: Renderer2, private el: ElementRef, private commonSrc: CommonService) { }
   arr_his: qr_his_scan[] = [];
   loading$: boolean = false;
   name_filter = '';
@@ -29,11 +30,15 @@ export class HisscanComponent implements OnInit {
     exp_date_start: '',
     exp_date_end: ''
   };
+  innerHeight = 0;
   ngOnInit(): void {
+    this.innerHeight = window.innerHeight;
     this.loading$ = true;
     this.dataSource = new MatTableDataSource<qr_his_scan>(this.arr_his);
     let type_code = this.route.snapshot.paramMap.get('type') || '';
     let dataid = this.route.snapshot.paramMap.get('dataid') || "";
+    if (dataid != '')
+      dataid = this.commonSrc.giaima_id(dataid);
     this.hisSrc.get_list(type_code, dataid).subscribe(t => {
       this.arr_his = t;
       this.dataSource = new MatTableDataSource<qr_his_scan>(this.arr_his);
@@ -41,6 +46,23 @@ export class HisscanComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.loading$ = false;
     });
+  }
+  ngAfterViewInit(): void {
+    this.set_heigthtable();
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.innerHeight = window.innerHeight;
+    this.set_heigthtable();
+  }
+  @ViewChild('header') elementView!: ElementRef;
+  @ViewChild('table_content') tableView!: ElementRef;
+  set_heigthtable() {
+    let h_heder = this.elementView.nativeElement.offsetHeight;
+    const trheader = (<HTMLElement>this.el.nativeElement).querySelector('.mat-header-row') as Element;
+    let h_tmp = this.innerHeight - (h_heder + trheader.clientHeight + 45 + 56);
+    var height = `${h_tmp}px`;
+    this.renderer.setStyle(this.tableView.nativeElement, "height", height);
   }
   applyFilter() {
     let start_exp = this.range_exp.controls['start_exp'].value || '';

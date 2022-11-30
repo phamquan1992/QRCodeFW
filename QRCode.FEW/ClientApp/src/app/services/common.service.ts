@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
-  constructor() { }
+  constructor(private localSrv: LocalStorageService) { }
   convertnotdau(str: string) {
     str = str.toLowerCase().trim();
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
@@ -53,5 +54,27 @@ export class CommonService {
       return false;
     }
     return url.protocol === "http:" || url.protocol === "https:";
+  }
+  replaceAll_char(gt_old: string, gt_new: string, str_any: string) {
+    debugger;
+    let gt_tmp = str_any;
+    if (gt_old != gt_new && gt_old != '')
+      while (gt_tmp.indexOf(gt_old) > -1) {
+        gt_tmp = gt_tmp.replace(gt_old, gt_new);
+      }
+    console.log(gt_tmp);
+
+    return gt_tmp;
+  }
+  mahoa_id(data: string) {
+    let encrypt = this.localSrv.encryptUsingAES256(data);
+    let gt_tmp = this.replaceAll_char("/", "|a|", encrypt);
+    return gt_tmp;
+  }
+  giaima_id(data: string) {
+    let gt_tmp = this.replaceAll_char("|a|", "/", data);   
+    let result = this.localSrv.decryptUsingAES256(gt_tmp);
+    result = this.replaceAll_char('"', '', result);
+    return result;
   }
 }

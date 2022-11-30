@@ -1,7 +1,7 @@
 import { HostListener, Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { CompaniesService } from '../components/nghiepvu/proview/childview/companies/companies.service';
 import { LoginComponent } from '../components/share/login/login.component';
 import { LocalStorageService } from '../services/local-storage.service';
@@ -19,7 +19,17 @@ export class CanactiveGuard implements CanActivate {
     route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let user = this.storage.getUserInfo();
     if (user != undefined) {
-      this.enterpriseSrc.check_401().subscribe(t => console.log(' '));
+      this.enterpriseSrc.check_401().pipe(
+        map(
+          response => {
+            return response;
+          }),
+        catchError(error => {
+          this.messSrc.handError(error);
+          this.router.navigate(['/qrcode-free']);
+          return error;
+        }));
+
       if (state1.url.indexOf('portal') > -1) {
         if (!user.active) {
           this.messSrc.warn('Bạn không có quyền hạn thực hiện chức năng này!');

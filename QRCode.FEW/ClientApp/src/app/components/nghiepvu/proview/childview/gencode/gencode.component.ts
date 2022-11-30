@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { cutom_it } from 'src/app/models/category';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { gencodeview, gencode_status, qr_gencode } from 'src/app/models/qr_gencode';
+import { CommonService } from 'src/app/services/common.service';
 import { GencodeService } from 'src/app/services/gencode.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
@@ -62,7 +63,7 @@ export class GencodeComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   user_info!: nguoidung;
   constructor(private gencodeSrc: GencodeService, private paymentSrc: PaynemtService, private sharingSrc: ObservableService, @Inject('BASE_URL') baseUrl: string, private dialog: MatDialog,
-    private messSrc: MessageService, private router: Router, private renderer: Renderer2, private el: ElementRef,) {
+    private messSrc: MessageService, private router: Router, private renderer: Renderer2, private el: ElementRef,private commonSrv:CommonService) {
     this.str_url = baseUrl;
   }
 
@@ -401,8 +402,8 @@ export class GencodeComponent implements OnInit, AfterViewInit {
     }
   }
   show_his(typedata: string, id: string) {
-    console.log(id);
-    this.router.navigate(['/portal/hisqr/' + id]);
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['/portal/hisqr/' + gt_tmp]);
   }
   number_change(event: Event, name: string) {
     var inputData = (<HTMLInputElement>event.target).value;

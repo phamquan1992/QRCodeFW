@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { ProductsService } from 'src/app/components/nghiepvu/proview/childview/products/products.service';
 import { temp_object, value_it } from 'src/app/models/optioncs';
 import { product, productview } from 'src/app/models/product';
+import { CommonService } from 'src/app/services/common.service';
 import { ViewdataService } from 'src/app/services/viewdata.service';
 
 @Pipe({ name: "safeHtml" })
@@ -25,7 +26,7 @@ export class ProductinfoComponent implements OnInit {
   arr_dynamic: value_it[] = [];
   data1!: string;
   loading$: boolean = false;
-  constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router, private commonSrv: CommonService) { }
 
   ngOnInit(): void {
 
@@ -33,6 +34,9 @@ export class ProductinfoComponent implements OnInit {
     let id2 = this.route.snapshot.paramMap.get('id2');
     let value_id = id == null ? '0' : id.toString();
     let value_id2 = id2 == null ? 'all' : id2.toString();
+    if (value_id2 != 'gen') {
+      value_id = this.commonSrv.giaima_id(value_id);
+    }
     this.product$ = this.viewDataSrc.get_view_product(value_id, value_id2);
     this.loading$ = true;
     this.product$.subscribe(t => {
@@ -46,9 +50,10 @@ export class ProductinfoComponent implements OnInit {
       this.loading$ = false;
     });
   }
-  select_product(id: number) {
+  select_product(id: string) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = "reload";
-    this.router.navigate(['/views/product/' + id + '/all']);
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['/views/product/' + gt_tmp + '/all']);
   }
 }

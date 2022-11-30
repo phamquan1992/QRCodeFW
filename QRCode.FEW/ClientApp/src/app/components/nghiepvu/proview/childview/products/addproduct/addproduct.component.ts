@@ -11,6 +11,7 @@ import { MessageService } from 'src/app/services/message.service';
 import { data_upload, temp_object, value_it } from 'src/app/models/optioncs';
 import { ObservableService } from 'src/app/services/observable.service';
 import { nguoidung } from 'src/app/models/nguoidung';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
     selector: 'app-addproduct',
@@ -58,15 +59,15 @@ export class AddproductComponent implements OnInit {
         { name: 'des_enddate', value: 'Hạn sử dụng' },
     ];
     user_info!: nguoidung;
-    constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService, private mesSrc: MessageService, private sharingSrc: ObservableService) {
-
-    }
+    constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private productSrc: ProductsService,
+        private mesSrc: MessageService, private sharingSrc: ObservableService, private commonSrc: CommonService) { }
     ngOnInit(): void {
         this.data = [];
         let id = this.route.snapshot.paramMap.get('id');
         this.value_id = id == null ? '0' : id.toString();
         if (this.value_id != '0') {
             this.tilte = 'Thông tin sản phẩm';
+            this.value_id = this.commonSrc.giaima_id(this.value_id);
         }
         this.productSrc.get_detail_product(this.value_id).subscribe(t => {
             this.data = t;
@@ -126,7 +127,7 @@ export class AddproductComponent implements OnInit {
             });
             if (this.value_id != '0') {
                 myObj['lastcreated_by'] = this.user_info.id;
-                
+
                 this.productSrc.update_product(myObj).subscribe(t => {
                     if (t) {
                         this.mesSrc.success('Bạn đã thực hiện thành công!');

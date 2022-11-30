@@ -80,7 +80,7 @@ namespace QRCode.FEW.Controllers
                 list_gen_product = (from a in list_payment
                                     from b in list_gencode
                                     from c in list_product
-                                    where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrproductid
+                                    where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrproductid && b.typecode == "product"
                                     select new gencodeview
                                     {
                                         create_date_qr = b.created_date.Value,
@@ -102,7 +102,7 @@ namespace QRCode.FEW.Controllers
                 list_gen_enterprise = (from a in list_payment
                                        from b in list_gencode
                                        from c in list_enterprise
-                                       where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrenterpriseid
+                                       where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrenterpriseid && b.typecode == "enterprise"
                                        select new gencodeview
                                        {
                                            create_date_qr = b.created_date.Value,
@@ -123,7 +123,7 @@ namespace QRCode.FEW.Controllers
                 list_gen_survey = (from a in list_payment
                                    from b in list_gencode
                                    from c in list_survey
-                                   where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrsurveyid
+                                   where a.qrpaymentid == b.qrpaymentid && b.dataid == c.qrsurveyid && b.typecode == "survey"
                                    select new gencodeview
                                    {
                                        create_date_qr = b.created_date.Value,

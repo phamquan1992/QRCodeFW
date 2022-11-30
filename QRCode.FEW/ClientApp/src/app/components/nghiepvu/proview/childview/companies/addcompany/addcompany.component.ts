@@ -10,6 +10,7 @@ import { data_upload } from 'src/app/models/optioncs';
 import { qr_enterprise } from 'src/app/models/qr_enterprise';
 import { sectors } from 'src/app/models/sectors';
 import { CommonService } from 'src/app/services/common.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { SectorsService } from 'src/app/services/sectors.service';
@@ -47,7 +48,7 @@ export class AddcompanyComponent implements OnInit {
   });
   constructor(private dialog: MatDialog, private companySrc: CompaniesService, private sharingSrc: ObservableService,
     private messSrc: MessageService, private route: ActivatedRoute, private router: Router,
-    private sectorSrc: SectorsService, private datepipe: DatePipe, private commonSrc: CommonService) { }
+    private sectorSrc: SectorsService, private datepipe: DatePipe, private commonSrc: CommonService, private localSrv: LocalStorageService) { }
   gt_id!: Observable<string>;
   value_id = '';
   val_tinh = '';
@@ -88,6 +89,9 @@ export class AddcompanyComponent implements OnInit {
     });
     let id = this.route.snapshot.paramMap.get('id');
     this.value_id = id == null ? '0' : id.toString();
+    if (this.value_id != '0') {
+      this.value_id = this.commonSrc.giaima_id(this.value_id);
+    }
     this.sectorSrc.getList().subscribe(t => {
       this.array_sectors_core = t;
       this.array_sectors = t;

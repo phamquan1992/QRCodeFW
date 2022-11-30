@@ -7,6 +7,7 @@ import { cauhoi } from 'src/app/models/cauhoi';
 import { nguoidung } from 'src/app/models/nguoidung';
 import { result_object } from 'src/app/models/optioncs';
 import { qr_survey } from 'src/app/models/qr_survey';
+import { CommonService } from 'src/app/services/common.service';
 import { MessageService } from 'src/app/services/message.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { SurveyService } from 'src/app/services/survey.service';
@@ -26,7 +27,8 @@ export class AddsurveyComponent implements OnInit {
   value_id = '';
   objec_edit!: qr_survey;
   str_title = 'Thêm mới khảo sát';
-  constructor(private sharingSrv: ObservableService, private surveySrv: SurveyService, private messSrv: MessageService, private router: Router, private route: ActivatedRoute) {
+  constructor(private sharingSrv: ObservableService, private surveySrv: SurveyService, private messSrv: MessageService, private router: Router, private route: ActivatedRoute,
+    private commonSrc: CommonService) {
 
   }
 
@@ -38,6 +40,7 @@ export class AddsurveyComponent implements OnInit {
     this.value_id = id == null ? '0' : id.toString();
     if (this.value_id !== '0') {
       this.str_title = 'Cập nhật khảo sát';
+      this.value_id = this.commonSrc.giaima_id(this.value_id);
       this.surveySrv.get_object(this.value_id).subscribe(t => {
         this.objec_edit = t.object_edit;
         this.ten_khao_sat = t.object_edit.name;

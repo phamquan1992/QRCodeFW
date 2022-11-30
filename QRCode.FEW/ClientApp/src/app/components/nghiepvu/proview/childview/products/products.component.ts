@@ -17,6 +17,7 @@ import { ProductsService } from './products.service';
 import * as XLSX from 'xlsx';
 import { ExportExcelService } from 'src/app/services/export-excel.service';
 import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/services/common.service';
 
 const data_product: product[] = [];
 export interface product_export {
@@ -48,7 +49,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   innerHeight = 0;
   constructor(private dialog: MatDialog, private productSrc: ProductsService, private mesSrc: MessageService, private router: Router,
     private gencodeSrc: GencodeService, private sharingSrc: ObservableService, private renderer: Renderer2, private el: ElementRef,
-    public exportSrv: ExportExcelService, private datepipe: DatePipe) { }
+    public exportSrv: ExportExcelService, private datepipe: DatePipe,private commonSrv:CommonService) { }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<product>(data_product);
@@ -277,9 +278,11 @@ export class ProductsComponent implements OnInit, AfterViewInit {
       }
     );
   }
-  doublerow(id: number) {
-    let link = '/portal/products/edit/' + id;
-    this.router.navigate([link]);
+  doublerow(id: string) {
+    // let link = '/portal/products/edit/' + id;
+    // this.router.navigate([link]);
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['/portal/products/edit/' + gt_tmp]);
   }
 
   arr_header: string[] = ['Mã sản phẩm', 'Tên sản phẩm', 'Trạng thái', 'Ngày cập nhật'];

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CompaniesService } from 'src/app/components/nghiepvu/proview/childview/companies/companies.service';
 import { enterprisview, qr_enterprise } from 'src/app/models/qr_enterprise';
+import { CommonService } from 'src/app/services/common.service';
 import { ViewdataService } from 'src/app/services/viewdata.service';
 export interface view_link_web {
   link: string;
@@ -30,7 +31,7 @@ export class EnterpriseComponent implements OnInit {
     { name: 'Sendo', url: './assets/images/icon-sendo.svg' },
   ];
   arr_link!: view_link_web[];
-  constructor(private congtySrc: ViewdataService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private congtySrc: ViewdataService, private route: ActivatedRoute, private router: Router, private commonSrv: CommonService) { }
   companyObj$!: Observable<enterprisview>;
   ngOnInit(): void {
     let id = this.route.snapshot.paramMap.get('id');
@@ -59,7 +60,8 @@ export class EnterpriseComponent implements OnInit {
     let index_tem = this.arr_url.findIndex(t => t.name == name);
     return this.arr_url[index_tem].url;
   }
-  select_product(id: number) {
-    this.router.navigate(['/views/product/' + id+'/object']);
+  select_product(id: string) {
+    let gt_tmp = this.commonSrv.mahoa_id(id);
+    this.router.navigate(['/views/product/' + gt_tmp + '/object']);
   }
 }
