@@ -65,6 +65,9 @@ export class LocalStorageService {
   public removeTokenValue(): void {
     return this.storage.remove(this.TOKEN_KEY);
   }
+  public removeLoginTime(): void {
+    return this.storage.remove('Login_Time');
+  }
 
   public setStringValue(key: string, value: string): void {
     return this.stringStorage.set(key, value);

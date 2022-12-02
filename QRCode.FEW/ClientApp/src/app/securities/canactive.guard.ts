@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { catchError, map, Observable } from 'rxjs';
 import { CompaniesService } from '../components/nghiepvu/proview/childview/companies/companies.service';
 import { LoginComponent } from '../components/share/login/login.component';
+import { CommonService } from '../services/common.service';
 import { LocalStorageService } from '../services/local-storage.service';
 import { MessageService } from '../services/message.service';
 import { ObservableService } from '../services/observable.service';
@@ -14,9 +15,14 @@ import { PaynemtService } from '../services/paynemt.service';
 })
 export class CanactiveGuard implements CanActivate {
   constructor(private router: Router, private storage: LocalStorageService, private messSrc: MessageService, private dialog: MatDialog,
-    private _sharingService: ObservableService, private enterpriseSrc: CompaniesService) { }
+    private _sharingService: ObservableService, private enterpriseSrc: CompaniesService, private commonSrv: CommonService) { }
   canActivate(
     route: ActivatedRouteSnapshot, state1: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    let check_timeout = this.commonSrv.check_timeout();
+    if (check_timeout) {
+      this.router.navigate(['/qrcode-free']);
+      return false;
+    }
     let user = this.storage.getUserInfo();
     if (user != undefined) {
       this.enterpriseSrc.check_401().pipe(

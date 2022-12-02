@@ -65,10 +65,13 @@ export class ObservableService {
   reMoveTokenValue() {
     this.storage.removeTokenValue();
   }
+  removeLoginTime() {
+    this.storage.removeLoginTime();
+  }
   getAuthenState(): Observable<boolean> {
     let currUser = this.storage.getUserInfo();
     this.isAuthenticated = new BehaviorSubject<boolean>(currUser != undefined);
-    this.isAuthenticated.asObservable().subscribe(t=>console.log(' '));
+    this.isAuthenticated.asObservable().subscribe(t => console.log(' '));
     return this.isAuthenticated.asObservable();
   }
 

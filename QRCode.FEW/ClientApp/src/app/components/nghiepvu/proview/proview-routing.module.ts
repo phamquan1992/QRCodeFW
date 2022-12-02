@@ -11,9 +11,9 @@ import { ProviewComponent } from './proview.component';
 const routes: Routes = [
   {
     path: '', component: ProviewComponent, children: [
-      { path: 'products', loadChildren: () => import('./childview/products/products.module').then(m => m.ProductsModule) },
-      { path: 'survey', loadChildren: () => import('./childview/survey/survey.module').then(m => m.SurveyModule) },
-      { path: 'companies', loadChildren: () => import('./childview/companies/companies.module').then(m => m.CompaniesModule) },
+      { path: 'products', canActivate: [CanactiveGuard], loadChildren: () => import('./childview/products/products.module').then(m => m.ProductsModule) },
+      { path: 'survey', canActivate: [CanactiveGuard], loadChildren: () => import('./childview/survey/survey.module').then(m => m.SurveyModule) },
+      { path: 'companies', canActivate: [CanactiveGuard], loadChildren: () => import('./childview/companies/companies.module').then(m => m.CompaniesModule) },
       { path: 'dashboard', canActivate: [CanactiveGuard], component: DashboardComponent },///:id/:id2
       { path: 'gencode', canActivate: [CanactiveGuard], component: GencodeComponent },
       { path: 'hisqr/:dataid', canActivate: [CanactiveGuard], component: HisscanComponent },

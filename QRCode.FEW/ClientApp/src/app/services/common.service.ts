@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
+import { ObservableService } from './observable.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
-  constructor(private localSrv: LocalStorageService) { }
+  constructor(private localSrv: LocalStorageService, private _sharingService: ObservableService) { }
   convertnotdau(str: string) {
     str = str.toLowerCase().trim();
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
@@ -72,9 +73,42 @@ export class CommonService {
     return gt_tmp;
   }
   giaima_id(data: string) {
-    let gt_tmp = this.replaceAll_char("|a|", "/", data);   
+    let gt_tmp = this.replaceAll_char("|a|", "/", data);
     let result = this.localSrv.decryptUsingAES256(gt_tmp);
     result = this.replaceAll_char('"', '', result);
     return result;
+  }
+  check_timeout() {
+    let result = false;
+    let time_save = this.localSrv.getStringValue('Login_Time');
+    if (time_save != '') {
+      let time_now = new Date();
+      let time_cv = new Date(time_save);
+      let time_count = time_now.getTime() - time_cv.getTime();
+      let gt = this.convertMsToTime(time_count);
+      console.log(gt);
+      if (Number(gt) > 59) {
+        result = true;
+      }
+    }
+    return result;
+  }
+  convertMsToTime(milliseconds: number) {
+    let seconds = Math.floor(milliseconds / 1000);
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    // seconds = seconds % 60;
+    // minutes = minutes % 60;
+    // 👇️ If you want to roll hours over, e.g. 00 to 24
+    // 👇️ uncomment the line below
+    // uncommenting next line gets you `00:00:00` instead of `24:00:00`
+    // or `12:15:31` instead of `36:15:31`, etc.
+    // 👇️ (roll hours over)
+    hours = hours % 24;
+    //return `${this.padTo2Digits(hours)}:${this.padTo2Digits(minutes)}:${this.padTo2Digits( seconds,)}`;
+    return `${this.padTo2Digits(minutes)}`;
+  }
+  padTo2Digits(num: number) {
+    return num.toString().padStart(2, '0');
   }
 }

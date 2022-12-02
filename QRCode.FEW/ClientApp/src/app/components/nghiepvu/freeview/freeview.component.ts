@@ -1,8 +1,10 @@
 import { Component, HostListener, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { nguoidung } from 'src/app/models/nguoidung';
+import { CommonService } from 'src/app/services/common.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ObservableService } from 'src/app/services/observable.service';
 import { LoginComponent } from '../../share/login/login.component';
@@ -23,12 +25,13 @@ export class FreeviewComponent implements OnInit, OnDestroy {
     sodt: '',
     token: '',
     active: false,
-    isadmin:false
+    isadmin: false
   };
   currUser: Observable<nguoidung>;
 
   public innerWidth: any;
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router, private _sharingService: ObservableService, private storage: LocalStorageService) {
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private router: Router,
+    private _sharingService: ObservableService, private storage: LocalStorageService, private commonSrv: CommonService) {
     this.currUser = this._sharingService.getUserInfo();
     this.is_login = this._sharingService.getAuthenState();
   }
@@ -37,7 +40,10 @@ export class FreeviewComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.innerWidth = window.innerWidth;
-    
+    let check = this.commonSrv.check_timeout();
+    if (check) {
+      this, this.log_out();
+    }
   }
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -56,7 +62,7 @@ export class FreeviewComponent implements OnInit, OnDestroy {
     //this.is_login = false;    
     this._sharingService.reMoveUserValue();
     this._sharingService.reMoveTokenValue();
-
+    this._sharingService.removeLoginTime();
     // this.currUser = this._sharingService.getUserInfo();
     // this.is_login = this._sharingService.getAuthenState();
     // this.router.navigate(['/qrcode-free']);
