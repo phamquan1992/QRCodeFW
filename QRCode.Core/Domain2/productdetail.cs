@@ -34,6 +34,8 @@ namespace QRCode.Core.Domain2
         public string additional { get; set; }
         public decimal enterpriseid { get; set; }
         public List<productview> list_ref { get; set; }
+        public List<string> list_img { get; set; }
+        public enterprisview congty { get; set; }
     }
     public class enterprisview
     {
@@ -45,6 +47,7 @@ namespace QRCode.Core.Domain2
         public string fax { get; set; }
         public string email { get; set; }
         public string additional { get; set; }
+        public string taxcode { get; set; }
         public List<productview> list_ref { get; set; }
     }
     public class gencodeview
