@@ -32,6 +32,7 @@ export interface enterprisview {
     fax: string;
     logo: string;
     name: string;
+    taxcode?:string;
     qrenterpriseid: number;
     tel: string;
     list_ref: productview[]

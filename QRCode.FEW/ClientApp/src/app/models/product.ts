@@ -1,3 +1,5 @@
+import { enterprisview } from "./qr_enterprise";
+
 export interface product {
     qrproductid: number;
     name: string;
@@ -51,6 +53,9 @@ export interface productview {
     additional: string;
     enterpriseid: number;
     list_ref: productview[];
+    congty: enterprisview;
+    list_img:string[];
+
 }
 export interface user_reset {
     email: string;

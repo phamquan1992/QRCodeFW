@@ -8,6 +8,7 @@ import { product, productview } from 'src/app/models/product';
 import { CommonService } from 'src/app/services/common.service';
 import { ViewdataService } from 'src/app/services/viewdata.service';
 
+
 @Pipe({ name: "safeHtml" })
 export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) { }
@@ -25,7 +26,10 @@ export class ProductinfoComponent implements OnInit {
   product$!: Observable<productview>;
   arr_dynamic: value_it[] = [];
   data1!: string;
+  list_img:string[]=[];
   loading$: boolean = false;
+  selectSrc = '';
+  errorImg=''
   constructor(private viewDataSrc: ViewdataService, private route: ActivatedRoute, private router: Router, private commonSrv: CommonService) { }
 
   ngOnInit(): void {
@@ -47,8 +51,25 @@ export class ProductinfoComponent implements OnInit {
           this.arr_dynamic.push(it_temp);
         });
       }
+      this.list_img=t.list_img;
       this.loading$ = false;
+      this.onSetIndex(0);
+      this.repeat();
     });
+  }
+  index = 0;
+  repeat() {
+    this.index = this.index + 1;
+    if (this.index === this.list_img.length) {
+      this.index = 0;
+    }
+    setTimeout(() => {
+      this.onSetIndex(this.index);
+      this.repeat();
+    }, 2000);
+  }
+  onSetIndex(i: number) {
+    this.selectSrc = this.list_img[i];
   }
   select_product(id: string) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

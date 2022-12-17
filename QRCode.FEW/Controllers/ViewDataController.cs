@@ -92,11 +92,48 @@ namespace QRCode.FEW.Controllers
                 product_view.qrproductid = product_it.qrproductid;
                 product_view.url_img = product_it.url_img;
                 product_view.enterpriseid = product_it.enterpriseid;
+                product_view.congty = get_congty(product_it.enterpriseid);
+                product_view.list_img = get_listimg(product_it);
                 product_view.list_ref = GetListProduct(product_it.enterpriseid, product_it.qrproductid);
                 if (qrgencodeid != 0)
                     InsertHisScan("product", qrgencodeid);
             }
             return product_view;
+        }
+        private enterprisview get_congty(decimal congtyid)
+        {
+            var obj_temp = new enterprisview();
+            var tmp = GetCongty().FirstOrDefault(t => t.qrenterpriseid == congtyid);
+            if (tmp != null)
+            {
+                obj_temp.name = tmp.name;
+                obj_temp.address = tmp.address;
+                obj_temp.taxcode = tmp.taxcode;
+                obj_temp.tel = tmp.tel;
+                obj_temp.email = tmp.email;
+            }
+            return obj_temp;
+        }
+        private List<string> get_listimg(product model)
+        {
+            List<string> data = new List<string>();
+            if (!string.IsNullOrEmpty(model.url_img))
+            {
+                data.Add(model.url_img);
+            }
+            if (!string.IsNullOrEmpty(model.url_barcode))
+            {
+                data.Add(model.url_barcode);
+            }
+            if (!string.IsNullOrEmpty(model.url_iso))
+            {
+                data.Add(model.url_iso);
+            }
+            if (!string.IsNullOrEmpty(model.logo))
+            {
+                data.Add(model.logo);
+            }
+            return data;
         }
         private List<productview> GetListProduct(decimal enterpriseid, long qrproductid)
         {
@@ -304,7 +341,7 @@ namespace QRCode.FEW.Controllers
                     object_view.object_edit = temp_data;
                     var array = JArray.Parse(temp_data.additional);
                     list_cauhoi = array.ToObject<List<cauhoi>>();
-                    object_view.list_cauhoi = list_cauhoi;          
+                    object_view.list_cauhoi = list_cauhoi;
                     InsertHisScan("survey", (int)gencode_obj.dataid);
                     var resul_objet_tmp = new
                     {

@@ -28,7 +28,7 @@ import { EndsurveyComponent } from './view-survey/endsurvey/endsurvey.component'
     CommonModule,
     ViewsRoutingModule,
     ReactiveFormsModule, FormsModule,
-    SharedModule,MatSelectModule
+    SharedModule,MatSelectModule,
   ]
 })
 export class ViewsModule { }

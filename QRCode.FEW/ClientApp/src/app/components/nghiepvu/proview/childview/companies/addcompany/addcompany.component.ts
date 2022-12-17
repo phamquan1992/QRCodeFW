@@ -368,7 +368,8 @@ export class AddcompanyComponent implements OnInit {
   add_dynamic(name: string) {
     let index_dynamic = this.arr_dynamic.map(t => t.key).indexOf(name);
     if (index_dynamic == -1) {
-      this.DataForm.addControl(name, new FormControl('', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]));
+      let urlPattern = /^(?:(http(s)?)?(sftp)?(ftp)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+      this.DataForm.addControl(name, new FormControl('', [Validators.required, Validators.pattern(urlPattern)]));
       let gt_tem: item_dropdown_cp = { key: name, value: '' };
       this.arr_dynamic.push(gt_tem);
     } else {
