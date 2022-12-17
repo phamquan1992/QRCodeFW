@@ -66,7 +66,7 @@ export class ProductinfoComponent implements OnInit {
     setTimeout(() => {
       this.onSetIndex(this.index);
       this.repeat();
-    }, 2000);
+    }, 10000);
   }
   onSetIndex(i: number) {
     this.selectSrc = this.list_img[i];
