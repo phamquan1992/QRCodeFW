@@ -3,49 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
-    font-family: Lato, sans-serif;
-    font-size: 16px;
-}
-
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #196898;
-    border-radius: 4px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #115077;
+    height: 100%;
 }
 
 body {
-    color: #000000a6;
-    background-color: #ebf0f5;
-    font-variant: tabular-nums;
-    font-feature-settings: "tnum";
-}
-
-#__layout,
-#__nuxt {
-    min-height: 100vh;
-}
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 input {
@@ -68,15 +33,51 @@ img {
     vertical-align: middle;
 }
 
-.header-mobile-nav[data-v-7b4125dc]::-webkit-scrollbar {
-    display: none;
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
 }
 
-.magrin_pane {
-    margin-left: 20px;
-    margin-right: 20px;
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
 }
 
-.pd_dialog_none {
-    padding: 0px;
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #196898;
+    border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #115077;
+}
+
+
+@media(max-width: 600px) {
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #115077;
+    }
 }

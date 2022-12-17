@@ -1,0 +1,12 @@
+<div>
+    <div class="float-right">
+        <i class="fa fa-times m-2 cursor-pointer" aria-hidden="true" (click)="closeDialog()"></i>
+    </div>
+    <div class="mx-1 mt- mb-4 text-[#36393d]">
+        <span class="content-span full-width px-4 py-9 text-[18px] block">{{data}}</span>
+    </div>
+    <button class="h-[50px] w-1/2 bg-[#fc7169] text-white rounded-none " mat-flat-button id="no-button"
+        [mat-dialog-close]="false">Huỷ</button>
+    <button class="h-[50px] w-1/2 bg-[#2c529e] text-white rounded-none " mat-flat-button id="yes-button"
+        [mat-dialog-close]="true">Đồng ý</button>
+</div>

@@ -4,41 +4,41 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { AcountinfoComponent } from './components/acountinfo/acountinfo.component';
+import { ClickOutsideDirective } from './directive/clickOutside.directive';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AngularEditorModule } from '@kolkov/angular-editor';
-import { ToastrModule } from 'ngx-toastr';
-import { CLIInterceptor } from './interceptor/httpInterceptor';
-import { ResetmailComponent } from './components/share/resetmail/resetmail.component';
-import { SharedModule } from './shared/shared.module';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { CustomMatPaginatorIntl } from './interceptor/CustomPaginatorConfiguration';
+import { CustomMatPaginatorIntl } from './directive/CustomPaginatorConfiguration';
+import { HomeComponent } from './components/home/home.component';
+import {MatBadgeModule} from '@angular/material/badge';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ResetmailComponent,
+    SidenavComponent,
+    AcountinfoComponent,
+    ClickOutsideDirective,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDialogModule,
-    MatAutocompleteModule,
     FormsModule,
+    MatBadgeModule,
     HttpClientModule,
-    AngularEditorModule,
-    SharedModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatDialogModule
   ],
-  providers: [DatePipe,
+  providers: [
     {
-      provide: MatPaginatorIntl,
-      useClass: CustomMatPaginatorIntl
-    }],
+    provide: MatPaginatorIntl,
+    useClass: CustomMatPaginatorIntl
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

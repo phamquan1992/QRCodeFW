@@ -1,9 +1,7 @@
-
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { nguoidung } from '../models/nguoidung';
 import { LocalStorageService } from './local-storage.service';
-
 
 @Injectable({
   providedIn: 'root'

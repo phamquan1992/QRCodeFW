@@ -1,0 +1,99 @@
+<div class="w-full h-full relative">
+    <div class="bg-[#196898] py-[10px] px-[15px]">
+        <div class="text-white text-sm leading-[22px] break-words font-medium">
+            <div>{{tieu_de}}</div>
+        </div>
+    </div>
+
+    <div class="p-3">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div *ngFor="let question of arrinput"
+                [ngClass]="{'col-span-1 md:col-span-2':question.key==='description'||question.key==='address'}">
+                <app-custominput [iteminput]="question" [form]="form">
+                </app-custominput>
+            </div>
+            <label class="text-sm">Chi tiết khách hàng</label>
+            <div class="col-span-1 md:col-span-2">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
+
+                    <ng-container matColumnDef="column1">
+                        <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold">
+                            Dịch vụ bổ sung
+                        </th>
+                        <td mat-cell *matCellDef="let element" class=" text-center" style="padding: 4px;">
+                            <span class="mobile-label">Dịch vụ bổ sung:</span>
+                            <span class="text-sm mobile-span">{{element.column1}}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="column2">
+                        <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold">Bổ sung chứng
+                            nhận
+                            mới</th>
+                        <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                            <span class="mobile-label">Bổ sung chứng nhận mới:</span>
+                            <span class="text-sm mobile-span">{{element.column2}}</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="column3">
+                        <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold ">
+                            Tái chứng nhận
+                        </th>
+                        <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                            <span class="mobile-label">Tái chứng nhận:</span>
+                            <span class="text-sm mobile-span">{{element.column3}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold w-[120px]">
+                            Trạng thái
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="break-all text-center" style="padding: 4px;"
+                            [ngSwitch]="element.status">
+                            <span class="mobile-label">Trạng thái:</span>
+                            <span class="text-sm mobile-span" *ngSwitchCase="'view'"></span>
+                            <span class="text-xs text-center mobile-span border border-solid border-[#2a6eb1] text-[#2a6eb1] bg-[#e6e8ec] block" *ngSwitchCase="'Edit'">Sửa</span>
+                            <span class="text-xs text-center mobile-span border border-solid border-[#b7eb8f] text-[#52c41a] bg-[#f6ffed] block" *ngSwitchCase="'Add'">Thêm mới</span>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold w-[100px] ">
+                            <i class="fa fa-plus-circle text-green-700" aria-hidden="true" style="font-size: 18px;"></i></th>
+                        <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                            <i class="fa fa-trash-o px-[4px] cursor-pointer text-red-600" aria-hidden="true"
+                                [matTooltip]="'Xoá doanh nghiệp, cá nhân'" [matTooltipPosition]="'above'"
+                                style="font-size: 18px;"></i>
+                            <i class="fa fa-link px-[4px] cursor-pointer text-blue-600 -rotate-[85deg]" aria-hidden="true"
+                                [matTooltip]="'Chi tiết doanh nghiệp, cá nhân'" [matTooltipPosition]="'above'"
+                                style="font-size: 18px;"></i>
+                        </td>
+                    </ng-container>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="border border-solid border-[#0000001f] border-t-0 break-all text-[13px] text-center p-5"
+                            [attr.colspan]="displayedColumns.length">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                    </tr>
+                </table>
+            </div>
+            <div class="col-span-1 md:col-span-2 mx-auto">
+                <button type="submit" [attr.disabled]="form.invalid?'':null"
+                    [ngClass]="{'bg-[#196898]':form.valid,'bg-[#849faf]':!form.valid}"
+                    class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] text-white text-[13px] mr-[5px] my-[5px]">
+                    Cập nhật
+                </button>
+                <button type="button" (click)="onClose('')"
+                    class=" bg-red-500 leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] text-white text-[13px] mr-[5px] my-[5px]">
+                    Huỷ bỏ
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <button class="absolute top-0 right-0 h-[43px] w-[43px] text-white" (click)="onClose('')"><i class="fa fa-times" aria-hidden="true"
+            ></i></button>
+</div>

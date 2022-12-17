@@ -1,86 +1,36 @@
-<div [formGroup]="form" class="align-top h-auto w-full">
-    <div [ngSwitch]="values.type">
-        <div *ngSwitchCase="'text'">
-            <div class="relative flex">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">
-                    <span>{{values.title}}</span>
-                    <span *ngIf="values.is_require"><span>(</span><span
-                            class="text-red-600 align-text-top">*</span><span>)</span> </span>
-                </label>
-                <i [ngClass]="{'visible':values.is_delete,'invisible':!values.is_delete}" _ngcontent-sdj-c36=""
-                    (click)="delete_input(values.name)" class="absolute right-0 top-1 text-red-600 cursor-pointer"
-                    nz-icon="" nztheme="outline" nztype="close-circle"><svg viewBox="64 64 896 896" fill="currentColor"
-                        width="1em" height="1em" data-icon="close-circle" aria-hidden="true">
-                        <path
-                            d="M685.4 354.8c0-4.4-3.6-8-8-8l-66 .3L512 465.6l-99.3-118.4-66.1-.3c-4.4 0-8 3.5-8 8 0 1.9.7 3.7 1.9 5.2l130.1 155L340.5 670a8.32 8.32 0 00-1.9 5.2c0 4.4 3.6 8 8 8l66.1-.3L512 564.4l99.3 118.4 66 .3c4.4 0 8-3.5 8-8 0-1.9-.7-3.7-1.9-5.2L553.5 515l130.1-155c1.2-1.4 1.8-3.3 1.8-5.2z">
-                        </path>
-                        <path
-                            d="M512 65C264.6 65 64 265.6 64 513s200.6 448 448 448 448-200.6 448-448S759.4 65 512 65zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
-                        </path>
-                    </svg></i>
-            </div>
-            <input type="text" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-            bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                [ngClass]="{'border-red-600':!isValid  && (form.controls[values.name].dirty || form.controls[values.name].touched) && form.controls[values.name].errors?.['required']}"
-                [formControlName]="values.name" [required]="values.is_require" [id]="values.name"
-                (focusout)="focusFunction($event,values.name)" name="{{values.name}}">
-            <div *ngIf="!isValid  && (form.controls[values.name].dirty || form.controls[values.name].touched)">
-                <span *ngIf="form.controls[values.name].errors?.['required']"
-                    class="text-red-600 text-xs italic">{{values.title}} không
-                    được để trống!</span>
-            </div>
+<div [formGroup]="form">
+    <label [attr.for]="iteminput.key" class="text-sm" *ngIf="iteminput.label!=''">{{iteminput.label}}</label>
+
+    <div [ngSwitch]="iteminput.controlType">
+
+        <input *ngSwitchCase="'textbox'" [formControlName]="iteminput.key" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+         border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]" [id]="iteminput.key"
+            [type]="iteminput.type">
+        <div class="relative flex items-center" *ngSwitchCase="'dropdown'">
+            <input #ipauto matInput placeholder="" name="search" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+            bg-white border border-solid border-[#d9d9d9] my-[3px] border-r-0 ml-0 h-8 text-[13px]" type="search"
+                [formControlName]="iteminput.key" [id]="iteminput.key" [matAutocomplete]="autoSearch"
+                #trigger="matAutocompleteTrigger"
+                (keyup)="change_dropdown(ipauto)">
+                <i class="fa fa-angle-down border border-solid border-[#d9d9d9] border-l-0 px-2 py-[7px]" aria-hidden="true" (click)="openOrClosePanel($event, trigger)"></i>
+            <mat-autocomplete #autoSearch="matAutocomplete" [displayWith]="getLabel" class="min-w-[200px]"
+                (optionSelected)="value = $event.option.value" (closed)="close_event(ipauto)">
+                <mat-option *ngFor="let option of arr_dropdown" [value]="option" fxLayout="row wrap" fxLayoutWrap="wrap"
+                    fxLayoutAlign="stretch center">
+                    {{option.value}}
+                </mat-option>
+                <mat-option *ngIf="arr_dropdown.length==0">Không có dữ liệu</mat-option>
+            </mat-autocomplete>
         </div>
-        <div *ngSwitchCase="'number'">
-            <div class="relative flex">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">
-                    <span>{{values.title}}</span>
-                    <span *ngIf="values.is_require"><span>(</span><span
-                            class="text-red-600 align-text-top">*</span><span>)</span> </span>
-                </label>
-                <i [ngClass]="{'visible':values.is_delete,'invisible':!values.is_delete}" _ngcontent-sdj-c36=""
-                    (click)="delete_input(values.name)" class="absolute right-0 top-1 text-red-600 cursor-pointer"
-                    nz-icon="" nztheme="outline" nztype="close-circle"><svg viewBox="64 64 896 896" fill="currentColor"
-                        width="1em" height="1em" data-icon="close-circle" aria-hidden="true">
-                        <path
-                            d="M685.4 354.8c0-4.4-3.6-8-8-8l-66 .3L512 465.6l-99.3-118.4-66.1-.3c-4.4 0-8 3.5-8 8 0 1.9.7 3.7 1.9 5.2l130.1 155L340.5 670a8.32 8.32 0 00-1.9 5.2c0 4.4 3.6 8 8 8l66.1-.3L512 564.4l99.3 118.4 66 .3c4.4 0 8-3.5 8-8 0-1.9-.7-3.7-1.9-5.2L553.5 515l130.1-155c1.2-1.4 1.8-3.3 1.8-5.2z">
-                        </path>
-                        <path
-                            d="M512 65C264.6 65 64 265.6 64 513s200.6 448 448 448 448-200.6 448-448S759.4 65 512 65zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
-                        </path>
-                    </svg></i>
-            </div>
-            <input type="number" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
-            bg-white border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-8 text-[13px]"
-                [ngClass]="{'border-red-600':!isValid  && (form.controls[values.name].dirty || form.controls[values.name].touched) && form.controls[values.name].errors?.['required']}"
-                [formControlName]="values.name" [required]="values.is_require">
-            <div *ngIf="!isValid  && (form.controls[values.name].dirty || form.controls[values.name].touched)">
-                <span *ngIf="form.controls[values.name].errors?.['required']"
-                    class="text-red-600 text-xs italic">{{values.title}} không
-                    được để trống!</span>
-            </div>
-        </div>
-        <div *ngSwitchCase="'dropdown'">
-            <div class="relative flex">
-                <label for="" class="inline-block relative font-bold text-sm font-[Roboto]">
-                    <span>{{values.title}}</span>
-                    <span *ngIf="values.is_require"><span>(</span><span
-                            class="text-red-600 align-text-top">*</span><span>)</span> </span>
-                </label>
-                <i [ngClass]="{'visible':values.is_delete,'invisible':!values.is_delete}"
-                    (click)="delete_input(values.name)" class="absolute right-0 top-1 text-red-600 cursor-pointer"><svg
-                        viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" aria-hidden="true">
-                        <path
-                            d="M685.4 354.8c0-4.4-3.6-8-8-8l-66 .3L512 465.6l-99.3-118.4-66.1-.3c-4.4 0-8 3.5-8 8 0 1.9.7 3.7 1.9 5.2l130.1 155L340.5 670a8.32 8.32 0 00-1.9 5.2c0 4.4 3.6 8 8 8l66.1-.3L512 564.4l99.3 118.4 66 .3c4.4 0 8-3.5 8-8 0-1.9-.7-3.7-1.9-5.2L553.5 515l130.1-155c1.2-1.4 1.8-3.3 1.8-5.2z">
-                        </path>
-                        <path
-                            d="M512 65C264.6 65 64 265.6 64 513s200.6 448 448 448 448-200.6 448-448S759.4 65 512 65zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
-                        </path>
-                    </svg></i>
-            </div>
-            <input type="hidden" [formControlName]="values.name">
-            <app-autocompleinput [value_input]="str_val" (val_out)="setval_out($event)" [data]="arr_cs" [ischeck]="values.is_require" [placeholder_str]="values.title">
-            </app-autocompleinput>
-        </div>
+
     </div>
 
+    <div class="mx-auto" *ngIf="!isValid && (dirty || touched)">
+        <span *ngIf="required" class="text-red-600 text-xs">{{iteminput.label}} không được để trống</span>
+        <span *ngIf="errMinLength" class="text-red-600 text-xs">Độ dài tối
+            thiểu không hợp lệ!</span>
+        <span *ngIf="errMaxLength" class="text-red-600 text-xs">Độ dài tối đa không hợp lệ!</span>
+        <span *ngIf="errLink" class="text-red-600 text-xs">Link không đúng định dạng!</span>
+        <span *ngIf="errEmail" class="text-red-600 text-xs">Email không đúng định dạng!</span>
+    </div>
 </div>

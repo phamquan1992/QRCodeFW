@@ -1,1 +1,26 @@
-<router-outlet></router-outlet>
+<div class="h-full flex-row box-border flex bg-[#f0f2f5] min-h-0">
+  <app-sidenav class="hidden md:block" [drawer_status]="showNav"></app-sidenav>
+
+  <div class="transition-all duration-300 h-screen w-full"
+  [ngClass]="{'ml-0 md:pl-[280px]':showNav,'ml-0 md:pl-[80px]':!showNav}">
+    <div
+      class="bg-[#0c3d8e] z-[3] h-[45px] leading-[45px] w-full transition-all duration-200">
+        <i class="fa fa-bars text-[1.5rem] ml-4 leading-[2.5rem] text-white cursor-pointer" aria-hidden="true" (click)="drawer_menu()"></i>
+      <app-acountinfo class="float-right w-full md:w-auto"></app-acountinfo>
+    </div>
+    <div class="bg-[#f0f2f5]">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<div class="w-full md:hidden">
+  <div class="ant-drawer-mask h-full opacity-100 absolute top-0 left-0 w-full bg-[#00000073] z-[1000]" *ngIf="showNavMobile"
+    (click)="drawer_menu()"></div>
+  <aside
+    class="transform top-0 left-0 w-64 bg-white fixed h-full overflow-auto ease-in-out transition-all duration-300 z-[1000]"
+    [ngClass]="{'translate-x-0':showNavMobile,'-translate-x-full':!showNavMobile}">
+    <div class="p-0 text-sm break-words">
+      <app-sidenav [drawer_status]="showNavMobile"></app-sidenav>
+    </div>
+  </aside>
+</div>

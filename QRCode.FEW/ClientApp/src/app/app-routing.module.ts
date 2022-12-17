@@ -1,20 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CanactiveGuard } from 'src/app/securities/canactive.guard';
-import { NotfoundComponent } from './shared/notfound/notfound.component';
+import { HomeComponent } from './components/home/home.component';
 
-const routes: Routes = [
-  { path: 'qrcode-free', loadChildren: () => import('./components/nghiepvu/freeview/freeview.module').then(m => m.FreeviewModule) },
-  { path: 'portal', canActivate: [CanactiveGuard], loadChildren: () => import('./components/nghiepvu/proview/proview.module').then(m => m.ProviewModule) },
-  { path: '', redirectTo: 'qrcode-free', pathMatch: 'full' },
-  { path: 'views', loadChildren: () => import('./views/views.module').then(m => m.ViewsModule) },
-  { path: '404', component: NotfoundComponent },
-  { path: '**', redirectTo: '/404' }
-];
+const routes: Routes = [{ path: 'danhmuc', loadChildren: () => import('./components/danhmuc/danhmuc.module').then(m => m.DanhmucModule) },
+{ path: 'home', component: HomeComponent },
+{ path: '', redirectTo: 'home', pathMatch: 'full' },
+{ path: 'qlkhachhang', loadChildren: () => import('./components/qlkhachhang/qlkhachhang.module').then(m => m.QlkhachhangModule) }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [CanactiveGuard]
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

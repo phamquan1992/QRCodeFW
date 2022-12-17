@@ -1,13 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
-import * as CryptoJS from 'crypto-js';
 import { LOCAL_STORAGE, StorageService, StorageTranscoders } from 'ngx-webstorage-service';
 import { nguoidung } from '../models/nguoidung';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
+  
   private numberStorage!: StorageService<number>;
   private stringStorage!: StorageService<string>;
   public UI: string = '996F1E39-17E2-4171-963A-F21B92E1228A';

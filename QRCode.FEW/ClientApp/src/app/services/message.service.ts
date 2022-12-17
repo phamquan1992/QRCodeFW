@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { LoginComponent } from '../components/share/login/login.component';
 import { nguoidung } from '../models/nguoidung';
 import { ObservableService } from './observable.service';
 
@@ -37,7 +36,7 @@ export class MessageService {
       sodt: '',
       token: '',
       active: false,
-      isadmin:false
+      isadmin: false
     };
     if (error.status == 401) {
       this.warn('Đã hết phiên làm việc');
@@ -65,3 +64,4 @@ export class MessageService {
     }
   }
 }
+

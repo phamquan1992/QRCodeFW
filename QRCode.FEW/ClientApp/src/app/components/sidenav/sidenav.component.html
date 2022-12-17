@@ -1,0 +1,42 @@
+<div class="fixed">
+    <div class="bg-white h-screen z-[2000] py-5 pl-5 transition-all duration-200" (mouseleave)="leave_item()"
+        [ngClass]="{'w-[80px]':!showNav, 'w-[280px]':showNav}">
+        <div class="inline-flex">
+            <a routerLink="/home" class="nuxt-link-active" style="z-index: 1;"><img
+                    class="w-[37px] h-[37px] rounded-full border border-solid border-[#124b9f]"
+                    src="./assets/images/logo_tqc_vuong.jpg" alt=""></a>
+            <div class="ml-[12px] duration-200 transition-all" [ngClass]="{'block':showNav,'hidden scale-0':!showNav}">
+                <span class="block font-bold text-[#124b9f] text-base">QC Global</span>
+                <span class="block text-[#124b9f] text-[10px]">by TQC</span>
+            </div>
+        </div>
+        <ul class="pt-2">
+            <div *ngFor="let it of Menus" (mouseover)="hover_item(it)" class="relative">
+                <li class="text-[#626266] text-sm flex flex-col gap-x-4 cursor-pointer p-3 hover:text-[#124b9f] duration-200 transition-all"
+                    (click)="menu_click(it)" [routerLink]="it.url" routerLinkActive="text-[#124b9f]">
+                    <div class="flex"> 
+                        <i class="{{it.icon}} pr-2" aria-hidden="true" routerLinkActive="text-[#124b9f]"
+                            [ngClass]="{'text-[#124b9f]':parent_select==it}"></i>
+                        <span class="text-sm font-medium flex-1 block" routerLinkActive="text-[#124b9f]"
+                            [ngClass]="{'hidden':!showNav,'text-[#124b9f]':parent_select==it}">{{it.title}}</span>
+                        <i class="fa fa-angle-down float-right duration-200 transition-all" aria-hidden="true"
+                            *ngIf="it.submenu && showNav"
+                            [ngClass]="{'rotate-180 text-[#124b9f]':it.submenu && get_item(it),'text-[#124b9f]':parent_select==it}"></i>
+                    </div>
+
+                </li>
+                <ul class="bg-white block overflow-hidden z-[2000] w-full min-w-[200px] duration-200 transition-all"
+                    [ngClass]="{'absolute top-0 left-[60px]':!showNav,'max-h-[1000px]':it.submenu && get_item(it),'max-h-0':!it.submenu || !get_item(it)}">
+                    <li *ngFor="let itsub of it.submenuItem" [routerLink]="itsub.url" routerLinkActive="text-[#124b9f]"
+                        (click)="parent_select=it"
+                        class="text-[#626266] text-xs items-center gap-x-4 cursor-pointer p-3 px-5 hover:text-[#124b9f] duration-200 transition-all">
+                        <i class="{{itsub.icon}} pr-2" aria-hidden="true" routerLinkActive="text-[#124b9f]"></i>
+                        <span class="text-xs font-medium flex-1"
+                            routerLinkActive="text-[#124b9f]">{{itsub.title}}</span>
+                    </li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+
+</div>

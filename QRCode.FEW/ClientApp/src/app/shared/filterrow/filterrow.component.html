@@ -1,0 +1,36 @@
+<div *ngIf="iteminput" [formGroup]="form">
+    <label [attr.for]="iteminput.key" class="text-sm" *ngIf="iteminput.label!=''">{{iteminput.label}}</label>
+
+    <div [ngSwitch]="iteminput.controlType">
+
+        <input *ngSwitchCase="'textbox'" [formControlName]="iteminput.key" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+         border border-solid border-[#d9d9d9] my-[3px] mr-[6px] ml-0 h-6 text-[13px]" [id]="iteminput.key"
+            [type]="iteminput.type">
+        <div class="relative flex items-center" *ngSwitchCase="'dropdown'">
+            <input #ipauto matInput placeholder="" name="search" class="w-full text-ellipsis relative inline-block py-1 px-[11px] leading-[1.5] focus:border focus:border-solid focus:border-[#196898]
+            bg-white border border-solid border-[#d9d9d9] border-r-0 my-[3px] ml-0 h-6 text-[13px]" type="search"
+                [formControlName]="iteminput.key" [id]="iteminput.key" [matAutocomplete]="autoSearch"
+                #trigger="matAutocompleteTrigger" (keyup)="change_dropdown(ipauto)">
+            <i class="fa fa-angle-down border border-solid border-[#d9d9d9] border-l-0 p-1" aria-hidden="true"
+                (click)="openOrClosePanel($event, trigger)"></i>
+            <mat-autocomplete #autoSearch="matAutocomplete" [displayWith]="getLabel" class="min-w-[200px]"
+                (optionSelected)="value = $event.option.value" (closed)="close_event(ipauto)">
+                <mat-option *ngFor="let option of iteminput.options" [value]="option" fxLayout="row wrap" fxLayoutWrap="wrap"
+                    fxLayoutAlign="stretch center" style="min-height: 27px;">
+                    <span class="text-xs">{{option.value}}</span>
+                </mat-option>
+                <mat-option *ngIf="iteminput.options.length==0">Không có dữ liệu</mat-option>
+            </mat-autocomplete>
+        </div>
+
+    </div>
+
+    <div class="mx-auto" *ngIf="!isValid && (dirty || touched)">
+        <span *ngIf="required" class="text-red-600 text-xs">{{iteminput.label}} không được để trống</span>
+        <span *ngIf="errMinLength" class="text-red-600 text-xs">Độ dài tối
+            thiểu không hợp lệ!</span>
+        <span *ngIf="errMaxLength" class="text-red-600 text-xs">Độ dài tối đa không hợp lệ!</span>
+        <span *ngIf="errLink" class="text-red-600 text-xs">Link không đúng định dạng!</span>
+        <span *ngIf="errEmail" class="text-red-600 text-xs">Email không đúng định dạng!</span>
+    </div>
+</div>

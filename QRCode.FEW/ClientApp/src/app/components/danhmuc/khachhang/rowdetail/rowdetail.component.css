@@ -1,0 +1,139 @@
+table {
+    border-collapse: separate;
+}
+
+tr.mdc-data-table__header-row {
+    height: 20px !important;
+}
+
+th.mdc-data-table__header-cell {
+    text-align: center !important;
+    background-color: #fafafa;
+    padding: 10px 8px !important;
+    border-left: 1px solid #0000001f !important;
+    border-top: 1px solid #0000001f;
+}
+
+tr.mdc-data-table__row,
+tr.mat-footer-row {
+    height: 20px;
+}
+
+th.mdc-data-table__header-cell:first-of-type,
+td.mdc-data-table__cell:first-of-type,
+td.mdc-data-table__cell:last-of-type,
+td.mat-footer-cell:first-of-type {
+    padding: 0px;
+    text-align: center;
+}
+
+.mdc-data-table__row:last-child .mdc-data-table__cell {
+    border-bottom: 1px solid #0000001f;
+
+}
+
+th.mdc-data-table__header-cell:last-of-type,
+td.mdc-data-table__cell:last-of-type {
+    border-right: 1px solid #0000001f !important;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: rgb(21, 65, 146) !important;
+}
+
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: rgb(21, 65, 146) !important;
+}
+
+::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+    background-color: rgb(21, 65, 146) !important;
+}
+
+
+::ng-deep mat-checkbox.mat-mdc-checkbox.mat-accent {
+    --mdc-checkbox-selected-icon-color: rgb(21, 65, 146) !important;
+    --mdc-checkbox-selected-hover-icon-color: rgb(21, 65, 146) !important;
+    --mdc-checkbox-selected-focus-icon-color: rgb(21, 65, 146) !important;
+    --mdc-checkbox-selected-focus-icon-color: rgb(21, 65, 146) !important;
+    --mdc-checkbox-selected-pressed-icon-color: rgb(21, 65, 146) !important;
+}
+
+.mobile-label {
+    display: none;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    min-width: 300px;
+}
+
+td.mdc-data-table__cell {
+    /* border-top: 1px solid #0000001f !important; */
+    border-left: 1px solid #0000001f !important;
+}
+
+::ng-deep div.mat-mdc-paginator-range-label {
+    margin: 0px !important;
+}
+
+.mat-column-expandedDetail {
+    border: none;
+}
+
+@media(max-width: 768px) {
+    .mobile-label {
+        width: 100%;
+        display: inline-block;
+        font-weight: bold;
+        text-align: left;
+        ;
+    }
+
+    .mdc-data-table__header-row {
+        display: none;
+    }
+
+    table {
+        background-color: #f0f2f5;
+    }
+
+    tr.mdc-data-table__row {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        /* padding-top: 8px;
+        padding-bottom: 8px; */
+        height: auto;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        border-top: 1px solid #0000001f !important;
+        background-color: #fff;
+    }
+    tr.mdc-data-table__row:first-of-type,tr.mdc-data-table__row:last-of-type {
+        margin-top: 0px;
+    }
+
+    td.mdc-data-table__cell {
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid #0000001f !important;
+        border-left: 1px solid #0000001f !important;
+        border-right: 1px solid #0000001f !important;
+    }
+
+    /* td.mdc-data-table__cell:first-of-type {
+        display: none;
+    } */
+
+    td.mdc-data-table__cell:last-of-type {
+        border-bottom: 1px solid #0000001f;
+        text-align: right;
+    }
+
+    .mobile-span {
+        float: right;
+    }
+}

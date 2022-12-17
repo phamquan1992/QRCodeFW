@@ -1,0 +1,136 @@
+<app-loadingpage *ngIf="loading$"></app-loadingpage>
+<div #header>
+    <div class="px-[1px]">
+        <h3 class="py-[15px] ml-[15px] font-semibold text-sm md:text-base text-[#000000d9]">
+            Danh sách phòng ban
+        </h3>
+    </div>
+
+    <section class="px-[15px]">
+        <!-- <button (click)="Import_enterprise()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Import
+            doanh nghiệp, cá nhân</button>
+        <button (click)="Export_enterprise()"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Export</button> -->
+        <button
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]"
+            (click)="them_moi()">Thêm mới</button>
+        <button (click)="showXoaDialog('')"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#ff0000a6] text-white text-[13px] mr-[5px] mb-[5px]">Xoá</button>
+        <button (click)="showhide(false)"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Ẩn</button>
+        <button (click)="showhide(true)"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] bg-[#196898] text-white text-[13px] mr-[5px] mb-[5px]">Hiện</button>
+
+    </section>
+</div>
+
+<div class="px-[15px]">
+    <section class="overflow-auto example-container" #table_content>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full shadow-none">
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="w-[80px]">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class=" text-center" (click)="selection.toggle(row)">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="departmentcode">
+                <th mat-header-cell *matHeaderCellDef
+                    class=" text-[#000000d9] text-sm font-bold font-[Roboto] w-[100px]">
+                    Mã phòng ban
+                </th>
+                <td mat-cell *matCellDef="let element" class=" text-center" style="padding: 4px;">
+                    <span class="mobile-label">Mã phòng ban:</span>
+                    <span class="text-sm mobile-span">{{element.departmentcode}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="departmentname">
+                <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold font-[Roboto]">Tên
+                    phòng ban</th>
+                <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                    <span class="mobile-label">Tên phòng ban:</span>
+                    <span class="text-sm mobile-span">{{element.departmentname}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="branchid">
+                <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold ">Công ty cha</th>
+                <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                    <span class="mobile-label">Công ty cha:</span>
+                    <span class="text-sm mobile-span" *ngIf="element.branchid">
+                        {{get_parent(element.branchid)}}
+                    </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold font-[Roboto]">
+                    Mô tả
+                </th>
+                <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                    <span class="mobile-label">Mô tả:</span>
+                    <span class="text-sm mobile-span">{{element.description}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="isactive">
+                <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm font-bold w-[120px]">
+                    Trạng thái
+                </th>
+                <td mat-cell *matCellDef="let element" class="break-all text-center" style="padding: 4px;"
+                    [ngSwitch]="element.isactive">
+                    <span class="mobile-label">Trạng thái:</span>
+                    <span
+                        class="text-xs text-center mobile-span border border-solid border-[#b7eb8f] text-[#52c41a] bg-[#f6ffed] block"
+                        *ngSwitchCase="true">Kích hoạt</span>
+                    <span
+                        class="text-xs text-center mobile-span border border-solid border-[#ffa39e] text-[#f5222d] bg-[#fff1f0] block"
+                        *ngSwitchCase="false">Huỷ kích hoạt</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef
+                    class=" text-[#000000d9] text-sm font-bold w-[100px] font-[Roboto]">
+                    Hành động</th>
+                <td mat-cell *matCellDef="let element" class=" break-all text-center" style="padding: 4px;">
+                    <i (click)="showXoaDialog(element.id)" class="fa fa-trash-o px-[4px] cursor-pointer text-red-600"
+                        aria-hidden="true" [matTooltip]="'Xoá phòng ban'" [matTooltipPosition]="'above'"
+                        style="font-size: 18px;"></i>
+                    <i (click)="sua_item(element)"
+                        class="fa fa-link px-[4px] cursor-pointer text-blue-600 -rotate-[85deg]" aria-hidden="true"
+                        [matTooltip]="'Chi tiết phòng ban'" [matTooltipPosition]="'above'" style="font-size: 18px;"></i>
+                </td>
+            </ng-container>
+            <div>
+                <ng-container *ngFor="let it of displayedColumns2;let i= index" [matColumnDef]="it">
+                    <th mat-header-cell *matHeaderCellDef class=" text-[#000000d9] text-sm"
+                        style="border-top: none !important;">
+                        <app-filterrow *ngIf="i!==0 && i!=displayedColumns2.length-1" [iteminput]="arr_filter[i-1]"
+                            [form]="formfilter">
+                        </app-filterrow>
+                    </th>
+                </ng-container>
+            </div>
+            <tr class="mat-row" *matNoDataRow>
+                <td class="border border-solid border-[#0000001f] border-t-0 break-all font-[Roboto] text-[13px] text-center p-5"
+                    [attr.colspan]="displayedColumns.length">
+                    Không có dữ liệu
+                </td>
+            </tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="h-5"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+        </table>
+    </section>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50,100,200]" showFirstLastButtons [pageSize]="20"
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

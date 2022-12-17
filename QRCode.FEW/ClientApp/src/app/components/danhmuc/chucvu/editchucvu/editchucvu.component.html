@@ -1,0 +1,32 @@
+<div class="w-full h-full relative">
+    <div class="bg-[#196898] py-[10px] px-[15px]">
+      <div class="text-white text-sm leading-[22px] break-words font-medium">
+        <div>{{tieu_de}}</div>
+      </div>
+    </div>
+  
+    <div class="max-w-[768px] mx-auto border border-solid border-gray-400 p-3 rounded shadow-lg">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div *ngFor="let question of arrinput" [ngClass]="{'col-span-1 md:col-span-2':question.key==='description'||question.key==='address'}">
+          <app-custominput [iteminput]="question" [form]="form" >
+          </app-custominput>
+        </div>
+        <div class="col-span-1 md:col-span-2">
+          <button type="submit" [attr.disabled]="form.invalid?'':null"
+            [ngClass]="{'bg-[#196898]':form.valid,'bg-[#849faf]':!form.valid}"
+            class="leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] text-white text-[13px] mr-[5px] my-[5px]">
+            Cập nhật
+          </button>
+          <button type="button" (click)="onClose('')"
+            class=" bg-red-500 leading-[1.5] relative inline-block font-normal text-center cursor-pointer h-8 px-[15px] text-white text-[13px] mr-[5px] my-[5px]">
+            Huỷ bỏ
+          </button>
+        </div>
+      </form>
+      
+  
+    </div>
+  
+    <button class="absolute top-0 right-0 h-[43px] w-[43px] text-white"><i class="fa fa-times" aria-hidden="true"
+        (click)="onClose('')"></i></button>
+  </div>
